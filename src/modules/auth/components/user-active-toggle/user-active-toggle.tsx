@@ -4,6 +4,7 @@ import { useActionState } from 'react'
 import { cn } from '@/lib/utils/cn'
 import { setUserActive } from '../../actions/user-admin-actions'
 import { FormMessage } from '../form-message/form-message'
+import { userActiveToggleStyles as styles } from './user-active-toggle.styles'
 
 type UserActiveToggleProps = { userId: string; isActive: boolean; isCurrentUser: boolean }
 
@@ -12,17 +13,14 @@ export function UserActiveToggle({ userId, isActive, isCurrentUser }: UserActive
   const isLocked = isActive && isCurrentUser
 
   return (
-    <form action={action} className="flex flex-col items-end gap-1">
+    <form action={action} className={styles.form}>
       <input type="hidden" name="userId" value={userId} />
       <input type="hidden" name="isActive" value={isActive ? 'false' : 'true'} />
       <button
         type="submit"
         disabled={isPending || isLocked}
         title={isLocked ? 'Você não pode desativar o seu próprio usuário' : undefined}
-        className={cn(
-          'flex h-8 w-[92px] flex-none items-center justify-center rounded-card border px-[10px] text-[10.8px] font-bold tracking-[-.01em] disabled:cursor-not-allowed disabled:opacity-45',
-          isActive ? 'border-vm/50 text-vm hover:border-vm' : 'border-ac2/60 text-ac2 hover:border-ac2',
-        )}
+        className={cn(styles.toggleButton, isActive ? styles.deactivateButton : styles.activateButton)}
       >
         {isActive ? 'Desativar' : 'Ativar'}
       </button>

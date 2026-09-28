@@ -1,18 +1,19 @@
 import { cn } from '@/lib/utils/cn'
 import { Skeleton } from '@/components/ui/skeleton/skeleton'
+import { usersSkeletonStyles as styles } from './users-skeleton.styles'
 
 const ROW_COUNT = 4
 const ROW_DELAY_STEP_MS = 60
 
 export function UsersSkeleton() {
   return (
-    <div aria-hidden className="flex flex-col gap-[22px]">
-      <Skeleton className="h-[112px] rounded-card border border-bd bg-pan" />
-      <div className="flex flex-col overflow-hidden rounded-card border border-bd bg-pan">
+    <div aria-hidden className={styles.container}>
+      <Skeleton className={styles.formPlaceholder} />
+      <div className={styles.table}>
         {Array.from({ length: ROW_COUNT }, (_, index) => (
-          <div key={index} className={cn('flex h-[52px] items-center gap-3 px-3', index % 2 === 1 ? 'bg-pan0' : 'bg-pan')}>
-            <Skeleton className="h-3 w-[160px]" delayMs={index * ROW_DELAY_STEP_MS} />
-            <Skeleton className="ml-auto h-8 w-[200px] rounded-card" delayMs={index * ROW_DELAY_STEP_MS + 40} />
+          <div key={index} className={cn(styles.row, index % 2 === 1 ? styles.rowOdd : styles.rowEven)}>
+            <Skeleton className={styles.namePlaceholder} delayMs={index * ROW_DELAY_STEP_MS} />
+            <Skeleton className={styles.actionsPlaceholder} delayMs={index * ROW_DELAY_STEP_MS + 40} />
           </div>
         ))}
       </div>
