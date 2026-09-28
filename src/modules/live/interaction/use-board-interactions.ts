@@ -1,13 +1,11 @@
 'use client'
 
 import { type PointerEvent as ReactPointerEvent, useRef, useState } from 'react'
-import type { PitchPoint } from '@/modules/matches/client'
+import { findNearestStarter, type PitchPoint, RESERVE_DROP_BOUNDS, startPrimaryPointerGesture, toFieldPoint } from '@/modules/matches/client'
 import { useLiveState } from '../state/live-context'
 import { derivePlayerStates } from '../state/selectors'
 import { useLiveCommands } from '../state/use-live-commands'
 import { type Anchor, anchorOf, DRAG_KIND, type DragState, type HoverState, type MenuState } from './interaction-state'
-import { nearestDropTarget, type PlacedTarget, pointFromPointer } from './pitch-geometry'
-import { startPointerGesture } from './pointer-gesture'
 
 export const useBoardInteractions = () => {
   const state = useLiveState()
@@ -26,15 +24,17 @@ export const useBoardInteractions = () => {
     setMenu({ playerId, anchor })
   }
 
-  const dropTargetsFor = (benchPlayerId: string): PlacedTarget[] => {
+  const dropTargetsFor = (benchPlayerId: string): Record<string, PitchPoint> => {
     const side = state.playersById[benchPlayerId]?.side
 
-    return state.players.flatMap((player) => {
-      const playerState = playerStates[player.playerId]
-      const point = state.positions[player.playerId]
+    return Object.fromEntries(
+      state.players.flatMap((player) => {
+        const playerState = playerStates[player.playerId]
+        const point = state.positions[player.playerId]
 
-      return player.side === side && playerState?.onPitch && !playerState.sentOff && point ? [{ playerId: player.playerId, point }] : []
-    })
+        return player.side === side && playerState?.onPitch && !playerState.sentOff && point ? [[player.playerId, point]] : []
+      }),
+    )
   }
 
   const activateBenchPlayer = (playerId: string) => {
@@ -51,11 +51,11 @@ export const useBoardInteractions = () => {
     const anchor = anchorOf(event.currentTarget)
     const gesture: { lastPoint: PitchPoint | null } = { lastPoint: null }
 
-    startPointerGesture(event, {
-      onDrag: (clientX, clientY) => {
+    startPrimaryPointerGesture(event, {
+      onDrag: (pointer) => {
         const rect = fieldRect()
         if (!rect) return
-        gesture.lastPoint = pointFromPointer(rect, clientX, clientY)
+        gesture.lastPoint = toFieldPoint(pointer, rect, RESERVE_DROP_BOUNDS)
         setHover(null)
         setDrag({ kind: DRAG_KIND.DOT, playerId, point: gesture.lastPoint })
       },
@@ -71,12 +71,12 @@ export const useBoardInteractions = () => {
     if (playerStates[playerId]?.subbedOut) return
     const gesture: { targetPlayerId: string | null } = { targetPlayerId: null }
 
-    startPointerGesture(event, {
-      onDrag: (clientX, clientY) => {
+    startPrimaryPointerGesture(event, {
+      onDrag: (pointer) => {
         const rect = fieldRect()
-        gesture.targetPlayerId = rect ? nearestDropTarget(rect, dropTargetsFor(playerId), clientX, clientY) : null
+        gesture.targetPlayerId = rect ? findNearestStarter(pointer, rect, dropTargetsFor(playerId)) : null
         setHover(null)
-        setDrag({ kind: DRAG_KIND.BENCH, playerId, clientX, clientY, targetPlayerId: gesture.targetPlayerId })
+        setDrag({ kind: DRAG_KIND.BENCH, playerId, clientX: pointer.clientX, clientY: pointer.clientY, targetPlayerId: gesture.targetPlayerId })
       },
       onRelease: (wasDragged) => {
         setDrag(null)

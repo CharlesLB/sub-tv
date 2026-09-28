@@ -25,3 +25,11 @@ export const trackPointerGesture = (start: PointerPosition, { onDrag, onRelease 
   window.addEventListener('pointerup', handleRelease)
   window.addEventListener('pointercancel', handleRelease)
 }
+
+type PointerStart = PointerPosition & { button: number; preventDefault: () => void }
+
+export const startPrimaryPointerGesture = (event: PointerStart, handlers: GestureHandlers): void => {
+  if (!isPrimaryPointer(event)) return
+  event.preventDefault()
+  trackPointerGesture({ clientX: event.clientX, clientY: event.clientY }, handlers)
+}
