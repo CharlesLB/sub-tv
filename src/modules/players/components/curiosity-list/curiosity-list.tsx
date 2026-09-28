@@ -3,6 +3,7 @@ import type { ActionResult } from '@/lib/actions/result'
 import { addCuriosity, removeCuriosity } from '../../actions/player-actions'
 import { CURIOSITY_MAX_LENGTH } from '../../schemas'
 import type { CuriosityVM } from '../../types'
+import { curiosityListStyles as styles } from './curiosity-list.styles'
 
 type PlayerResult = ActionResult<{ playerId: string }>
 
@@ -44,19 +45,19 @@ export function CuriosityList({ playerId, curiosities, canEdit }: CuriosityListP
 
   return (
     <div>
-      <div className="mb-2 text-[10.3px] font-semibold tracking-[-.01em] text-tx4">Curiosidades</div>
-      <ul className="flex flex-col gap-2">
+      <div className={styles.heading}>Curiosidades</div>
+      <ul className={styles.list}>
         {shownCuriosities.map((curiosity) => {
           const isPending = curiosity.id.startsWith(PENDING_ID_PREFIX)
 
           return (
-            <li key={curiosity.id} className="flex animate-fade-in items-start gap-[10px]">
-              <span aria-hidden className="mt-[7px] size-[6px] flex-none rotate-45 bg-ac" />
-              <span className={isPending ? 'min-w-0 flex-1 text-[14px] leading-[1.55] text-tx3' : 'min-w-0 flex-1 text-[14px] leading-[1.55]'}>{curiosity.text}</span>
+            <li key={curiosity.id} className={styles.item}>
+              <span aria-hidden className={styles.marker} />
+              <span className={isPending ? styles.textPending : styles.text}>{curiosity.text}</span>
               {isPending || !canEdit ? null : (
                 <form action={removeAction}>
                   <input type="hidden" name="curiosityId" value={curiosity.id} />
-                  <button type="submit" title="Remover" aria-label="Remover curiosidade" className="p-0 text-[14px] leading-[1.4] text-tx4 hover:text-vm">
+                  <button type="submit" title="Remover" aria-label="Remover curiosidade" className={styles.removeButton}>
                     ✕
                   </button>
                 </form>
@@ -65,26 +66,18 @@ export function CuriosityList({ playerId, curiosities, canEdit }: CuriosityListP
           )
         })}
       </ul>
-      {shownCuriosities.length === 0 ? <p className="text-[12.5px] text-tx4">Sem curiosidade cadastrada.</p> : null}
+      {shownCuriosities.length === 0 ? <p className={styles.emptyMessage}>Sem curiosidade cadastrada.</p> : null}
       {canEdit ? (
-        <form action={addAction} className="mt-[10px] flex gap-2">
+        <form action={addAction} className={styles.addForm}>
           <input type="hidden" name="playerId" value={playerId} />
-          <input
-            name="text"
-            required
-            maxLength={CURIOSITY_MAX_LENGTH}
-            autoComplete="off"
-            placeholder="nova curiosidade"
-            aria-label="Nova curiosidade"
-            className="h-10 min-w-0 flex-1 rounded-card border border-bd2 bg-bg px-3 text-[12.5px] text-tx outline-none placeholder:text-tx4 focus-visible:border-tx3"
-          />
-          <button type="submit" className="h-10 rounded-card border border-ac px-[14px] text-[10.8px] font-bold tracking-[-.01em] text-ac transition-colors hover:bg-pan2">
+          <input name="text" required maxLength={CURIOSITY_MAX_LENGTH} autoComplete="off" placeholder="nova curiosidade" aria-label="Nova curiosidade" className={styles.textInput} />
+          <button type="submit" className={styles.addButton}>
             Adicionar
           </button>
         </form>
       ) : null}
       {errorMessage ? (
-        <p role="alert" className="mt-[6px] text-[11.5px] text-vm">
+        <p role="alert" className={styles.error}>
           {errorMessage}
         </p>
       ) : null}

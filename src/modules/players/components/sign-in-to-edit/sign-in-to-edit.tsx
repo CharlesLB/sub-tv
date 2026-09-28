@@ -1,9 +1,10 @@
 import Link from 'next/link'
 import { signInRoutes } from '@/lib/routes'
+import { signInToEditStyles as styles } from './sign-in-to-edit.styles'
 
 export function SignInToEdit({ returnTo }: { returnTo: string }) {
   return (
-    <Link href={signInRoutes.signInTo(returnTo)} className="self-start text-[12px] font-semibold text-ac underline underline-offset-[3px] hover:text-tx">
+    <Link href={signInRoutes.signInTo(returnTo)} className={styles.link}>
       Entre para editar esta ficha
     </Link>
   )

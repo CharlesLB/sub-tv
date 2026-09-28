@@ -10,6 +10,7 @@ import type { TeamSquadVM } from '../../types'
 import { PlayerSheet } from '../player-sheet/player-sheet'
 import { RosterTable } from '../roster-table/roster-table'
 import { SquadHeader } from '../squad-header/squad-header'
+import { squadWorkspaceStyles as styles } from './squad-workspace.styles'
 
 type SquadWorkspaceProps = {
   squad: TeamSquadVM
@@ -35,18 +36,11 @@ export function SquadWorkspace({ squad, categoryFilter, canEdit, lastChange }: S
 
   return (
     <>
-      <section aria-label="Elenco" className="@container flex max-h-full min-h-[300px] min-w-0 flex-[4_1_300px] flex-col bg-pan2 mobile:min-h-0 mobile:flex-1">
+      <section aria-label="Elenco" className={styles.roster}>
         <SquadHeader squad={squad} searchText={searchText} canEdit={canEdit} onSearchChange={setSearchText} onPlayerCreated={showPlayer} />
         <RosterTable players={visiblePlayers} teamColor={squad.badge.color} selectedPlayerId={selectedPlayer?.id ?? null} searchText={searchText} hrefFor={hrefFor} onSelect={showPlayer} />
       </section>
-      <aside
-        aria-label="Ficha do jogador"
-        className={cn(
-          'max-h-full min-h-[260px] max-w-[420px] min-w-0 flex-[2_1_280px] self-stretch overflow-y-auto bg-pan',
-          'mobile:absolute mobile:inset-x-0 mobile:bottom-0 mobile:z-40 mobile:max-h-[76%] mobile:min-h-0 mobile:max-w-none mobile:animate-fade-up mobile:border-t mobile:border-bd2',
-          explicitPlayer ? null : 'mobile:hidden',
-        )}
-      >
+      <aside aria-label="Ficha do jogador" className={cn(styles.sheetPanel, styles.sheetPanelMobile, explicitPlayer ? null : styles.sheetPanelHiddenOnMobile)}>
         {selectedPlayer ? (
           <PlayerSheet
             key={selectedPlayer.id}
@@ -58,9 +52,9 @@ export function SquadWorkspace({ squad, categoryFilter, canEdit, lastChange }: S
             onClose={() => showPlayer()}
           />
         ) : (
-          <div className="flex flex-col gap-2 px-5 py-[18px]">
-            <span className="text-[14.4px] font-bold tracking-[-.01em]">Ficha do jogador</span>
-            <p className="text-[12.5px] leading-[1.5] text-tx4">Nenhum atleta vinculado a este time ainda.</p>
+          <div className={styles.emptySheet}>
+            <span className={styles.emptySheetTitle}>Ficha do jogador</span>
+            <p className={styles.emptySheetMessage}>Nenhum atleta vinculado a este time ainda.</p>
           </div>
         )}
       </aside>

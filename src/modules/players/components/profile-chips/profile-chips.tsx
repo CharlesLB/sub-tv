@@ -3,6 +3,7 @@ import { type Category, categoryLabel } from '@/modules/championships/client'
 import { footLabel, positionLabel } from '../../labels'
 import { PLAYER_POSITIONS, PREFERRED_FEET } from '../../schemas'
 import type { PlayerPosition, PreferredFoot } from '../../types'
+import { profileChipsStyles as styles } from './profile-chips.styles'
 
 type ProfileChipsProps = {
   position: PlayerPosition | null
@@ -28,10 +29,10 @@ export function ProfileChips({ position, preferredFoot, teamName, category }: Pr
   )
 
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className={styles.chips}>
       {chips.map((chip) => (
-        <div key={chip} className="-skew-x-12 rounded-card border border-bd2 px-3 py-1">
-          <div className="skew-x-12 text-[10.8px] font-semibold tracking-[-.01em] whitespace-nowrap text-tx">{chip}</div>
+        <div key={chip} className={styles.chip}>
+          <div className={styles.chipText}>{chip}</div>
         </div>
       ))}
     </div>

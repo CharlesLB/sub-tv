@@ -6,6 +6,7 @@ import { DISPLAY_NAME_MAX_LENGTH, PLAYER_POSITIONS, PREFERRED_FEET } from '../..
 import type { SquadPlayerVM } from '../../types'
 import { ProfileChips } from '../profile-chips/profile-chips'
 import { SegmentedChoice } from '../segmented-choice/segmented-choice'
+import { playerProfileFormStyles as styles } from './player-profile-form.styles'
 
 const POSITION_OPTIONS = PLAYER_POSITIONS.map((position) => ({ value: position, label: positionLabel[position] }))
 const FOOT_OPTIONS = PREFERRED_FEET.map((foot) => ({ value: foot, label: footLabel[foot] }))
@@ -30,12 +31,12 @@ export function PlayerProfileForm({ player, teamName, category }: PlayerProfileF
   const feedback = isPending ? 'Salvando…' : state?.ok === false ? (state.fieldErrors?.displayName?.[0] ?? state.error) : state?.ok ? 'Salvo' : ''
 
   return (
-    <form action={formAction} className="flex flex-col gap-[14px]">
+    <form action={formAction} className={styles.form}>
       <input type="hidden" name="playerId" value={player.id} />
-      <label className="block">
-        <span className="mb-[6px] flex items-baseline justify-between gap-2">
-          <span className="text-[10.3px] font-semibold tracking-[-.01em] text-tx4">Apelido (como o narrador chama)</span>
-          <span aria-live="polite" className={state?.ok === false && !isPending ? 'text-[10.3px] text-vm' : 'text-[10.3px] text-tx4'}>
+      <label className={styles.field}>
+        <span className={styles.labelRow}>
+          <span className={styles.label}>Apelido (como o narrador chama)</span>
+          <span aria-live="polite" className={state?.ok === false && !isPending ? styles.feedbackError : styles.feedback}>
             {feedback}
           </span>
         </span>
@@ -46,7 +47,7 @@ export function PlayerProfileForm({ player, teamName, category }: PlayerProfileF
           maxLength={DISPLAY_NAME_MAX_LENGTH}
           autoComplete="off"
           placeholder={`ex.: ${player.nickname ?? FALLBACK_NICKNAME_HINT}`}
-          className="h-10 w-full rounded-card border border-bd2 bg-bg px-3 text-[13px] text-tx outline-none placeholder:text-tx5 focus-visible:border-tx3"
+          className={styles.input}
         />
       </label>
       <ProfileChips position={player.position} preferredFoot={player.preferredFoot} teamName={teamName} category={category} />

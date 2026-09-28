@@ -1,0 +1,18 @@
+export const newPlayerPopoverStyles = {
+  trigger: 'h-[38px] flex-none rounded-card border border-ac px-[14px] text-[10.8px] font-bold tracking-[-.01em] text-ac transition-colors hover:bg-pan',
+  triggerFullLabel: 'mobile:hidden',
+  triggerCompactLabel: 'hidden mobile:inline',
+  content: 'z-[60] w-[min(92vw,320px)] animate-pop-in rounded-card border border-bd2 bg-pan p-4 text-tx',
+  form: 'flex flex-col gap-3',
+  header: 'flex items-baseline justify-between gap-3',
+  title: 'text-[13.5px] font-bold tracking-[-.01em]',
+  subtitle: 'text-[10px] tracking-[.05em] text-tx4',
+  fields: 'grid grid-cols-[70px_minmax(0,1fr)] gap-3',
+  label: 'mb-[6px] block text-[10.3px] font-semibold tracking-[-.01em] text-tx4',
+  input: 'h-10 w-full rounded-card border border-bd2 bg-bg px-3 text-[13px] text-tx outline-none focus-visible:border-tx3',
+  error: 'text-[11.5px] text-vm',
+  hint: 'text-[11.5px] leading-[1.5] text-tx4',
+  actions: 'flex justify-end gap-2',
+  cancelButton: 'h-[34px] rounded-card border border-bd2 px-3 text-[10.8px] font-bold text-tx3 hover:text-tx',
+  submitButton: 'h-[34px] rounded-card bg-ac px-[14px] text-[10.8px] font-bold text-bg disabled:opacity-60',
+} as const

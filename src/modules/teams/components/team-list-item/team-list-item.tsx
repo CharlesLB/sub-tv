@@ -5,6 +5,7 @@ import { Crest } from '@/components/ui/crest/crest'
 import { type Category, CategoryTag, categoryBorderClass } from '@/modules/championships/client'
 import { ACTIVE_TEAM_ATTRIBUTE } from '../../constants/active-team'
 import type { SeasonTeamVM } from '../../types'
+import { teamListItemStyles as styles } from './team-list-item.styles'
 
 type TeamListItemProps = {
   team: SeasonTeamVM
@@ -20,18 +21,14 @@ export function TeamListItem({ team, year, categoryFilter, isActive }: TeamListI
       scroll={false}
       aria-current={isActive ? 'true' : undefined}
       {...(isActive ? { [ACTIVE_TEAM_ATTRIBUTE]: true } : {})}
-      className={cn(
-        'flex items-center gap-[10px] border-0 border-l-[3px] px-4 py-[10px] text-tx transition-[background,border-color] duration-[140ms]',
-        'mobile:flex-none mobile:gap-[7px] mobile:rounded-card mobile:border mobile:px-[10px] mobile:py-[7px]',
-        isActive ? cn('bg-pan2', categoryBorderClass[team.category]) : 'border-transparent hover:bg-pan2 mobile:border-bd',
-      )}
+      className={cn(styles.item, styles.itemMobile, isActive ? cn(styles.itemActive, categoryBorderClass[team.category]) : styles.itemIdle)}
     >
       <Crest color={team.badge.color} imagePath={team.badge.crestPath} width={18} />
-      <span className="flex min-w-0 flex-1 flex-col gap-[3px]">
-        <span className="truncate text-[12.2px] font-bold tracking-[-.01em] whitespace-nowrap">{team.badge.name}</span>
-        <CategoryTag category={team.category} className="self-start px-[7px]" />
+      <span className={styles.details}>
+        <span className={styles.name}>{team.badge.name}</span>
+        <CategoryTag category={team.category} className={styles.categoryTag} />
       </span>
-      <span className="text-[11px] text-tx4 nums">{team.athleteCount}</span>
+      <span className={styles.athleteCount}>{team.athleteCount}</span>
     </Link>
   )
 }

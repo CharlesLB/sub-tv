@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils/cn'
 import type { SquadPlayerVM } from '../../types'
-import { ROSTER_GRID_CLASS } from '../roster-grid/roster-grid'
 import { RosterRow } from '../roster-row/roster-row'
+import { rosterTableStyles as styles } from './roster-table.styles'
 
 const COLUMNS = [
   { key: 'number', label: 'Nº', compactLabel: 'Nº' },
@@ -28,28 +28,19 @@ export function RosterTable({ players, teamColor, selectedPlayerId, searchText, 
 
   return (
     <>
-      <div className={cn(ROSTER_GRID_CLASS, 'border-b border-bd py-2')}>
+      <div className={cn(styles.grid, styles.header)}>
         {COLUMNS.map((column, index) => (
-          <span
-            key={column.key}
-
-            className={cn(
-              'text-[10.5px] font-semibold tracking-[.14em] whitespace-nowrap text-tx4 @max-[430px]:text-[9.5px] @max-[430px]:tracking-[.1em]',
-              index === LAST_COLUMN_INDEX ? 'overflow-visible text-right' : 'truncate text-left',
-            )}
-          >
-            <span className="@max-[430px]:hidden">{column.label}</span>
-            <span className="hidden @max-[430px]:inline">{column.compactLabel}</span>
+          <span key={column.key} className={cn(styles.columnLabel, index === LAST_COLUMN_INDEX ? styles.lastColumnLabel : styles.columnLabelAligned)}>
+            <span className={styles.fullLabel}>{column.label}</span>
+            <span className={styles.compactLabel}>{column.compactLabel}</span>
           </span>
         ))}
       </div>
-      <div className="min-h-0 flex-1 overflow-x-hidden overflow-y-auto">
+      <div className={styles.rows}>
         {players.map((player, index) => (
           <RosterRow key={player.id} player={player} index={index} href={hrefFor(player.id)} teamColor={teamColor} isSelected={player.id === selectedPlayerId} onSelect={onSelect} />
         ))}
-        {players.length === 0 ? (
-          <p className="px-4 py-6 text-[12.5px] text-tx4">{hasSearch ? `Nenhum atleta encontrado para “${searchText.trim()}”.` : 'Nenhum atleta vinculado a este time ainda.'}</p>
-        ) : null}
+        {players.length === 0 ? <p className={styles.emptyMessage}>{hasSearch ? `Nenhum atleta encontrado para “${searchText.trim()}”.` : 'Nenhum atleta vinculado a este time ainda.'}</p> : null}
       </div>
     </>
   )

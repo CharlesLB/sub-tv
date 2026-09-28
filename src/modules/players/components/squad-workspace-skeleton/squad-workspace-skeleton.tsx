@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils/cn'
 import { Skeleton } from '@/components/ui/skeleton/skeleton'
-import { ROSTER_GRID_CLASS } from '../roster-grid/roster-grid'
+import { squadWorkspaceSkeletonStyles as styles } from './squad-workspace-skeleton.styles'
 
 const ROW_NAME_WIDTHS = ['64%', '52%', '72%', '58%', '66%', '48%'] as const
 const HEADER_CELL_KEYS = ['number', 'name', 'position', 'games', 'goals', 'curiosities'] as const
@@ -13,32 +13,36 @@ const LAST_COLUMN_INDEX = HEADER_CELL_KEYS.length - 1
 export function SquadWorkspaceSkeleton() {
   return (
     <>
-      <div aria-hidden className="@container flex min-h-[300px] min-w-0 flex-[4_1_300px] flex-col bg-pan2">
-        <div className="flex flex-wrap items-center gap-3 border-b border-bd px-4 py-3">
-          <Skeleton className="h-[27px] w-[22px] flex-none hexagon" />
-          <span className="flex min-w-0 flex-col gap-[6px]">
-            <Skeleton className="h-[17px] w-[150px]" delayMs={50} />
-            <Skeleton className="h-[11px] w-[190px] max-w-full" delayMs={100} />
+      <div aria-hidden className={styles.roster}>
+        <div className={styles.header}>
+          <Skeleton className={styles.headerCrest} />
+          <span className={styles.headerTitles}>
+            <Skeleton className={styles.headerTitle} delayMs={50} />
+            <Skeleton className={styles.headerSubtitle} delayMs={100} />
           </span>
-          <Skeleton className="h-[38px] min-w-[120px] flex-1 bg-pan" delayMs={150} />
-          <Skeleton className="h-[38px] w-[140px] max-w-full flex-[0_1_auto] bg-pan" delayMs={200} />
+          <Skeleton className={styles.headerSearch} delayMs={150} />
+          <Skeleton className={styles.headerButton} delayMs={200} />
         </div>
-        <div className={cn(ROSTER_GRID_CLASS, 'border-b border-bd py-2')}>
+        <div className={cn(styles.grid, styles.columnHeader)}>
           {HEADER_CELL_KEYS.map((cellKey, index) => (
-            <Skeleton key={cellKey} className={cn('h-[10px]', index === NAME_COLUMN_INDEX ? 'w-[52px]' : null)} delayMs={index * CELL_DELAY_MS} />
+            <Skeleton key={cellKey} className={cn(styles.columnHeaderCell, index === NAME_COLUMN_INDEX ? styles.columnHeaderNameCell : null)} delayMs={index * CELL_DELAY_MS} />
           ))}
         </div>
-        <div className="min-h-0 flex-1 overflow-hidden">
+        <div className={styles.rows}>
           {ROW_NAME_WIDTHS.map((nameWidth, rowIndex) => {
             const delay = rowIndex * ROW_DELAY_MS
-            const fillClass = rowIndex >= FADED_ROW_START ? 'bg-pan2' : 'bg-bd'
+            const fillClass = rowIndex >= FADED_ROW_START ? styles.cellFaded : styles.cellFilled
 
             return (
-              <div key={`${nameWidth}-${rowIndex}`} className={cn(ROSTER_GRID_CLASS, 'h-11 items-center border-b border-bd')}>
+              <div key={`${nameWidth}-${rowIndex}`} className={cn(styles.grid, styles.row)}>
                 {HEADER_CELL_KEYS.map((cellKey, cellIndex) => (
                   <Skeleton
                     key={cellKey}
-                    className={cn(cellIndex === 0 ? 'h-[15px]' : cellIndex === NAME_COLUMN_INDEX ? 'h-[13px]' : 'h-[11px]', cellIndex === LAST_COLUMN_INDEX ? 'w-4' : null, fillClass)}
+                    className={cn(
+                      cellIndex === 0 ? styles.numberCell : cellIndex === NAME_COLUMN_INDEX ? styles.nameCell : styles.statCell,
+                      cellIndex === LAST_COLUMN_INDEX ? styles.lastCell : null,
+                      fillClass,
+                    )}
                     delayMs={delay + cellIndex * CELL_DELAY_MS}
                     style={cellIndex === NAME_COLUMN_INDEX ? { width: nameWidth } : {}}
                   />
@@ -48,35 +52,35 @@ export function SquadWorkspaceSkeleton() {
           })}
         </div>
       </div>
-      <div aria-hidden className="flex min-h-[260px] max-w-[420px] min-w-0 flex-[2_1_280px] flex-col gap-[14px] bg-pan px-5 py-[18px] mobile:hidden">
-        <div className="flex items-center gap-3">
-          <Skeleton className="h-6 w-5 flex-none hexagon" />
-          <Skeleton className="h-[15px] w-[148px]" delayMs={50} />
-          <Skeleton className="h-5 w-[58px]" delayMs={100} />
+      <div aria-hidden className={styles.sheet}>
+        <div className={styles.sheetHeader}>
+          <Skeleton className={styles.sheetCrest} />
+          <Skeleton className={styles.sheetTitle} delayMs={50} />
+          <Skeleton className={styles.sheetCategory} delayMs={100} />
         </div>
-        <div className="grid grid-cols-[90px_minmax(0,1fr)] gap-3">
-          <span className="flex flex-col gap-[6px]">
-            <Skeleton className="h-[10px] w-[56px]" delayMs={100} />
-            <Skeleton className="h-10 bg-pan2" delayMs={150} />
+        <div className={styles.identityFields}>
+          <span className={styles.field}>
+            <Skeleton className={styles.numberLabel} delayMs={100} />
+            <Skeleton className={styles.input} delayMs={150} />
           </span>
-          <span className="flex flex-col gap-[6px]">
-            <Skeleton className="h-[10px] w-[44px]" delayMs={150} />
-            <Skeleton className="h-10 bg-pan2" delayMs={200} />
+          <span className={styles.field}>
+            <Skeleton className={styles.nameLabel} delayMs={150} />
+            <Skeleton className={styles.input} delayMs={200} />
           </span>
         </div>
-        <div className="flex flex-col gap-[6px]">
-          <Skeleton className="h-[10px] w-[176px] max-w-full" delayMs={200} />
-          <Skeleton className="h-10 bg-pan2" delayMs={250} />
+        <div className={styles.field}>
+          <Skeleton className={styles.displayNameLabel} delayMs={200} />
+          <Skeleton className={styles.input} delayMs={250} />
         </div>
-        <div className="flex flex-wrap gap-2">
-          <Skeleton className="h-[26px] w-[88px] bg-pan2" delayMs={300} />
-          <Skeleton className="h-[26px] w-[74px] bg-pan2" delayMs={350} />
-          <Skeleton className="h-[26px] w-[132px] bg-pan2" delayMs={400} />
+        <div className={styles.chips}>
+          <Skeleton className={styles.positionChip} delayMs={300} />
+          <Skeleton className={styles.footChip} delayMs={350} />
+          <Skeleton className={styles.teamChip} delayMs={400} />
         </div>
-        <div className="flex flex-col gap-[9px]">
-          <Skeleton className="h-[10px] w-[92px]" delayMs={400} />
-          <Skeleton className="h-[13px] w-[84%]" delayMs={450} />
-          <Skeleton className="h-[13px] w-[72%]" delayMs={500} />
+        <div className={styles.curiosities}>
+          <Skeleton className={styles.curiositiesLabel} delayMs={400} />
+          <Skeleton className={styles.firstCuriosity} delayMs={450} />
+          <Skeleton className={styles.secondCuriosity} delayMs={500} />
         </div>
       </div>
     </>

@@ -4,6 +4,7 @@ import { type SeasonTeamVM, TeamList } from '@/modules/teams'
 import { SquadSection } from '../squad-section/squad-section'
 import { SquadWorkspaceSkeleton } from '../squad-workspace-skeleton/squad-workspace-skeleton'
 import { SquadsEmptyState } from '../squads-empty-state/squads-empty-state'
+import { squadsScreenStyles as styles } from './squads-screen.styles'
 
 type SquadsScreenProps = {
   year: number
@@ -23,7 +24,7 @@ export function SquadsScreen({ year, teams, categoryFilter, selectedTeam, canEdi
   const missingTeams = describeMissingTeams(year, categoryFilter)
 
   return (
-    <div className="relative flex min-h-0 flex-1 animate-fade-in flex-wrap content-stretch items-stretch gap-px overflow-y-auto bg-bg mobile:flex-col mobile:flex-nowrap mobile:overflow-hidden">
+    <div className={styles.screen}>
       <TeamList teams={teams} year={year} categoryFilter={categoryFilter} activeTeamKey={selectedTeam?.key ?? null} />
       {selectedTeam ? (
         <Suspense key={selectedTeam.key} fallback={<SquadWorkspaceSkeleton />}>

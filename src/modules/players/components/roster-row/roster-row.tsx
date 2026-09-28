@@ -3,7 +3,7 @@ import { cn } from '@/lib/utils/cn'
 import { positionAbbreviation, positionLabel } from '../../labels'
 import { toRosterName } from '../../squad-roster/squad-roster'
 import type { SquadPlayerVM } from '../../types'
-import { ROSTER_GRID_CLASS } from '../roster-grid/roster-grid'
+import { rosterRowStyles as styles } from './roster-row.styles'
 
 const ROW_DELAY_STEP_MS = 20
 const EMPTY_VALUE = '—'
@@ -26,27 +26,27 @@ export function RosterRow({ player, index, href, teamColor, isSelected, onSelect
     onSelect(player.id)
   }
 
-  const statClass = 'text-[12.5px] text-tx4 nums @max-[430px]:text-[11.5px]'
-
   return (
     <a
       href={href}
       onClick={selectPlayer}
       aria-current={isSelected ? 'true' : undefined}
-      className={cn(ROSTER_GRID_CLASS, 'h-11 animate-rise-in items-center border-b border-bd text-tx transition-[background] duration-[140ms] hover:bg-pan', isSelected ? 'bg-pan' : 'bg-transparent')}
+      className={cn(styles.grid, styles.row, isSelected ? styles.rowSelected : styles.rowIdle)}
       style={{ animationDelay: `${index * ROW_DELAY_STEP_MS}ms`, boxShadow: isSelected ? `inset 3px 0 0 ${teamColor}` : 'none' }}
     >
-      <span className="text-[13.5px] font-bold nums" style={{ color: teamColor }}>
+      <span className={styles.shirtNumber} style={{ color: teamColor }}>
         {player.shirtNumber ?? EMPTY_VALUE}
       </span>
-      <span className="min-w-0 truncate text-[14px] whitespace-nowrap">{toRosterName(player)}</span>
-      <span className="truncate text-[11px] font-semibold tracking-[.12em] whitespace-nowrap text-tx2 uppercase @max-[430px]:text-[10.5px] @max-[430px]:tracking-[.08em] @max-[430px]:normal-case">
-        <span className="@max-[430px]:hidden">{player.position ? positionLabel[player.position] : EMPTY_VALUE}</span>
-        <span className="hidden @max-[430px]:inline">{player.position ? positionAbbreviation[player.position] : EMPTY_VALUE}</span>
+      <span className={styles.name}>{toRosterName(player)}</span>
+      <span className={styles.position}>
+        <span className={styles.positionFull}>{player.position ? positionLabel[player.position] : EMPTY_VALUE}</span>
+        <span className={styles.positionCompact}>{player.position ? positionAbbreviation[player.position] : EMPTY_VALUE}</span>
       </span>
-      <span className={statClass}>{player.games}</span>
-      <span className={statClass}>{player.goals}</span>
-      <span className={cn(statClass, 'text-right', player.curiosities.length > 0 ? 'text-ac' : 'text-bd3')}>{player.curiosities.length || EMPTY_VALUE}</span>
+      <span className={styles.stat}>{player.games}</span>
+      <span className={styles.stat}>{player.goals}</span>
+      <span className={cn(styles.stat, styles.curiosityCount, player.curiosities.length > 0 ? styles.curiosityCountFilled : styles.curiosityCountEmpty)}>
+        {player.curiosities.length || EMPTY_VALUE}
+      </span>
     </a>
   )
 }
