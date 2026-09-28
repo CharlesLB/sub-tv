@@ -1,5 +1,5 @@
 import type { StorybookConfig } from '@storybook/nextjs-vite'
-import { MOCK_FUNCTION_IMPORT, serverModuleMocks } from '../tools/server-module-mocks/server-module-mocks'
+import { MOCK_FUNCTION_IMPORT, serverModuleMocks } from '../tools/server-module-mocks/server-module-mocks.ts'
 
 const config: StorybookConfig = {
   stories: ['../src/**/*.stories.tsx'],
