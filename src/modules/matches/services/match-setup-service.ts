@@ -6,12 +6,10 @@ import { db, tables } from '@/lib/db'
 import { readTeamSquads, type SquadMember } from '../data/read-team-squads'
 import { toKickoffInstant } from '../kickoff-time/kickoff-time'
 import { layoutStarters } from '../pitch-layout/pitch-layout'
+import { MATCH_STATUS, SIDE, type Side } from '../live-match/live-match'
 import type { CreateBroadcastMatchInput } from '../schemas'
-import type { MatchSide } from '../types'
 
-const SCHEDULED_STATUS = 'agendado'
 const MANUAL_SOURCE = 'manual'
-const SIDE = { HOME: 'home', AWAY: 'away' } as const satisfies Record<string, MatchSide>
 
 export type BroadcastMatchCreated = { matchId: string; seasonId: string; previousBroadcastSeasonIds: string[] }
 
@@ -19,7 +17,7 @@ type LineupRow = typeof tables.matchLineups.$inferInsert
 
 type ChosenPosition = { playerId: string; x: number; y: number }
 
-type SideLineup = { side: MatchSide; squad: SquadMember[]; starterIds: string[]; chosenPositions: ChosenPosition[] | undefined }
+type SideLineup = { side: Side; squad: SquadMember[]; starterIds: string[]; chosenPositions: ChosenPosition[] | undefined }
 
 const toLineupRows = (matchId: string, { side, squad, starterIds, chosenPositions }: SideLineup): LineupRow[] => {
   const starterSet = new Set(starterIds)
@@ -66,10 +64,16 @@ const isExistingMatchSchedulable = async (seasonId: string, matchId: string): Pr
   const [match] = await db
     .select({ id: matches.id })
     .from(matches)
-    .where(and(eq(matches.id, matchId), eq(matches.seasonId, seasonId), eq(matches.status, SCHEDULED_STATUS), isNull(matches.removedAt)))
+    .where(and(eq(matches.id, matchId), eq(matches.seasonId, seasonId), eq(matches.status, MATCH_STATUS.SCHEDULED), isNull(matches.removedAt)))
     .limit(1)
 
   return match !== undefined
+}
+
+const withoutPlayersOf = (squad: SquadMember[], otherSquad: SquadMember[]): SquadMember[] => {
+  const otherIds = new Set(otherSquad.map((member) => member.playerId))
+
+  return squad.filter((member) => !otherIds.has(member.playerId))
 }
 
 const belongsToSquad = (squad: SquadMember[], playerIds: string[]): boolean => {
@@ -88,7 +92,7 @@ const saveBroadcastMatch = async (input: CreateBroadcastMatchInput, squads: { ho
       kickoffAt: toKickoffInstant(input.kickoffDate, input.kickoffTime),
       homeTeamId: input.homeSeasonTeamId,
       awayTeamId: input.awaySeasonTeamId,
-      status: SCHEDULED_STATUS,
+      status: MATCH_STATUS.SCHEDULED,
       isBroadcast: true,
     } as const
 
@@ -107,15 +111,13 @@ const saveBroadcastMatch = async (input: CreateBroadcastMatchInput, squads: { ho
       .where(and(eq(matches.isBroadcast, true), ne(matches.id, savedMatch.id)))
       .returning({ seasonId: matches.seasonId })
 
-    const homeIds = new Set(squads.home.map((member) => member.playerId))
-    const awaySquad = squads.away.filter((member) => !homeIds.has(member.playerId))
     await transaction.delete(matchLineups).where(eq(matchLineups.matchId, savedMatch.id))
 
     await transaction
       .insert(matchLineups)
       .values([
         ...toLineupRows(savedMatch.id, { side: SIDE.HOME, squad: squads.home, starterIds: input.homeStarterIds, chosenPositions: input.homeStarterPositions }),
-        ...toLineupRows(savedMatch.id, { side: SIDE.AWAY, squad: awaySquad, starterIds: input.awayStarterIds, chosenPositions: input.awayStarterPositions }),
+        ...toLineupRows(savedMatch.id, { side: SIDE.AWAY, squad: squads.away, starterIds: input.awayStarterIds, chosenPositions: input.awayStarterPositions }),
       ])
 
     await transaction
@@ -140,7 +142,7 @@ export const matchSetupService = {
 
     const squads = await readTeamSquads([input.homeSeasonTeamId, input.awaySeasonTeamId])
     const home = squads[input.homeSeasonTeamId] ?? []
-    const away = squads[input.awaySeasonTeamId] ?? []
+    const away = withoutPlayersOf(squads[input.awaySeasonTeamId] ?? [], home)
 
     if (!belongsToSquad(home, input.homeStarterIds) || !belongsToSquad(away, input.awayStarterIds)) {
       return fail('Escalação inválida · Há titulares fora do elenco do time nesta temporada.')
