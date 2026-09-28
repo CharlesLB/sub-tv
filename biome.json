@@ -6,19 +6,7 @@
     "useIgnoreFile": true
   },
   "files": {
-    "includes": [
-      "**/*.ts",
-      "**/*.tsx",
-      "**/*.mjs",
-      "**/*.json",
-      "!**/node_modules",
-      "!**/.next",
-      "!**/drizzle",
-      "!**/spec",
-      "!**/storybook-static",
-      "!**/.data",
-      "!**/public"
-    ]
+    "includes": ["**/*.ts", "**/*.tsx", "**/*.mjs", "**/*.json", "!**/node_modules", "!**/.next", "!**/drizzle", "!**/spec", "!**/storybook-static", "!**/.data", "!**/public"]
   },
   "formatter": {
     "enabled": false
@@ -43,12 +31,7 @@
                   "kind": "any"
                 },
                 "match": "(.*)",
-                "formats": [
-                  "camelCase",
-                  "PascalCase",
-                  "CONSTANT_CASE",
-                  "snake_case"
-                ]
+                "formats": ["camelCase", "PascalCase", "CONSTANT_CASE", "snake_case"]
               }
             ]
           }
@@ -59,10 +42,7 @@
         "noConsole": {
           "level": "error",
           "options": {
-            "allow": [
-              "warn",
-              "error"
-            ]
+            "allow": ["warn", "error"]
           }
         },
         "noVar": "error"
@@ -92,14 +72,7 @@
         "organizeImports": {
           "level": "on",
           "options": {
-            "groups": [
-              ":NODE:",
-              ":PACKAGE:",
-              "@/lib/**",
-              "@/components/**",
-              "@/modules/**",
-              ":PATH:"
-            ]
+            "groups": [":NODE:", ":PACKAGE:", "@/lib/**", "@/components/**", "@/modules/**", ":PATH:"]
           }
         }
       }
@@ -107,9 +80,7 @@
   },
   "overrides": [
     {
-      "includes": [
-        "scripts/**"
-      ],
+      "includes": ["scripts/**"],
       "linter": {
         "rules": {
           "suspicious": {
