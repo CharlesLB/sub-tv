@@ -9,8 +9,7 @@ import { NewChampionshipProvider, useNewChampionshipLauncher } from './new-champ
 vi.mock('next/navigation', () => ({ useRouter: () => ({ push: vi.fn() }) }))
 
 const YEAR = 2025
-const FIRST_OPENING_TIME = 1000
-const SECOND_OPENING_TIME = 2000
+const SAME_OPENING_TIME = 1000
 
 const LauncherOutsideProvider = () => {
   useNewChampionshipLauncher()
@@ -47,14 +46,25 @@ describe('NewChampionshipProvider', () => {
     expect(screen.getByRole('button', { name: 'SUB-14' })).toHaveAttribute('aria-pressed', 'true')
   })
 
-  it('restarts the form with the new category when another launcher is clicked', async () => {
-    vi.spyOn(Date, 'now').mockReturnValueOnce(FIRST_OPENING_TIME).mockReturnValueOnce(SECOND_OPENING_TIME)
+  it('restarts the form with the new category when another launcher is clicked in the same millisecond', async () => {
+    vi.spyOn(Date, 'now').mockReturnValue(SAME_OPENING_TIME)
     renderProvider()
     await userEvent.click(screen.getByRole('button', { name: 'Novo campeonato SUB-14' }))
 
     await userEvent.click(screen.getByRole('button', { name: 'Novo campeonato SUB-13' }))
 
     expect(screen.getByRole('button', { name: 'SUB-13' })).toHaveAttribute('aria-pressed', 'true')
+  })
+
+  it('clears what was typed when the same launcher is clicked again in the same millisecond', async () => {
+    vi.spyOn(Date, 'now').mockReturnValue(SAME_OPENING_TIME)
+    renderProvider()
+    await userEvent.click(screen.getByRole('button', { name: 'Novo campeonato SUB-13' }))
+    await userEvent.type(screen.getByLabelText('Nome'), 'Copa do Vale')
+
+    await userEvent.click(screen.getByRole('button', { name: 'Novo campeonato SUB-13' }))
+
+    expect(screen.getByLabelText('Nome')).toHaveValue('')
   })
 
   it('closes the form when it is cancelled', async () => {

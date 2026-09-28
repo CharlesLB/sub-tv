@@ -2,10 +2,14 @@ import { cn } from '@/lib/utils/cn'
 import { Icon } from '@/components/ui/icon/icon'
 import { scrollArrowStyles as styles } from './scroll-arrow.styles'
 
-type ScrollArrowProps = { direction: 'previous' | 'next'; isDisabled: boolean; onClick: () => void }
+export const SCROLL_DIRECTION = { PREVIOUS: 'previous', NEXT: 'next' } as const
+
+type ScrollDirection = (typeof SCROLL_DIRECTION)[keyof typeof SCROLL_DIRECTION]
+
+type ScrollArrowProps = { direction: ScrollDirection; isDisabled: boolean; onClick: () => void }
 
 export function ScrollArrow({ direction, isDisabled, onClick }: ScrollArrowProps) {
-  const isPrevious = direction === 'previous'
+  const isPrevious = direction === SCROLL_DIRECTION.PREVIOUS
 
   return (
     <button

@@ -1,10 +1,8 @@
+import { kpiGridStyles } from '../kpi-grid/kpi-grid.styles'
+
 export const kpiGridSkeletonStyles = {
-  grid: 'grid gap-[10px]',
-  gridVariant: {
-    overview: 'grid-cols-[repeat(auto-fit,minmax(min(100%,150px),1fr))]',
-    detail: 'grid-cols-[repeat(auto-fit,minmax(min(100%,160px),1fr))]',
-    highlight: 'grid-cols-[repeat(auto-fit,minmax(min(100%,200px),1fr))]',
-  },
+  grid: kpiGridStyles.grid,
+  gridVariant: kpiGridStyles.columns,
   card: 'flex flex-col gap-[7px] rounded-card border border-bd bg-pan',
   cardVariant: { overview: 'px-4 py-[14px]', detail: 'px-[15px] py-[13px]', highlight: 'px-4 py-[14px]' },
   value: 'w-[46%]',

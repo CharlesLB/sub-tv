@@ -4,13 +4,13 @@ import { BenchSkeleton } from '../bench-skeleton/bench-skeleton'
 import { PitchSkeleton } from '../pitch-skeleton/pitch-skeleton'
 import { liveSkeletonStyles as styles } from './live-skeleton.styles'
 
-const FICHA_WIDTHS = [
-  { width: styles.officialsItemWidth.referee, delayMs: 0, isFaint: false },
-  { width: styles.officialsItemWidth.firstAssistant, delayMs: 80, isFaint: false },
-  { width: styles.officialsItemWidth.secondAssistant, delayMs: 160, isFaint: false },
-  { width: styles.officialsItemWidth.fourthOfficial, delayMs: 240, isFaint: true },
-  { width: styles.officialsItemWidth.round, delayMs: 320, isFaint: true },
-  { width: styles.officialsItemWidth.duration, delayMs: 400, isFaint: true },
+const OFFICIALS_ITEMS = [
+  { key: 'referee', width: styles.officialsItemWidth.referee, delayMs: 0, isFaint: false },
+  { key: 'firstAssistant', width: styles.officialsItemWidth.firstAssistant, delayMs: 80, isFaint: false },
+  { key: 'secondAssistant', width: styles.officialsItemWidth.secondAssistant, delayMs: 160, isFaint: false },
+  { key: 'fourthOfficial', width: styles.officialsItemWidth.fourthOfficial, delayMs: 240, isFaint: true },
+  { key: 'round', width: styles.officialsItemWidth.round, delayMs: 320, isFaint: true },
+  { key: 'duration', width: styles.officialsItemWidth.duration, delayMs: 400, isFaint: true },
 ] as const
 
 const CHIP_DELAYS_MS = [80, 160, 240] as const
@@ -27,8 +27,8 @@ export function LiveSkeleton() {
         </div>
       </div>
       <div className={styles.officialsStrip}>
-        {FICHA_WIDTHS.map((item) => (
-          <span key={item.delayMs} className={cn(styles.officialsItem, item.width)}>
+        {OFFICIALS_ITEMS.map((item) => (
+          <span key={item.key} className={cn(styles.officialsItem, item.width)}>
             <Skeleton className={cn(styles.officialsItemBar, item.isFaint && styles.faintBar)} delayMs={item.delayMs} />
           </span>
         ))}

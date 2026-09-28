@@ -1,3 +1,6 @@
+import { boardAreaStyles } from '../board-area/board-area.styles'
+import { officialsStripStyles } from '../officials-strip/officials-strip.styles'
+
 export const liveSkeletonStyles = {
   screen: 'flex min-h-0 flex-1 flex-col overflow-hidden bg-bg',
   scoreboard: 'flex flex-none items-center justify-center gap-[14px] border-b border-bd bg-pan px-5 py-3',
@@ -5,7 +8,7 @@ export const liveSkeletonStyles = {
   scoreGroup: 'flex -skew-x-12 items-stretch',
   teamBlock: 'h-[44px] w-[62px]',
   scoreCenter: 'h-[44px] w-[210px] rounded-card border border-bd bg-pan2',
-  officialsStrip: 'flex flex-none flex-wrap items-center justify-center gap-x-[15px] gap-y-[3px] border-b border-bd bg-pan px-4 py-[5px] mobile:hidden',
+  officialsStrip: officialsStripStyles.strip,
   officialsItem: 'flex h-[18px] items-center',
   officialsItemWidth: {
     referee: 'w-[132px]',
@@ -21,6 +24,5 @@ export const liveSkeletonStyles = {
   eventsLabel: 'h-3 w-[68px] flex-none',
   eventChip: 'h-[30px] w-[150px] flex-none bg-pan2',
   expandButton: 'ml-auto h-[30px] w-[104px] flex-none rounded-card border border-bd bg-pan2',
-  board:
-    'grid min-h-[150px] flex-[1_1_0] grid-cols-[120px_minmax(0,1fr)_120px] grid-rows-[minmax(0,1fr)] items-stretch gap-px overflow-hidden bg-bg compact:grid-cols-[64px_minmax(0,1fr)_64px] mobile:grid-cols-[66px_minmax(0,1fr)_66px]',
+  board: boardAreaStyles.board,
 } as const

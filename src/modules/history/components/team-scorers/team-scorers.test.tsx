@@ -33,6 +33,13 @@ describe('TeamScorers', () => {
     expect(bars[0]).toHaveStyle({ background: TEAM_COLOR })
   })
 
+  it('sizes the goal bars against the most goals even when the list is not sorted', () => {
+    const { container } = render(<TeamScorers scorers={teamScorersFixture.toReversed()} color={TEAM_COLOR} filter={filter} />)
+
+    const bars = [...container.querySelectorAll<HTMLElement>('[style*="width"]')]
+    expect(bars.map((bar) => bar.style.width)).toEqual(['18%', '53%', '100%'])
+  })
+
   it('shows the empty state when the team scored no goals', () => {
     render(<TeamScorers scorers={[]} color={TEAM_COLOR} filter={filter} />)
 

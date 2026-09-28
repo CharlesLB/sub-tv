@@ -4,6 +4,7 @@ const DECIMAL_POINT = '.'
 const DECIMAL_COMMA = ','
 const POSITION_WIDTH = 2
 const SHORT_YEAR_LENGTH = 2
+const CHAMPIONSHIP_SEPARATOR = ' · '
 
 export const winRatePercent = (points: number, played: number): number => (played > 0 ? Math.round((points / (played * POINTS_PER_WIN)) * PERCENT) : 0)
 
@@ -15,7 +16,9 @@ export const formatDecimal = (value: number, fractionDigits: number): string => 
 
 export const formatRatio = (numerator: number, denominator: number, fractionDigits: number): string => formatDecimal(numerator / Math.max(1, denominator), fractionDigits)
 
-export const pluralize = (count: number, singular: string, plural: string): string => `${count} ${count === 1 ? singular : plural}`
+export const formatChampionships = (championships: string[]): string => championships.join(CHAMPIONSHIP_SEPARATOR)
+
+export const mostGoals = (scorers: { goals: number }[]): number => Math.max(0, ...scorers.map((scorer) => scorer.goals))
 
 export const formatPosition = (position: number): string => String(position).padStart(POSITION_WIDTH, '0')
 

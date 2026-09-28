@@ -1,12 +1,11 @@
-import { CATEGORIES, categoryBorderClass } from '../../categories'
+import { pluralize } from '@/lib/utils/pluralize/pluralize'
+import { CATEGORIES, categoryBorderClass, categoryLabel } from '../../categories'
 import type { CategoryClubsVM, ChampionshipCardVM } from '../../types'
 import { CategoryTag } from '../category-tag/category-tag'
 import { ChampionshipCard } from '../championship-card/championship-card'
 import { NewChampionshipButton } from '../new-championship-button/new-championship-button'
 import { NewChampionshipProvider } from '../new-championship-provider/new-championship-provider'
 import { championshipListStyles as styles } from './championship-list.styles'
-
-const pluralize = (count: number, singular: string, plural: string): string => `${count} ${count === 1 ? singular : plural}`
 
 type ChampionshipListProps = {
   championships: ChampionshipCardVM[]
@@ -30,7 +29,7 @@ export function ChampionshipList({ championships, year, clubs, canEdit }: Champi
             const athleteCount = column.championships.reduce((total, championship) => total + championship.athleteCount, 0)
 
             return (
-              <section key={column.category} aria-label={`Campeonatos ${column.category}`} className={styles.column}>
+              <section key={column.category} aria-label={`Campeonatos ${categoryLabel[column.category]}`} className={styles.column}>
                 <div className={`${styles.columnHeader} ${categoryBorderClass[column.category]}`}>
                   <CategoryTag category={column.category} size="extraLarge" />
                   <span className={styles.columnSummary}>

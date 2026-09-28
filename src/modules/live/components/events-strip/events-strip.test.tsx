@@ -71,10 +71,17 @@ describe('EventsStrip', () => {
   it('offers to collapse the timeline when it is expanded', () => {
     render(<EventsStrip items={timelineFixture} teamColors={teamColors} isExpanded canExpand onToggleExpanded={vi.fn()} />)
 
-    const toggle = screen.getByRole('button', { name: 'Expandir a linha do tempo' })
+    const toggle = screen.getByRole('button', { name: 'Recolher a linha do tempo' })
 
     expect(toggle).toHaveAttribute('aria-expanded', 'true')
     expect(toggle).toHaveTextContent('Recolher')
+    expect(toggle).toHaveAttribute('title', 'Recolher a linha do tempo')
+  })
+
+  it('lets the keyboard reach the scrollable events region', () => {
+    render(<EventsStrip items={timelineFixture} teamColors={teamColors} isExpanded={false} canExpand onToggleExpanded={vi.fn()} />)
+
+    expect(screen.getByRole('region', { name: 'Eventos da partida' })).toHaveAttribute('tabindex', '0')
   })
 
   it('hides the toggle when the timeline cannot expand', () => {
@@ -86,8 +93,7 @@ describe('EventsStrip', () => {
   it('shows scroll arrows when the events overflow and scrolls forward on next', async () => {
     const scrollBy = vi.fn()
     render(<EventsStrip items={timelineFixture} teamColors={teamColors} isExpanded={false} canExpand onToggleExpanded={vi.fn()} />)
-    const viewport = screen.getByText('Intervalo').parentElement?.parentElement?.parentElement
-    if (!viewport) throw new Error('viewport not rendered')
+    const viewport = screen.getByRole('region', { name: 'Eventos da partida' })
 
     makeOverflowing(viewport, scrollBy)
     await userEvent.click(screen.getByRole('button', { name: 'Próximos eventos' }))

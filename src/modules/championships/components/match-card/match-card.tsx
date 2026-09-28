@@ -1,36 +1,41 @@
 import Link from 'next/link'
-import { routes } from '@/lib/routes'
 import { cn } from '@/lib/utils/cn'
 import { formatTime, formatTitleDate } from '@/lib/utils/format-date/format-date'
 import { Crest } from '@/components/ui/crest/crest'
 import type { Category } from '../../categories'
-import type { MatchCardVM, MatchStatus, TeamBadgeVM } from '../../types'
+import { MATCH_CARD_ACTION, MATCH_SIDE, type MatchCardActionKind, type MatchSide, matchCardActionOf, winnerOf } from '../../match-card-action/match-card-action'
+import { MATCH_STATUS, type MatchStatus } from '../../match-status/match-status'
+import type { MatchCardVM, TeamBadgeVM } from '../../types'
 import { CategoryTag } from '../category-tag/category-tag'
 import { matchCardStyles as styles } from './match-card.styles'
 
 const STATUS_LABEL: Record<MatchStatus, string> = {
-  agendado: 'AGENDADA',
-  ao_vivo: 'AO VIVO',
-  encerrado: 'ENCERRADA',
-  adiado: 'ADIADA',
-  cancelado: 'CANCELADA',
-  wo: 'W.O.',
+  [MATCH_STATUS.SCHEDULED]: 'AGENDADA',
+  [MATCH_STATUS.LIVE]: 'AO VIVO',
+  [MATCH_STATUS.FINISHED]: 'ENCERRADA',
+  [MATCH_STATUS.POSTPONED]: 'ADIADA',
+  [MATCH_STATUS.CANCELLED]: 'CANCELADA',
+  [MATCH_STATUS.WALKOVER]: 'W.O.',
+}
+
+const ACTION_LABEL: Record<MatchCardActionKind, string> = {
+  [MATCH_CARD_ACTION.VIEW]: 'Ver partida',
+  [MATCH_CARD_ACTION.ENTER_BROADCAST]: 'Entrar',
+  [MATCH_CARD_ACTION.NARRATE]: 'Narrar',
 }
 
 const describeClock = (match: MatchCardVM): string => {
-  if (match.status === 'encerrado') return match.homePenalties === null ? 'FINAL' : `PÊNALTIS ${match.homePenalties}–${match.awayPenalties ?? 0}`
-  if (match.status === 'ao_vivo') return 'EM ANDAMENTO'
+  if (match.status === MATCH_STATUS.FINISHED) return match.homePenalties === null ? 'FINAL' : `PÊNALTIS ${match.homePenalties}–${match.awayPenalties ?? 0}`
+  if (match.status === MATCH_STATUS.LIVE) return 'EM ANDAMENTO'
 
   return match.kickoffAt ? formatTime(match.kickoffAt) : '--:--'
 }
 
-type CardAction = { href: ReturnType<typeof routes.live> | ReturnType<typeof routes.newMatch>; label: string; isPrimary: boolean }
+const scoreToneOf = (side: MatchSide, winner: MatchSide | null, hasScore: boolean): string => {
+  if (!hasScore) return styles.scoreEmpty
+  if (winner && winner !== side) return styles.scoreLoser
 
-const actionOf = (match: MatchCardVM, seasonId: string): CardAction => {
-  if (match.status === 'encerrado') return { href: routes.live(match.id), label: 'Ver partida', isPrimary: false }
-  if (match.isBroadcast) return { href: routes.live(match.id), label: 'Entrar', isPrimary: true }
-
-  return { href: routes.newMatch(seasonId, match.id), label: 'Narrar', isPrimary: false }
+  return styles.scoreWinner
 }
 
 type TeamColumnProps = { team: TeamBadgeVM }
@@ -47,11 +52,11 @@ function TeamColumn({ team }: TeamColumnProps) {
 type MatchCardProps = { match: MatchCardVM; seasonId: string; category: Category }
 
 export function MatchCard({ match, seasonId, category }: MatchCardProps) {
-  const isLive = match.status === 'ao_vivo'
-  const action = actionOf(match, seasonId)
+  const isLive = match.status === MATCH_STATUS.LIVE
+  const action = matchCardActionOf(match, seasonId)
   const hasScore = match.homeScore !== null && match.awayScore !== null
-  const winner = hasScore && match.homeScore !== match.awayScore ? ((match.homeScore ?? 0) > (match.awayScore ?? 0) ? 'home' : 'away') : null
-  const scoreClass = (side: 'home' | 'away') => cn(styles.score, !hasScore ? styles.scoreEmpty : winner && winner !== side ? styles.scoreLoser : styles.scoreWinner)
+  const winner = winnerOf(match)
+  const scoreClass = (side: MatchSide) => cn(styles.score, scoreToneOf(side, winner, hasScore))
   const when = match.kickoffAt ? `${formatTitleDate(match.kickoffAt)} ${formatTime(match.kickoffAt)}` : 'Data a definir'
 
   return (
@@ -68,9 +73,9 @@ export function MatchCard({ match, seasonId, category }: MatchCardProps) {
         <TeamColumn team={match.home} />
         <div className={styles.scoreColumn}>
           <div className={styles.scoreLine}>
-            <span className={scoreClass('home')}>{match.homeScore ?? '–'}</span>
+            <span className={scoreClass(MATCH_SIDE.HOME)}>{match.homeScore ?? '–'}</span>
             <span className={styles.scoreSeparator}>×</span>
-            <span className={scoreClass('away')}>{match.awayScore ?? '–'}</span>
+            <span className={scoreClass(MATCH_SIDE.AWAY)}>{match.awayScore ?? '–'}</span>
           </div>
           <span className={cn(styles.clock, isLive ? styles.clockLive : styles.clockIdle)}>{describeClock(match)}</span>
         </div>
@@ -79,7 +84,7 @@ export function MatchCard({ match, seasonId, category }: MatchCardProps) {
       <div className={styles.footer}>
         <span className={styles.venue}>{[match.venue, match.city].filter(Boolean).join(' · ') || 'Local a definir'}</span>
         <Link href={action.href} className={cn(styles.action, action.isPrimary ? styles.actionPrimary : styles.actionSecondary)}>
-          {action.label}
+          {ACTION_LABEL[action.kind]}
         </Link>
       </div>
     </article>

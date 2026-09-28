@@ -20,8 +20,8 @@ const edgesOf = (element: HTMLElement): ScrollEdges => ({
 const sameEdges = (left: ScrollEdges, right: ScrollEdges): boolean => left.canScroll === right.canScroll && left.atStart === right.atStart && left.atEnd === right.atEnd
 
 export const useHorizontalScroll = () => {
-  const [viewport, setViewport] = useState<HTMLDivElement | null>(null)
-  const [content, setContent] = useState<HTMLDivElement | null>(null)
+  const [viewport, setViewport] = useState<HTMLElement | null>(null)
+  const [content, setContent] = useState<HTMLElement | null>(null)
   const [edges, setEdges] = useState<ScrollEdges>(INITIAL_EDGES)
 
   const syncEdges = () => {

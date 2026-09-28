@@ -4,16 +4,11 @@ import { recordLiveEvent, updateLiveClock } from '@/modules/matches/client'
 import { LiveBoard } from './live-board'
 import { liveSnapshotFixture, liveSnapshotWithEventsFixture, officialsItemsFixture, silenceLiveStream } from './live-board.fixtures'
 
-const KNOWN_A11Y_GAPS = [
-  { id: 'color-contrast', enabled: false },
-  { id: 'scrollable-region-focusable', enabled: false },
-]
-
 const meta = {
   title: 'Live/LiveBoard',
   component: LiveBoard,
   args: { snapshot: liveSnapshotFixture, officialsItems: officialsItemsFixture },
-  parameters: { layout: 'fullscreen', a11y: { config: { rules: KNOWN_A11Y_GAPS } } },
+  parameters: { layout: 'fullscreen' },
   beforeEach: () => {
     mocked(recordLiveEvent).mockResolvedValue({ ok: true, data: { id: 'event-1' } })
     mocked(updateLiveClock).mockResolvedValue({ ok: true, data: { statusChanged: false } })

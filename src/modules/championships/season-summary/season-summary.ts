@@ -1,10 +1,9 @@
 import * as R from 'remeda'
 import { toPhaseLabel } from '../mappers'
+import { MATCH_STATUS, type MatchStatus } from '../match-status/match-status'
 import type { LiveMatchSummaryVM, MatchCardVM, UpcomingMatchVM } from '../types'
 
-const FINISHED_STATUS = 'encerrado'
-const LIVE_STATUS = 'ao_vivo'
-const PENDING_STATUSES = new Set(['agendado', 'ao_vivo', 'adiado'])
+const PENDING_STATUSES: ReadonlySet<MatchStatus> = new Set([MATCH_STATUS.SCHEDULED, MATCH_STATUS.LIVE, MATCH_STATUS.POSTPONED])
 
 export type SeasonSummary = {
   currentRound: number | null
@@ -24,10 +23,10 @@ const toLiveSummary = (match: MatchCardVM): LiveMatchSummaryVM => ({
 })
 
 export const summarizeSeasonMatches = (matches: MatchCardVM[]): SeasonSummary => {
-  const finishedMatches = matches.filter((match) => match.status === FINISHED_STATUS)
+  const finishedMatches = matches.filter((match) => match.status === MATCH_STATUS.FINISHED)
   const lastFinished = R.last(finishedMatches)
-  const nextScheduled = matches.find((match) => PENDING_STATUSES.has(match.status) && match.status !== LIVE_STATUS)
-  const liveMatch = matches.find((match) => match.status === LIVE_STATUS && match.isBroadcast) ?? null
+  const nextScheduled = matches.find((match) => PENDING_STATUSES.has(match.status) && match.status !== MATCH_STATUS.LIVE)
+  const liveMatch = matches.find((match) => match.status === MATCH_STATUS.LIVE && match.isBroadcast) ?? null
   const referenceMatch = liveMatch ?? lastFinished ?? nextScheduled ?? null
 
   return {

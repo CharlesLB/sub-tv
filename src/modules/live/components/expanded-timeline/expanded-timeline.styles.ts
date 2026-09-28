@@ -5,8 +5,6 @@ export const expandedTimelineStyles = {
   homeTeamName: 'text-right',
   title: 'text-center text-[10.8px] font-bold tracking-[-.01em] text-tx4',
   empty: 'flex flex-col items-center gap-2 pt-[22px] pb-2 text-center',
-  hexagon: 'relative block h-[29px] w-6 bg-bd2 hexagon',
-  hexagonInner: 'absolute inset-px bg-pan hexagon',
   emptyTitle: 'text-[11.7px] font-bold tracking-[-.01em] text-tx3',
   emptyDescription: 'text-[12px] text-tx4',
 } as const

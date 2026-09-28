@@ -16,8 +16,8 @@ describe('ChampionshipList', () => {
   it('splits the championships in one column per category with their totals', () => {
     render(<ChampionshipList championships={championshipsOfYearFixture} year={SEASON_YEAR_FIXTURE} clubs={categoryClubsFixture} canEdit={false} />)
 
-    const sub13Column = within(screen.getByRole('region', { name: 'Campeonatos sub13' }))
-    const sub14Column = within(screen.getByRole('region', { name: 'Campeonatos sub14' }))
+    const sub13Column = within(screen.getByRole('region', { name: 'Campeonatos SUB-13' }))
+    const sub14Column = within(screen.getByRole('region', { name: 'Campeonatos SUB-14' }))
     expect(sub13Column.getByText('3 campeonatos · 16 times · 320 atletas')).toBeInTheDocument()
     expect(sub13Column.getByText('Copa do Vale')).toBeInTheDocument()
     expect(sub14Column.getByText('1 campeonato · 6 times · 120 atletas')).toBeInTheDocument()
@@ -27,7 +27,7 @@ describe('ChampionshipList', () => {
   it('shows the empty message in a category without championships', () => {
     render(<ChampionshipList championships={[liveChampionshipFixture]} year={SEASON_YEAR_FIXTURE} clubs={categoryClubsFixture} canEdit={false} />)
 
-    const sub13Column = within(screen.getByRole('region', { name: 'Campeonatos sub13' }))
+    const sub13Column = within(screen.getByRole('region', { name: 'Campeonatos SUB-13' }))
     expect(sub13Column.getByText('0 campeonatos · 0 times · 0 atletas')).toBeInTheDocument()
     expect(sub13Column.getByText('Nenhum campeonato nesta temporada')).toBeInTheDocument()
   })

@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest'
 import { historyHref } from '../../history-href/history-href'
 import { atleticoRowFixture, cruzeiroRowFixture } from '../accumulated-table/accumulated-table.fixtures'
 import { loadedHistoryFilterFixture } from '../athlete-history-screen/athlete-history-screen.fixtures'
-import { topPeriodScorerFixture } from '../period-scorers/period-scorers.fixtures'
+import { periodScorersFixture, topPeriodScorerFixture } from '../period-scorers/period-scorers.fixtures'
 import { HighlightCards } from './highlight-cards'
 import { emptyHistoryOverviewFixture, historyOverviewFixture } from './highlight-cards.fixtures'
 
@@ -33,6 +33,12 @@ describe('HighlightCards', () => {
 
     expect(screen.getAllByRole('link')).toHaveLength(1)
     expect(screen.getByRole('link', { name: /Maior artilheiro/ })).toHaveTextContent('17')
+  })
+
+  it('picks the scorer with the most goals as the top scorer even when the list is not sorted', () => {
+    render(<HighlightCards overview={{ ...historyOverviewFixture, scorers: periodScorersFixture.toReversed() }} filter={filter} />)
+
+    expect(within(screen.getByRole('link', { name: /Maior artilheiro/ })).getByText('Lucas Andrade · Cruzeiro')).toBeInTheDocument()
   })
 
   it('renders nothing when there is no highlight', () => {

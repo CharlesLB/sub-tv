@@ -6,7 +6,18 @@ import { RowsSkeleton } from '../rows-skeleton/rows-skeleton'
 import { historyDetailSkeletonStyles as styles } from './history-detail-skeleton.styles'
 
 const KPI_COUNT = 4
-const BAR_HEIGHT_PERCENTS = [48, 72, 60, 86, 54, 78, 66, 92] as const
+
+const BAR_PLACEHOLDERS = [
+  { barId: 'first-bar', heightPercent: 48 },
+  { barId: 'second-bar', heightPercent: 72 },
+  { barId: 'third-bar', heightPercent: 60 },
+  { barId: 'fourth-bar', heightPercent: 86 },
+  { barId: 'fifth-bar', heightPercent: 54 },
+  { barId: 'sixth-bar', heightPercent: 78 },
+  { barId: 'seventh-bar', heightPercent: 66 },
+  { barId: 'eighth-bar', heightPercent: 92 },
+] as const
+
 const SEASON_ROW_COUNT = 5
 const BAR_DELAY_STEP_MS = 40
 
@@ -27,8 +38,8 @@ export function HistoryDetailSkeleton() {
         <div className={styles.chart}>
           <Skeleton className={styles.chartTitle} />
           <div className={styles.chartBars}>
-            {BAR_HEIGHT_PERCENTS.map((heightPercent, index) => (
-              <Skeleton key={index} className={styles.chartBar} delayMs={index * BAR_DELAY_STEP_MS} style={{ height: `${heightPercent}%` }} />
+            {BAR_PLACEHOLDERS.map((bar, order) => (
+              <Skeleton key={bar.barId} className={styles.chartBar} delayMs={order * BAR_DELAY_STEP_MS} style={{ height: `${bar.heightPercent}%` }} />
             ))}
           </div>
         </div>

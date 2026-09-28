@@ -1,7 +1,7 @@
 import * as R from 'remeda'
+import { MATCH_STATUS } from '../match-status/match-status'
 import type { FormResult, MatchCardVM } from '../types'
 
-const FINISHED_STATUS = 'encerrado'
 const FORM_LENGTH = 5
 
 type TeamResult = { seasonTeamId: string; result: FormResult }
@@ -14,7 +14,7 @@ const resultFor = (goalsScored: number, goalsConceded: number): FormResult => {
 }
 
 const teamResultsOf = (match: MatchCardVM): TeamResult[] => {
-  if (match.status !== FINISHED_STATUS || match.homeScore === null || match.awayScore === null) return []
+  if (match.status !== MATCH_STATUS.FINISHED || match.homeScore === null || match.awayScore === null) return []
 
   return [
     { seasonTeamId: match.homeTeamId, result: resultFor(match.homeScore, match.awayScore) },

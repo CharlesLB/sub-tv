@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation'
 import { type FormEvent, useActionState, useState } from 'react'
 import { routes } from '@/lib/routes'
 import { cn } from '@/lib/utils/cn'
+import { pluralize } from '@/lib/utils/pluralize/pluralize'
 import { type CreateChampionshipResult, createChampionship } from '../../actions/championship-actions'
 import { CATEGORIES, type Category, categoryBackgroundClass, categoryBorderClass, categoryLabel } from '../../categories'
 import { showFlashMessage } from '../../flash-message/flash-message'
@@ -56,6 +57,8 @@ export function NewChampionshipPanel({ initialCategory, defaultYear, clubs, onCl
     setSelectedClubIds([])
   }
 
+  const hideWarning = () => setWarning(null)
+
   const toggleClub = (clubId: string) => setSelectedClubIds((current) => (current.includes(clubId) ? current.filter((selected) => selected !== clubId) : [...current, clubId]))
 
   return (
@@ -74,7 +77,7 @@ export function NewChampionshipPanel({ initialCategory, defaultYear, clubs, onCl
             className={styles.input}
           />
         </label>
-        <div role="group" aria-label="Categoria">
+        <fieldset aria-label="Categoria">
           <span className={styles.requiredLabel}>Categoria · obrigatória</span>
           <input type="hidden" name="category" value={category} />
           <div className={styles.categoryOptions}>
@@ -90,7 +93,7 @@ export function NewChampionshipPanel({ initialCategory, defaultYear, clubs, onCl
               </button>
             ))}
           </div>
-        </div>
+        </fieldset>
         <label>
           <span className={styles.label}>Temporada</span>
           <input name="year" type="number" inputMode="numeric" defaultValue={defaultYear} min={CHAMPIONSHIP_YEAR_MIN} max={CHAMPIONSHIP_YEAR_MAX} className={cn(styles.input, styles.yearInput)} />
@@ -103,7 +106,7 @@ export function NewChampionshipPanel({ initialCategory, defaultYear, clubs, onCl
       <div>
         <span className={cn(styles.label, styles.clubsLabel)}>
           <span>Times participantes · opcional</span>
-          <span className={styles.selectedCount}>{selectedClubIds.length} selecionados</span>
+          <span className={styles.selectedCount}>{pluralize(selectedClubIds.length, 'selecionado', 'selecionados')}</span>
         </span>
         <ClubPicker clubs={clubs[category]} selectedClubIds={selectedClubIds} onToggle={toggleClub} />
         <p className={styles.clubsHint}>O elenco de cada time é copiado da última temporada do clube nesta categoria.</p>
@@ -126,7 +129,7 @@ export function NewChampionshipPanel({ initialCategory, defaultYear, clubs, onCl
         </button>
         <span className={styles.categoryNotice}>A categoria define os times, elencos, partidas e a tabela do campeonato — e não muda depois de criado.</span>
       </div>
-      {warning ? <FlashToast message={warning} tone="warning" onClose={() => setWarning(null)} /> : null}
+      {warning ? <FlashToast key={warning} message={warning} tone="warning" onClose={hideWarning} /> : null}
     </form>
   )
 }

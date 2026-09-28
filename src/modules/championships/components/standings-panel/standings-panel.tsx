@@ -1,3 +1,4 @@
+import { pluralize } from '@/lib/utils/pluralize/pluralize'
 import type { Category } from '../../categories'
 import { toPhaseLabel } from '../../mappers'
 import type { StandingPhaseVM } from '../../types'
@@ -6,6 +7,7 @@ import { StandingsTable } from '../standings-table/standings-table'
 import { standingsPanelStyles as styles } from './standings-panel.styles'
 
 const JOINT_PHASE_PREFIX = 'CONJUNTA'
+const SINGLE_GROUP_KEY = 'single-group'
 
 const LEGEND = [
   { result: 'V', label: 'Vitória' },
@@ -22,11 +24,7 @@ export function StandingsPanel({ phases, category, roundsPlayed }: StandingsPane
     <section className={styles.panel}>
       <div className={styles.header}>
         <span className={styles.title}>Classificação</span>
-        {roundsPlayed ? (
-          <span className={styles.roundsPlayed}>
-            Após {roundsPlayed} {roundsPlayed === 1 ? 'Rodada' : 'Rodadas'}
-          </span>
-        ) : null}
+        {roundsPlayed ? <span className={styles.roundsPlayed}>Após {pluralize(roundsPlayed, 'Rodada', 'Rodadas')}</span> : null}
         <span className={styles.hint}>Clique num time para ver o elenco.</span>
       </div>
       {phases.length === 0 ? <div className={styles.emptyState}>A classificação aparece quando houver partidas com resultado.</div> : null}
@@ -34,7 +32,7 @@ export function StandingsPanel({ phases, category, roundsPlayed }: StandingsPane
         <div key={phase.phase} className={styles.phase}>
           {phases.length > 1 ? <span className={phaseIndex === 0 ? styles.phaseTitle : styles.phaseTitleSpaced}>{phaseTitle(phase.phase)}</span> : null}
           {phase.groups.map((group) => (
-            <StandingsTable key={group.groupName ?? 'unico'} group={group} category={category} />
+            <StandingsTable key={group.groupName ?? SINGLE_GROUP_KEY} group={group} category={category} />
           ))}
         </div>
       ))}

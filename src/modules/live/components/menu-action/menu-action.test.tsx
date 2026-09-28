@@ -3,15 +3,27 @@ import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
 import { MENU_MARKER, MenuAction } from './menu-action'
 
-const GOAL_ACTION = { label: 'Gol', meta: 'G', colorClass: 'bg-ac', shortcut: 'G' } as const
+const GOAL_ACTION = { label: 'Gol', meta: '+2', colorClass: 'bg-ac', shortcut: 'G' } as const
 
 describe('MenuAction', () => {
   it('renders a menu item with its label, meta and keyboard shortcut', () => {
     render(<MenuAction {...GOAL_ACTION} marker={MENU_MARKER.ROUND} onSelect={vi.fn()} />)
 
-    const item = screen.getByRole('menuitem', { name: /^Gol/ })
+    const item = screen.getByRole('menuitem', { name: 'Gol, +2' })
     expect(item).toHaveAttribute('aria-keyshortcuts', 'G')
-    expect(screen.getByText('G')).toBeInTheDocument()
+    expect(screen.getByText('+2')).toBeInTheDocument()
+  })
+
+  it('names the item with the label alone when there is no meta', () => {
+    render(<MenuAction {...GOAL_ACTION} meta="" marker={MENU_MARKER.ROUND} onSelect={vi.fn()} />)
+
+    expect(screen.getByRole('menuitem', { name: 'Gol' })).toBeInTheDocument()
+  })
+
+  it('announces no keyboard shortcut when the action has none', () => {
+    render(<MenuAction label="Cartão" meta="" colorClass="bg-am" marker={MENU_MARKER.CARD} onSelect={vi.fn()} />)
+
+    expect(screen.getByRole('menuitem', { name: 'Cartão' })).not.toHaveAttribute('aria-keyshortcuts')
   })
 
   it('draws a round colored marker when the marker is round', () => {
@@ -21,7 +33,7 @@ describe('MenuAction', () => {
   })
 
   it('draws a card shaped marker when the marker is a card', () => {
-    render(<MenuAction label="Cartão" meta="C" colorClass="bg-am" shortcut="C" marker={MENU_MARKER.CARD} onSelect={vi.fn()} />)
+    render(<MenuAction label="Cartão" meta="" colorClass="bg-am" marker={MENU_MARKER.CARD} onSelect={vi.fn()} />)
 
     expect(screen.getByRole('menuitem').firstElementChild).toHaveClass('h-[15px]', 'w-[11px]', 'bg-am')
   })

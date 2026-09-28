@@ -1,4 +1,5 @@
 import type { Category } from './categories'
+import type { MatchStatus } from './match-status/match-status'
 
 export type SeasonYearVM = { year: number; championshipCount: number }
 
@@ -80,7 +81,7 @@ export type TopScorerVM = {
   games: number
 }
 
-export type MatchStatus = 'agendado' | 'ao_vivo' | 'encerrado' | 'adiado' | 'cancelado' | 'wo'
+export type { MatchStatus }
 
 export type MatchCardVM = {
   id: string

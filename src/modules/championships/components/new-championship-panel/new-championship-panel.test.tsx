@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { routes } from '@/lib/routes'
@@ -14,6 +14,8 @@ vi.mock('next/navigation', () => ({ useRouter: () => ({ push: navigation.push })
 
 const CREATED_SEASON_ID = 'b2c3d4e5-0001-4f5a-8b9c-0d1e2f3a4b5c'
 const DEFAULT_YEAR = 2025
+const TOAST_DURATION_MS = 3800
+const PART_OF_TOAST_DURATION_MS = 2000
 
 const renderPanel = (onClose = vi.fn()) => render(<NewChampionshipPanel initialCategory={CATEGORY.SUB13} defaultYear={DEFAULT_YEAR} clubs={categoryClubsFixture} onClose={onClose} />)
 
@@ -24,6 +26,7 @@ describe('NewChampionshipPanel', () => {
 
   afterEach(() => {
     clearFlashMessage()
+    vi.useRealTimers()
   })
 
   it('opens with the initial category selected, the default year and the default phase', () => {
@@ -46,6 +49,30 @@ describe('NewChampionshipPanel', () => {
     expect(createChampionship).not.toHaveBeenCalled()
   })
 
+  it('hides the missing name warning after the toast duration even when the form rerenders meanwhile', () => {
+    vi.useFakeTimers()
+    renderPanel()
+    fireEvent.click(screen.getByRole('button', { name: 'Criar campeonato' }))
+
+    act(() => {
+      vi.advanceTimersByTime(PART_OF_TOAST_DURATION_MS)
+    })
+
+    fireEvent.click(screen.getByRole('button', { name: 'SUB-14' }))
+
+    act(() => {
+      vi.advanceTimersByTime(TOAST_DURATION_MS - PART_OF_TOAST_DURATION_MS)
+    })
+
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument()
+  })
+
+  it('groups the category options under the Categoria name', () => {
+    renderPanel()
+
+    expect(screen.getByRole('group', { name: 'Categoria' }).tagName).toBe('FIELDSET')
+  })
+
   it('counts the selected clubs', async () => {
     renderPanel()
 
@@ -53,7 +80,7 @@ describe('NewChampionshipPanel', () => {
     await userEvent.click(screen.getByRole('checkbox', { name: 'Serrano FC' }))
     await userEvent.click(screen.getByRole('checkbox', { name: 'Vale Verde EC' }))
 
-    expect(screen.getByText('1 selecionados')).toBeInTheDocument()
+    expect(screen.getByText('1 selecionado')).toBeInTheDocument()
     expect(screen.getByRole('checkbox', { name: 'Serrano FC' })).toBeChecked()
   })
 

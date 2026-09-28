@@ -1,8 +1,6 @@
 export const teamScorersStyles = {
   list: 'flex flex-col overflow-hidden rounded-card border border-bd bg-pan',
   row: 'flex animate-fade-up items-center gap-3 px-3 py-[9px] transition-colors duration-150 hover:bg-pan2',
-  rowOdd: 'bg-pan0',
-  rowEven: 'bg-pan',
   position: 'w-6 flex-none text-[11px] nums',
   positionLeader: 'text-ac',
   positionFollower: 'text-tx5',

@@ -127,6 +127,22 @@ describe('ActionMenu', () => {
     expect(screen.getByRole('status', { name: 'Aviso' })).toHaveTextContent('VERMELHO — #9 Davi')
   })
 
+  it('announces a keyboard shortcut only for the goal and assist actions', () => {
+    renderMenu()
+
+    expect(screen.getAllByRole('menuitem').map((item) => item.getAttribute('aria-keyshortcuts'))).toEqual(['G', 'A', null, null])
+  })
+
+  it('closes without recording when Escape is pressed inside the menu', async () => {
+    const onClose = vi.fn()
+    renderMenu({ onClose })
+
+    await userEvent.keyboard('{Escape}')
+
+    expect(onClose).toHaveBeenCalledTimes(1)
+    expect(screen.getByRole('status', { name: 'Lances' })).toHaveTextContent('0')
+  })
+
   it('closes without recording when the backdrop is clicked', async () => {
     const onClose = vi.fn()
     const { container } = renderMenu({ onClose })

@@ -14,7 +14,7 @@ import { ScoreboardTeam } from '../scoreboard-team/scoreboard-team'
 import { liveScoreboardStyles as styles } from './live-scoreboard.styles'
 
 export function LiveScoreboard() {
-  const { teams, events, clock, category, pulseCount, streamStatus, pendingSyncCounts } = useLiveState()
+  const { teams, events, clock, category, streamStatus, pendingSyncCounts } = useLiveState()
   const { advanceClock, addMinute } = useLiveCommands()
   const score = selectScore(events)
   const home = teams[SIDE.HOME]
@@ -25,16 +25,16 @@ export function LiveScoreboard() {
     <div data-screen-label="Placar" className={styles.bar}>
       {clock.running ? <LivePill /> : null}
       <CategoryTag category={category} className={styles.categoryTag} />
-      <div role="group" aria-label={`${home.name} ${score[SIDE.HOME]} × ${score[SIDE.AWAY]} ${away.name}`} className={styles.scoreGroup}>
+      <fieldset aria-label={`${home.name} ${score[SIDE.HOME]} × ${score[SIDE.AWAY]} ${away.name}`} className={styles.scoreGroup}>
         <ScoreboardTeam team={home} />
         <div className={styles.scorePanel}>
-          <ScoreValue value={score[SIDE.HOME]} pulseCount={pulseCount} />
+          <ScoreValue value={score[SIDE.HOME]} />
           <LiveChrono clock={clock} onAdvance={advanceClock} />
           {canAddMinute ? <AddedTimeButton onAdd={addMinute} /> : null}
-          <ScoreValue value={score[SIDE.AWAY]} pulseCount={pulseCount} />
+          <ScoreValue value={score[SIDE.AWAY]} />
         </div>
         <ScoreboardTeam team={away} />
-      </div>
+      </fieldset>
       <ConnectionIndicator status={streamStatus} isSaving={Object.keys(pendingSyncCounts).length > 0} />
     </div>
   )

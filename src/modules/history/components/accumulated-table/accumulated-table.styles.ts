@@ -14,8 +14,6 @@ export const accumulatedTableStyles = {
   pointsColumn: 'w-[46px]',
   winRateColumn: 'w-[52px] mobile:hidden',
   row: 'flex w-full animate-fade-up items-center gap-[10px] border-l-[3px] px-3 py-[10px] text-left transition-colors duration-150 hover:bg-pan2 mobile:gap-2 mobile:px-[10px]',
-  rowOdd: 'bg-pan0',
-  rowEven: 'bg-pan',
   rowLeader: 'border-ac',
   rowFollower: 'border-transparent',
   position: 'w-[26px] flex-none text-[11px] tracking-[.04em] nums',

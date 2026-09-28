@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useEffectEvent } from 'react'
 import { cn } from '@/lib/utils/cn'
 import { Icon } from '@/components/ui/icon/icon'
 import { flashToastStyles as styles } from './flash-toast.styles'
@@ -21,11 +21,13 @@ export function FlashToast({ message, tone, onClose }: FlashToastProps) {
   const [title, ...descriptionParts] = message.split(TITLE_SEPARATOR)
   const description = descriptionParts.join(TITLE_SEPARATOR)
 
+  const closeWhenExpired = useEffectEvent(onClose)
+
   useEffect(() => {
-    const timer = setTimeout(onClose, TOAST_DURATION_MS)
+    const timer = setTimeout(() => closeWhenExpired(), TOAST_DURATION_MS)
 
     return () => clearTimeout(timer)
-  }, [message, onClose])
+  }, [])
 
   return (
     <div role={tone === 'warning' ? 'alert' : 'status'} className={styles.toast}>

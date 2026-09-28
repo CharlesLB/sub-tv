@@ -4,6 +4,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { FlashToast } from './flash-toast'
 
 const TOAST_DURATION_MS = 3800
+const PART_OF_TOAST_DURATION_MS = 2000
 
 describe('FlashToast', () => {
   afterEach(() => {
@@ -49,5 +50,25 @@ describe('FlashToast', () => {
     })
 
     expect(onClose).toHaveBeenCalledTimes(1)
+  })
+
+  it('keeps its timer running when the parent rerenders with a new close handler', () => {
+    vi.useFakeTimers()
+    const firstOnClose = vi.fn()
+    const latestOnClose = vi.fn()
+    const { rerender } = render(<FlashToast message="Campeonato criado" tone="success" onClose={firstOnClose} />)
+
+    act(() => {
+      vi.advanceTimersByTime(PART_OF_TOAST_DURATION_MS)
+    })
+
+    rerender(<FlashToast message="Campeonato criado" tone="success" onClose={latestOnClose} />)
+
+    act(() => {
+      vi.advanceTimersByTime(TOAST_DURATION_MS - PART_OF_TOAST_DURATION_MS)
+    })
+
+    expect(latestOnClose).toHaveBeenCalledTimes(1)
+    expect(firstOnClose).not.toHaveBeenCalled()
   })
 })

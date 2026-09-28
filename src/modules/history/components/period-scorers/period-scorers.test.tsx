@@ -33,6 +33,13 @@ describe('PeriodScorers', () => {
     expect(bars.map((bar) => bar.style.width)).toEqual(['100%', '71%', '29%'])
   })
 
+  it('sizes the goal bars against the most goals even when the list is not sorted', () => {
+    const { container } = render(<PeriodScorers scorers={periodScorersFixture.toReversed()} filter={filter} />)
+
+    const bars = [...container.querySelectorAll<HTMLElement>('[style*="width"]')]
+    expect(bars.map((bar) => bar.style.width)).toEqual(['29%', '71%', '100%'])
+  })
+
   it('shows the empty state when nobody scored', () => {
     render(<PeriodScorers scorers={[]} filter={filter} />)
 

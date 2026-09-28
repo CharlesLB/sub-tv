@@ -14,7 +14,13 @@ export function BenchColumn({ side, interactions }: BenchColumnProps) {
   const { players, teams, category, selectedPlayerId, pendingSubstitution, playersById } = useLiveState()
   const team = teams[side]
   const { playerStates, drag } = interactions
-  const reserves = players.filter((player) => player.side === side && !playerStates[player.playerId]?.onPitch)
+
+  const reserves = players.flatMap((player) => {
+    const matchState = playerStates[player.playerId]
+
+    return player.side === side && matchState && !matchState.onPitch ? [{ player, matchState }] : []
+  })
+
   const selectedSide = selectedPlayerId ? playersById[selectedPlayerId]?.side : undefined
   const isAwaitingEntry = pendingSubstitution && selectedSide === side
 
@@ -26,24 +32,20 @@ export function BenchColumn({ side, interactions }: BenchColumnProps) {
           {team.name} · {categoryLabel[category]}
         </div>
       </div>
-      {reserves.map((player) => {
-        const matchState = playerStates[player.playerId]
-
-        return matchState ? (
-          <BenchDot
-            key={player.playerId}
-            player={player}
-            matchState={matchState}
-            teamColor={team.color}
-            isDragged={drag?.kind === DRAG_KIND.BENCH && drag.playerId === player.playerId}
-            isHighlighted={isAwaitingEntry}
-            onPointerDown={interactions.startBenchGesture}
-            onHoverStart={interactions.showHover}
-            onHoverEnd={interactions.hideHover}
-            onKeyboardActivate={interactions.activateBenchPlayer}
-          />
-        ) : null
-      })}
+      {reserves.map(({ player, matchState }) => (
+        <BenchDot
+          key={player.playerId}
+          player={player}
+          matchState={matchState}
+          teamColor={team.color}
+          isDragged={drag?.kind === DRAG_KIND.BENCH && drag.playerId === player.playerId}
+          isHighlighted={isAwaitingEntry}
+          onPointerDown={interactions.startBenchGesture}
+          onHoverStart={interactions.showHover}
+          onHoverEnd={interactions.hideHover}
+          onKeyboardActivate={interactions.activateBenchPlayer}
+        />
+      ))}
     </div>
   )
 }

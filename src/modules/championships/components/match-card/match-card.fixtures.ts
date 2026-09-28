@@ -1,13 +1,5 @@
-import type { MatchCardVM, MatchStatus, TeamBadgeVM } from '../../types'
-
-export const MATCH_CARD_STATUS = {
-  SCHEDULED: 'agendado',
-  LIVE: 'ao_vivo',
-  FINISHED: 'encerrado',
-  POSTPONED: 'adiado',
-  CANCELLED: 'cancelado',
-  WALKOVER: 'wo',
-} as const satisfies Record<string, MatchStatus>
+import { MATCH_STATUS } from '../../match-status/match-status'
+import type { MatchCardVM, TeamBadgeVM } from '../../types'
 
 export const SEASON_ID_FIXTURE = '3b1f2c4d-5e6f-4a7b-8c9d-0e1f2a3b4c5d'
 export const FIRST_PHASE_FIXTURE = '1ª FASE'
@@ -25,7 +17,7 @@ export const finishedMatchFixture: MatchCardVM = {
   kickoffAt: '2025-04-12T18:00:00.000Z',
   venue: 'Estádio Municipal',
   city: 'Contagem',
-  status: MATCH_CARD_STATUS.FINISHED,
+  status: MATCH_STATUS.FINISHED,
   isBroadcast: false,
   homeTeamId: 'home-vale-verde',
   awayTeamId: 'away-serrano',
@@ -49,7 +41,7 @@ export const penaltiesMatchFixture: MatchCardVM = {
 export const liveMatchFixture: MatchCardVM = {
   ...finishedMatchFixture,
   id: '9a8b7c6d-3333-4e2f-8a3b-4c5d6e7f8a03',
-  status: MATCH_CARD_STATUS.LIVE,
+  status: MATCH_STATUS.LIVE,
   isBroadcast: true,
   home: ribeirinhaBadgeFixture,
   away: cerradoBadgeFixture,
@@ -64,7 +56,7 @@ export const scheduledMatchFixture: MatchCardVM = {
   kickoffAt: '2025-04-19T13:30:00.000Z',
   venue: null,
   city: null,
-  status: MATCH_CARD_STATUS.SCHEDULED,
+  status: MATCH_STATUS.SCHEDULED,
   homeScore: null,
   awayScore: null,
 }
@@ -75,7 +67,7 @@ export const undatedMatchFixture: MatchCardVM = {
   phase: null,
   round: null,
   kickoffAt: null,
-  status: MATCH_CARD_STATUS.POSTPONED,
+  status: MATCH_STATUS.POSTPONED,
 }
 
-export const cancelledMatchFixture: MatchCardVM = { ...scheduledMatchFixture, id: '9a8b7c6d-6666-4e2f-8a3b-4c5d6e7f8a06', status: MATCH_CARD_STATUS.CANCELLED }
+export const cancelledMatchFixture: MatchCardVM = { ...scheduledMatchFixture, id: '9a8b7c6d-6666-4e2f-8a3b-4c5d6e7f8a06', status: MATCH_STATUS.CANCELLED }

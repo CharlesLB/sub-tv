@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { barHeightPercent, formatDecimal, formatPosition, formatRatio, formatSignedNumber, pluralize, shortYear, winRatePercent } from './stat-format'
+import { barHeightPercent, formatChampionships, formatDecimal, formatPosition, formatRatio, formatSignedNumber, mostGoals, shortYear, winRatePercent } from './stat-format'
 
 describe('winRatePercent', () => {
   it('winRatePercent with points and games returns the rounded share of possible points', () => {
@@ -33,9 +33,16 @@ describe('formatting helpers', () => {
     expect(formatRatio(3, 0, 2)).toBe('3,00')
   })
 
-  it('pluralize with one item uses the singular form', () => {
-    expect(pluralize(1, 'Temporada', 'Temporadas')).toBe('1 Temporada')
-    expect(pluralize(3, 'Temporada', 'Temporadas')).toBe('3 Temporadas')
+  it('formatChampionships joins the championship names with a middle dot', () => {
+    expect(formatChampionships(['Mineiro', 'Copa do Vale'])).toBe('Mineiro · Copa do Vale')
+  })
+
+  it('mostGoals with unsorted scorers returns the highest goal count', () => {
+    expect(mostGoals([{ goals: 3 }, { goals: 9 }, { goals: 5 }])).toBe(9)
+  })
+
+  it('mostGoals without scorers returns zero', () => {
+    expect(mostGoals([])).toBe(0)
   })
 
   it('formatPosition with a single digit pads to two digits', () => {

@@ -1,4 +1,5 @@
 import { Skeleton } from '@/components/ui/skeleton/skeleton'
+import { skeletonSlots } from '../../skeleton-slots/skeleton-slots'
 import { historyFiltersSkeletonStyles as styles } from './history-filters-skeleton.styles'
 
 const CATEGORY_CHIP_KEYS = ['all', 'sub13', 'sub14'] as const
@@ -20,8 +21,8 @@ export function HistoryFiltersSkeleton() {
       <div className={styles.seasonRow}>
         <Skeleton className={styles.seasonLabel} />
         <div className={styles.seasonChips}>
-          {Array.from({ length: SEASON_CHIP_COUNT }, (_, index) => (
-            <Skeleton key={index} className={styles.seasonChip} delayMs={index * CHIP_DELAY_STEP_MS} />
+          {skeletonSlots(SEASON_CHIP_COUNT).map((slot) => (
+            <Skeleton key={slot.slotId} className={styles.seasonChip} delayMs={slot.order * CHIP_DELAY_STEP_MS} />
           ))}
         </div>
       </div>

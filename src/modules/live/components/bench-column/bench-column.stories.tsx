@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite'
-import { useEffect, useEffectEvent } from 'react'
+import { useEffect } from 'react'
 import { expect, fn, userEvent, within } from 'storybook/test'
 import { SIDE } from '@/modules/matches/client'
 import { LiveMatchProvider } from '../../state/live-context'
@@ -12,11 +12,10 @@ import { makeBoardInteractions } from './bench-column.fixtures'
 
 const PendingSubstitution = () => {
   const { startSubstitution } = useLiveCommands()
-  const startOnMount = useEffectEvent(startSubstitution)
 
   useEffect(() => {
-    startOnMount()
-  }, [])
+    startSubstitution()
+  }, [startSubstitution])
 
   return null
 }

@@ -50,7 +50,7 @@ describe('LiveScreen', () => {
     expect(screen.getByText('Timeline')).toBeInTheDocument()
     expect(screen.queryByRole('button', { name: 'Camisa 9 — Davi Moreira Campos' })).not.toBeInTheDocument()
 
-    await userEvent.click(screen.getByRole('button', { name: 'Expandir a linha do tempo' }))
+    await userEvent.click(screen.getByRole('button', { name: 'Recolher a linha do tempo' }))
 
     expect(screen.queryByText('Timeline')).not.toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Camisa 9 — Davi Moreira Campos' })).toBeInTheDocument()

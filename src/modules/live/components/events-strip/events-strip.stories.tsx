@@ -5,11 +5,6 @@ import { timelineFixture } from '../event-chip/event-chip.fixtures'
 import { awayTeamFixture, homeTeamFixture } from '../live-board/live-board.fixtures'
 import { EventsStrip } from './events-strip'
 
-const KNOWN_A11Y_GAPS = [
-  { id: 'color-contrast', enabled: false },
-  { id: 'scrollable-region-focusable', enabled: false },
-]
-
 const meta = {
   title: 'Live/EventsStrip',
   component: EventsStrip,
@@ -20,7 +15,7 @@ const meta = {
     canExpand: true,
     onToggleExpanded: fn(),
   },
-  parameters: { layout: 'fullscreen', a11y: { config: { rules: KNOWN_A11Y_GAPS } } },
+  parameters: { layout: 'fullscreen' },
 } satisfies Meta<typeof EventsStrip>
 
 export default meta
@@ -36,7 +31,12 @@ export const WithEvents: Story = {
   },
 }
 
-export const Expanded: Story = { args: { isExpanded: true } }
+export const Expanded: Story = {
+  args: { isExpanded: true },
+  play: async ({ canvasElement }) => {
+    await expect(within(canvasElement).getByRole('button', { name: 'Recolher a linha do tempo' })).toHaveAttribute('aria-expanded', 'true')
+  },
+}
 
 export const WithoutExpandToggle: Story = { args: { canExpand: false } }
 

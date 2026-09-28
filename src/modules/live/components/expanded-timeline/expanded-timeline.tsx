@@ -1,6 +1,7 @@
 import { cn } from '@/lib/utils/cn'
 import { type LiveTeamVM, SIDE, type Side } from '@/modules/matches/client'
 import type { TimelineItem } from '../../state/timeline'
+import { HEXAGON_MARK_SIZE, HexagonMark } from '../hexagon-mark/hexagon-mark'
 import { RotateNotice } from '../rotate-notice/rotate-notice'
 import { TimelineRow } from '../timeline-row/timeline-row'
 import { expandedTimelineStyles as styles } from './expanded-timeline.styles'
@@ -28,9 +29,7 @@ export function ExpandedTimeline({ items, teams, showRotateNotice }: ExpandedTim
       ))}
       {items.length === 0 ? (
         <div className={styles.empty}>
-          <span aria-hidden className={styles.hexagon}>
-            <span className={styles.hexagonInner} />
-          </span>
+          <HexagonMark size={HEXAGON_MARK_SIZE.SMALL} />
           <span className={styles.emptyTitle}>Nada registrado ainda</span>
           <span className={styles.emptyDescription}>Gols, cartões e substituições entram aqui em ordem de minuto.</span>
         </div>

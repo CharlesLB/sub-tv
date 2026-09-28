@@ -8,13 +8,15 @@ type MenuActionProps = {
   meta: string
   colorClass: string
   marker: (typeof MENU_MARKER)[keyof typeof MENU_MARKER]
-  shortcut: string
+  shortcut?: string
   onSelect: () => void
 }
 
 export function MenuAction({ label, meta, colorClass, marker, shortcut, onSelect }: MenuActionProps) {
+  const accessibleName = meta ? `${label}, ${meta}` : label
+
   return (
-    <button type="button" role="menuitem" onClick={onSelect} aria-keyshortcuts={shortcut} className={styles.button}>
+    <button type="button" role="menuitem" onClick={onSelect} aria-label={accessibleName} aria-keyshortcuts={shortcut} className={styles.button}>
       <span className={cn(styles.marker, marker === MENU_MARKER.CARD ? styles.cardMarker : styles.roundMarker, colorClass)} />
       <span className={styles.label}>{label}</span>
       <span className={styles.meta}>{meta}</span>

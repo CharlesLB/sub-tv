@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite'
-import { useEffect, useEffectEvent } from 'react'
+import { useEffect } from 'react'
 import { expect, mocked, userEvent, within } from 'storybook/test'
 import { recordLiveEvent } from '@/modules/matches/client'
 import { LiveMatchProvider } from '../../state/live-context'
@@ -12,11 +12,10 @@ import { benchDragFixture, strikerHoverFixture } from './live-overlays.fixtures'
 
 const OpenCardPicker = () => {
   const { openCardPicker } = useLiveCommands()
-  const openOnMount = useEffectEvent(openCardPicker)
 
   useEffect(() => {
-    openOnMount()
-  }, [])
+    openCardPicker()
+  }, [openCardPicker])
 
   return null
 }

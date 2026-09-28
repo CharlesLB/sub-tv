@@ -17,7 +17,7 @@ export const useNewChampionshipLauncher = (): NewChampionshipLauncher => {
   return launcher
 }
 
-type OpenForm = { category: Category; openedAt: number }
+type OpenForm = { category: Category; openingCount: number }
 
 type NewChampionshipProviderProps = { year: number; clubs: CategoryClubsVM; children: ReactNode }
 
@@ -25,13 +25,13 @@ export function NewChampionshipProvider({ year, clubs, children }: NewChampionsh
   const [openForm, setOpenForm] = useState<OpenForm | null>(null)
 
   const openFor = (category: Category) => {
-    setOpenForm({ category, openedAt: Date.now() })
+    setOpenForm((current) => ({ category, openingCount: (current?.openingCount ?? 0) + 1 }))
   }
 
   return (
     <NewChampionshipContext value={{ openFor }}>
       <div className={styles.stack}>
-        {openForm ? <NewChampionshipPanel key={openForm.openedAt} initialCategory={openForm.category} defaultYear={year} clubs={clubs} onClose={() => setOpenForm(null)} /> : null}
+        {openForm ? <NewChampionshipPanel key={openForm.openingCount} initialCategory={openForm.category} defaultYear={year} clubs={clubs} onClose={() => setOpenForm(null)} /> : null}
         {children}
       </div>
     </NewChampionshipContext>

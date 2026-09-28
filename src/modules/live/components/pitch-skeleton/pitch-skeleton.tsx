@@ -1,5 +1,6 @@
 import { cn } from '@/lib/utils/cn'
 import { Skeleton } from '@/components/ui/skeleton/skeleton'
+import { PitchLines } from '../pitch-lines/pitch-lines'
 import { pitchSkeletonStyles as styles } from './pitch-skeleton.styles'
 
 const LINE_COLUMNS = [
@@ -15,10 +16,7 @@ export function PitchSkeleton() {
   return (
     <div className={styles.frame}>
       <div className={styles.field}>
-        <div className={styles.halfwayLine} />
-        <div className={styles.centerCircle} />
-        <div className={styles.leftPenaltyArea} />
-        <div className={styles.rightPenaltyArea} />
+        <PitchLines />
         {LINE_COLUMNS.map((column) => (
           <div key={column.key} className={cn(styles.lineColumn, column.className)}>
             {column.delays.map((delayMs) => (

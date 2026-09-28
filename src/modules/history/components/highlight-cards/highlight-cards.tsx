@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import * as R from 'remeda'
 import { categoryLabel } from '@/modules/championships/client'
 import type { HistoryFilter } from '../../history-filter/history-filter'
 import { type HistoryTarget, historyHref } from '../../history-href/history-href'
@@ -13,7 +14,7 @@ type Highlight = { label: string; value: string; name: string; target: HistoryTa
 const teamName = (row: AccumulatedTeamRowVM): string => `${row.team.name} ${categoryLabel[row.category]}`
 
 const buildHighlights = (overview: HistoryOverviewVM): Highlight[] => {
-  const [topScorer] = overview.scorers
+  const topScorer = R.firstBy(overview.scorers, [(scorer) => scorer.goals, 'desc'])
 
   return [
     ...(overview.bestWinRate

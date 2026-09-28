@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils/cn'
+import { pluralize } from '@/lib/utils/pluralize/pluralize'
 import { categoryLabel, categoryTextClass } from '@/modules/championships/client'
-import { pluralize } from '../../stat-format/stat-format'
 import type { AthleteHistoryVM } from '../../types'
 import { athleteHeroStyles as styles } from './athlete-hero.styles'
 

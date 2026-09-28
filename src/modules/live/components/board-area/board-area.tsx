@@ -1,5 +1,3 @@
-'use client'
-
 import { SIDE } from '@/modules/matches/client'
 import type { BoardInteractions } from '../../interaction/use-board-interactions'
 import { BenchColumn } from '../bench-column/bench-column'

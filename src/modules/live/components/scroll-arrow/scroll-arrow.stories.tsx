@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 import { expect, fn, userEvent, within } from 'storybook/test'
-import { ScrollArrow } from './scroll-arrow'
+import { SCROLL_DIRECTION, ScrollArrow } from './scroll-arrow'
 
 const meta = {
   title: 'Live/ScrollArrow',
   component: ScrollArrow,
-  args: { direction: 'next', isDisabled: false, onClick: fn() },
+  args: { direction: SCROLL_DIRECTION.NEXT, isDisabled: false, onClick: fn() },
 } satisfies Meta<typeof ScrollArrow>
 
 export default meta
@@ -20,7 +20,7 @@ export const Next: Story = {
 }
 
 export const PreviousAtEdge: Story = {
-  args: { direction: 'previous', isDisabled: true },
+  args: { direction: SCROLL_DIRECTION.PREVIOUS, isDisabled: true },
   play: async ({ canvasElement }) => {
     await expect(within(canvasElement).getByRole('button', { name: 'Eventos anteriores' })).toBeDisabled()
   },

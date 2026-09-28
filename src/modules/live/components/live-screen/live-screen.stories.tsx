@@ -8,8 +8,6 @@ import { emptyLiveSnapshotFixture, liveSnapshotFixture } from './live-screen.fix
 
 const DAVI_DOT = 'Camisa 9 — Davi Moreira Campos'
 const ALWAYS_MATCHING_MEDIA_QUERY = 'all'
-const COLOR_CONTRAST_RULE = 'color-contrast'
-const SCROLLABLE_REGION_FOCUSABLE_RULE = 'scrollable-region-focusable'
 
 const simulatePortraitPhone = () => {
   const originalMatchMedia = window.matchMedia
@@ -24,17 +22,7 @@ const meta = {
   title: 'Live/LiveScreen',
   component: LiveScreen,
   args: { officialsItems: officialsStripItemsFixture },
-  parameters: {
-    layout: 'fullscreen',
-    a11y: {
-      config: {
-        rules: [
-          { id: COLOR_CONTRAST_RULE, enabled: false },
-          { id: SCROLLABLE_REGION_FOCUSABLE_RULE, enabled: false },
-        ],
-      },
-    },
-  },
+  parameters: { layout: 'fullscreen' },
   beforeEach: () => {
     mocked(recordLiveEvent).mockResolvedValue({ ok: true, data: { id: 'evento-1' } })
   },

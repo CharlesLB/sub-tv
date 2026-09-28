@@ -9,5 +9,5 @@ const readNothingOnServer = () => null
 export function FlashToastHost() {
   const message = useSyncExternalStore(subscribeToFlashMessage, readFlashMessage, readNothingOnServer)
 
-  return message ? <FlashToast message={message} tone="success" onClose={clearFlashMessage} /> : null
+  return message ? <FlashToast key={message} message={message} tone="success" onClose={clearFlashMessage} /> : null
 }

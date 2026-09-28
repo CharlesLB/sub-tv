@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { type KeyboardEvent, useEffect, useRef } from 'react'
 import * as R from 'remeda'
 import type { MenuState } from '../../interaction/interaction-state'
 import { positionLabel } from '../../player-labels/player-labels'
@@ -14,6 +14,7 @@ import { actionMenuStyles as styles } from './action-menu.styles'
 const MENU_HEIGHT = 232
 const MENU_WIDTH = 242
 const VIEWPORT_MARGIN = 8
+const ESCAPE_KEY = 'Escape'
 
 type ActionMenuProps = { menu: MenuState; matchState: PlayerMatchState; onClose: () => void }
 
@@ -39,12 +40,16 @@ export function ActionMenu({ menu, matchState, onClose }: ActionMenuProps) {
     command()
   }
 
+  const closeOnEscape = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === ESCAPE_KEY) onClose()
+  }
+
   const subtitle = [positionLabel(player.position), team.name].filter(Boolean).join(' · ')
 
   return (
     <>
       <div aria-hidden onClick={onClose} className={styles.scrim} />
-      <div role="menu" aria-label={`Ações para camisa ${player.shirtNumber}`} className={styles.menu} style={{ left, top }}>
+      <div role="menu" aria-label={`Ações para camisa ${player.shirtNumber}`} onKeyDown={closeOnEscape} className={styles.menu} style={{ left, top }}>
         <div className={styles.header}>
           <span className={styles.shirtNumber} style={{ color: team.color }}>
             {player.shirtNumber}
@@ -76,7 +81,6 @@ export function ActionMenu({ menu, matchState, onClose }: ActionMenuProps) {
             meta={matchState.yellowCards ? `+${matchState.yellowCards}` : ''}
             colorClass={styles.yellowCardMarker}
             marker={MENU_MARKER.CARD}
-            shortcut="C"
             onSelect={run(() => commands.recordCard(player.playerId, CARD_COLOR.YELLOW))}
           />
           <MenuAction
@@ -84,7 +88,6 @@ export function ActionMenu({ menu, matchState, onClose }: ActionMenuProps) {
             meta={matchState.sentOff ? 'Expulso' : ''}
             colorClass={styles.redCardMarker}
             marker={MENU_MARKER.CARD}
-            shortcut="C"
             onSelect={run(() => commands.recordCard(player.playerId, CARD_COLOR.RED))}
           />
         </div>
