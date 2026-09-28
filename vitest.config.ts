@@ -5,7 +5,7 @@ import { playwright } from '@vitest/browser-playwright'
 import { defineConfig } from 'vitest/config'
 import { MOCK_FUNCTION_IMPORT, serverModuleMocks } from './tools/server-module-mocks/server-module-mocks.ts'
 
-const INTEGRATION_TESTS = 'src/**/*.integration.test.ts'
+const INTEGRATION_TESTS = '{src,scripts}/**/*.integration.test.ts'
 const EMPTY_MODULE = fileURLToPath(new URL('./tools/empty-module/empty-module.ts', import.meta.url))
 const DESKTOP_VIEWPORT = { width: 1280, height: 900 }
 const STORYBOOK_CONFIG_DIRECTORY = fileURLToPath(new URL('./.storybook', import.meta.url))
@@ -27,7 +27,7 @@ export default defineConfig({
       },
       {
         extends: true,
-        test: { name: 'scripts', include: ['scripts/**/*.test.ts', 'tools/**/*.test.ts'], environment: 'node' },
+        test: { name: 'scripts', include: ['scripts/**/*.test.ts', 'tools/**/*.test.ts'], exclude: [INTEGRATION_TESTS], environment: 'node' },
       },
       {
         plugins: [storybookTest({ configDir: STORYBOOK_CONFIG_DIRECTORY })],
