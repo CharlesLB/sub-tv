@@ -1,4 +1,5 @@
 import { type SQL, sql } from 'drizzle-orm'
+import { MATCH_STATUS } from '../../live-match/live-match'
 
 export type SqlExecutor = { execute: (query: SQL) => Promise<unknown> }
 
@@ -16,6 +17,8 @@ export type FinalScore = { homeScore: number; awayScore: number }
 const GOAL_EVENT_TYPE = 'gol'
 const SHOOTOUT_PERIOD = 'PEN'
 const FMF_SOURCE = 'fmf'
+
+const isCountedMatch = sql`match.status in (${MATCH_STATUS.FINISHED}, ${MATCH_STATUS.WALKOVER})`
 
 export const isActiveEvent = (event: Pick<ScoredEvent, 'deletedAt' | 'supersededAt'>): boolean => event.deletedAt === null && event.supersededAt === null
 
@@ -54,7 +57,7 @@ const recomputePlayerStatistics = async (executor: SqlExecutor, seasonId: string
       select event.*
       from match_events event
       join matches match on match.id = event.match_id
-      where match.season_id = ${seasonId} and event.deleted_at is null and event.superseded_at is null
+      where match.season_id = ${seasonId} and ${isCountedMatch} and event.deleted_at is null and event.superseded_at is null
     ),
     appearances as (
       select
@@ -72,7 +75,7 @@ const recomputePlayerStatistics = async (executor: SqlExecutor, seasonId: string
         (select count(*) from active_events event where event.match_id = lineup.match_id and event.type = 'vermelho' and event.player_id = lineup.player_id) as red_cards
       from match_lineups lineup
       join matches match on match.id = lineup.match_id
-      where match.season_id = ${seasonId} and match.removed_at is null
+      where match.season_id = ${seasonId} and match.removed_at is null and ${isCountedMatch}
     )
     insert into player_season_stats (season_id, player_id, season_team_id, games, starts, sub_in, sub_out, goals, penalty_goals, own_goals, assists, yellow_cards, red_cards)
     select
@@ -116,7 +119,8 @@ const recomputeTeamStatistics = async (executor: SqlExecutor, seasonId: string):
         case when match.home_team_id = team.id then 'home' else 'away' end as side,
         case when match.home_team_id = team.id then match.home_score else match.away_score end as goals_for,
         case when match.home_team_id = team.id then match.away_score else match.home_score end as goals_against,
-        match.status in ('encerrado', 'wo') and match.home_score is not null and match.away_score is not null as is_decided
+        ${isCountedMatch} as is_counted,
+        ${isCountedMatch} and match.home_score is not null and match.away_score is not null as is_decided
       from season_teams team
       join matches match on match.season_id = team.season_id and team.id in (match.home_team_id, match.away_team_id)
       where team.season_id = ${seasonId} and match.removed_at is null
@@ -128,7 +132,7 @@ const recomputeTeamStatistics = async (executor: SqlExecutor, seasonId: string):
         count(*) filter (where event.type = 'vermelho') as red_cards
       from team_matches team_match
       join match_events event on event.match_id = team_match.match_id and event.side::text = team_match.side
-      where event.deleted_at is null and event.superseded_at is null
+      where team_match.is_counted and event.deleted_at is null and event.superseded_at is null
       group by team_match.season_team_id
     ),
     results as (
@@ -175,10 +179,10 @@ const recomputeStaffStatistics = async (executor: SqlExecutor, seasonId: string)
         match.id as match_id,
         case when staff.side = 'home' then match.home_score else match.away_score end as goals_for,
         case when staff.side = 'home' then match.away_score else match.home_score end as goals_against,
-        match.status in ('encerrado', 'wo') and match.home_score is not null and match.away_score is not null as is_decided
+        ${isCountedMatch} and match.home_score is not null and match.away_score is not null as is_decided
       from match_staff staff
       join matches match on match.id = staff.match_id
-      where match.season_id = ${seasonId} and match.removed_at is null
+      where match.season_id = ${seasonId} and match.removed_at is null and ${isCountedMatch}
     )
     insert into staff_season_stats (season_team_id, staff_member_id, games, wins, draws, losses, yellow_cards, red_cards)
     select
