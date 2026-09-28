@@ -1,4 +1,5 @@
 import type { NextRequest } from 'next/server'
+import { API_ERROR_CODE, apiError, HTTP_STATUS } from '@/lib/api/api-error/api-error'
 import { isUuid } from '@/lib/utils/is-uuid/is-uuid'
 import { getCurrentUser } from '@/modules/auth'
 import { createLiveChangeStream } from '@/modules/matches'
@@ -14,8 +15,6 @@ const STREAM_HEADERS = {
   'X-Accel-Buffering': 'no',
 }
 
-const errorResponse = (status: number, code: string, message: string) => Response.json({ error: { code, message } }, { status })
-
 const sinceOf = (lastEventId: string | null): number => {
   const parsed = Number(lastEventId)
 
@@ -24,10 +23,10 @@ const sinceOf = (lastEventId: string | null): number => {
 
 export const GET = async (request: NextRequest, context: RouteContext<'/api/partidas/[partidaId]/stream'>): Promise<Response> => {
   const user = await getCurrentUser()
-  if (!user) return errorResponse(401, 'unauthorized', 'Sessão expirada. Entre de novo para acompanhar a partida.')
+  if (!user) return apiError(HTTP_STATUS.UNAUTHORIZED, API_ERROR_CODE.UNAUTHORIZED, 'Sessão expirada. Entre de novo para acompanhar a partida.')
 
   const { partidaId } = await context.params
-  if (!isUuid(partidaId)) return errorResponse(404, 'not_found', 'Partida não encontrada.')
+  if (!isUuid(partidaId)) return apiError(HTTP_STATUS.NOT_FOUND, API_ERROR_CODE.NOT_FOUND, 'Partida não encontrada.')
 
   const stream = createLiveChangeStream({ matchId: partidaId, sinceMs: sinceOf(request.headers.get(LAST_EVENT_ID_HEADER)), signal: request.signal })
 
