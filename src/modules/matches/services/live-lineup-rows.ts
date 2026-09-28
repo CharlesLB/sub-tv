@@ -1,8 +1,6 @@
 import 'server-only'
 import { and, eq, or } from 'drizzle-orm'
-import { type db, tables } from '@/lib/db'
-
-export type Transaction = Parameters<Parameters<typeof db.transaction>[0]>[0]
+import { type db, tables, type Transaction } from '@/lib/db'
 
 type DatabaseExecutor = typeof db | Transaction
 

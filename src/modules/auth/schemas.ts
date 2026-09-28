@@ -1,7 +1,7 @@
 import { z } from 'zod'
+import { routes } from '@/lib/routes'
 
 const SAFE_INTERNAL_PATH = /^\/(?!\/)[^\s\\]*$/
-const DEFAULT_DESTINATION = '/campeonatos'
 
 export const SignInInput = z.object({
   username: z.string().trim().min(1, 'Digite o usuário.').max(120),
@@ -9,17 +9,18 @@ export const SignInInput = z.object({
   returnTo: z
     .string()
     .optional()
-    .transform((path) => (path && SAFE_INTERNAL_PATH.test(path) ? path : DEFAULT_DESTINATION)),
+    .transform((path) => (path && SAFE_INTERNAL_PATH.test(path) ? path : routes.championships())),
 })
 
-const PASSWORD_MIN_LENGTH = 8
+export const PASSWORD_MIN_LENGTH = 8
 const PASSWORD_MAX_LENGTH = 200
 const USERNAME_MIN_LENGTH = 2
 const USERNAME_MAX_LENGTH = 120
 const PASSWORD_MISMATCH = 'As senhas não conferem.'
 const CONFIRMATION_FIELD = 'confirmation'
-const ACTIVE_VALUE = 'true'
-const INACTIVE_VALUE = 'false'
+
+export const ACTIVE_VALUE = 'true'
+export const INACTIVE_VALUE = 'false'
 
 const NewPassword = z.string().min(PASSWORD_MIN_LENGTH, `A senha precisa ter pelo menos ${PASSWORD_MIN_LENGTH} caracteres.`).max(PASSWORD_MAX_LENGTH)
 

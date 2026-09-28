@@ -5,20 +5,12 @@ import * as R from 'remeda'
 import { tags } from '@/lib/cache/tags'
 import { db, tables } from '@/lib/db'
 import { teamBadgeColumns, toTeamBadge } from '@/modules/championships'
+import { positionLabel } from '@/modules/players'
 import type { HistoryFilter } from '../history-filter/history-filter'
 import type { AthleteHistoryVM, AthleteSeasonVM } from '../types'
 import { distinctTextList, seasonFilterConditions, sumAsNumber } from './season-filter-conditions'
 
 type AthleteScope = { playerId: string; filter: HistoryFilter }
-
-const POSITION_LABEL: Record<string, string> = {
-  goleiro: 'Goleiro',
-  zagueiro: 'Zagueiro',
-  lateral: 'Lateral',
-  volante: 'Volante',
-  meia: 'Meia',
-  atacante: 'Atacante',
-}
 
 const readPlayer = async (playerId: string) => {
   const { players } = tables
@@ -89,7 +81,7 @@ export const getAthleteHistory = async (playerId: string, filter: HistoryFilter)
     playerId,
     name: player.fullName,
     nickname: player.displayName ?? player.nickname,
-    position: player.position ? (POSITION_LABEL[player.position] ?? null) : null,
+    position: player.position ? positionLabel[player.position] : null,
     shirtNumber,
     team: latestTeam?.team ?? null,
     category: latestTeam?.category ?? null,

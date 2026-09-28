@@ -1,19 +1,13 @@
 import { z } from 'zod'
 import { LiveClockSchema } from '../live-clock/live-clock'
 import { LIVE_EVENT_TYPE, MATCH_PERIOD, MAXIMUM_EVENT_MINUTE, SIDE } from '../live-match/live-match'
-
-const PITCH_MINIMUM = 0
-const PITCH_MAXIMUM = 100
+import { PitchCoordinateSchema, PitchPointSchema } from '../pitch-coordinate/pitch-coordinate'
 
 const SideSchema = z.enum([SIDE.HOME, SIDE.AWAY])
 
 const EventPeriodSchema = z.enum([MATCH_PERIOD.FIRST_HALF, MATCH_PERIOD.HALF_TIME, MATCH_PERIOD.SECOND_HALF, MATCH_PERIOD.FULL_TIME])
 
 const EventMinuteSchema = z.number().int().min(0).max(MAXIMUM_EVENT_MINUTE).nullable()
-
-const PitchCoordinate = z.number().min(PITCH_MINIMUM).max(PITCH_MAXIMUM)
-
-const PitchPointSchema = z.object({ x: PitchCoordinate, y: PitchCoordinate })
 
 export const RecordLiveEventInput = z.object({
   matchId: z.uuid(),
@@ -58,8 +52,8 @@ export type UpdateLiveClockInput = z.input<typeof UpdateLiveClockInput>
 export const UpdateLineupPositionInput = z.object({
   matchId: z.uuid(),
   playerId: z.uuid(),
-  pitchX: PitchCoordinate,
-  pitchY: PitchCoordinate,
+  pitchX: PitchCoordinateSchema,
+  pitchY: PitchCoordinateSchema,
 })
 
 export type UpdateLineupPositionInput = z.input<typeof UpdateLineupPositionInput>

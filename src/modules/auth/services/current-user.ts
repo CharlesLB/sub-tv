@@ -4,9 +4,8 @@ import { redirect } from 'next/navigation'
 import { cache } from 'react'
 import { readSessionToken, SESSION_COOKIE } from '@/lib/auth/session-token/session-token'
 import { env } from '@/lib/env'
+import { routes } from '@/lib/routes'
 import { type AppUser, userService } from './user-service'
-
-const LOGIN_PATH = '/entrar'
 
 const nowInSeconds = (): number => Math.floor(Date.now() / 1000)
 
@@ -19,7 +18,7 @@ export const getCurrentUser = cache(async (): Promise<AppUser | null> => {
 
 export const requireUser = async (): Promise<AppUser> => {
   const user = await getCurrentUser()
-  if (!user) redirect(LOGIN_PATH)
+  if (!user) redirect(routes.login())
 
   return user
 }

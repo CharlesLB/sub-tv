@@ -7,4 +7,6 @@ const pool = createPool(env.DATABASE_URL)
 attachDatabasePool(pool)
 
 export const db = createDatabase(pool)
+
+export type Transaction = Parameters<Parameters<typeof db.transaction>[0]>[0]
 export * as tables from './schema'

@@ -1,10 +1,10 @@
 import 'server-only'
 import { and, eq } from 'drizzle-orm'
 import { type ActionResult, fail, ok } from '@/lib/actions/result'
-import { db, tables } from '@/lib/db'
+import { db, tables, type Transaction } from '@/lib/db'
 import { toPersistedClock } from '../live-clock/live-clock'
 import { DATA_SOURCE, GOAL_TYPE, LIVE_EVENT_TYPE, type LiveClock, MATCH_PERIOD, MATCH_STATUS, type MatchStatus, type Side } from '../live-match/live-match'
-import { applyLineupSwap, findEventByKey, findExistingByClientId, findLineupRow, revertLineupSwap, type Transaction } from './live-lineup-rows'
+import { applyLineupSwap, findEventByKey, findExistingByClientId, findLineupRow, revertLineupSwap } from './live-lineup-rows'
 import { finalizeFinishedMatch, refreshReopenedMatch, type SeasonTouch } from './match-finalization/match-finalization'
 
 const PLAYER_NOT_IN_MATCH = 'Este atleta não está na escalação desta partida.'

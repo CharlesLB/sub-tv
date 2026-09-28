@@ -1,6 +1,7 @@
 import { z } from 'zod'
 import { STARTERS_PER_TEAM } from './default-starters/default-starters'
 import { isDateInput, isTimeInput } from './kickoff-time/kickoff-time'
+import { PitchPointSchema } from './pitch-coordinate/pitch-coordinate'
 
 const MAXIMUM_ROUND = 99
 const MAXIMUM_VENUE_LENGTH = 120
@@ -10,17 +11,8 @@ const StarterIds = z
   .length(STARTERS_PER_TEAM, 'Escolha exatamente 11 titulares.')
   .refine((playerIds) => new Set(playerIds).size === playerIds.length, 'Um atleta aparece duas vezes entre os titulares.')
 
-const PITCH_MINIMUM = 0
-const PITCH_MAXIMUM = 100
-
 const StarterPositions = z
-  .array(
-    z.object({
-      playerId: z.uuid(),
-      x: z.number().min(PITCH_MINIMUM).max(PITCH_MAXIMUM),
-      y: z.number().min(PITCH_MINIMUM).max(PITCH_MAXIMUM),
-    }),
-  )
+  .array(PitchPointSchema.extend({ playerId: z.uuid() }))
   .max(STARTERS_PER_TEAM)
   .optional()
 

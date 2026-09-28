@@ -7,14 +7,13 @@ import { z } from 'zod'
 import { type ActionResult, fail } from '@/lib/actions/result'
 import { createSessionToken, SESSION_COOKIE, SESSION_DURATION_SECONDS } from '@/lib/auth/session-token/session-token'
 import { env } from '@/lib/env'
+import { routes } from '@/lib/routes'
 import { AUDIT_ACTION, AUDIT_ENTITY, recordAudit } from '@/modules/audit'
 import { SignInInput } from '../schemas'
 import { getCurrentUser } from '../services/current-user'
 import { userService } from '../services/user-service'
 
 const FAILED_ATTEMPT_DELAY_MS = 700
-const DEFAULT_DESTINATION = '/campeonatos'
-const LOGIN_PATH = '/entrar'
 
 const isInternalRoute = (path: string): path is Route => path.startsWith('/') && !path.startsWith('//')
 
@@ -48,7 +47,7 @@ export async function signIn(_previous: ActionResult | null, formData: FormData)
   })
 
   await recordAudit({ userId: user.id, action: AUDIT_ACTION.SIGN_IN, entityType: AUDIT_ENTITY.USER, entityId: user.id })
-  redirect(isInternalRoute(parsed.data.returnTo) ? parsed.data.returnTo : DEFAULT_DESTINATION)
+  redirect(isInternalRoute(parsed.data.returnTo) ? parsed.data.returnTo : routes.championships())
 }
 
 export async function signOut(): Promise<void> {
@@ -57,5 +56,5 @@ export async function signOut(): Promise<void> {
 
   const cookieStore = await cookies()
   cookieStore.delete(SESSION_COOKIE)
-  redirect(LOGIN_PATH)
+  redirect(routes.login())
 }

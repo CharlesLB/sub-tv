@@ -1,14 +1,12 @@
 import 'server-only'
 import { and, desc, eq, inArray, max, ne, sql } from 'drizzle-orm'
 import { type ActionResult, fail, ok } from '@/lib/actions/result'
-import { db, tables } from '@/lib/db'
+import { db, tables, type Transaction } from '@/lib/db'
 import { categoryLabel } from '../categories'
 import { toChampionshipSlug } from '../championship-slug/championship-slug'
 import type { CreateChampionshipData } from '../schemas'
 
 export type CreatedChampionship = { seasonId: string; competitionId: string; slug: string }
-
-type Transaction = Parameters<Parameters<typeof db.transaction>[0]>[0]
 
 const { competitions, seasons, seasonTeams, seasonSquads } = tables
 
