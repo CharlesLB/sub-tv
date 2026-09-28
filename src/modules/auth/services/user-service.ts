@@ -19,7 +19,7 @@ export const userService = {
       .limit(1)
 
     const passwordMatches = await bcrypt.compare(password, user?.passwordHash ?? TIMING_GUARD_HASH)
-    if (!user || !user.isActive || !passwordMatches) return null
+    if (!user?.isActive || !passwordMatches) return null
 
     await db.update(appUsers).set({ lastSignInAt: new Date() }).where(eq(appUsers.id, user.id))
 

@@ -43,6 +43,7 @@ export const resolveStarterPositions = (team: SetupTeamVM, starterIds: readonly 
       const preferred = layout[starter.key]
       const freeSlot = preferred && !isOccupied(positions, preferred) ? preferred : slots.find((slot) => !isOccupied(positions, slot))
 
+      // biome-ignore lint/performance/noAccumulatingSpread: cada passo lê o acumulado anterior e a coleção tem poucas dezenas de itens
       return { ...positions, [starter.key]: freeSlot ?? fallbackPoint(attacksRight) }
     }, kept)
 }

@@ -21,6 +21,7 @@ const escapeForPattern = (text: string): string => text.replace(/[.*+?^${}()|[\]
 
 export const splitPhasePanes = (sectionHtml: string, paneIdPrefix: string): PhasePane[] => {
   const prefixPattern = escapeForPattern(paneIdPrefix)
+  // eslint-disable-next-line security/detect-non-literal-regexp -- o prefixo é constante interna e passa por escapeForPattern antes de entrar no padrão
   const tabPattern = new RegExp(`<a href="#(${prefixPattern}\\d+-\\d+)"[^>]*>([^<]*)</a>`, 'g')
   const tabs = [...sectionHtml.matchAll(tabPattern)].map((match) => ({ paneId: match[1] ?? '', name: decodeHtmlText(match[2] ?? '') }))
   const paneStarts = tabs.map((tab) => ({ ...tab, start: sectionHtml.indexOf(`id="${tab.paneId}"`) })).filter((tab) => tab.start >= 0)

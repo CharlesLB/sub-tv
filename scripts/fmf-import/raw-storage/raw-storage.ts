@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-non-literal-fs-filename -- todos os caminhos são montados dentro de .data/fmf-raw a partir de ids numéricos da FMF, nunca de entrada de usuário */
 import { createHash } from 'node:crypto'
 import { access, mkdir, readdir, readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'

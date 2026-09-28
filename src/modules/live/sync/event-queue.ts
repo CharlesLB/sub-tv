@@ -62,6 +62,7 @@ export const createEventQueue = <TOperation>(options: EventQueueOptions<TOperati
       queue.pending = items.reduce((pending, item) => {
         const replaceableIndex = replaceableIndexOf(pending, item, queue.isRunning)
         const replaced = pending[replaceableIndex]
+        // biome-ignore lint/performance/noAccumulatingSpread: cada passo lê o acumulado anterior e a coleção tem poucas dezenas de itens
         if (!replaced) return [...pending, item]
         options.onDropped(replaced.operation)
 

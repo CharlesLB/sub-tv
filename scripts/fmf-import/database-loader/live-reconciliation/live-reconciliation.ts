@@ -23,6 +23,7 @@ export const pairLiveEvents = (liveEvents: ComparableEvent[], fmfEvents: Compara
     const candidates = fmfEvents.filter((fmf) => !usedIds.has(fmf.id) && eventsAgree(live, fmf))
     const closest = R.sortBy(candidates, (fmf) => Math.abs((fmf.minute ?? 0) - (live.minute ?? 0)))[0]
 
+    // biome-ignore lint/performance/noAccumulatingSpread: cada passo lê o acumulado anterior e a coleção tem poucas dezenas de itens
     return closest ? [...pairs, { liveEventId: live.id, fmfEventId: closest.id }] : pairs
   }, [])
 

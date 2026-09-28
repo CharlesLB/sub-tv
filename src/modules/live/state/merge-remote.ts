@@ -60,7 +60,7 @@ export const mergeRemoteEvent = (state: LiveState, remote: RemoteEvent): LiveSta
 
 export const mergeRemoteSnapshot = (state: LiveState, snapshot: RemoteSnapshot): LiveState => {
   const acceptedPositions = snapshot.positions.filter((position) => position.playerId in state.playersById && !isPending(state, positionSyncKey(position.playerId)))
-  const positions = acceptedPositions.reduce((current, position) => ({ ...current, [position.playerId]: { x: position.x, y: position.y } }), state.positions)
+  const positions = { ...state.positions, ...Object.fromEntries(acceptedPositions.map((position) => [position.playerId, { x: position.x, y: position.y }])) }
   const clock = snapshot.clock && !isPending(state, CLOCK_SYNC_KEY) ? snapshot.clock : state.clock
 
   return { ...state, positions, clock }

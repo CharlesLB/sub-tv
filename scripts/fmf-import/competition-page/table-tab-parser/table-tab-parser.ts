@@ -5,6 +5,7 @@ import { parseLongPortugueseDate } from '../portuguese-date/portuguese-date'
 const PHASE_PANE_PREFIX = 'fase_'
 const ROUND_BOX_MARKER = '<h3 class="box-title_es">'
 const ROUND_PATTERN = /^RODADA\s+(\d+)/i
+// eslint-disable-next-line security/detect-unsafe-regex -- alternância de dois ramos sem quantificador aninhado; roda sobre HTML baixado da FMF, não sobre entrada de usuário
 const ROW_PATTERN = /<td colspan="4"><b>([^<]*)<\/b><\/td>|<td align=center>(\d{1,2}:\d{2})?<br>Jogo (\d+)<\/td>/g
 const TEAM_PATTERN = /<img src="([^"]+)"[^>]*><br>([^<]*)<\/small>/g
 const SCORE_PATTERN = /<td nowrap>([^<]*)<\/td>/

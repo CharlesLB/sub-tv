@@ -58,10 +58,12 @@ const parsePane = (phase: string, paneHtml: string): StandingRow[] =>
     .reduce<StandingAccumulator>(
       (accumulator, cells) => {
         const groupMatch = cells.length === 1 ? GROUP_PATTERN.exec(textOf(cells[0])) : null
+        // biome-ignore lint/performance/noAccumulatingSpread: cada passo lê o acumulado anterior e a coleção tem poucas dezenas de itens
         if (groupMatch) return { ...accumulator, groupName: groupMatch[1] ?? null }
         if (cells.length !== STANDING_CELL_COUNT) return accumulator
         const standing = readStandingRow(phase, accumulator.groupName, cells)
 
+        // biome-ignore lint/performance/noAccumulatingSpread: cada passo lê o acumulado anterior e a coleção tem poucas dezenas de itens
         return standing ? { ...accumulator, rows: [...accumulator.rows, standing] } : accumulator
       },
       { groupName: null, rows: [] },

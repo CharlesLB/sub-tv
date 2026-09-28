@@ -1,3 +1,4 @@
+import * as R from 'remeda'
 import type { Database } from '../../../../src/lib/db/connection'
 import type { EditionBundle } from '../../edition-bundle/edition-bundle'
 import { recalculateImportedSeason } from '../../statistics/season-statistics/season-statistics'
@@ -17,7 +18,7 @@ export type EditionCounters = RunSummary & { seasonId: string; issuesByType: Rec
 
 export type LoadScope = { incremental: boolean }
 
-const countByType = (issues: ImportIssue[]): Record<string, number> => issues.reduce<Record<string, number>>((counts, issue) => ({ ...counts, [issue.type]: (counts[issue.type] ?? 0) + 1 }), {})
+const countByType = (issues: ImportIssue[]): Record<string, number> => R.countBy(issues, (issue) => issue.type)
 
 export const loadEdition = async (database: Database, runId: string, bundle: EditionBundle, scope: LoadScope = { incremental: false }): Promise<EditionCounters> =>
   await database.transaction(async (transaction) => {

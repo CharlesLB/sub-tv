@@ -36,6 +36,7 @@ const firstInFrame = (items: PositionedText[], frame: SideFrame, text: string): 
 const mergeWrappedNumbers = (numberItems: PositionedText[]): PositionedText[] =>
   R.sortBy(numberItems, [(item) => item.y, 'desc']).reduce<PositionedText[]>((merged, item) => {
     const previous = merged.at(-1)
+    // biome-ignore lint/performance/noAccumulatingSpread: cada passo lê o acumulado anterior e a coleção tem poucas dezenas de itens
     if (!previous || previous.y - item.y >= WRAPPED_NUMBER_GAP) return [...merged, item]
 
     return [...merged.slice(0, -1), { x: previous.x, y: (previous.y + item.y) / 2, text: `${previous.text}${item.text}` }]

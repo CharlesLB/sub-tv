@@ -1,3 +1,4 @@
+// eslint-disable-next-line security/detect-unsafe-regex -- dois grupos opcionais em sequência, sem quantificador aninhado; casa nomes de arquivo da FMF
 const SUMULA_FILE_PATTERN = /Sumula_Jogo_(\d+)(?:_F\d+)?(?:_(\d+))?\.pdf$/i
 const PATH_SEPARATOR_PATTERN = /[/\\]/
 

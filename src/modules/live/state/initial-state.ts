@@ -8,6 +8,7 @@ const replayUnappliedSubstitutions = (positions: Record<string, PitchPoint>, eve
     const outgoingPoint = event.playerOutId ? current[event.playerOutId] : undefined
     const isUnappliedSubstitution = event.type === LIVE_EVENT_TYPE.SUBSTITUTION && !event.appliedToLineup
 
+    // biome-ignore lint/performance/noAccumulatingSpread: cada passo lê o acumulado anterior e a coleção tem poucas dezenas de itens
     return isUnappliedSubstitution && event.playerId && outgoingPoint ? { ...current, [event.playerId]: outgoingPoint } : current
   }, positions)
 

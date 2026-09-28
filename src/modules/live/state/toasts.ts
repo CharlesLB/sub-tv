@@ -1,3 +1,4 @@
+import * as R from 'remeda'
 import { type LiveState, type ServerOperation, syncKeyOf, TOAST_TONE, type ToastTone, type UndoEntry } from './live-state'
 
 export const MAXIMUM_TOASTS = 3
@@ -28,12 +29,10 @@ export const warn = (state: LiveState, message: string): LiveState => pushToast(
 
 export const inform = (state: LiveState, message: string): LiveState => pushToast(state, message, TOAST_TONE.INFO)
 
-const countPending = (counts: Record<string, number>, operations: ServerOperation[]): Record<string, number> =>
-  operations.reduce((current, operation) => {
-    const key = syncKeyOf(operation)
-
-    return { ...current, [key]: (current[key] ?? 0) + 1 }
-  }, counts)
+const countPending = (counts: Record<string, number>, operations: ServerOperation[]): Record<string, number> => ({
+  ...counts,
+  ...R.mapValues(R.countBy(operations, syncKeyOf), (addedCount, key) => (counts[key] ?? 0) + addedCount),
+})
 
 export const enqueue = (state: LiveState, ...operations: ServerOperation[]): LiveState => ({
   ...state,
