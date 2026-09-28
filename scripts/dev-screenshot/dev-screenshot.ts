@@ -12,9 +12,11 @@ const [path = '/campeonatos', outputFile = '.data/screenshot.png', theme = 'clar
 const browser = await chromium.launch()
 const page = await browser.newPage({ viewport: { width: Number(width), height: Number(height) } })
 const consoleProblems: string[] = []
+
 page.on('console', (message) => {
   if (message.type() === 'error' || message.type() === 'warning') consoleProblems.push(`${message.type()}: ${message.text()}`)
 })
+
 page.on('pageerror', (error) => consoleProblems.push(`pageerror: ${error.message}`))
 await page.addInitScript(([key, value]) => localStorage.setItem(key, value), [THEME_STORAGE_KEY, theme] as const)
 await page.goto(`${BASE_URL}/entrar?para=${encodeURIComponent(path)}`)

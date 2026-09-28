@@ -1,16 +1,6 @@
-import {
-  DATA_SOURCE,
-  GOAL_TYPE,
-  LIVE_EVENT_TYPE,
-  MATCH_PERIOD,
-  minuteAt,
-  type ClockPeriod,
-  type LiveClock,
-  type LivePlayerVM,
-  type MatchPeriod,
-} from '@/modules/matches/client'
+import { type ClockPeriod, DATA_SOURCE, GOAL_TYPE, LIVE_EVENT_TYPE, type LiveClock, type LivePlayerVM, MATCH_PERIOD, type MatchPeriod, minuteAt } from '@/modules/matches/client'
 import { CARD_COLOR, type CardColor } from './live-actions'
-import { SERVER_OPERATION, SYNC_STATE, TOAST_TONE, type LiveEvent, type LiveState, type PlayerMatchState } from './live-state'
+import { type LiveEvent, type LiveState, type PlayerMatchState, SERVER_OPERATION, SYNC_STATE, TOAST_TONE } from './live-state'
 import { derivePlayerStates, findLatestOpenGoal, playerTag } from './selectors'
 import { enqueue, LIVE_MESSAGE, pushToast, warn } from './toasts'
 
@@ -121,12 +111,14 @@ export const recordSubstitution = (state: LiveState, { playerOutId, playerInId, 
   const outState = states[playerOutId]
   const inState = states[playerInId]
   if (outState?.sentOff) return warn(settled, LIVE_MESSAGE.SENT_OFF_CANNOT_BE_SUBSTITUTED)
+
   if (!playerOut || !playerIn || !outState?.onPitch || !inState || inState.onPitch || inState.subbedOut || playerOut.side !== playerIn.side) {
     return warn(settled, LIVE_MESSAGE.INVALID_SUBSTITUTION)
   }
 
   const pitchPoint = state.positions[playerOutId] ?? null
   const substitution = createEvent(state, { key: clientId, type: LIVE_EVENT_TYPE.SUBSTITUTION, side: playerIn.side, playerId: playerInId, playerOutId }, nowMs)
+
   const withSubstitution = enqueue(
     {
       ...settled,

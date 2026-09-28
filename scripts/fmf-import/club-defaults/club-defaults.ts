@@ -62,6 +62,7 @@ export const deriveAbbreviation = (displayName: string): string => {
   const words = normalizeName(displayName)
     .split(' ')
     .filter((word) => word.length > 0 && !MINOR_WORDS.has(word))
+
   const letters = words.join('').replace(/[^a-z]/g, '')
   const firstWord = (words[0] ?? '').replace(/[^a-z]/g, '')
   const source = firstWord.length >= ABBREVIATION_LENGTH ? firstWord : letters

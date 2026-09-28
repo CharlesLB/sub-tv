@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import { ContextBar } from '@/modules/platform'
 import { getAthleteHistory } from '../../data/get-athlete-history'
-import { loadHistoryFilter, type HistoryQuery } from '../../data/load-history-filter'
+import { type HistoryQuery, loadHistoryFilter } from '../../data/load-history-filter'
 import { historyCrumbs } from '../../history-crumbs/history-crumbs'
 import { formatRatio } from '../../stat-format/stat-format'
 import { AthleteHero } from '../athlete-hero/athlete-hero'
@@ -27,6 +27,7 @@ export async function AthleteHistoryScreen({ playerId, query }: AthleteHistorySc
   if (!history) notFound()
 
   const target = { kind: 'athlete', playerId } as const
+
   const kpis = [
     { label: 'Gols', value: String(history.goals) },
     { label: 'Jogos', value: String(history.games) },
@@ -39,11 +40,7 @@ export async function AthleteHistoryScreen({ playerId, query }: AthleteHistorySc
 
   return (
     <>
-      <ContextBar
-        crumbs={historyCrumbs(target, filter, seasonLabel, ATHLETE_PAGE_LABEL)}
-        title={history.name}
-        category={history.category ?? undefined}
-      />
+      <ContextBar crumbs={historyCrumbs(target, filter, seasonLabel, ATHLETE_PAGE_LABEL)} title={history.name} category={history.category ?? undefined} />
       <HistoryFrame>
         <HistoryFilters filter={filter} availableYears={availableYears} target={target} />
         <div className={styles.content}>

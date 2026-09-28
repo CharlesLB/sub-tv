@@ -11,7 +11,7 @@ import type { HistoryFilter } from '../history-filter/history-filter'
 import { buildFormByYear } from '../season-form/season-form'
 import { winRatePercent } from '../stat-format/stat-format'
 import type { TeamHistoryVM, TeamScorerVM, TeamSeasonVM } from '../types'
-import { FINISHED_MATCH_STATUS, distinctTextList, seasonFilterConditions, sumAsNumber } from './season-filter-conditions'
+import { distinctTextList, FINISHED_MATCH_STATUS, seasonFilterConditions, sumAsNumber } from './season-filter-conditions'
 
 const TEAM_SCORERS_LIMIT = 6
 
@@ -91,7 +91,11 @@ const readTeamScorers = async ({ clubId, filter }: TeamScope): Promise<TeamScore
 
 const readClubBadge = async (clubId: string) => {
   const { clubs } = tables
-  const [row] = await db.select({ badge: teamBadgeColumns(clubs) }).from(clubs).where(eq(clubs.id, clubId))
+
+  const [row] = await db
+    .select({ badge: teamBadgeColumns(clubs) })
+    .from(clubs)
+    .where(eq(clubs.id, clubId))
 
   return row ? toTeamBadge(row.badge) : null
 }

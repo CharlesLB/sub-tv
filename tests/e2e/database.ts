@@ -6,6 +6,7 @@ const createPool = () => new Pool({ connectionString: process.env.DATABASE_URL ?
 
 export const deleteChampionshipsNamed = async (name: string): Promise<number> => {
   const pool = createPool()
+
   try {
     const deleted = await pool.query<{ competition_id: string }>('delete from seasons where label = $1 and fmf_competition_id is null returning competition_id', [name])
     const competitionIds = deleted.rows.map((row) => row.competition_id)
@@ -19,11 +20,9 @@ export const deleteChampionshipsNamed = async (name: string): Promise<number> =>
 
 export const countSquadMembersOf = async (seasonId: string): Promise<number> => {
   const pool = createPool()
+
   try {
-    const result = await pool.query<{ total: string }>(
-      'select count(*) as total from season_squads sq join season_teams st on st.id = sq.season_team_id where st.season_id = $1',
-      [seasonId],
-    )
+    const result = await pool.query<{ total: string }>('select count(*) as total from season_squads sq join season_teams st on st.id = sq.season_team_id where st.season_id = $1', [seasonId])
 
     return Number(result.rows[0]?.total ?? 0)
   } finally {

@@ -1,4 +1,4 @@
-import { PLAYER_POSITION, PREFERRED_FOOT, type PlayerPosition, type PreferredFoot } from '@/modules/matches/client'
+import { PLAYER_POSITION, type PlayerPosition, PREFERRED_FOOT, type PreferredFoot } from '@/modules/matches/client'
 
 const POSITION_LABEL: Record<PlayerPosition, string> = {
   [PLAYER_POSITION.GOALKEEPER]: 'Goleiro',

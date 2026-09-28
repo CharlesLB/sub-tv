@@ -12,9 +12,7 @@ const CENTER_Y = 50
 const startersAsPitchPlayers = (team: SetupTeamVM, starterIds: readonly string[]): PitchPlayer[] => {
   const starterSet = new Set(starterIds)
 
-  return team.players
-    .filter((player) => starterSet.has(player.playerId))
-    .map((player) => ({ key: player.playerId, shirtNumber: player.shirtNumber, position: player.position }))
+  return team.players.filter((player) => starterSet.has(player.playerId)).map((player) => ({ key: player.playerId, shirtNumber: player.shirtNumber, position: player.position }))
 }
 
 const isOccupied = (positions: StarterPositions, point: PitchPoint): boolean =>
@@ -28,6 +26,7 @@ export const seedStarterPositions = (team: SetupTeamVM, starterIds: readonly str
 export const resolveStarterPositions = (team: SetupTeamVM, starterIds: readonly string[], saved: StarterPositions, attacksRight: boolean): StarterPositions => {
   const starters = startersAsPitchPlayers(team, starterIds)
   const layout = layoutStarters(starters, attacksRight)
+
   const kept: StarterPositions = Object.fromEntries(
     starters.flatMap((starter) => {
       const point = saved[starter.key]
@@ -35,6 +34,7 @@ export const resolveStarterPositions = (team: SetupTeamVM, starterIds: readonly 
       return point ? [[starter.key, point]] : []
     }),
   )
+
   const slots = R.values(layout)
 
   return starters

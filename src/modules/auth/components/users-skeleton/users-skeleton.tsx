@@ -1,5 +1,5 @@
-import { Skeleton } from '@/components/ui/skeleton/skeleton'
 import { cn } from '@/lib/utils/cn'
+import { Skeleton } from '@/components/ui/skeleton/skeleton'
 
 const ROW_COUNT = 4
 const ROW_DELAY_STEP_MS = 60

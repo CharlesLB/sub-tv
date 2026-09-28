@@ -1,10 +1,10 @@
-import { type CompetitionSource, COMPETITION_SOURCES, buildCompetitionPageUrl } from '../constants/fmf-sources'
 import { type CompetitionPage, parseCompetitionPage } from '../competition-page/competition-page-parser/competition-page-parser'
+import { buildCompetitionPageUrl, COMPETITION_SOURCES, type CompetitionSource } from '../constants/fmf-sources'
 import { decodeUtf8 } from '../http-client/http-client'
-import { type StoredPage, computeSha256, readStoredFile, sumulaRelativePath } from '../raw-storage/raw-storage'
-import type { ParsedSumula } from '../sumula/sumula-types/sumula-types'
+import { computeSha256, readStoredFile, type StoredPage, sumulaRelativePath } from '../raw-storage/raw-storage'
 import { parseSumulaPdf } from '../sumula/sumula-parser/sumula-parser'
-import { type SumulaReference, readSumulaReference } from '../sumula-reference/sumula-reference'
+import type { ParsedSumula } from '../sumula/sumula-types/sumula-types'
+import { readSumulaReference, type SumulaReference } from '../sumula-reference/sumula-reference'
 
 const YEAR_PATTERN = /(\d{4})(?!.*\d{4})/
 
@@ -40,6 +40,7 @@ const loadSumula = async (reference: SumulaReference, options: BundleOptions): P
   const bytes = await readStoredFile(relativePath)
   if (!bytes) return { reference, relativePath, sha256: null, parsed: null, failure: 'arquivo da súmula não disponível', skipped: false }
   if (!options.parseSumulas) return { reference, relativePath, sha256: computeSha256(bytes), parsed: null, failure: null, skipped: false }
+
   try {
     return { reference, relativePath, sha256: computeSha256(bytes), parsed: await parseSumulaPdf(bytes), failure: null, skipped: false }
   } catch (error) {
@@ -55,11 +56,13 @@ export const readEditionBundle = async (storedPage: StoredPage, options: Partial
   const page = parseCompetitionPage(decodeUtf8(pageBytes))
   const year = Number(YEAR_PATTERN.exec(page.label)?.[1] ?? Number.NaN)
   if (!Number.isInteger(year)) throw new Error(`não foi possível ler o ano da edição "${page.label}"`)
+
   const references = page.matches.flatMap((match) => {
     const reference = match.sumulaUrl ? readSumulaReference(match.sumulaUrl) : null
 
     return reference ? [reference] : []
   })
+
   const sumulas = await Promise.all(references.map(async (reference) => await loadSumula(reference, bundleOptions)))
 
   return {

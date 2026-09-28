@@ -1,11 +1,11 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { useActionState, useState, type FormEvent } from 'react'
+import { type FormEvent, useActionState, useState } from 'react'
 import { routes } from '@/lib/routes'
 import { cn } from '@/lib/utils/cn'
-import { createChampionship, type CreateChampionshipResult } from '../../actions/championship-actions'
-import { CATEGORIES, categoryBackgroundClass, categoryBorderClass, categoryLabel, type Category } from '../../categories'
+import { type CreateChampionshipResult, createChampionship } from '../../actions/championship-actions'
+import { CATEGORIES, type Category, categoryBackgroundClass, categoryBorderClass, categoryLabel } from '../../categories'
 import { showFlashMessage } from '../../flash-message/flash-message'
 import { CHAMPIONSHIP_NAME_MAX_LENGTH, CHAMPIONSHIP_PHASE_MAX_LENGTH, CHAMPIONSHIP_YEAR_MAX, CHAMPIONSHIP_YEAR_MIN } from '../../schemas'
 import type { CategoryClubsVM } from '../../types'
@@ -33,6 +33,7 @@ export function NewChampionshipPanel({ initialCategory, defaultYear, clubs, onCl
   const [selectedClubIds, setSelectedClubIds] = useState<string[]>([])
   const [warning, setWarning] = useState<string | null>(null)
   const isComplete = name.trim() !== ''
+
   const submitChampionship = async (previous: CreateChampionshipResult | null, formData: FormData): Promise<CreateChampionshipResult | null> => {
     const result = await createChampionship(previous, formData)
     if (!result.ok) return result
@@ -41,27 +42,38 @@ export function NewChampionshipPanel({ initialCategory, defaultYear, clubs, onCl
 
     return null
   }
+
   const [state, formAction, isPending] = useActionState(submitChampionship, null)
   const failure = state?.ok === false ? (Object.values(state.fieldErrors ?? {})[0]?.[0] ?? state.error) : null
+
   const blockIncomplete = (event: FormEvent<HTMLFormElement>) => {
     if (isComplete) return
     event.preventDefault()
     setWarning(INCOMPLETE_MESSAGE)
   }
+
   const chooseCategory = (nextCategory: Category) => {
     setCategory(nextCategory)
     setSelectedClubIds([])
   }
-  const toggleClub = (clubId: string) =>
-    setSelectedClubIds((current) => (current.includes(clubId) ? current.filter((selected) => selected !== clubId) : [...current, clubId]))
+
+  const toggleClub = (clubId: string) => setSelectedClubIds((current) => (current.includes(clubId) ? current.filter((selected) => selected !== clubId) : [...current, clubId]))
 
   return (
-    <form ref={scrollIntoViewOnMount} action={formAction} onSubmit={blockIncomplete} className="chamfer flex animate-rise-in flex-col gap-4 bg-pan2 p-5 mobile:p-[14px]">
+    <form ref={scrollIntoViewOnMount} action={formAction} onSubmit={blockIncomplete} className="flex animate-rise-in flex-col gap-4 bg-pan2 p-5 chamfer mobile:p-[14px]">
       <h2 className="text-[13.5px] font-bold tracking-[-.01em]">Novo campeonato</h2>
       <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,220px),1fr))] gap-[14px]">
         <label>
           <span className={LABEL_CLASS}>Nome</span>
-          <input name="name" value={name} onChange={(event) => setName(event.target.value)} maxLength={CHAMPIONSHIP_NAME_MAX_LENGTH} autoComplete="off" placeholder="ex.: COPA DO VALE" className={INPUT_CLASS} />
+          <input
+            name="name"
+            value={name}
+            onChange={(event) => setName(event.target.value)}
+            maxLength={CHAMPIONSHIP_NAME_MAX_LENGTH}
+            autoComplete="off"
+            placeholder="ex.: COPA DO VALE"
+            className={INPUT_CLASS}
+          />
         </label>
         <div role="group" aria-label="Categoria">
           <span className="mb-[6px] block text-[10.3px] font-semibold tracking-[-.01em] text-am">Categoria · obrigatória</span>

@@ -1,8 +1,8 @@
 import { decodeHtmlText } from '../../html-text/html-text'
 import { sliceBetween } from '../page-sections/page-sections'
-import { type StandingRow, parseStandingsTab } from '../standings-tab-parser/standings-tab-parser'
-import { type TableMatch, parseTableTab } from '../table-tab-parser/table-tab-parser'
-import { type TopScorerRow, parseTopScorersTab } from '../top-scorers-tab-parser/top-scorers-tab-parser'
+import { parseStandingsTab, type StandingRow } from '../standings-tab-parser/standings-tab-parser'
+import { parseTableTab, type TableMatch } from '../table-tab-parser/table-tab-parser'
+import { parseTopScorersTab, type TopScorerRow } from '../top-scorers-tab-parser/top-scorers-tab-parser'
 
 const TAB_MARKERS = {
   TABLE: 'id="tab_1-1"',

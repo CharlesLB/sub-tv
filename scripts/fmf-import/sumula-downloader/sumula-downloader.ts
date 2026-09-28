@@ -11,11 +11,13 @@ const downloadSumula = async (reference: SumulaReference, shouldRefresh: boolean
   if (!shouldRefresh && (await readStoredFile(relativePath))) return { reference, relativePath, status: 'cached' }
   if (!shouldRefresh && (await isMarkedMissing(relativePath))) return { reference, relativePath, status: 'missing' }
   const result = await requestFmf({ url: reference.url })
+
   if (!result.found) {
     await markMissing(relativePath)
 
     return { reference, relativePath, status: 'missing' }
   }
+
   await storeFile(relativePath, result.body)
 
   return { reference, relativePath, status: 'downloaded' }
@@ -24,6 +26,7 @@ const downloadSumula = async (reference: SumulaReference, shouldRefresh: boolean
 export const downloadSumulas = async (label: string, references: SumulaReference[], shouldRefresh: boolean): Promise<DownloadOutcome[]> =>
   await references.reduce<Promise<DownloadOutcome[]>>(async (previous, reference, index) => {
     const outcomes = [...(await previous), await downloadSumula(reference, shouldRefresh)]
+
     if ((index + 1) % PROGRESS_BATCH_SIZE === 0 || index + 1 === references.length) {
       const downloadedCount = outcomes.filter((outcome) => outcome.status === 'downloaded').length
       const missingCount = outcomes.filter((outcome) => outcome.status === 'missing').length

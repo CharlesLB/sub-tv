@@ -6,5 +6,4 @@ export type ActionResult<TData = void> = { ok: true; data: TData } | ActionFailu
 
 export const ok = <TData>(data: TData): ActionResult<TData> => ({ ok: true, data })
 
-export const fail = (error: string, fieldErrors?: FieldErrors): ActionFailure =>
-  fieldErrors ? { ok: false, error, fieldErrors } : { ok: false, error }
+export const fail = (error: string, fieldErrors?: FieldErrors): ActionFailure => (fieldErrors ? { ok: false, error, fieldErrors } : { ok: false, error })

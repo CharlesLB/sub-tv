@@ -5,6 +5,7 @@ const flush = () => new Promise<void>((resolve) => setTimeout(resolve, 0))
 
 const setup = (send: (operation: string) => Promise<SendOutcome>) => {
   const log = { sent: [] as string[], rejected: [] as string[], dropped: [] as string[], failures: 0, recoveries: 0, waits: [] as number[] }
+
   const queue = createEventQueue<string>({
     send,
     onSent: (operation) => log.sent.push(operation),
@@ -36,6 +37,7 @@ describe('event queue', () => {
       { operation: 'goal', coalesceKey: null },
       { operation: 'card', coalesceKey: null },
     ])
+
     await flush()
 
     expect(log.sent).toEqual(['goal', 'card'])
@@ -67,21 +69,26 @@ describe('event queue', () => {
 
   it('operations with the same coalesce key replace the waiting one', async () => {
     const release = { resolve: () => {} }
+
     const firstSend = new Promise<void>((resolve) => {
       release.resolve = resolve
     })
+
     const send = vi.fn(async (operation: string): Promise<SendOutcome> => {
       if (operation === 'goal') await firstSend
 
       return { status: SEND_OUTCOME.SENT }
     })
+
     const { queue, log } = setup(send)
 
     queue.enqueue([{ operation: 'goal', coalesceKey: null }])
+
     queue.enqueue([
       { operation: 'clock-1', coalesceKey: 'clock' },
       { operation: 'clock-2', coalesceKey: 'clock' },
     ])
+
     release.resolve()
     await flush()
 

@@ -8,6 +8,7 @@ export type UserRowVM = { id: string; username: string; isActive: boolean; lastS
 export const getUsers = async (): Promise<UserRowVM[]> => {
   await connection()
   const { appUsers } = tables
+
   const rows = await db
     .select({ id: appUsers.id, username: appUsers.username, isActive: appUsers.isActive, lastSignInAt: appUsers.lastSignInAt })
     .from(appUsers)

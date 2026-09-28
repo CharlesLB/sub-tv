@@ -1,5 +1,5 @@
-import { Skeleton } from '@/components/ui/skeleton/skeleton'
 import { cn } from '@/lib/utils/cn'
+import { Skeleton } from '@/components/ui/skeleton/skeleton'
 import { BenchSkeleton } from '../bench-skeleton/bench-skeleton'
 import { PitchSkeleton } from '../pitch-skeleton/pitch-skeleton'
 

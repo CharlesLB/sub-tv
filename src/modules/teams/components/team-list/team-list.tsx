@@ -17,7 +17,7 @@ export function TeamList({ teams, year, categoryFilter, activeTeamKey }: TeamLis
   return (
     <aside
       aria-label="Times"
-      className="max-h-full max-w-[250px] min-h-[260px] min-w-[190px] flex-[1_1_210px] overflow-y-auto bg-pan py-[14px] mobile:max-w-none mobile:min-h-0 mobile:min-w-0 mobile:flex-none mobile:overflow-hidden mobile:pt-[9px] mobile:pb-0"
+      className="max-h-full min-h-[260px] max-w-[250px] min-w-[190px] flex-[1_1_210px] overflow-y-auto bg-pan py-[14px] mobile:min-h-0 mobile:max-w-none mobile:min-w-0 mobile:flex-none mobile:overflow-hidden mobile:pt-[9px] mobile:pb-0"
     >
       <div className={COLUMN_LABEL_CLASS}>Filtro de categoria</div>
       <CategoryFilter year={year} activeCategory={categoryFilter} activeTeamKey={activeTeamKey} />

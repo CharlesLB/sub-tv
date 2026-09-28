@@ -1,5 +1,5 @@
-import { Skeleton } from '@/components/ui/skeleton/skeleton'
 import { cn } from '@/lib/utils/cn'
+import { Skeleton } from '@/components/ui/skeleton/skeleton'
 
 const DOT_DELAYS_MS = [100, 180, 260, 340] as const
 const FAINT_FROM_INDEX = 2

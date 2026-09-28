@@ -33,23 +33,24 @@ A carga grava tudo o que baixa em `.data/raw/fmf/` (HTML das competições e PDF
    ```
 
    (`--only-load` usa os arquivos já baixados em `.data/raw/fmf/`; sem eles, rode sem a flag.)
+
 4. Faça o deploy (`vercel --prod` ou push no repositório conectado). O build não precisa de acesso à FMF.
 
 ## Scripts
 
-| Comando | O que faz |
-| --- | --- |
-| `pnpm dev` | Servidor de desenvolvimento |
-| `pnpm build` / `pnpm start` | Build e servidor de produção |
-| `pnpm check` | `typecheck` + `lint` + `test` |
-| `pnpm test` | Testes unitários (Vitest) |
-| `pnpm e2e` | Testes de ponta a ponta (Playwright) |
-| `pnpm db:generate` | Gera migração a partir de `src/lib/db/schema.ts` |
-| `pnpm db:migrate` | Aplica as migrações em `DATABASE_URL` |
-| `pnpm fmf:import` | Carga/recarga dos dados da FMF (idempotente) |
-| `pnpm fmf:sync` | Sincronização incremental das edições em andamento (a mesma do cron diário) |
-| `pnpm users:create "<usuário>" "<senha>"` | Cria um usuário ou redefine a senha (nome sem diferenciar maiúsculas) |
-| `pnpm screenshot <rota> <arquivo.png> <claro\|escuro> <largura> <altura>` | Captura de tela autenticada (`SCREENSHOT_USERNAME`/`SCREENSHOT_PASSWORD`) |
+| Comando                                                                   | O que faz                                                                   |
+| ------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| `pnpm dev`                                                                | Servidor de desenvolvimento                                                 |
+| `pnpm build` / `pnpm start`                                               | Build e servidor de produção                                                |
+| `pnpm check`                                                              | `typecheck` + `lint` + `test`                                               |
+| `pnpm test`                                                               | Testes unitários (Vitest)                                                   |
+| `pnpm e2e`                                                                | Testes de ponta a ponta (Playwright)                                        |
+| `pnpm db:generate`                                                        | Gera migração a partir de `src/lib/db/schema.ts`                            |
+| `pnpm db:migrate`                                                         | Aplica as migrações em `DATABASE_URL`                                       |
+| `pnpm fmf:import`                                                         | Carga/recarga dos dados da FMF (idempotente)                                |
+| `pnpm fmf:sync`                                                           | Sincronização incremental das edições em andamento (a mesma do cron diário) |
+| `pnpm users:create "<usuário>" "<senha>"`                                 | Cria um usuário ou redefine a senha (nome sem diferenciar maiúsculas)       |
+| `pnpm screenshot <rota> <arquivo.png> <claro\|escuro> <largura> <altura>` | Captura de tela autenticada (`SCREENSHOT_USERNAME`/`SCREENSHOT_PASSWORD`)   |
 
 ## Organização
 

@@ -1,5 +1,5 @@
-import type { FormResult } from '@/modules/championships/client'
 import { cn } from '@/lib/utils/cn'
+import type { FormResult } from '@/modules/championships/client'
 
 const FORM_CLASS: Record<FormResult, string> = {
   V: 'bg-ac text-bg',

@@ -37,9 +37,7 @@ export const CreateUserInput = z
   })
   .refine(passwordsMatch, { message: PASSWORD_MISMATCH, path: [CONFIRMATION_FIELD] })
 
-export const ResetPasswordInput = z
-  .object({ userId: z.uuid(), password: NewPassword, confirmation: z.string() })
-  .refine(passwordsMatch, { message: PASSWORD_MISMATCH, path: [CONFIRMATION_FIELD] })
+export const ResetPasswordInput = z.object({ userId: z.uuid(), password: NewPassword, confirmation: z.string() }).refine(passwordsMatch, { message: PASSWORD_MISMATCH, path: [CONFIRMATION_FIELD] })
 
 export const SetUserActiveInput = z.object({
   userId: z.uuid(),

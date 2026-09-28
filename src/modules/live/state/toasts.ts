@@ -1,4 +1,4 @@
-import { syncKeyOf, TOAST_TONE, type LiveState, type ServerOperation, type ToastTone, type UndoEntry } from './live-state'
+import { type LiveState, type ServerOperation, syncKeyOf, TOAST_TONE, type ToastTone, type UndoEntry } from './live-state'
 
 export const MAXIMUM_TOASTS = 3
 

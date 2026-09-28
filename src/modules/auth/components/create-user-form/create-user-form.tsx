@@ -32,11 +32,7 @@ export function CreateUserForm() {
           <input name="confirmation" type="password" autoComplete="new-password" required className={FIELD_CLASS} />
           {fieldErrors?.confirmation ? <span className={FIELD_ERROR_CLASS}>{fieldErrors.confirmation[0]}</span> : null}
         </label>
-        <button
-          type="submit"
-          disabled={isPending}
-          className="mt-[14px] h-[36px] rounded-card bg-ac px-4 text-[11.8px] font-bold tracking-[-.01em] text-bg disabled:bg-bd2 disabled:text-tx4"
-        >
+        <button type="submit" disabled={isPending} className="mt-[14px] h-[36px] rounded-card bg-ac px-4 text-[11.8px] font-bold tracking-[-.01em] text-bg disabled:bg-bd2 disabled:text-tx4">
           {isPending ? 'Criando…' : 'Criar usuário'}
         </button>
       </div>

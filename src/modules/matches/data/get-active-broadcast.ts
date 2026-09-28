@@ -17,6 +17,7 @@ export const getActiveBroadcast = async (): Promise<ActiveBroadcastVM | null> =>
   cacheTag(tags.liveMatches())
 
   const { matches } = tables
+
   const [row] = await db
     .select({
       matchId: matches.id,
@@ -34,6 +35,7 @@ export const getActiveBroadcast = async (): Promise<ActiveBroadcastVM | null> =>
     .where(eq(matches.isBroadcast, true))
     .orderBy(desc(matches.updatedAt))
     .limit(1)
+
   if (!row) return null
 
   return {

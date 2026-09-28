@@ -1,11 +1,11 @@
-import { type SQL, getTableColumns, inArray, sql } from 'drizzle-orm'
-import { matchOfficials, matches } from '../../../../src/lib/db/schema'
+import { getTableColumns, inArray, type SQL, sql } from 'drizzle-orm'
+import { matches, matchOfficials } from '../../../../src/lib/db/schema'
 import type { TableMatch } from '../../competition-page/table-tab-parser/table-tab-parser'
 import { type EditionBundle, type LoadedSumula, sumulaOfMatch } from '../../edition-bundle/edition-bundle'
 import { SIDE } from '../../sumula/sumula-types/sumula-types'
 import type { SeasonTeamLookup } from '../club-loader/club-loader'
+import { createIssue, type ImportIssue, inChunks, inChunksReturning, SYNC_ISSUE, type Transaction } from '../database-context/database-context'
 import { adoptNarratedMatches } from '../narrated-match-adoption/narrated-match-adoption'
-import { type ImportIssue, SYNC_ISSUE, type Transaction, createIssue, inChunks, inChunksReturning } from '../database-context/database-context'
 
 const MATCH_STATUS = { SCHEDULED: 'agendado', FINISHED: 'encerrado', WALKOVER: 'wo' } as const
 const SAO_PAULO_OFFSET = '-03:00'
@@ -67,16 +67,7 @@ const buildMatchRow = (seasonId: string, tableMatch: TableMatch, sumula: LoadedS
 
 const FMF_OWNED_COLUMNS = ['round', 'home_team_id', 'away_team_id', 'kickoff_at', 'venue', 'city', 'sumula_url', 'sumula_revision'] as const
 
-const SUMULA_DERIVED_COLUMNS = [
-  'home_score_ht',
-  'away_score_ht',
-  'home_penalties',
-  'away_penalties',
-  'added_time_1t',
-  'added_time_2t',
-  'sumula_hash',
-  'sumula_processed_at',
-] as const
+const SUMULA_DERIVED_COLUMNS = ['home_score_ht', 'away_score_ht', 'home_penalties', 'away_penalties', 'added_time_1t', 'added_time_2t', 'sumula_hash', 'sumula_processed_at'] as const
 
 const sameSumulaCondition = 'excluded.sumula_url is not distinct from matches.sumula_url'
 
@@ -107,12 +98,16 @@ export const upsertMatches = async (transaction: Transaction, bundle: EditionBun
     homeSeasonTeamId: teams.get(tableMatch.home.crestId)?.seasonTeamId ?? '',
     awaySeasonTeamId: teams.get(tableMatch.away.crestId)?.seasonTeamId ?? '',
   }))
+
   const invalid = candidates.filter((candidate) => !candidate.homeSeasonTeamId || candidate.homeSeasonTeamId === candidate.awaySeasonTeamId)
   const valid = candidates.filter((candidate) => !invalid.includes(candidate))
+
   const issues = invalid.map((candidate) =>
     createIssue(SYNC_ISSUE.ESTRUTURA_PAGINA_MUDOU, { motivo: 'jogo_com_times_invalidos', fase: candidate.tableMatch.phase, jogo: candidate.tableMatch.matchNumber }),
   )
+
   await adoptNarratedMatches(transaction, seasonId, valid)
+
   const insertedRows = await inChunksReturning(valid, async (chunk) =>
     transaction
       .insert(matches)
@@ -120,6 +115,7 @@ export const upsertMatches = async (transaction: Transaction, bundle: EditionBun
       .onConflictDoUpdate({ target: [matches.seasonId, matches.phase, matches.matchNumber], set: { ...excludedAssignments, updatedAt: sql`now()` } })
       .returning({ id: matches.id, phase: matches.phase, matchNumber: matches.matchNumber }),
   )
+
   const matchIds = new Map(insertedRows.map((row) => [`${row.phase}|${row.matchNumber}`, row.id]))
   const loadedMatches = valid.map((candidate) => ({ ...candidate, matchId: matchIds.get(`${candidate.tableMatch.phase}|${candidate.tableMatch.matchNumber}`) ?? '' }))
   await replaceOfficials(transaction, loadedMatches)

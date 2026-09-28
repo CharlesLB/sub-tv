@@ -2,7 +2,7 @@
 
 import { useEffect, useEffectEvent } from 'react'
 import { useLiveState } from '../state/live-context'
-import { DIRECTION, nextPlayerInDirection, type Direction } from '../state/selectors'
+import { DIRECTION, type Direction, nextPlayerInDirection } from '../state/selectors'
 import { useLiveCommands } from '../state/use-live-commands'
 
 const KEY = { ESCAPE: 'Escape', GOAL: 'g', ASSIST: 'a', CARD: 'c', SUBSTITUTION: 's' } as const
@@ -30,24 +30,30 @@ export const useLiveShortcuts = ({ placedPlayers, onEscape }: ShortcutOptions): 
     if (event.key === KEY.ESCAPE) {
       onEscape()
       commands.closeOverlays()
+
       return
     }
+
     if (cardPickerOpen || isTyping(event.target) || event.metaKey || event.ctrlKey || event.altKey) return
 
     const direction = ARROW_DIRECTION[event.key]
+
     if (direction) {
       event.preventDefault()
       commands.select(nextPlayerInDirection(placedPlayers, selectedPlayerId, direction))
+
       return
     }
 
     const selected = selectedPlayerId ?? ''
+
     const shortcuts: Record<string, () => void> = {
       [KEY.GOAL]: () => commands.recordGoal(selected),
       [KEY.ASSIST]: () => commands.recordAssist(selected),
       [KEY.CARD]: () => commands.openCardPicker(),
       [KEY.SUBSTITUTION]: () => commands.startSubstitution(),
     }
+
     const shortcut = shortcuts[event.key.toLowerCase()]
     if (!shortcut) return
     event.preventDefault()

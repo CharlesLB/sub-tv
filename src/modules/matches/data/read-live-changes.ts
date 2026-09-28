@@ -1,5 +1,5 @@
 import 'server-only'
-import { and, eq, gt, inArray, isNotNull, sql, type AnyColumn } from 'drizzle-orm'
+import { type AnyColumn, and, eq, gt, inArray, isNotNull, sql } from 'drizzle-orm'
 import { db, tables } from '@/lib/db'
 import { parsePersistedClock } from '../live-clock/live-clock'
 import { LIVE_EVENT_TYPE, type LiveClock } from '../live-match/live-match'
@@ -20,11 +20,11 @@ const versionText = (column: AnyColumn) => sql<string>`${column}::text`
 
 const updatedMsOf = (column: AnyColumn) => sql<number>`floor(extract(epoch from ${column}) * 1000)::float8`
 
-const changedSince = (column: AnyColumn, sinceMs: number) =>
-  gt(column, sql`to_timestamp(${sinceMs / 1000}) - make_interval(secs => ${OVERLAP_SECONDS})`)
+const changedSince = (column: AnyColumn, sinceMs: number) => gt(column, sql`to_timestamp(${sinceMs / 1000}) - make_interval(secs => ${OVERLAP_SECONDS})`)
 
 const readEvents = async (matchId: string, sinceMs: number): Promise<LiveChanges['events']> => {
   const { matchEvents } = tables
+
   const rows = await db
     .select({
       id: matchEvents.id,
@@ -70,6 +70,7 @@ const readEvents = async (matchId: string, sinceMs: number): Promise<LiveChanges
 
 const readPositions = async (matchId: string, sinceMs: number): Promise<LiveChanges['positions']> => {
   const { matchLineups } = tables
+
   const rows = await db
     .select({
       playerId: matchLineups.playerId,
@@ -90,6 +91,7 @@ const readPositions = async (matchId: string, sinceMs: number): Promise<LiveChan
 
 const readClock = async (matchId: string, sinceMs: number): Promise<LiveChanges['clock']> => {
   const { matches } = tables
+
   const [row] = await db
     .select({ liveClock: matches.liveClock, version: versionText(matches.updatedAt), updatedMs: updatedMsOf(matches.updatedAt) })
     .from(matches)

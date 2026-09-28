@@ -22,9 +22,7 @@ export type PlayerMark = { corner: MarkCorner; tone: MarkTone; isCard: boolean; 
 const countLabel = (count: number): string | null => (count > 1 ? String(count) : null)
 
 const goalMark = (goals: number): PlayerMark[] =>
-  goals > 0
-    ? [{ corner: MARK_CORNER.TOP_RIGHT, tone: MARK_TONE.GOAL, isCard: false, icon: 'sportsSoccer', count: countLabel(goals), tip: goals > 1 ? `${goals} gols` : '1 gol' }]
-    : []
+  goals > 0 ? [{ corner: MARK_CORNER.TOP_RIGHT, tone: MARK_TONE.GOAL, isCard: false, icon: 'sportsSoccer', count: countLabel(goals), tip: goals > 1 ? `${goals} gols` : '1 gol' }] : []
 
 const assistMark = (assists: number): PlayerMark[] =>
   assists > 0
@@ -55,9 +53,4 @@ const substitutionMark = (state: PlayerMatchState): PlayerMark[] => {
   return state.subbedIn ? [{ ...badge, tone: MARK_TONE.SUBBED_IN, icon: 'arrowUpward', tip: 'Entrou em campo' }] : []
 }
 
-export const marksOf = (state: PlayerMatchState): PlayerMark[] => [
-  ...goalMark(state.goals),
-  ...assistMark(state.assists),
-  ...cardMark(state),
-  ...substitutionMark(state),
-]
+export const marksOf = (state: PlayerMatchState): PlayerMark[] => [...goalMark(state.goals), ...assistMark(state.assists), ...cardMark(state), ...substitutionMark(state)]

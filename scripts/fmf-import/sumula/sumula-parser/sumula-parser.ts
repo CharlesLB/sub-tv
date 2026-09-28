@@ -1,10 +1,10 @@
-import { tokenSimilarity, normalizeName } from '../../text-normalization/text-normalization'
+import { normalizeName, tokenSimilarity } from '../../text-normalization/text-normalization'
 import { extractPositionedText } from '../pdf-text-items/pdf-text-items'
 import { parseCards, parseGoals, parseSubstitutions } from '../sumula-events-parser/sumula-events-parser'
 import { parseSumulaHeader } from '../sumula-header-parser/sumula-header-parser'
 import { parseSumulaLineups } from '../sumula-lineup-parser/sumula-lineup-parser'
 import { parseSumulaStaff } from '../sumula-staff-parser/sumula-staff-parser'
-import { SIDE, type ParsedSumula, type PositionedText, type Side, type SumulaHeader } from '../sumula-types/sumula-types'
+import { type ParsedSumula, type PositionedText, SIDE, type Side, type SumulaHeader } from '../sumula-types/sumula-types'
 
 const MINIMUM_SIDE_SIMILARITY = 0.2
 
@@ -26,6 +26,7 @@ export const parseSumulaItems = (items: PositionedText[]): ParsedSumula => {
   const goals = parseGoals(items).map((goal) => ({ ...goal, side: resolveSide(header, goal.teamName) }))
   const cards = parseCards(items).map((card) => ({ ...card, side: resolveSide(header, card.teamName) }))
   const substitutions = parseSubstitutions(items).map((substitution) => ({ ...substitution, side: resolveSide(header, substitution.teamName) }))
+
   const warnings = [
     ...(header.homeName && header.awayName ? [] : ['cabeçalho sem nomes dos times']),
     ...(players.length > 0 ? [] : ['relação de jogadores vazia']),

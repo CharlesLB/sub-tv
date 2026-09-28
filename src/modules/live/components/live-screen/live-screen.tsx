@@ -27,11 +27,13 @@ export function LiveScreen({ officialsItems }: LiveScreenProps) {
   const isPortraitPhone = useMediaQuery(PORTRAIT_PHONE_QUERY)
   const [isTimelineExpanded, setTimelineExpanded] = useState(false)
   const timeline = buildTimeline(events, clock, playersById)
+
   const placedPlayers = players.flatMap((player) => {
     const point = positions[player.playerId]
 
     return interactions.playerStates[player.playerId]?.onPitch && point ? [{ playerId: player.playerId, ...point }] : []
   })
+
   useLiveShortcuts({ placedPlayers, onEscape: interactions.clearTransient })
   const showsTimeline = isTimelineExpanded || isPortraitPhone
 

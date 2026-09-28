@@ -30,6 +30,7 @@ const describeMatches = async (matchIds: string[]): Promise<Record<string, strin
   const awayTeam = alias(seasonTeams, 'away_team')
   const homeClub = alias(clubs, 'home_club')
   const awayClub = alias(clubs, 'away_club')
+
   const rows = await db
     .select({
       id: matches.id,
@@ -49,9 +50,7 @@ const describeMatches = async (matchIds: string[]): Promise<Record<string, strin
     .innerJoin(awayClub, eq(awayClub.id, awayTeam.clubId))
     .where(inArray(matches.id, matchIds))
 
-  return Object.fromEntries(
-    rows.map((row) => [row.id, `${row.homeName ?? row.homeShortName} × ${row.awayName ?? row.awayShortName}${MATCH_SEPARATOR}${row.competitionName} ${row.year}`]),
-  )
+  return Object.fromEntries(rows.map((row) => [row.id, `${row.homeName ?? row.homeShortName} × ${row.awayName ?? row.awayShortName}${MATCH_SEPARATOR}${row.competitionName} ${row.year}`]))
 }
 
 const describeUsers = async (userIds: string[]): Promise<Record<string, string>> => {

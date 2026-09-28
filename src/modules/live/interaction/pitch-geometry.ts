@@ -22,6 +22,7 @@ export const nearestDropTarget = (rect: FieldRect, targets: PlacedTarget[], clie
     playerId: target.playerId,
     distance: Math.hypot(clientX - (rect.left + (target.point.x / PERCENT) * rect.width), clientY - (rect.top + (target.point.y / PERCENT) * rect.height)),
   }))
+
   const closest = R.firstBy(measured, (candidate) => candidate.distance)
 
   return closest && closest.distance < DROP_RADIUS_PX ? closest.playerId : null

@@ -1,4 +1,4 @@
-import { SIDE, type LiveTeamVM, type Side } from '@/modules/matches/client'
+import { type LiveTeamVM, SIDE, type Side } from '@/modules/matches/client'
 import type { TimelineItem } from '../../state/timeline'
 import { RotateNotice } from '../rotate-notice/rotate-notice'
 import { TimelineRow } from '../timeline-row/timeline-row'
@@ -31,8 +31,8 @@ export function ExpandedTimeline({ items, teams, showRotateNotice }: ExpandedTim
       ))}
       {items.length === 0 ? (
         <div className="flex flex-col items-center gap-2 pt-[22px] pb-2 text-center">
-          <span aria-hidden className="hexagon relative block h-[29px] w-6 bg-bd2">
-            <span className="hexagon absolute inset-px bg-pan" />
+          <span aria-hidden className="relative block h-[29px] w-6 bg-bd2 hexagon">
+            <span className="absolute inset-px bg-pan hexagon" />
           </span>
           <span className="text-[11.7px] font-bold tracking-[-.01em] text-tx3">Nada registrado ainda</span>
           <span className="text-[12px] text-tx4">Gols, cartões e substituições entram aqui em ordem de minuto.</span>

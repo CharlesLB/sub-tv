@@ -1,6 +1,6 @@
 import * as R from 'remeda'
 import { sanitizePersonName } from '../../text-normalization/text-normalization'
-import { SIDE, type PositionedText, type Side, type SumulaPlayer } from '../sumula-types/sumula-types'
+import { type PositionedText, SIDE, type Side, type SumulaPlayer } from '../sumula-types/sumula-types'
 import { findItems, groupByNearestAnchor, joinText, readingOrder } from '../text-layout/text-layout'
 
 const TITLE = {
@@ -31,8 +31,7 @@ const SIDE_FRAMES: readonly SideFrame[] = [
 
 const isInFrame = (frame: SideFrame, item: PositionedText): boolean => item.x >= frame.minimumX && item.x < frame.maximumX
 
-const firstInFrame = (items: PositionedText[], frame: SideFrame, text: string): PositionedText | undefined =>
-  findItems(items, text).find((item) => isInFrame(frame, item))
+const firstInFrame = (items: PositionedText[], frame: SideFrame, text: string): PositionedText | undefined => findItems(items, text).find((item) => isInFrame(frame, item))
 
 const mergeWrappedNumbers = (numberItems: PositionedText[]): PositionedText[] =>
   R.sortBy(numberItems, [(item) => item.y, 'desc']).reduce<PositionedText[]>((merged, item) => {
@@ -44,10 +43,12 @@ const mergeWrappedNumbers = (numberItems: PositionedText[]): PositionedText[] =>
 
 const buildPlayer = (side: Side, numberX: number, anchor: PositionedText, members: PositionedText[], substitutesY: number): SumulaPlayer | null => {
   const cbfItems = members.filter((item) => item.x >= numberX + COLUMN_OFFSET.CBF && CBF_FRAGMENT_PATTERN.test(item.text))
+
   const joinedCbf = readingOrder(cbfItems)
     .map((item) => item.text)
     .join('')
     .replace(THOUSANDS_SEPARATOR_PATTERN, '')
+
   const cbfText = CBF_PATTERN.test(joinedCbf) ? joinedCbf : null
   const nameItems = members.filter((item) => !cbfItems.includes(item))
   const rawNickname = joinText(nameItems.filter((item) => item.x < numberX + COLUMN_OFFSET.FULL_NAME))
@@ -75,6 +76,7 @@ const parseSide = (items: PositionedText[], frame: SideFrame, playersTitleY: num
   if (!startersTitle || !staffTitle || !numberHeader) return []
   const substitutesY = firstInFrame(items, frame, TITLE.SUBSTITUTES)?.y ?? Number.NEGATIVE_INFINITY
   const numberX = numberHeader.x
+
   const sectionItems = items.filter(
     (item) =>
       isInFrame(frame, item) &&
@@ -83,6 +85,7 @@ const parseSide = (items: PositionedText[], frame: SideFrame, playersTitleY: num
       Math.abs(item.y - numberHeader.y) > HEADER_ROW_TOLERANCE &&
       item.text !== TITLE.SUBSTITUTES,
   )
+
   const numberItems = sectionItems.filter((item) => item.x < numberX + COLUMN_OFFSET.NICKNAME && NUMBER_PATTERN.test(item.text))
   const anchors = mergeWrappedNumbers(numberItems)
 

@@ -1,5 +1,5 @@
 import 'server-only'
-import { readLiveChanges, type LiveChanges } from '../data/read-live-changes'
+import { type LiveChanges, readLiveChanges } from '../data/read-live-changes'
 import { STREAM_MESSAGE } from '../live-stream/live-stream-messages'
 
 const POLL_INTERVAL_MS = 1_500
@@ -13,8 +13,7 @@ type Versioned = { versionKey: string; version: string; updatedMs: number }
 
 const encoder = new TextEncoder()
 
-const unsent = <TItem extends Versioned>(items: TItem[], sentVersions: Map<string, string>): TItem[] =>
-  items.filter((item) => sentVersions.get(item.versionKey) !== item.version)
+const unsent = <TItem extends Versioned>(items: TItem[], sentVersions: Map<string, string>): TItem[] => items.filter((item) => sentVersions.get(item.versionKey) !== item.version)
 
 export const createLiveChangeStream = ({ matchId, sinceMs, signal }: StreamOptions): ReadableStream<Uint8Array> => {
   const session = { seq: 0, watermarkMs: sinceMs, isClosed: false, sentVersions: new Map<string, string>() }
@@ -59,11 +58,13 @@ export const createLiveChangeStream = ({ matchId, sinceMs, signal }: StreamOptio
 
       const poll = async () => {
         if (session.isClosed) return
+
         try {
           publish(await readLiveChanges(matchId, session.watermarkMs))
         } catch {
           write(': retry\n\n')
         }
+
         if (!session.isClosed) timers.poll = setTimeout(poll, POLL_INTERVAL_MS)
       }
 

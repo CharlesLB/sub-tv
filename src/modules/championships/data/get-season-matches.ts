@@ -19,6 +19,7 @@ export const getSeasonMatches = async (seasonId: string): Promise<MatchCardVM[]>
   cacheTag(tags.seasonMatches(seasonId), tags.fmfData())
 
   const { matches } = tables
+
   const rows = await db
     .select({
       id: matches.id,

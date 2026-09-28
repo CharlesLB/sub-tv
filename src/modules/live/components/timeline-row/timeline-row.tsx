@@ -1,4 +1,4 @@
-import { SIDE, type LiveTeamVM, type Side } from '@/modules/matches/client'
+import { type LiveTeamVM, SIDE, type Side } from '@/modules/matches/client'
 import type { TimelineItem } from '../../state/timeline'
 import { EventIcon } from '../event-icon/event-icon'
 

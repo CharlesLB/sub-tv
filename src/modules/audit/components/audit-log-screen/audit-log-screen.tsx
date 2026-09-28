@@ -16,6 +16,7 @@ export async function AuditLogScreen({ query }: AuditLogScreenProps) {
     period: query[PERIOD_PARAMETER],
     page: query[PAGE_PARAMETER],
   })
+
   const [users, entries] = await Promise.all([getAuditUserOptions(), getAuditEntries(filter)])
 
   return (

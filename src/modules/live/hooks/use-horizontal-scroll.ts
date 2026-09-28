@@ -17,8 +17,7 @@ const edgesOf = (element: HTMLElement): ScrollEdges => ({
   atEnd: element.scrollLeft + element.clientWidth >= element.scrollWidth - EDGE_TOLERANCE_PX,
 })
 
-const sameEdges = (left: ScrollEdges, right: ScrollEdges): boolean =>
-  left.canScroll === right.canScroll && left.atStart === right.atStart && left.atEnd === right.atEnd
+const sameEdges = (left: ScrollEdges, right: ScrollEdges): boolean => left.canScroll === right.canScroll && left.atStart === right.atStart && left.atEnd === right.atEnd
 
 export const useHorizontalScroll = () => {
   const [viewport, setViewport] = useState<HTMLDivElement | null>(null)

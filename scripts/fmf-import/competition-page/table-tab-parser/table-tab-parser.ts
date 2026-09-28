@@ -1,5 +1,5 @@
 import { decodeHtmlText, parseInteger } from '../../html-text/html-text'
-import { type TeamReference, readCrestReference, splitPhasePanes } from '../page-sections/page-sections'
+import { readCrestReference, splitPhasePanes, type TeamReference } from '../page-sections/page-sections'
 import { parseLongPortugueseDate } from '../portuguese-date/portuguese-date'
 
 const PHASE_PANE_PREFIX = 'fase_'
@@ -24,7 +24,7 @@ export const OFFICIAL_ROLE = {
 export type OfficialRole = (typeof OFFICIAL_ROLE)[keyof typeof OFFICIAL_ROLE]
 
 const OFFICIAL_LABELS: Readonly<Record<string, OfficialRole>> = {
-  'ÁRBITRO': OFFICIAL_ROLE.ARBITRO,
+  ÁRBITRO: OFFICIAL_ROLE.ARBITRO,
   'ÁRBITRO ASSISTENTE 1': OFFICIAL_ROLE.ASSISTENTE_1,
   'ÁRBITRO ASSISTENTE 2': OFFICIAL_ROLE.ASSISTENTE_2,
   'QUARTO ÁRBITRO': OFFICIAL_ROLE.QUARTO_ARBITRO,

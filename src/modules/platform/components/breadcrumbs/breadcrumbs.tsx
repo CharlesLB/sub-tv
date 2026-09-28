@@ -1,6 +1,6 @@
 import Link from 'next/link'
-import type { AppHref } from '@/lib/routes'
 import { Fragment } from 'react'
+import type { AppHref } from '@/lib/routes'
 
 export type Crumb = { label: string; href?: AppHref; separator?: '/' | '·' }
 

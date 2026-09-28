@@ -1,6 +1,6 @@
+import { cn } from '@/lib/utils/cn'
 import { Icon } from '@/components/ui/icon/icon'
 import type { IconName } from '@/components/ui/icon/icon-paths'
-import { cn } from '@/lib/utils/cn'
 import { LIVE_EVENT_TYPE } from '@/modules/matches/client'
 import { TIMELINE_MARKER, type TimelineItem } from '../../state/timeline'
 

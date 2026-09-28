@@ -1,7 +1,7 @@
 import type { HTMLElement } from 'node-html-parser'
 import { z } from 'zod'
 import { parseHtml, textOf } from '../../html-text/html-text'
-import { type TeamReference, readCrestReference, splitPhasePanes } from '../page-sections/page-sections'
+import { readCrestReference, splitPhasePanes, type TeamReference } from '../page-sections/page-sections'
 
 const STANDING_CELL_COUNT = 12
 const GROUP_PATTERN = /^GRUPO\s+(\S+)/i
@@ -34,6 +34,7 @@ const readTeam = (cells: HTMLElement[]): TeamReference | null => {
 
 const readStandingRow = (phase: string, groupName: string | null, cells: HTMLElement[]): StandingRow | null => {
   const team = readTeam(cells)
+
   const numbers = StandingNumbersSchema.safeParse({
     position: textOf(cells[0]),
     points: textOf(cells[3]),
@@ -44,6 +45,7 @@ const readStandingRow = (phase: string, groupName: string | null, cells: HTMLEle
     goalsFor: textOf(cells[8]),
     goalsAgainst: textOf(cells[9]),
   })
+
   if (!team || !numbers.success) return null
 
   return { ...numbers.data, phase, groupName, team }
@@ -65,5 +67,4 @@ const parsePane = (phase: string, paneHtml: string): StandingRow[] =>
       { groupName: null, rows: [] },
     ).rows
 
-export const parseStandingsTab = (sectionHtml: string, paneIdPrefix: string): StandingRow[] =>
-  splitPhasePanes(sectionHtml, paneIdPrefix).flatMap((pane) => parsePane(pane.name, pane.html))
+export const parseStandingsTab = (sectionHtml: string, paneIdPrefix: string): StandingRow[] => splitPhasePanes(sectionHtml, paneIdPrefix).flatMap((pane) => parsePane(pane.name, pane.html))

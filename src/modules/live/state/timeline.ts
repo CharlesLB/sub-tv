@@ -1,4 +1,4 @@
-import { GOAL_TYPE, LIVE_EVENT_TYPE, MATCH_PERIOD, type LiveClock, type LiveEventType, type LivePlayerVM, type MatchPeriod, type Side } from '@/modules/matches/client'
+import { GOAL_TYPE, LIVE_EVENT_TYPE, type LiveClock, type LiveEventType, type LivePlayerVM, MATCH_PERIOD, type MatchPeriod, type Side } from '@/modules/matches/client'
 import type { LiveEvent } from './live-state'
 import { playerTag } from './selectors'
 
@@ -39,6 +39,7 @@ export const describeEvent = (event: LiveEvent, playersById: Record<string, Live
 
     return `${title} — ${tag}${assistant ? ` · ASSIST. ${playerTag(assistant)}` : ''}`
   }
+
   if (event.type === LIVE_EVENT_TYPE.YELLOW_CARD) return `AMARELO — ${tag}`
   if (event.type === LIVE_EVENT_TYPE.RED_CARD) return event.fromSecondYellow ? `VERMELHO (2º AMARELO) — ${tag}` : `VERMELHO — ${tag}`
 

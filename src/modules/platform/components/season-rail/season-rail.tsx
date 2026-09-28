@@ -52,6 +52,7 @@ export function SeasonRail({ years, activeYear, championships, activeChampionshi
         return value && basePath === '/elencos' ? [[parameter, value]] : []
       }),
     )
+
     query.set(SEASON_PARAMETER, String(year))
 
     return `${basePath}?${query.toString()}`
@@ -60,6 +61,7 @@ export function SeasonRail({ years, activeYear, championships, activeChampionshi
   useEffect(() => {
     const rememberedYear = readRememberedYear()
     const isKnownYear = years.some((seasonYear) => seasonYear.year === rememberedYear)
+
     if (!hasExplicitYear && pathname === basePath && rememberedYear !== null && rememberedYear !== activeYear && isKnownYear) {
       router.replace(hrefForYear(rememberedYear))
     }

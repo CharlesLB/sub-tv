@@ -1,5 +1,5 @@
 import * as R from 'remeda'
-import { DATA_SOURCE, GOAL_TYPE, LIVE_EVENT_TYPE, SIDE, type LivePlayerVM, type SeasonNumbersVM, type Side } from '@/modules/matches/client'
+import { DATA_SOURCE, GOAL_TYPE, LIVE_EVENT_TYPE, type LivePlayerVM, type SeasonNumbersVM, SIDE, type Side } from '@/modules/matches/client'
 import type { LiveEvent, PlayerMatchState } from './live-state'
 
 const PREFERRED_FIRST_SELECTION_SHIRT = 9

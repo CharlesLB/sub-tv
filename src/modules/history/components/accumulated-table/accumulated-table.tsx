@@ -1,6 +1,6 @@
 import Link from 'next/link'
-import { categoryLabel, categoryTextClass } from '@/modules/championships/client'
 import { cn } from '@/lib/utils/cn'
+import { categoryLabel, categoryTextClass } from '@/modules/championships/client'
 import type { HistoryFilter } from '../../history-filter/history-filter'
 import { historyHref } from '../../history-href/history-href'
 import { formatPercent, formatPosition, formatSignedNumber } from '../../stat-format/stat-format'
@@ -43,7 +43,7 @@ export function AccumulatedTable({ rows, filter }: AccumulatedTableProps) {
               href={historyHref({ kind: 'team', teamKey: row.teamKey }, filter)}
               title="Abrir a página do time"
               className={cn(
-                'flex w-full animate-fade-up items-center gap-[10px] border-l-[3px] px-3 py-[10px] mobile:gap-2 mobile:px-[10px] text-left transition-colors duration-150 hover:bg-pan2',
+                'flex w-full animate-fade-up items-center gap-[10px] border-l-[3px] px-3 py-[10px] text-left transition-colors duration-150 hover:bg-pan2 mobile:gap-2 mobile:px-[10px]',
                 index % 2 === 1 ? 'bg-pan0' : 'bg-pan',
                 index === 0 ? 'border-ac' : 'border-transparent',
               )}

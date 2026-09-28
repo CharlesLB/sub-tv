@@ -12,6 +12,7 @@ const team: SetupTeamVM = {
   players: R.range(1, 15).map((shirtNumber) => ({ playerId: `p${shirtNumber}`, shirtNumber, name: `Atleta ${shirtNumber}`, nickname: null, position: null })),
   defaultStarterIds: [],
 }
+
 const eleven = R.range(1, 12).map((shirtNumber) => `p${shirtNumber}`)
 
 describe('starter-positions', () => {

@@ -11,11 +11,13 @@ export type AppUser = { id: string; username: string }
 export const userService = {
   authenticate: async (username: string, password: string): Promise<AppUser | null> => {
     const { appUsers } = tables
+
     const [user] = await db
       .select({ id: appUsers.id, username: appUsers.username, passwordHash: appUsers.passwordHash, isActive: appUsers.isActive })
       .from(appUsers)
       .where(eq(appUsers.normalizedUsername, normalizeUsername(username)))
       .limit(1)
+
     const passwordMatches = await bcrypt.compare(password, user?.passwordHash ?? TIMING_GUARD_HASH)
     if (!user || !user.isActive || !passwordMatches) return null
 
@@ -25,11 +27,7 @@ export const userService = {
   },
   findActiveById: async (userId: string): Promise<AppUser | null> => {
     const { appUsers } = tables
-    const [user] = await db
-      .select({ id: appUsers.id, username: appUsers.username, isActive: appUsers.isActive })
-      .from(appUsers)
-      .where(eq(appUsers.id, userId))
-      .limit(1)
+    const [user] = await db.select({ id: appUsers.id, username: appUsers.username, isActive: appUsers.isActive }).from(appUsers).where(eq(appUsers.id, userId)).limit(1)
 
     return user?.isActive ? { id: user.id, username: user.username } : null
   },

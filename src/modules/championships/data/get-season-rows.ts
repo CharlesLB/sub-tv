@@ -40,6 +40,7 @@ export const getSeasonRows = async (filter: { year: number } | { seasonId: strin
 
   const { seasons, competitions } = tables
   const condition = 'year' in filter ? eq(seasons.year, filter.year) : eq(seasons.id, filter.seasonId)
+
   const seasonRows = await db
     .select({
       id: seasons.id,
@@ -54,6 +55,7 @@ export const getSeasonRows = async (filter: { year: number } | { seasonId: strin
     .innerJoin(competitions, eq(competitions.id, seasons.competitionId))
     .where(condition)
     .orderBy(desc(seasons.year), competitions.category, competitions.division)
+
   const counts = R.indexBy(await countTeamsAndAthletes(seasonRows.map((season) => season.id)), (row) => row.seasonId)
 
   return seasonRows.map((season) => ({

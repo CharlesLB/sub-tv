@@ -3,7 +3,7 @@ import { and, asc, desc, eq, inArray, isNull, or } from 'drizzle-orm'
 import * as R from 'remeda'
 import { db, tables } from '@/lib/db'
 import { toTitleCase } from '@/modules/championships'
-import { DATA_SOURCE, SIDE, type LivePlayerVM, type SeasonNumbersVM, type Side } from '../live-match/live-match'
+import { DATA_SOURCE, type LivePlayerVM, type SeasonNumbersVM, SIDE, type Side } from '../live-match/live-match'
 import { layoutStarters, type PitchPoint } from '../pitch-layout/pitch-layout'
 
 const CURIOSITIES_PER_PLAYER = 2
@@ -45,6 +45,7 @@ const preferEditorialRows = (rows: LineupRow[]): LineupRow[] => {
 
 const readSeasonNumbers = async (seasonId: string, playerIds: string[]): Promise<Record<string, SeasonNumbersVM>> => {
   const { playerSeasonStats } = tables
+
   const rows = await db
     .select({
       playerId: playerSeasonStats.playerId,
@@ -69,6 +70,7 @@ const readSeasonNumbers = async (seasonId: string, playerIds: string[]): Promise
 
 const readCuriosities = async (seasonId: string, playerIds: string[]): Promise<Record<string, string[]>> => {
   const { curiosities } = tables
+
   const rows = await db
     .select({ playerId: curiosities.playerId, text: curiosities.text })
     .from(curiosities)
@@ -97,6 +99,7 @@ const shortNameOf = (row: LineupRow): string => {
 
 const pitchPointsOf = (rows: LineupRow[], side: Side): Record<string, PitchPoint> => {
   const starters = rows.filter((row) => row.isStarter)
+
   const computed = layoutStarters(
     starters.map((row) => ({ key: row.playerId, shirtNumber: row.shirtNumber, position: row.positionOverride ?? row.position })),
     side === SIDE.HOME,

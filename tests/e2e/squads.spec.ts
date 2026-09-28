@@ -1,4 +1,4 @@
-import { expect, test, type Page } from '@playwright/test'
+import { expect, type Page, test } from '@playwright/test'
 import { signIn } from './sign-in'
 
 const NICKNAME = 'Apelido E2E'

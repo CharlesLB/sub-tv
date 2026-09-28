@@ -1,5 +1,5 @@
 import { routes } from '@/lib/routes'
-import { toHistoryRouteQuery, type HistoryFilter } from '../history-filter/history-filter'
+import { type HistoryFilter, toHistoryRouteQuery } from '../history-filter/history-filter'
 
 export type HistoryTarget = { kind: 'overview' } | { kind: 'team'; teamKey: string } | { kind: 'athlete'; playerId: string }
 

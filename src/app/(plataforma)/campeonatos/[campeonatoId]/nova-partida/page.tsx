@@ -19,11 +19,7 @@ async function NewMatchScreen({ seasonId, prefillMatchId }: { seasonId: string; 
   return (
     <>
       <ContextBar
-        crumbs={[
-          { label: 'Campeonatos', href: routes.championships(header.year) },
-          { label: header.name, href: routes.championship(header.id) },
-          { label: PAGE_LABEL },
-        ]}
+        crumbs={[{ label: 'Campeonatos', href: routes.championships(header.year) }, { label: header.name, href: routes.championship(header.id) }, { label: PAGE_LABEL }]}
         title={header.name}
         category={header.category}
         detail={header.statusLine}

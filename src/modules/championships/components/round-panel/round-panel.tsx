@@ -14,9 +14,7 @@ type RoundPanelProps = {
 }
 
 export function RoundPanel({ seasonId, matches, currentRound, currentPhase }: RoundPanelProps) {
-  const roundMatches = matches
-    .filter((match) => match.round === currentRound && (currentPhase === null || match.phase === currentPhase))
-    .slice(0, MAXIMUM_ROUND_CARDS)
+  const roundMatches = matches.filter((match) => match.round === currentRound && (currentPhase === null || match.phase === currentPhase)).slice(0, MAXIMUM_ROUND_CARDS)
 
   return (
     <aside className="flex min-w-[280px] flex-[0_1_340px] flex-col gap-[10px] mobile:min-w-0">
@@ -31,7 +29,7 @@ export function RoundPanel({ seasonId, matches, currentRound, currentPhase }: Ro
       ))}
       {roundMatches.length === 0 ? (
         <div className="flex flex-col items-center gap-[14px] rounded-card border border-bd bg-pan px-[18px] py-[26px] text-center">
-          <span className="hexagon h-[34px] w-7 border border-bd2 bg-bd" />
+          <span className="h-[34px] w-7 border border-bd2 bg-bd hexagon" />
           <span className="text-[13.5px] font-bold tracking-[-.01em]">Nenhuma partida nesta rodada</span>
           <span className="max-w-[260px] text-[12.5px] leading-normal text-tx3">A tabela só muda quando existem partidas com resultado nesta rodada.</span>
           <Link href={routes.newMatch(seasonId)} className="flex h-[38px] items-center bg-ac px-4 text-[10.8px] font-bold tracking-[-.01em] text-bg">

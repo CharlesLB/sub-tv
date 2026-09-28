@@ -4,7 +4,7 @@ import { matchLineups, seasonSquads } from '../../../../src/lib/db/schema'
 import type { Side, SumulaPlayer } from '../../sumula/sumula-types/sumula-types'
 import { hasDigits, normalizeName, sanitizePersonName } from '../../text-normalization/text-normalization'
 import type { SeasonTeamLookup } from '../club-loader/club-loader'
-import { type ImportIssue, SYNC_ISSUE, type Transaction, createIssue, inChunks, mostFrequent } from '../database-context/database-context'
+import { createIssue, type ImportIssue, inChunks, mostFrequent, SYNC_ISSUE, type Transaction } from '../database-context/database-context'
 import type { LoadedMatch } from '../match-loader/match-loader'
 import { type IdentifiedPlayer, identityOf, resolvePlayerIds } from '../player-identity/player-identity'
 
@@ -29,13 +29,12 @@ const sanitizedNameIssues = (loadedMatches: LoadedMatch[]): ImportIssue[] =>
   loadedMatches.flatMap((loaded) =>
     (loaded.sumula?.parsed?.players ?? [])
       .filter((player) => hasDigits(player.fullName) || hasDigits(player.nickname))
-      .map((player) =>
-        createIssue(SYNC_ISSUE.SUMULA_ILEGIVEL, { motivo: 'nome_com_digitos_removidos', lado: player.side, numero: player.shirtNumber }, { matchId: loaded.matchId }),
-      ),
+      .map((player) => createIssue(SYNC_ISSUE.SUMULA_ILEGIVEL, { motivo: 'nome_com_digitos_removidos', lado: player.side, numero: player.shirtNumber }, { matchId: loaded.matchId })),
   )
 
 const buildCandidates = (loadedMatches: LoadedMatch[], teams: SeasonTeamLookup): { candidates: IdentifiedPlayer[]; issues: ImportIssue[] } => {
   const clubBySeasonTeam = new Map([...teams.values()].map((team) => [team.seasonTeamId, team.clubId]))
+
   const entries = loadedMatches.flatMap((loaded) =>
     (loaded.sumula?.parsed?.players ?? []).map(sanitizePlayer).map((player) => {
       const seasonTeamId = seasonTeamOf(loaded, player.side)
@@ -43,12 +42,15 @@ const buildCandidates = (loadedMatches: LoadedMatch[], teams: SeasonTeamLookup):
       return { loaded, player, seasonTeamId, clubId: clubBySeasonTeam.get(seasonTeamId) ?? '' }
     }),
   )
+
   const knownCbfIds = new Map(entries.flatMap((entry) => (entry.player.cbfId ? [[nameKey(entry.seasonTeamId, entry.player.fullName), entry.player.cbfId] as const] : [])))
+
   const candidates = entries.map((entry) => {
     const cbfId = entry.player.cbfId ?? knownCbfIds.get(nameKey(entry.seasonTeamId, entry.player.fullName)) ?? null
 
     return { ...entry, cbfId, identity: identityOf(cbfId, entry.clubId, entry.player.fullName) }
   })
+
   const issues = R.pipe(
     candidates.filter((candidate) => candidate.cbfId === null),
     R.groupBy((candidate) => candidate.loaded.matchId),
@@ -75,14 +77,11 @@ const dedupeLineups = (candidates: IdentifiedPlayer[]): { unique: IdentifiedPlay
     R.uniqueBy((candidate) => `${candidate.loaded.matchId}|${lineupKey(candidate.player.side, candidate.player.shirtNumber)}`),
     R.uniqueBy((candidate) => `${candidate.loaded.matchId}|${candidate.identity}`),
   )
+
   const issues = candidates
     .filter((candidate) => !unique.includes(candidate))
     .map((candidate) =>
-      createIssue(
-        SYNC_ISSUE.SUMULA_ILEGIVEL,
-        { motivo: 'numero_ou_jogador_duplicado', lado: candidate.player.side, numero: candidate.player.shirtNumber },
-        { matchId: candidate.loaded.matchId },
-      ),
+      createIssue(SYNC_ISSUE.SUMULA_ILEGIVEL, { motivo: 'numero_ou_jogador_duplicado', lado: candidate.player.side, numero: candidate.player.shirtNumber }, { matchId: candidate.loaded.matchId }),
     )
 
   return { unique, issues }
@@ -99,6 +98,7 @@ const upsertSquads = async (transaction: Transaction, candidates: IdentifiedPlay
       usualShirtNumber: mostFrequent(group.map((candidate) => candidate.player.shirtNumber)),
     })),
   )
+
   await inChunks(squads, async (chunk) =>
     transaction
       .insert(seasonSquads)
@@ -114,6 +114,7 @@ export const loadLineups = async (transaction: Transaction, loadedMatches: Loade
   await upsertSquads(transaction, deduped.unique, playerIds)
   const parsedMatchIds = loadedMatches.filter((loaded) => loaded.sumula?.parsed).map((loaded) => loaded.matchId)
   if (parsedMatchIds.length > 0) await transaction.delete(matchLineups).where(and(inArray(matchLineups.matchId, parsedMatchIds), eq(matchLineups.source, FMF_SOURCE)))
+
   const lineupRows = R.uniqueBy(
     deduped.unique.map((candidate) => ({
       matchId: candidate.loaded.matchId,
@@ -126,7 +127,9 @@ export const loadLineups = async (transaction: Transaction, loadedMatches: Loade
     })),
     (row) => `${row.matchId}|${row.playerId}`,
   )
+
   await inChunks(lineupRows, async (chunk) => transaction.insert(matchLineups).values(chunk).onConflictDoNothing())
+
   const lookup = new Map(
     R.pipe(
       lineupRows,

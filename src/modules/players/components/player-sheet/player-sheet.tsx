@@ -1,9 +1,9 @@
 import Link from 'next/link'
 import type { ReactNode } from 'react'
-import { Crest } from '@/components/ui/crest/crest'
 import { routes } from '@/lib/routes'
 import { cn } from '@/lib/utils/cn'
-import { CategoryTag, categoryBorderClass, categoryLabel, categoryTextClass, otherCategory, type Category } from '@/modules/championships/client'
+import { Crest } from '@/components/ui/crest/crest'
+import { type Category, CategoryTag, categoryBorderClass, categoryLabel, categoryTextClass, otherCategory } from '@/modules/championships/client'
 import type { SquadPlayerVM, TeamSquadVM } from '../../types'
 import { CuriosityList } from '../curiosity-list/curiosity-list'
 import { PlayerProfileForm } from '../player-profile-form/player-profile-form'
@@ -26,6 +26,7 @@ type PlayerSheetProps = {
 export function PlayerSheet({ player, squad, categoryFilter, canEdit, lastChange, onClose }: PlayerSheetProps) {
   const category = categoryLabel[squad.category]
   const siblingCategory = otherCategory[squad.category]
+
   const siblingHref = routes.squads({
     year: squad.year,
     category: categoryFilter ? siblingCategory : undefined,
@@ -35,11 +36,7 @@ export function PlayerSheet({ player, squad, categoryFilter, canEdit, lastChange
 
   return (
     <div className="flex flex-col gap-[14px] px-5 py-[18px]">
-      <button
-        type="button"
-        onClick={onClose}
-        className="hidden h-[34px] items-center gap-[6px] self-end rounded-card border border-bd2 px-3 text-[10.5px] tracking-[.05em] text-tx3 mobile:flex"
-      >
+      <button type="button" onClick={onClose} className="hidden h-[34px] items-center gap-[6px] self-end rounded-card border border-bd2 px-3 text-[10.5px] tracking-[.05em] text-tx3 mobile:flex">
         Fechar ✕
       </button>
       <div className="flex flex-wrap items-center gap-3">

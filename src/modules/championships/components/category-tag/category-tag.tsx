@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils/cn'
-import { categoryBorderClass, categoryLabel, categoryTextClass, type Category } from '../../categories'
+import { type Category, categoryBorderClass, categoryLabel, categoryTextClass } from '../../categories'
 
 const TAG_SIZE_CLASS = {
   small: 'px-2 py-[2px] text-[10px]',
@@ -18,7 +18,7 @@ export function CategoryTag({ category, size = 'small', className }: CategoryTag
   return (
     <span
       className={cn(
-        'inline-flex flex-none items-center self-center rounded-card border font-bold whitespace-nowrap tracking-[-.01em]',
+        'inline-flex flex-none items-center self-center rounded-card border font-bold tracking-[-.01em] whitespace-nowrap',
         TAG_SIZE_CLASS[size],
         categoryBorderClass[category],
         categoryTextClass[category],

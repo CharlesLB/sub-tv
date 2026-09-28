@@ -18,11 +18,21 @@ export function AuditTable({ rows }: { rows: AuditRowVM[] }) {
   return (
     <div className="flex flex-col overflow-hidden rounded-card border border-bd bg-pan" role="table" aria-label="Registro de alterações">
       <div role="row" className="flex items-center gap-3 border-b border-bd2 px-3 pt-[9px] pb-2 text-[10px] tracking-[.05em] text-tx4 mobile:hidden">
-        <span role="columnheader" className={cn(HEADER_CELL, 'w-[118px]')}>Quando</span>
-        <span role="columnheader" className={cn(HEADER_CELL, 'w-[140px]')}>Quem</span>
-        <span role="columnheader" className={cn(HEADER_CELL, 'w-[190px]')}>O quê</span>
-        <span role="columnheader" className="min-w-0 flex-1">Onde</span>
-        <span role="columnheader" className="min-w-0 flex-1 compact:hidden">Detalhes</span>
+        <span role="columnheader" className={cn(HEADER_CELL, 'w-[118px]')}>
+          Quando
+        </span>
+        <span role="columnheader" className={cn(HEADER_CELL, 'w-[140px]')}>
+          Quem
+        </span>
+        <span role="columnheader" className={cn(HEADER_CELL, 'w-[190px]')}>
+          O quê
+        </span>
+        <span role="columnheader" className="min-w-0 flex-1">
+          Onde
+        </span>
+        <span role="columnheader" className="min-w-0 flex-1 compact:hidden">
+          Detalhes
+        </span>
       </div>
       {rows.map((row, index) => (
         <div

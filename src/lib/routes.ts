@@ -1,9 +1,7 @@
 type QueryValue = string | number | null | undefined
 
 const withQuery = <TPath extends string>(path: TPath, query: Record<string, QueryValue>): TPath | `${TPath}?${string}` => {
-  const search = new URLSearchParams(
-    Object.entries(query).flatMap(([key, value]) => (value === null || value === undefined || value === '' ? [] : [[key, String(value)]])),
-  ).toString()
+  const search = new URLSearchParams(Object.entries(query).flatMap(([key, value]) => (value === null || value === undefined || value === '' ? [] : [[key, String(value)]]))).toString()
 
   return search ? `${path}?${search}` : path
 }
@@ -36,8 +34,7 @@ export const routes = {
       [TEAM_PARAMETER]: query.teamKey,
       [PLAYER_PARAMETER]: query.playerId,
     }),
-  history: (query: { category?: string | undefined; years?: string | undefined } = {}) =>
-    withQuery('/historico', { [CATEGORY_PARAMETER]: query.category, [SEASONS_PARAMETER]: query.years }),
+  history: (query: { category?: string | undefined; years?: string | undefined } = {}) => withQuery('/historico', { [CATEGORY_PARAMETER]: query.category, [SEASONS_PARAMETER]: query.years }),
   teamHistory: (teamKey: string, query: { category?: string | undefined; years?: string | undefined } = {}) =>
     withQuery(`/historico/times/${teamKey}` as const, { [CATEGORY_PARAMETER]: query.category, [SEASONS_PARAMETER]: query.years }),
   athleteHistory: (playerId: string, query: { category?: string | undefined; years?: string | undefined } = {}) =>

@@ -19,6 +19,7 @@ const ACTIVATION_KEYS = new Set(['Enter', ' '])
 
 export function BenchColumn({ team, categoryLabel, starterCount, reserves, draggingPlayerId, placement, onPointerDown, onKeyboardAdd }: BenchColumnProps) {
   const isFull = starterCount >= STARTERS_PER_TEAM
+
   const addFromKeyboard = (player: SetupPlayerVM, event: KeyboardEvent<HTMLButtonElement>) => {
     if (!ACTIVATION_KEYS.has(event.key)) return
     event.preventDefault()
@@ -53,10 +54,7 @@ export function BenchColumn({ team, categoryLabel, starterCount, reserves, dragg
             onKeyDown={(event) => addFromKeyboard(player, event)}
             className={cn('flex w-[100px] max-w-full flex-none cursor-grab touch-none flex-col items-center gap-[2px] bg-transparent select-none', isDragging && 'opacity-50')}
           >
-            <span
-              className={cn('relative flex size-9 items-center justify-center rounded-full border-2', isDragging ? 'border-tx' : 'border-pan')}
-              style={{ background: team.color }}
-            >
+            <span className={cn('relative flex size-9 items-center justify-center rounded-full border-2', isDragging ? 'border-tx' : 'border-pan')} style={{ background: team.color }}>
               <span className="text-[14.4px] leading-none font-bold text-bg nums">{player.shirtNumber}</span>
             </span>
             <span className="max-w-full truncate text-center text-[9.5px] font-semibold tracking-[-.01em] whitespace-nowrap text-tx2">{shortNameOf(player)}</span>

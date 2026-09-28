@@ -1,7 +1,7 @@
-import { LIVE_ACTION, type LiveAction } from './live-actions'
-import { SERVER_OPERATION, type LiveState } from './live-state'
 import { addMinute, advanceClock } from './clock-handlers'
 import { openCardPicker, recordAssist, recordCard, recordGoal, recordSubstitution, startSubstitution } from './event-handlers'
+import { LIVE_ACTION, type LiveAction } from './live-actions'
+import { type LiveState, SERVER_OPERATION } from './live-state'
 import { mergeRemoteEvent, mergeRemoteSnapshot } from './merge-remote'
 import { drainOutbox, markSyncFailed, markSyncRejected, settleSync, undoToast } from './sync-handlers'
 import { dismissToast, enqueue } from './toasts'
@@ -25,11 +25,14 @@ export const liveReducer = (state: LiveState, action: LiveAction): LiveState => 
     case LIVE_ACTION.OVERLAYS_CLOSED:
       return { ...state, cardPickerOpen: false, pendingSubstitution: false }
     case LIVE_ACTION.PLAYER_MOVED:
-      return enqueue({
-        ...state,
-        positions: { ...state.positions, [action.playerId]: action.point },
-        selectedPlayerId: action.playerId,
-      }, { kind: SERVER_OPERATION.POSITION, playerId: action.playerId, point: action.point })
+      return enqueue(
+        {
+          ...state,
+          positions: { ...state.positions, [action.playerId]: action.point },
+          selectedPlayerId: action.playerId,
+        },
+        { kind: SERVER_OPERATION.POSITION, playerId: action.playerId, point: action.point },
+      )
     case LIVE_ACTION.CLOCK_ADVANCED:
       return advanceClock(state, action.nowMs)
     case LIVE_ACTION.CLOCK_MINUTE_ADDED:

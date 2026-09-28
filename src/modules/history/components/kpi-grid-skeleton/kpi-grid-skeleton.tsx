@@ -1,5 +1,5 @@
-import { Skeleton } from '@/components/ui/skeleton/skeleton'
 import { cn } from '@/lib/utils/cn'
+import { Skeleton } from '@/components/ui/skeleton/skeleton'
 
 const KPI_SKELETON_VARIANT = {
   overview: { grid: 'grid-cols-[repeat(auto-fit,minmax(min(100%,150px),1fr))]', card: 'px-4 py-[14px]', value: 'h-[31px]' },

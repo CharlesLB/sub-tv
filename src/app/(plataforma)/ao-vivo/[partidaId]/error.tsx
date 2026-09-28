@@ -1,9 +1,9 @@
 'use client'
 
-import Link from 'next/link'
 import type { ErrorInfo } from 'next/error'
-import { Icon } from '@/components/ui/icon/icon'
+import Link from 'next/link'
 import { routes } from '@/lib/routes'
+import { Icon } from '@/components/ui/icon/icon'
 
 export default function LiveMatchError({ retry }: ErrorInfo) {
   return (
@@ -21,10 +21,7 @@ export default function LiveMatchError({ retry }: ErrorInfo) {
             <Icon name="history" size={16} />
             Tentar de novo
           </button>
-          <Link
-            href={routes.championships()}
-            className="flex h-9 items-center rounded-card border border-bd2 px-4 text-[11.7px] font-bold tracking-[-.01em] text-tx2 hover:border-tx hover:text-tx"
-          >
+          <Link href={routes.championships()} className="flex h-9 items-center rounded-card border border-bd2 px-4 text-[11.7px] font-bold tracking-[-.01em] text-tx2 hover:border-tx hover:text-tx">
             Campeonatos
           </Link>
         </div>

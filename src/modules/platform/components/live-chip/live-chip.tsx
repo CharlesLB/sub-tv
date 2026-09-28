@@ -2,9 +2,9 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Icon } from '@/components/ui/icon/icon'
-import { cn } from '@/lib/utils/cn'
 import { routes } from '@/lib/routes'
+import { cn } from '@/lib/utils/cn'
+import { Icon } from '@/components/ui/icon/icon'
 
 type LiveChipProps = {
   matchId: string
@@ -21,10 +21,7 @@ export function LiveChip({ matchId, matchup, closeBroadcast }: LiveChipProps) {
       <Link
         href={routes.live(matchId)}
         title="Voltar à transmissão"
-        className={cn(
-          'flex h-[34px] flex-none items-center gap-[9px] rounded-card border px-3 text-tx mobile:hidden',
-          isOnLive ? 'border-ac bg-pan2' : 'border-bd bg-transparent',
-        )}
+        className={cn('flex h-[34px] flex-none items-center gap-[9px] rounded-card border px-3 text-tx mobile:hidden', isOnLive ? 'border-ac bg-pan2' : 'border-bd bg-transparent')}
       >
         <span className="size-2 flex-none animate-live-dot rounded-full bg-ac" />
         <span className="max-w-[220px] truncate text-[11.3px] font-bold tracking-[-.01em] narrow:max-w-[110px]">{matchup}</span>

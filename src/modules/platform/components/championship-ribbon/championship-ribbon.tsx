@@ -2,10 +2,10 @@
 
 import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
-import { Icon } from '@/components/ui/icon/icon'
-import { cn } from '@/lib/utils/cn'
 import { routes } from '@/lib/routes'
-import { categoryBackgroundClass, categoryLabel, categoryTextClass, type ChampionshipRibbonItemVM } from '@/modules/championships/client'
+import { cn } from '@/lib/utils/cn'
+import { Icon } from '@/components/ui/icon/icon'
+import { type ChampionshipRibbonItemVM, categoryBackgroundClass, categoryLabel, categoryTextClass } from '@/modules/championships/client'
 import { describeWhen } from '../../describe-when/describe-when'
 
 const CHIP_DELAY_STEP_MS = 45
@@ -47,6 +47,7 @@ export function ChampionshipRibbon({ championships, activeChampionshipId }: Cham
     if (!ribbon) return
     ribbon.scrollBy({ left: direction * Math.max(MINIMUM_SCROLL_STEP_PX, ribbon.clientWidth * SCROLL_STEP_RATIO), behavior: 'smooth' })
   }
+
   const arrowClassName = 'flex size-[26px] flex-none animate-fade-in items-center justify-center rounded-card border border-bd bg-transparent text-tx4 hover:border-tx3 hover:text-tx'
 
   return (
@@ -77,9 +78,7 @@ export function ChampionshipRibbon({ championships, activeChampionshipId }: Cham
             >
               <span className={cn('size-[7px] flex-none', categoryBackgroundClass[championship.category])} />
               <span className={cn('text-[11.3px] font-bold tracking-[-.01em] whitespace-nowrap', isActive ? 'text-tx' : 'text-tx1')}>{championship.name}</span>
-              <span className={cn('text-[9.5px] tracking-[.08em] whitespace-nowrap', categoryTextClass[championship.category])}>
-                {categoryLabel[championship.category]}
-              </span>
+              <span className={cn('text-[9.5px] tracking-[.08em] whitespace-nowrap', categoryTextClass[championship.category])}>{categoryLabel[championship.category]}</span>
               <span className="text-[9.5px] tracking-[.08em] whitespace-nowrap text-tx4">{describeWhen(championship.lastActivityAt, now)}</span>
             </Link>
           )

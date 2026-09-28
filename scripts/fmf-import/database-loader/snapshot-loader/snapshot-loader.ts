@@ -6,7 +6,7 @@ import { CURRENT_SEASON_YEAR } from '../../constants/fmf-sources'
 import type { EditionBundle } from '../../edition-bundle/edition-bundle'
 import { areNamesCompatible, normalizeName } from '../../text-normalization/text-normalization'
 import type { SeasonTeamLookup } from '../club-loader/club-loader'
-import { type Transaction, inChunks } from '../database-context/database-context'
+import { inChunks, type Transaction } from '../database-context/database-context'
 
 const JOINT_PHASE_PREFIX = 'CONJUNTA · '
 const GROUP_SEPARATOR = ' · GRUPO '
@@ -75,6 +75,7 @@ export const replaceSnapshots = async (transaction: Transaction, bundle: Edition
   const squadPlayers = await readSquadPlayers(transaction, seasonId)
   const playersByName = indexUniqueNames(squadPlayers)
   await transaction.delete(fmfTopScorers).where(eq(fmfTopScorers.seasonId, seasonId))
+
   const scorerRows = bundle.page.topScorers.map((scorer) => ({
     seasonId,
     playerId: findScorerPlayer(squadPlayers, playersByName, scorer.fullName),
@@ -84,5 +85,6 @@ export const replaceSnapshots = async (transaction: Transaction, bundle: Edition
     goals: scorer.goals,
     fetchedAt,
   }))
+
   await inChunks(scorerRows, async (chunk) => transaction.insert(fmfTopScorers).values(chunk))
 }

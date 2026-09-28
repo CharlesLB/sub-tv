@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, use, useState, type ReactNode } from 'react'
+import { createContext, type ReactNode, use, useState } from 'react'
 import type { Category } from '../../categories'
 import type { CategoryClubsVM } from '../../types'
 import { NewChampionshipPanel } from '../new-championship-panel/new-championship-panel'
@@ -22,6 +22,7 @@ type NewChampionshipProviderProps = { year: number; clubs: CategoryClubsVM; chil
 
 export function NewChampionshipProvider({ year, clubs, children }: NewChampionshipProviderProps) {
   const [openForm, setOpenForm] = useState<OpenForm | null>(null)
+
   const openFor = (category: Category) => {
     setOpenForm({ category, openedAt: Date.now() })
   }
@@ -29,9 +30,7 @@ export function NewChampionshipProvider({ year, clubs, children }: NewChampionsh
   return (
     <NewChampionshipContext value={{ openFor }}>
       <div className="mx-auto flex max-w-[1240px] flex-col gap-[18px]">
-        {openForm ? (
-          <NewChampionshipPanel key={openForm.openedAt} initialCategory={openForm.category} defaultYear={year} clubs={clubs} onClose={() => setOpenForm(null)} />
-        ) : null}
+        {openForm ? <NewChampionshipPanel key={openForm.openedAt} initialCategory={openForm.category} defaultYear={year} clubs={clubs} onClose={() => setOpenForm(null)} /> : null}
         {children}
       </div>
     </NewChampionshipContext>

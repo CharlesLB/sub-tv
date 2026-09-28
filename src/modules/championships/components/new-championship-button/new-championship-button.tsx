@@ -1,7 +1,7 @@
 'use client'
 
 import { Icon } from '@/components/ui/icon/icon'
-import { categoryLabel, type Category } from '../../categories'
+import { type Category, categoryLabel } from '../../categories'
 import { useNewChampionshipLauncher } from '../new-championship-provider/new-championship-provider'
 
 export function NewChampionshipButton({ category }: { category: Category }) {

@@ -17,5 +17,5 @@ export function Crest({ color, imagePath = null, width = 18, className }: CrestP
     return <Image aria-hidden src={imagePath} alt="" width={width} height={height} className={cn('inline-block flex-none object-contain', className)} style={{ width, height }} />
   }
 
-  return <span aria-hidden className={cn('hexagon inline-block flex-none', className)} style={{ width, height, background: color }} />
+  return <span aria-hidden className={cn('inline-block flex-none hexagon', className)} style={{ width, height, background: color }} />
 }

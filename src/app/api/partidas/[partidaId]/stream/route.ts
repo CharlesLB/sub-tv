@@ -6,6 +6,7 @@ import { createLiveChangeStream } from '@/modules/matches'
 export const maxDuration = 300
 
 const LAST_EVENT_ID_HEADER = 'last-event-id'
+
 const STREAM_HEADERS = {
   'Content-Type': 'text/event-stream; charset=utf-8',
   'Cache-Control': 'no-cache, no-transform',

@@ -3,7 +3,7 @@ import { and, asc, eq, inArray, isNull, or } from 'drizzle-orm'
 import { cacheLife, cacheTag } from 'next/cache'
 import { tags } from '@/lib/cache/tags'
 import { db, tables } from '@/lib/db'
-import { otherCategory, teamBadgeColumns, toTeamBadge, type Category } from '@/modules/championships'
+import { type Category, otherCategory, teamBadgeColumns, toTeamBadge } from '@/modules/championships'
 import { toTeamKey } from '@/modules/teams'
 import { buildSquadPlayers } from '../squad-roster/squad-roster'
 import type { TeamSquadVM } from '../types'
@@ -81,11 +81,13 @@ export const getTeamSquad = async (year: number, category: Category, clubId: str
   if (teamRows.length === 0 || !club) return null
 
   const seasonTeamIds = teamRows.map((row) => row.id)
+
   const [memberships, stats, otherCategoryPlayerIds] = await Promise.all([
     findMemberships(seasonTeamIds),
     findStats(seasonTeamIds),
     findPlayerIdsOfTeam({ ...team, category: otherCategory[category] }),
   ])
+
   const squadCuriosities = await findCuriosities(
     memberships.map((membership) => membership.playerId),
     teamRows.map((row) => row.seasonId),

@@ -16,5 +16,4 @@ const readCurrentSecond = (): number => Math.floor(Date.now() / TICK_MS) * TICK_
 
 const readServerSecond = (): number | null => null
 
-export const useClockTick = (isTicking: boolean): number | null =>
-  useSyncExternalStore(isTicking ? subscribeToTicks : subscribeToNothing, readCurrentSecond, readServerSecond)
+export const useClockTick = (isTicking: boolean): number | null => useSyncExternalStore(isTicking ? subscribeToTicks : subscribeToNothing, readCurrentSecond, readServerSecond)

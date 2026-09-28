@@ -2,8 +2,8 @@ import 'server-only'
 import { and, desc, eq, gte, type SQL } from 'drizzle-orm'
 import { connection } from 'next/server'
 import { db, tables } from '@/lib/db'
+import { type AuditFilter, periodStart } from '../audit-filter/audit-filter'
 import { AUDIT_ENTITY_LABEL, actionLabelOf, isAuditEntity } from '../audit-labels/audit-labels'
-import { periodStart, type AuditFilter } from '../audit-filter/audit-filter'
 import { nameFromDetails, summarizeDetails } from '../details-summary/details-summary'
 import type { AuditPageVM } from '../types'
 import { resolveEntityDescriptions } from './resolve-entities'
@@ -25,6 +25,7 @@ const filterConditions = (filter: AuditFilter, now: Date): SQL[] => {
 export const getAuditEntries = async (filter: AuditFilter): Promise<AuditPageVM> => {
   await connection()
   const { auditLog, appUsers } = tables
+
   const rows = await db
     .select({
       id: auditLog.id,
@@ -41,6 +42,7 @@ export const getAuditEntries = async (filter: AuditFilter): Promise<AuditPageVM>
     .orderBy(desc(auditLog.createdAt), desc(auditLog.id))
     .limit(AUDIT_PAGE_SIZE + 1)
     .offset((filter.page - 1) * AUDIT_PAGE_SIZE)
+
   const pageRows = rows.slice(0, AUDIT_PAGE_SIZE)
   const descriptions = await resolveEntityDescriptions(pageRows)
 

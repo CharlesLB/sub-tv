@@ -1,7 +1,7 @@
 'use client'
 
-import { Icon } from '@/components/ui/icon/icon'
 import { cn } from '@/lib/utils/cn'
+import { Icon } from '@/components/ui/icon/icon'
 import type { Side } from '@/modules/matches/client'
 import { useHorizontalScroll } from '../../hooks/use-horizontal-scroll'
 import type { TimelineItem } from '../../state/timeline'

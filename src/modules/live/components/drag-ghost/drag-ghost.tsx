@@ -7,10 +7,7 @@ export function DragGhost({ player, teamColor, clientX, clientY, hasTarget }: Dr
   return (
     <div
       aria-hidden
-      className={cn(
-        'pointer-events-none fixed z-[90] flex -translate-x-1/2 -translate-y-[130%] items-center gap-2 rounded-card border bg-pan2 px-3 py-2',
-        hasTarget ? 'border-az' : 'border-bd2',
-      )}
+      className={cn('pointer-events-none fixed z-[90] flex -translate-x-1/2 -translate-y-[130%] items-center gap-2 rounded-card border bg-pan2 px-3 py-2', hasTarget ? 'border-az' : 'border-bd2')}
       style={{ left: clientX, top: clientY }}
     >
       <span className="text-[13.5px] font-bold nums" style={{ color: teamColor }}>

@@ -33,11 +33,7 @@ export function LoginForm({ returnTo }: LoginFormProps) {
           {state.error}
         </p>
       ) : null}
-      <button
-        type="submit"
-        disabled={isPending}
-        className="mt-1 h-[46px] rounded-card bg-ac text-[12.6px] font-bold tracking-[-.01em] text-bg disabled:bg-bd2 disabled:text-tx4"
-      >
+      <button type="submit" disabled={isPending} className="mt-1 h-[46px] rounded-card bg-ac text-[12.6px] font-bold tracking-[-.01em] text-bg disabled:bg-bd2 disabled:text-tx4">
         {isPending ? 'Entrando…' : 'Entrar'}
       </button>
     </form>

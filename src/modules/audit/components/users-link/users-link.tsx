@@ -1,6 +1,6 @@
 import Link from 'next/link'
-import { Icon } from '@/components/ui/icon/icon'
 import { routes } from '@/lib/routes'
+import { Icon } from '@/components/ui/icon/icon'
 
 export function UsersLink() {
   return (

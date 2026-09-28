@@ -1,5 +1,5 @@
-import { Icon } from '@/components/ui/icon/icon'
 import { cn } from '@/lib/utils/cn'
+import { Icon } from '@/components/ui/icon/icon'
 
 type ScrollArrowProps = { direction: 'previous' | 'next'; isDisabled: boolean; onClick: () => void }
 

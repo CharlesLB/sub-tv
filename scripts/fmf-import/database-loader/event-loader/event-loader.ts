@@ -2,10 +2,10 @@ import { and, eq, inArray, isNotNull } from 'drizzle-orm'
 import { matchEvents } from '../../../../src/lib/db/schema'
 import { CARD_KIND, GOAL_TYPE, type ParsedSumula, type Side, type SumulaCard, type SumulaGoal, type SumulaSubstitution } from '../../sumula/sumula-types/sumula-types'
 import { redactDocuments } from '../../text-normalization/text-normalization'
+import { createIssue, type ImportIssue, inChunks, SYNC_ISSUE, type Transaction } from '../database-context/database-context'
 import { reconcileLiveEvents } from '../live-reconciliation/live-reconciliation'
-import { type ImportIssue, SYNC_ISSUE, type Transaction, createIssue, inChunks } from '../database-context/database-context'
 import type { LoadedMatch } from '../match-loader/match-loader'
-import { type MatchPlayerLookup, lineupKey } from '../player-loader/player-loader'
+import { lineupKey, type MatchPlayerLookup } from '../player-loader/player-loader'
 import { type MatchStaffLookup, staffKey } from '../staff-loader/staff-loader'
 
 const FMF_SOURCE = 'fmf'
@@ -27,9 +27,7 @@ const playerOf = (context: MatchContext, side: Side | null, shirtNumber: number 
   side === null || shirtNumber === null ? null : (context.players.get(lineupKey(side, shirtNumber)) ?? null)
 
 const isListedWithoutCbf = (context: MatchContext, side: Side | null, shirtNumbers: (number | null)[]): boolean =>
-  shirtNumbers.some((shirtNumber) =>
-    context.parsed.players.some((player) => player.side === side && player.shirtNumber === shirtNumber && playerOf(context, side, shirtNumber) === null),
-  )
+  shirtNumbers.some((shirtNumber) => context.parsed.players.some((player) => player.side === side && player.shirtNumber === shirtNumber && playerOf(context, side, shirtNumber) === null))
 
 const unresolvedIssue = (context: MatchContext, kind: string, side: Side | null, shirtNumbers: (number | null)[], details: Record<string, unknown>): ImportIssue =>
   createIssue(
@@ -37,7 +35,6 @@ const unresolvedIssue = (context: MatchContext, kind: string, side: Side | null,
     { motivo: isListedWithoutCbf(context, side, shirtNumbers) ? 'evento_de_jogador_sem_cbf' : 'evento_sem_jogador', evento: kind, ...details },
     { matchId: context.matchId },
   )
-
 
 const buildGoal = (context: MatchContext, goal: SumulaGoal, preserved: PreservedAssist[]): BuildResult => {
   const playerId = playerOf(context, goal.side, goal.shirtNumber)
@@ -66,7 +63,8 @@ const buildGoal = (context: MatchContext, goal: SumulaGoal, preserved: Preserved
 const buildCard = (context: MatchContext, card: SumulaCard): BuildResult => {
   const playerId = playerOf(context, card.side, card.shirtNumber)
   const staffMemberId = !playerId && card.side && card.shirtNumber === null ? (context.staff.get(staffKey(card.side, card.personName)) ?? null) : null
-  if (!card.side || (!playerId && !staffMemberId)) return { rows: [], issues: [unresolvedIssue(context, card.kind, card.side, [card.shirtNumber], { numero: card.shirtNumber, nome: card.personName, equipe: card.teamName })] }
+  if (!card.side || (!playerId && !staffMemberId))
+    return { rows: [], issues: [unresolvedIssue(context, card.kind, card.side, [card.shirtNumber], { numero: card.shirtNumber, nome: card.personName, equipe: card.teamName })] }
   const yellowCount = context.parsed.cards.filter((candidate) => candidate.kind === CARD_KIND.AMARELO && candidate.side === card.side && candidate.shirtNumber === card.shirtNumber).length
   const fromSecondYellow = card.kind === CARD_KIND.VERMELHO && playerId !== null && (yellowCount >= 2 || SECOND_YELLOW_PATTERN.test(card.reason ?? ''))
 
@@ -92,23 +90,29 @@ const buildCard = (context: MatchContext, card: SumulaCard): BuildResult => {
 const buildSubstitution = (context: MatchContext, substitution: SumulaSubstitution): BuildResult => {
   const playerId = playerOf(context, substitution.side, substitution.playerInNumber)
   const playerOutId = playerOf(context, substitution.side, substitution.playerOutNumber)
+
   if (!substitution.side || !playerId || !playerOutId || playerId === playerOutId) {
     return {
       rows: [],
-      issues: [unresolvedIssue(context, EVENT_TYPE.SUBSTITUTION, substitution.side, [substitution.playerInNumber, substitution.playerOutNumber], { entrou: substitution.playerInNumber, saiu: substitution.playerOutNumber, equipe: substitution.teamName })],
+      issues: [
+        unresolvedIssue(context, EVENT_TYPE.SUBSTITUTION, substitution.side, [substitution.playerInNumber, substitution.playerOutNumber], {
+          entrou: substitution.playerInNumber,
+          saiu: substitution.playerOutNumber,
+          equipe: substitution.teamName,
+        }),
+      ],
     }
   }
 
   return {
-    rows: [
-      { matchId: context.matchId, side: substitution.side, type: EVENT_TYPE.SUBSTITUTION, period: substitution.period, minute: substitution.minute, playerId, playerOutId, source: FMF_SOURCE },
-    ],
+    rows: [{ matchId: context.matchId, side: substitution.side, type: EVENT_TYPE.SUBSTITUTION, period: substitution.period, minute: substitution.minute, playerId, playerOutId, source: FMF_SOURCE }],
     issues: [],
   }
 }
 
 const readPreservedAssists = async (transaction: Transaction, matchIds: string[]): Promise<Map<string, PreservedAssist[]>> => {
   if (matchIds.length === 0) return new Map()
+
   const rows = await transaction
     .select({ matchId: matchEvents.matchId, playerId: matchEvents.playerId, minute: matchEvents.minute, assistPlayerId: matchEvents.assistPlayerId })
     .from(matchEvents)
@@ -123,14 +127,17 @@ export const loadEvents = async (transaction: Transaction, loadedMatches: Loaded
       ? [{ matchId: loaded.matchId, players: players.get(loaded.matchId) ?? new Map<string, string>(), staff: staff.get(loaded.matchId) ?? new Map<string, string>(), parsed: loaded.sumula.parsed }]
       : [],
   )
+
   const matchIds = contexts.map((context) => context.matchId)
   const preserved = await readPreservedAssists(transaction, matchIds)
   if (matchIds.length > 0) await transaction.delete(matchEvents).where(and(inArray(matchEvents.matchId, matchIds), eq(matchEvents.source, FMF_SOURCE)))
+
   const results = contexts.flatMap((context) => [
     ...context.parsed.goals.map((goal) => buildGoal(context, goal, preserved.get(context.matchId) ?? [])),
     ...context.parsed.cards.map((card) => buildCard(context, card)),
     ...context.parsed.substitutions.map((substitution) => buildSubstitution(context, substitution)),
   ])
+
   await inChunks(
     results.flatMap((result) => result.rows),
     async (chunk) => transaction.insert(matchEvents).values(chunk),

@@ -7,11 +7,11 @@ import {
   ChampionshipDetailSkeleton,
   ChampionshipTabContent,
   ChampionshipTabs,
-  NewMatchButton,
   categoryLabel,
   getChampionshipHeader,
   getChampionshipsOfYear,
   getSeasonYears,
+  NewMatchButton,
   parseChampionshipTab,
   toRibbonItems,
 } from '@/modules/championships'
@@ -22,7 +22,12 @@ async function ChampionshipDetail({ seasonId, requestedTab }: { seasonId: string
   if (!header) notFound()
 
   const [years, championships] = await Promise.all([getSeasonYears(), getChampionshipsOfYear(header.year)])
-  const crumbs = [{ label: 'Campeonatos', href: routes.championships(header.year) }, { label: header.name }, { label: String(header.year), separator: '·' as const, href: routes.championships(header.year) }]
+
+  const crumbs = [
+    { label: 'Campeonatos', href: routes.championships(header.year) },
+    { label: header.name },
+    { label: String(header.year), separator: '·' as const, href: routes.championships(header.year) },
+  ]
 
   return (
     <>

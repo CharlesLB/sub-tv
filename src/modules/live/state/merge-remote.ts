@@ -1,6 +1,6 @@
 import * as R from 'remeda'
 import { LIVE_EVENT_TYPE, MATCH_PERIOD, type MatchPeriod, type RemoteEvent, type RemoteSnapshot } from '@/modules/matches/client'
-import { CLOCK_SYNC_KEY, positionSyncKey, SYNC_STATE, type LiveEvent, type LiveState } from './live-state'
+import { CLOCK_SYNC_KEY, type LiveEvent, type LiveState, positionSyncKey, SYNC_STATE } from './live-state'
 
 const PERIOD_ORDER: Record<MatchPeriod, number> = {
   [MATCH_PERIOD.BEFORE_START]: 0,
@@ -31,8 +31,7 @@ const toLiveEvent = (remote: RemoteEvent): LiveEvent => ({
   syncState: SYNC_STATE.CONFIRMED,
 })
 
-const chronologically = (events: LiveEvent[]): LiveEvent[] =>
-  R.sortBy(events, [(event) => PERIOD_ORDER[event.period], 'asc'], [(event) => event.minute ?? -1, 'asc'])
+const chronologically = (events: LiveEvent[]): LiveEvent[] => R.sortBy(events, [(event) => PERIOD_ORDER[event.period], 'asc'], [(event) => event.minute ?? -1, 'asc'])
 
 const insertRemote = (state: LiveState, remote: RemoteEvent): LiveState => {
   const knownPlayers = [remote.playerId, remote.playerOutId].every((playerId) => playerId === null || playerId in state.playersById)

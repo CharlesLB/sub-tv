@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils/cn'
 import type { SquadPlayerVM } from '../../types'
-import { RosterRow } from '../roster-row/roster-row'
 import { ROSTER_GRID_CLASS } from '../roster-grid/roster-grid'
+import { RosterRow } from '../roster-row/roster-row'
 
 const COLUMNS = [
   { key: 'number', label: 'Nº', compactLabel: 'Nº' },
@@ -11,6 +11,7 @@ const COLUMNS = [
   { key: 'goals', label: 'G', compactLabel: 'G' },
   { key: 'curiosities', label: 'Curios.', compactLabel: 'Cur' },
 ] as const
+
 const LAST_COLUMN_INDEX = COLUMNS.length - 1
 
 type RosterTableProps = {
@@ -31,7 +32,7 @@ export function RosterTable({ players, teamColor, selectedPlayerId, searchText, 
         {COLUMNS.map((column, index) => (
           <span
             key={column.key}
-           
+
             className={cn(
               'text-[10.5px] font-semibold tracking-[.14em] whitespace-nowrap text-tx4 @max-[430px]:text-[9.5px] @max-[430px]:tracking-[.1em]',
               index === LAST_COLUMN_INDEX ? 'overflow-visible text-right' : 'truncate text-left',
@@ -44,15 +45,7 @@ export function RosterTable({ players, teamColor, selectedPlayerId, searchText, 
       </div>
       <div className="min-h-0 flex-1 overflow-x-hidden overflow-y-auto">
         {players.map((player, index) => (
-          <RosterRow
-            key={player.id}
-            player={player}
-            index={index}
-            href={hrefFor(player.id)}
-            teamColor={teamColor}
-            isSelected={player.id === selectedPlayerId}
-            onSelect={onSelect}
-          />
+          <RosterRow key={player.id} player={player} index={index} href={hrefFor(player.id)} teamColor={teamColor} isSelected={player.id === selectedPlayerId} onSelect={onSelect} />
         ))}
         {players.length === 0 ? (
           <p className="px-4 py-6 text-[12.5px] text-tx4">{hasSearch ? `Nenhum atleta encontrado para “${searchText.trim()}”.` : 'Nenhum atleta vinculado a este time ainda.'}</p>

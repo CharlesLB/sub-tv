@@ -1,5 +1,5 @@
-import { MATCH_PERIOD, type LiveClock } from '@/modules/matches/client'
 import type { IconName } from '@/components/ui/icon/icon-paths'
+import { type LiveClock, MATCH_PERIOD } from '@/modules/matches/client'
 
 const SECONDS_PER_MINUTE = 60
 const TWO_DIGITS = 2
@@ -20,15 +20,18 @@ export const chronoDisplayOf = (clock: LiveClock): ChronoDisplay => {
   if (clock.period === MATCH_PERIOD.FULL_TIME) {
     return { halfLabel: HALF_LABEL.ENDED, call: clock.elapsedSeconds > 0 ? null : ENDED_CALL, icon: 'flag', tone: CHRONO_TONE.ENDED, tip: 'Jogo encerrado' }
   }
+
   if (clock.period === MATCH_PERIOD.BEFORE_START) {
     return { halfLabel: HALF_LABEL.FIRST, call: START_CALL, icon: 'playArrow', tone: CHRONO_TONE.START, tip: 'Clique para iniciar a partida' }
   }
+
   if (clock.period === MATCH_PERIOD.HALF_TIME) {
     return { halfLabel: HALF_LABEL.SECOND, call: START_CALL, icon: 'playArrow', tone: CHRONO_TONE.START, tip: 'Clique para iniciar o 2º tempo' }
   }
 
   const isFirstHalf = clock.period === MATCH_PERIOD.FIRST_HALF
   const halfLabel = isFirstHalf ? HALF_LABEL.FIRST : HALF_LABEL.SECOND
+
   if (!clock.running) {
     return isFirstHalf
       ? { halfLabel, call: RESUME_CALL, icon: 'playArrow', tone: CHRONO_TONE.START, tip: 'Clique para retomar o 1º tempo' }

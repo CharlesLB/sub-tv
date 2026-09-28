@@ -1,7 +1,7 @@
 import 'server-only'
 import { CATEGORY_PARAMETER, SEASONS_PARAMETER } from '@/lib/routes'
 import { getSeasonYears } from '@/modules/championships'
-import { describeSeasonSelection, parseHistoryFilter, type HistoryFilter } from '../history-filter/history-filter'
+import { describeSeasonSelection, type HistoryFilter, parseHistoryFilter } from '../history-filter/history-filter'
 
 export type HistoryQuery = Record<string, string | string[] | undefined>
 

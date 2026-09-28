@@ -1,5 +1,5 @@
 import 'server-only'
-import { and, asc, countDistinct, count, desc, eq, gt, inArray, isNotNull, isNull, sql } from 'drizzle-orm'
+import { and, asc, count, countDistinct, desc, eq, gt, inArray, isNotNull, isNull, sql } from 'drizzle-orm'
 import { cacheLife, cacheTag } from 'next/cache'
 import * as R from 'remeda'
 import { tags } from '@/lib/cache/tags'
@@ -16,6 +16,7 @@ const MINIMUM_GAMES_FOR_WIN_RATE = 10
 
 const readChampionshipCount = async (filter: HistoryFilter): Promise<number> => {
   const { seasons, competitions } = tables
+
   const [row] = await db
     .select({ championshipCount: countDistinct(seasons.id) })
     .from(seasons)
@@ -27,20 +28,13 @@ const readChampionshipCount = async (filter: HistoryFilter): Promise<number> => 
 
 const readMatchTotals = async (filter: HistoryFilter): Promise<{ matchCount: number; goalCount: number }> => {
   const { matches, seasons, competitions } = tables
+
   const [row] = await db
     .select({ matchCount: count(), goalCount: sumAsNumber(sql`${matches.homeScore} + ${matches.awayScore}`) })
     .from(matches)
     .innerJoin(seasons, eq(seasons.id, matches.seasonId))
     .innerJoin(competitions, eq(competitions.id, seasons.competitionId))
-    .where(
-      and(
-        eq(matches.status, FINISHED_MATCH_STATUS),
-        isNull(matches.removedAt),
-        isNotNull(matches.homeScore),
-        isNotNull(matches.awayScore),
-        ...seasonFilterConditions(filter),
-      ),
-    )
+    .where(and(eq(matches.status, FINISHED_MATCH_STATUS), isNull(matches.removedAt), isNotNull(matches.homeScore), isNotNull(matches.awayScore), ...seasonFilterConditions(filter)))
 
   return { matchCount: row?.matchCount ?? 0, goalCount: row?.goalCount ?? 0 }
 }
@@ -50,6 +44,7 @@ const readAccumulatedTable = async (filter: HistoryFilter): Promise<AccumulatedT
   const points = sumAsNumber(teamSeasonStats.points)
   const goalsFor = sumAsNumber(teamSeasonStats.goalsFor)
   const goalsAgainst = sumAsNumber(teamSeasonStats.goalsAgainst)
+
   const rows = await db
     .select({
       clubId: clubs.id,
@@ -85,6 +80,7 @@ const readPeriodScorers = async (filter: HistoryFilter): Promise<PeriodScorerVM[
   const { playerSeasonStats, players, seasons, competitions, seasonTeams, clubs } = tables
   const goals = sumAsNumber(playerSeasonStats.goals)
   const games = sumAsNumber(playerSeasonStats.games)
+
   const rows = await db
     .select({
       playerId: players.id,
@@ -106,8 +102,17 @@ const readPeriodScorers = async (filter: HistoryFilter): Promise<PeriodScorerVM[
     .having(gt(goals, 0))
     .orderBy(desc(goals), asc(games), asc(players.fullName))
     .limit(PERIOD_SCORERS_LIMIT)
+
   const clubIds = R.unique(rows.map((row) => row.latestClubId))
-  const badges = clubIds.length > 0 ? await db.select({ id: clubs.id, badge: teamBadgeColumns(clubs) }).from(clubs).where(inArray(clubs.id, clubIds)) : []
+
+  const badges =
+    clubIds.length > 0
+      ? await db
+          .select({ id: clubs.id, badge: teamBadgeColumns(clubs) })
+          .from(clubs)
+          .where(inArray(clubs.id, clubIds))
+      : []
+
   const badgeByClub = R.indexBy(badges, (club) => club.id)
 
   return rows.flatMap(({ latestClubId, ...row }) => {
@@ -117,20 +122,14 @@ const readPeriodScorers = async (filter: HistoryFilter): Promise<PeriodScorerVM[
   })
 }
 
-const pickBest = (rows: AccumulatedTeamRowVM[], score: (row: AccumulatedTeamRowVM) => number): AccumulatedTeamRowVM | null =>
-  R.firstBy(rows, [score, 'desc']) ?? null
+const pickBest = (rows: AccumulatedTeamRowVM[], score: (row: AccumulatedTeamRowVM) => number): AccumulatedTeamRowVM | null => R.firstBy(rows, [score, 'desc']) ?? null
 
 export const getHistoryOverview = async (filter: HistoryFilter): Promise<HistoryOverviewVM> => {
   'use cache'
   cacheLife('hours')
   cacheTag(tags.history(), tags.fmfData())
 
-  const [championshipCount, matchTotals, table, scorers] = await Promise.all([
-    readChampionshipCount(filter),
-    readMatchTotals(filter),
-    readAccumulatedTable(filter),
-    readPeriodScorers(filter),
-  ])
+  const [championshipCount, matchTotals, table, scorers] = await Promise.all([readChampionshipCount(filter), readMatchTotals(filter), readAccumulatedTable(filter), readPeriodScorers(filter)])
   const qualifiedTeams = table.filter((row) => row.played >= MINIMUM_GAMES_FOR_WIN_RATE)
 
   return {

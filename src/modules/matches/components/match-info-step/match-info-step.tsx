@@ -23,7 +23,7 @@ export function MatchInfoStep({ values, notice, onChange }: MatchInfoStepProps) 
 
   return (
     <div className="flex max-w-[820px] animate-fade-up flex-col gap-4">
-      <div className="chamfer grid grid-cols-[repeat(auto-fit,minmax(min(100%,180px),1fr))] gap-4 bg-pan2 p-5 mobile:p-4">
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,180px),1fr))] gap-4 bg-pan2 p-5 chamfer mobile:p-4">
         {FIELDS.map((definition) => (
           <div key={definition.field} className={cn(definition.isWide && 'col-span-full')}>
             <label htmlFor={`${idPrefix}-${definition.field}`} className="mb-[6px] block text-[10.3px] font-semibold tracking-[-.01em] text-tx4">

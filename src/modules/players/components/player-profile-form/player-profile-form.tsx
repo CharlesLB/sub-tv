@@ -1,4 +1,4 @@
-import { useActionState, type ChangeEvent, type FocusEvent } from 'react'
+import { type ChangeEvent, type FocusEvent, useActionState } from 'react'
 import type { Category } from '@/modules/championships/client'
 import { updatePlayerProfile } from '../../actions/player-actions'
 import { footLabel, positionLabel } from '../../labels'
@@ -22,9 +22,11 @@ const submitOwnerForm = (event: ChangeEvent<HTMLInputElement>) => event.currentT
 export function PlayerProfileForm({ player, teamName, category }: PlayerProfileFormProps) {
   const [state, formAction, isPending] = useActionState(updatePlayerProfile, null)
   const savedDisplayName = player.displayName ?? ''
+
   const submitWhenChanged = (event: FocusEvent<HTMLInputElement>) => {
     if (event.currentTarget.value.trim() !== savedDisplayName) event.currentTarget.form?.requestSubmit()
   }
+
   const feedback = isPending ? 'Salvando…' : state?.ok === false ? (state.fieldErrors?.displayName?.[0] ?? state.error) : state?.ok ? 'Salvo' : ''
 
   return (

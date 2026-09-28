@@ -23,6 +23,7 @@ export const parseTeamKey = (value: string | null | undefined): TeamKey | null =
     category: value.slice(0, CATEGORY_LENGTH),
     clubId: value.slice(CATEGORY_LENGTH + TEAM_KEY_SEPARATOR.length),
   }
+
   const hasSeparator = value.charAt(CATEGORY_LENGTH) === TEAM_KEY_SEPARATOR
   const parsed = TeamKeySchema.safeParse(candidate)
 

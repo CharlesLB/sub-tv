@@ -1,10 +1,10 @@
-import { Suspense, type ReactNode } from 'react'
+import { type ReactNode, Suspense } from 'react'
 import { PlatformRailSkeleton, RailWithBroadcast } from '@/modules/platform'
 
 export default function PlatformLayout({ children }: { children: ReactNode }) {
   return (
     <div className="flex h-dvh overflow-hidden bg-bg text-tx mobile:flex-col">
-      <div aria-hidden className="top-glow pointer-events-none fixed inset-0 z-50" />
+      <div aria-hidden className="pointer-events-none fixed inset-0 z-50 top-glow" />
       <Suspense fallback={<PlatformRailSkeleton />}>
         <RailWithBroadcast />
       </Suspense>

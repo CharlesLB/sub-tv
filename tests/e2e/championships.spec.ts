@@ -6,7 +6,11 @@ test('anonymous visitor can browse championships but is sent to sign in to creat
   await expect(page.getByRole('heading', { name: 'Todos os campeonatos' })).toBeVisible()
   await expect(page.getByRole('link', { name: 'Entrar' })).toBeVisible()
 
-  await page.getByRole('link', { name: /Abrir campeonato/ }).first().click()
+  await page
+    .getByRole('link', { name: /Abrir campeonato/ })
+    .first()
+    .click()
+
   await page.getByRole('link', { name: 'Nova partida' }).click()
 
   await expect(page).toHaveURL(/\/entrar/)
@@ -32,7 +36,11 @@ test('championship list opens a championship and switches between its tabs', asy
   await signIn(page, '/campeonatos')
   await expect(page.getByRole('heading', { name: 'Todos os campeonatos' })).toBeVisible()
 
-  await page.getByRole('link', { name: /Abrir campeonato/ }).first().click()
+  await page
+    .getByRole('link', { name: /Abrir campeonato/ })
+    .first()
+    .click()
+
   await expect(page.getByRole('link', { name: 'Classificação e rodada' })).toHaveAttribute('aria-current', 'page')
 
   await page.getByRole('link', { name: 'Estatísticas' }).click()
@@ -44,7 +52,12 @@ test('championship list opens a championship and switches between its tabs', asy
 
 test('finished match card opens the match on the broadcast page', async ({ page }) => {
   await signIn(page, '/campeonatos')
-  await page.getByRole('link', { name: /Abrir campeonato/ }).first().click()
+
+  await page
+    .getByRole('link', { name: /Abrir campeonato/ })
+    .first()
+    .click()
+
   await page.getByRole('link', { name: 'Partidas' }).click()
 
   await page.locator('article', { hasText: 'ENCERRADA' }).first().getByRole('link', { name: 'Ver partida' }).click()

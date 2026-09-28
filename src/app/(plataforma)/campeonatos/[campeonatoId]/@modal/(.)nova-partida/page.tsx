@@ -10,7 +10,13 @@ const validSeasonId = (seasonId: string): string => (isUuid(seasonId) ? seasonId
 export default function NewMatchModalPage({ params, searchParams }: PageProps<'/campeonatos/[campeonatoId]/nova-partida'>) {
   return (
     <NewMatchSheet
-      details={<Suspense fallback={null}>{params.then(({ campeonatoId }) => <SheetChampionshipDetails seasonId={validSeasonId(campeonatoId)} />)}</Suspense>}
+      details={
+        <Suspense fallback={null}>
+          {params.then(({ campeonatoId }) => (
+            <SheetChampionshipDetails seasonId={validSeasonId(campeonatoId)} />
+          ))}
+        </Suspense>
+      }
     >
       <Suspense fallback={<NewMatchWizardSkeleton />}>
         {Promise.all([params, searchParams]).then(([{ campeonatoId }, { partida }]) => (

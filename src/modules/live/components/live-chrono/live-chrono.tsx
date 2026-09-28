@@ -1,10 +1,10 @@
 'use client'
 
-import { Icon } from '@/components/ui/icon/icon'
 import { cn } from '@/lib/utils/cn'
+import { Icon } from '@/components/ui/icon/icon'
 import { elapsedSecondsAt, type LiveClock } from '@/modules/matches/client'
 import { useClockTick } from '../../hooks/use-clock-tick'
-import { CHRONO_TONE, chronoDisplayOf, formatElapsed, type ChronoTone } from './chrono-display'
+import { CHRONO_TONE, type ChronoTone, chronoDisplayOf, formatElapsed } from './chrono-display'
 
 const TONE_CLASS: Record<ChronoTone, { border: string; half: string; icon: string }> = {
   [CHRONO_TONE.START]: { border: 'border-ac', half: 'bg-ac/15 text-ac', icon: 'text-ac' },
@@ -35,12 +35,7 @@ export function LiveChrono({ clock, onAdvance }: LiveChronoProps) {
       )}
     >
       <span className={cn('flex items-center px-[11px] text-[11.3px] font-bold tracking-[-.01em]', tone.half)}>{display.halfLabel}</span>
-      <span
-        className={cn(
-          'flex items-center gap-[7px] px-[13px] py-[7px] font-bold nums',
-          display.call ? 'text-[12.5px] tracking-[.14em]' : 'text-[16px] tracking-[.02em] mobile:text-[13px]',
-        )}
-      >
+      <span className={cn('flex items-center gap-[7px] px-[13px] py-[7px] font-bold nums', display.call ? 'text-[12.5px] tracking-[.14em]' : 'text-[16px] tracking-[.02em] mobile:text-[13px]')}>
         <Icon name={display.icon} size={16} className={tone.icon} />
         <span aria-live="off">{display.call ?? formatElapsed(elapsedSeconds, clock.addedMinutes)}</span>
       </span>

@@ -49,12 +49,7 @@ export function BenchDot({ player, matchState, teamColor, isDragged, isHighlight
         <span className={cn('text-[14.4px] leading-none font-bold nums mobile:text-[12.6px]', hasLeft ? 'text-tx4' : 'text-bg')}>{player.shirtNumber}</span>
         <PlayerMarks state={matchState} variant={MARKS_VARIANT.BENCH} />
       </span>
-      <span
-        className={cn(
-          'max-w-full truncate text-center text-[10.5px] font-semibold tracking-[-.01em] whitespace-nowrap mobile:text-[9px]',
-          hasLeft ? 'text-tx4' : 'text-tx2',
-        )}
-      >
+      <span className={cn('max-w-full truncate text-center text-[10.5px] font-semibold tracking-[-.01em] whitespace-nowrap mobile:text-[9px]', hasLeft ? 'text-tx4' : 'text-tx2')}>
         {player.shortName}
       </span>
     </button>

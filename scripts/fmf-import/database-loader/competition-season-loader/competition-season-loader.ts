@@ -7,11 +7,13 @@ import type { Transaction } from '../database-context/database-context'
 
 const upsertCompetition = async (transaction: Transaction, bundle: EditionBundle): Promise<string> => {
   const { source } = bundle
+
   const [competition] = await transaction
     .insert(competitions)
     .values({ name: source.name, slug: source.slug, category: source.category, division: source.division })
     .onConflictDoUpdate({ target: competitions.slug, set: { name: source.name, category: source.category, division: source.division } })
     .returning({ id: competitions.id })
+
   if (!competition) throw new Error(`falha ao gravar a competição ${source.slug}`)
 
   return competition.id
@@ -19,11 +21,13 @@ const upsertCompetition = async (transaction: Transaction, bundle: EditionBundle
 
 export const upsertSeason = async (transaction: Transaction, bundle: EditionBundle): Promise<string> => {
   const competitionId = await upsertCompetition(transaction, bundle)
+
   const matchDates = R.pipe(
     bundle.page.matches.map((match) => match.date),
     R.filter(R.isNonNullish),
     R.sortBy((date) => date),
   )
+
   const values = {
     competitionId,
     year: bundle.year,
@@ -34,6 +38,7 @@ export const upsertSeason = async (transaction: Transaction, bundle: EditionBund
     startsOn: matchDates[0] ?? null,
     endsOn: matchDates.at(-1) ?? null,
   }
+
   const [season] = await transaction
     .insert(seasons)
     .values(values)
@@ -50,6 +55,7 @@ export const upsertSeason = async (transaction: Transaction, bundle: EditionBund
       },
     })
     .returning({ id: seasons.id })
+
   if (!season) throw new Error(`falha ao gravar a temporada ${bundle.page.label}`)
 
   return season.id

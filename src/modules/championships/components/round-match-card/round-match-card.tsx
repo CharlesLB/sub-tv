@@ -1,8 +1,8 @@
 import Link from 'next/link'
-import { Crest } from '@/components/ui/crest/crest'
 import { routes } from '@/lib/routes'
 import { cn } from '@/lib/utils/cn'
 import { formatShortDateTime } from '@/lib/utils/format-date/format-date'
+import { Crest } from '@/components/ui/crest/crest'
 import type { MatchCardVM, TeamBadgeVM } from '../../types'
 
 const FINISHED_STATUS = 'encerrado'

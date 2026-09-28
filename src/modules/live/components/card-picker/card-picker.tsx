@@ -27,10 +27,7 @@ export function CardPicker({ onPick, onCancel }: CardPickerProps) {
             ref={index === 0 ? firstOptionRef : undefined}
             type="button"
             onClick={() => onPick(option.color)}
-            className={cn(
-              'chamfer flex h-[150px] w-[230px] flex-col items-center justify-center gap-3 border-[3px] bg-pan text-tx mobile:h-[120px] mobile:w-[150px]',
-              option.borderClass,
-            )}
+            className={cn('flex h-[150px] w-[230px] flex-col items-center justify-center gap-3 border-[3px] bg-pan text-tx chamfer mobile:h-[120px] mobile:w-[150px]', option.borderClass)}
           >
             <span className={cn('block h-10 w-[30px] rounded-[4px]', option.swatchClass)} />
             <span className="text-[21.6px] font-bold tracking-[-.01em]">{option.label}</span>

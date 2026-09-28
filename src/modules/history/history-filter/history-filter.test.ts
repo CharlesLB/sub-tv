@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { describeSeasonSelection, parseHistoryFilter, toHistoryRouteQuery, toggleSeasonYear } from './history-filter'
+import { describeSeasonSelection, parseHistoryFilter, toggleSeasonYear, toHistoryRouteQuery } from './history-filter'
 
 const AVAILABLE_YEARS = [2026, 2025, 2024, 2023]
 

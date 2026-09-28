@@ -23,9 +23,8 @@ const runSequentially = async <Item>(items: Item[], work: (item: Item) => Promis
   }, Promise.resolve())
 
 const scrubPlayers = async (transaction: Transaction): Promise<number> => {
-  const result = await transaction.execute<{ id: string; full_name: string; nickname: string | null }>(
-    sql`select id, full_name, nickname from players where full_name ~ '[0-9]' or nickname ~ '[0-9]'`,
-  )
+  const result = await transaction.execute<{ id: string; full_name: string; nickname: string | null }>(sql`select id, full_name, nickname from players where full_name ~ '[0-9]' or nickname ~ '[0-9]'`)
+
   await runSequentially(result.rows, async (row) => {
     const nickname = sanitizePersonName(row.nickname ?? '')
     const fullName = sanitizePersonName(row.full_name) || nickname || REDACTED_TEXT
@@ -38,12 +37,11 @@ const scrubPlayers = async (transaction: Transaction): Promise<number> => {
 
 const scrubStaff = async (transaction: Transaction): Promise<number> => {
   const result = await transaction.execute<{ id: string; full_name: string }>(sql`select id, full_name from staff_members where full_name ~ '[0-9]' or display_name ~ '[0-9]'`)
+
   await runSequentially(result.rows, async (row) => {
     const fullName = sanitizePersonName(row.full_name) || REDACTED_TEXT
 
-    return await transaction.execute(
-      sql`update staff_members set full_name = ${fullName}, normalized_name = ${normalizeName(fullName)}, display_name = null, updated_at = now() where id = ${row.id}`,
-    )
+    return await transaction.execute(sql`update staff_members set full_name = ${fullName}, normalized_name = ${normalizeName(fullName)}, display_name = null, updated_at = now() where id = ${row.id}`)
   })
 
   return result.rows.length
@@ -51,11 +49,13 @@ const scrubStaff = async (transaction: Transaction): Promise<number> => {
 
 const scrubIssueDetails = async (transaction: Transaction): Promise<number> => {
   const result = await transaction.execute<{ id: string; details: JsonValue }>(sql`select id, details from sync_issues where details::text ~ '[0-9]'`)
+
   const changed = result.rows.flatMap((row) => {
     const scrubbed = scrubJson(row.details, null)
 
     return JSON.stringify(scrubbed) === JSON.stringify(row.details) ? [] : [{ id: row.id, scrubbed }]
   })
+
   await runSequentially(changed, async (row) => await transaction.execute(sql`update sync_issues set details = ${JSON.stringify(row.scrubbed)}::jsonb where id = ${row.id}`))
 
   return changed.length

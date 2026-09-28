@@ -1,12 +1,12 @@
-import { Crest } from '@/components/ui/crest/crest'
 import { cn } from '@/lib/utils/cn'
+import { Crest } from '@/components/ui/crest/crest'
 import type { Category } from '../../categories'
 import type { TopScorerVM } from '../../types'
 import { CategoryTag } from '../category-tag/category-tag'
 
 const ROW_DELAY_STEP_MS = 28
-const GRID_CLASS =
-  'grid grid-cols-[34px_minmax(0,1.3fr)_minmax(0,1fr)_52px_52px] gap-x-2 px-4 compact:grid-cols-[26px_minmax(0,1fr)_38px_38px] compact:gap-x-[6px] compact:px-[11px]'
+const GRID_CLASS = 'grid grid-cols-[34px_minmax(0,1.3fr)_minmax(0,1fr)_52px_52px] gap-x-2 px-4 compact:grid-cols-[26px_minmax(0,1fr)_38px_38px] compact:gap-x-[6px] compact:px-[11px]'
+
 const HEADERS = [
   { label: '#', className: 'text-left' },
   { label: 'Atleta', className: 'text-left' },

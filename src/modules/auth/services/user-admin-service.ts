@@ -1,7 +1,7 @@
 import 'server-only'
 import bcrypt from 'bcryptjs'
 import { and, count, eq, ne } from 'drizzle-orm'
-import { fail, ok, type ActionResult } from '@/lib/actions/result'
+import { type ActionResult, fail, ok } from '@/lib/actions/result'
 import { db, tables } from '@/lib/db'
 import { normalizeUsername } from '../normalize-username/normalize-username'
 
@@ -18,6 +18,7 @@ const findUser = async (userId: string): Promise<ManagedUser | null> => {
 
 const countOtherActiveUsers = async (userId: string): Promise<number> => {
   const { appUsers } = tables
+
   const [row] = await db
     .select({ activeCount: count() })
     .from(appUsers)

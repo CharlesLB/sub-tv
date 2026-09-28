@@ -1,8 +1,7 @@
 import { Crest } from '@/components/ui/crest/crest'
-import { categoryLabel, CategoryTag, type Category } from '@/modules/championships/client'
+import { type Category, CategoryTag, categoryLabel } from '@/modules/championships/client'
 import { MATCH_DURATION_LABEL } from '../../wizard-selectors/wizard-selectors'
 import type { LineupSideVM } from '../lineups-step/lineups-step'
-
 
 type ReviewStepProps = {
   championshipName: string
@@ -13,14 +12,15 @@ type ReviewStepProps = {
 
 export function ReviewStep({ championshipName, category, subtitle, sides }: ReviewStepProps) {
   const title = sides.map(({ team }) => team.name).join('  ×  ')
+
   const broadcastFacts = [
     { label: 'Campeonato', value: `${championshipName} · ${categoryLabel[category]}` },
     { label: 'Tempo de jogo', value: MATCH_DURATION_LABEL },
   ]
 
   return (
-    <div className="flex max-w-[1000px] min-h-0 flex-1 animate-fade-up flex-col gap-[14px]">
-      <div className="chamfer flex flex-none flex-wrap items-center gap-5 bg-pan2 px-5 py-4 mobile:px-4">
+    <div className="flex min-h-0 max-w-[1000px] flex-1 animate-fade-up flex-col gap-[14px]">
+      <div className="flex flex-none flex-wrap items-center gap-5 bg-pan2 px-5 py-4 chamfer mobile:px-4">
         <div className="min-w-0">
           <div className="mb-2 flex flex-wrap items-center gap-3">
             <CategoryTag category={category} size="extraLarge" />
@@ -38,7 +38,7 @@ export function ReviewStep({ championshipName, category, subtitle, sides }: Revi
           const starterSet = new Set(starterIds)
 
           return (
-            <div key={side} className="chamfer flex min-h-0 flex-col gap-[10px] bg-pan2 px-4 py-[14px]">
+            <div key={side} className="flex min-h-0 flex-col gap-[10px] bg-pan2 px-4 py-[14px] chamfer">
               <div className="flex flex-none flex-wrap items-center gap-[10px]">
                 <Crest color={team.color} imagePath={team.crestPath} width={18} />
                 <span className="text-[13.5px] font-bold tracking-[-.01em]">{team.name}</span>

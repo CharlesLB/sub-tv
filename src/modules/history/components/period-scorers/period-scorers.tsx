@@ -1,6 +1,6 @@
 import Link from 'next/link'
-import { categoryLabel } from '@/modules/championships/client'
 import { cn } from '@/lib/utils/cn'
+import { categoryLabel } from '@/modules/championships/client'
 import type { HistoryFilter } from '../../history-filter/history-filter'
 import { historyHref } from '../../history-href/history-href'
 import { barWidthPercent, formatPosition } from '../../stat-format/stat-format'

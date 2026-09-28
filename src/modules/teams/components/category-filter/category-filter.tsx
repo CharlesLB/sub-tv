@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { routes } from '@/lib/routes'
 import { cn } from '@/lib/utils/cn'
-import { CATEGORIES, categoryBackgroundClass, categoryLabel, type Category } from '@/modules/championships/client'
+import { CATEGORIES, type Category, categoryBackgroundClass, categoryLabel } from '@/modules/championships/client'
 
 const ALL_CATEGORIES_LABEL = 'Todas'
 

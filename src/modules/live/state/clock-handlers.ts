@@ -1,5 +1,5 @@
-import { elapsedSecondsAt, MATCH_PERIOD, minuteAt, type LiveClock } from '@/modules/matches/client'
-import { SERVER_OPERATION, type LiveState } from './live-state'
+import { elapsedSecondsAt, type LiveClock, MATCH_PERIOD, minuteAt } from '@/modules/matches/client'
+import { type LiveState, SERVER_OPERATION } from './live-state'
 import { enqueue, inform, LIVE_MESSAGE, warn } from './toasts'
 
 const FRESH_HALF = { elapsedSeconds: 0, addedMinutes: 0 } as const
@@ -11,20 +11,24 @@ const transitionOf = (state: LiveState, nowMs: number): ClockTransition | null =
   const nowIso = new Date(nowMs).toISOString()
 
   if (clock.period === MATCH_PERIOD.FULL_TIME) return null
+
   if (clock.period === MATCH_PERIOD.BEFORE_START) {
     return {
       clock: { ...clock, ...FRESH_HALF, period: MATCH_PERIOD.FIRST_HALF, running: true, startedAt: nowIso },
       message: `1º tempo iniciado · ${state.halfLengthMinutes} Min por tempo`,
     }
   }
+
   if (clock.period === MATCH_PERIOD.HALF_TIME) {
     return { clock: { ...clock, ...FRESH_HALF, period: MATCH_PERIOD.SECOND_HALF, running: true, startedAt: nowIso }, message: LIVE_MESSAGE.SECOND_HALF_STARTED }
   }
+
   if (!clock.running) {
     const message = clock.period === MATCH_PERIOD.FIRST_HALF ? LIVE_MESSAGE.FIRST_HALF_RESUMED : LIVE_MESSAGE.SECOND_HALF_STARTED
 
     return { clock: { ...clock, running: true, startedAt: nowIso }, message }
   }
+
   if (clock.period === MATCH_PERIOD.FIRST_HALF) {
     return {
       clock: { ...clock, ...FRESH_HALF, period: MATCH_PERIOD.HALF_TIME, running: false, startedAt: null, firstHalfMinutes: minuteAt(clock, nowMs) },

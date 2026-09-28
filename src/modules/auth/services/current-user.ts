@@ -2,9 +2,9 @@ import 'server-only'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { cache } from 'react'
+import { readSessionToken, SESSION_COOKIE } from '@/lib/auth/session-token/session-token'
 import { env } from '@/lib/env'
-import { SESSION_COOKIE, readSessionToken } from '@/lib/auth/session-token/session-token'
-import { userService, type AppUser } from './user-service'
+import { type AppUser, userService } from './user-service'
 
 const LOGIN_PATH = '/entrar'
 

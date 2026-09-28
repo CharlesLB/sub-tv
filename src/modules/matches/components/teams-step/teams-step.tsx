@@ -1,6 +1,6 @@
-import { Crest } from '@/components/ui/crest/crest'
 import { cn } from '@/lib/utils/cn'
-import { CategoryTag, type Category } from '@/modules/championships/client'
+import { Crest } from '@/components/ui/crest/crest'
+import { type Category, CategoryTag } from '@/modules/championships/client'
 import type { MatchSide, SetupTeamVM } from '../../types'
 import { WizardNotice } from '../wizard-notice/wizard-notice'
 
@@ -24,7 +24,7 @@ export function TeamsStep({ teams, category, chosenTeamIds, notice, onPick }: Te
           const otherTeamId = chosenTeamIds[side === 'home' ? 'away' : 'home']
 
           return (
-            <div key={side} role="group" aria-label={SIDE_TITLE[side]} className="chamfer flex flex-col gap-3 bg-pan2 p-[18px] mobile:p-[14px]">
+            <div key={side} role="group" aria-label={SIDE_TITLE[side]} className="flex flex-col gap-3 bg-pan2 p-[18px] chamfer mobile:p-[14px]">
               <div className="flex flex-wrap items-center gap-[10px]">
                 <span className="text-[10.3px] font-semibold tracking-[-.01em] text-tx4">{SIDE_TITLE[side]}</span>
                 <CategoryTag category={category} size="medium" />

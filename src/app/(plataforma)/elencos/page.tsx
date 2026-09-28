@@ -1,14 +1,8 @@
 import type { Metadata } from 'next'
 import { Suspense } from 'react'
-import {
-  getChampionshipsOfYear,
-  getSeasonYears,
-  isCategory,
-  resolveYear,
-  toRibbonItems,
-} from '@/modules/championships'
 import { getCurrentUser } from '@/modules/auth'
-import { ContextBar, SeasonRail, SeasonRailSkeleton, type Crumb } from '@/modules/platform'
+import { getChampionshipsOfYear, getSeasonYears, isCategory, resolveYear, toRibbonItems } from '@/modules/championships'
+import { ContextBar, type Crumb, SeasonRail, SeasonRailSkeleton } from '@/modules/platform'
 import { SquadsScreen, SquadsSkeleton } from '@/modules/players'
 import { getSeasonTeams } from '@/modules/teams'
 
@@ -24,45 +18,21 @@ type SquadsQuery = {
   playerId: string | undefined
 }
 
-const readParameter = (value: string | string[] | undefined): string | undefined =>
-  typeof value === 'string' ? value : undefined
+const readParameter = (value: string | string[] | undefined): string | undefined => (typeof value === 'string' ? value : undefined)
 
 async function SquadsOverview({ query }: { query: SquadsQuery }) {
   const years = await getSeasonYears()
   const year = resolveYear(query.year, years)
-  const [championships, teams, user] = await Promise.all([
-    getChampionshipsOfYear(year),
-    getSeasonTeams(year),
-    getCurrentUser(),
-  ])
+  const [championships, teams, user] = await Promise.all([getChampionshipsOfYear(year), getSeasonTeams(year), getCurrentUser()])
   const categoryFilter = isCategory(query.category) ? query.category : undefined
-  const visibleTeams = categoryFilter
-    ? teams.filter((team) => team.category === categoryFilter)
-    : teams
+  const visibleTeams = categoryFilter ? teams.filter((team) => team.category === categoryFilter) : teams
   const selectedTeam = teams.find((team) => team.key === query.teamKey) ?? visibleTeams[0] ?? null
 
   return (
     <>
-      <ContextBar
-        crumbs={[BASE_CRUMB, { label: String(year), separator: '·' }]}
-        title={TITLE}
-        category={selectedTeam?.category}
-        detail={`Vínculos por clube e categoria · elenco ${year}`}
-      />
-      <SeasonRail
-        years={years}
-        activeYear={year}
-        championships={toRibbonItems(championships)}
-        basePath="/elencos"
-      />
-      <SquadsScreen
-        year={year}
-        teams={visibleTeams}
-        categoryFilter={categoryFilter}
-        selectedTeam={selectedTeam}
-        canEdit={user !== null}
-        requestedPlayerId={query.playerId}
-      />
+      <ContextBar crumbs={[BASE_CRUMB, { label: String(year), separator: '·' }]} title={TITLE} category={selectedTeam?.category} detail={`Vínculos por clube e categoria · elenco ${year}`} />
+      <SeasonRail years={years} activeYear={year} championships={toRibbonItems(championships)} basePath="/elencos" />
+      <SquadsScreen year={year} teams={visibleTeams} categoryFilter={categoryFilter} selectedTeam={selectedTeam} canEdit={user !== null} requestedPlayerId={query.playerId} />
     </>
   )
 }

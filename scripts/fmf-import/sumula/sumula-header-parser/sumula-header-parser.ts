@@ -1,6 +1,6 @@
 import { parseShortBrazilianDate } from '../../competition-page/portuguese-date/portuguese-date'
 import { parseInteger } from '../../html-text/html-text'
-import { type PositionedText, type SumulaHeader } from '../sumula-types/sumula-types'
+import type { PositionedText, SumulaHeader } from '../sumula-types/sumula-types'
 import { findItem, findItems, itemRightOf, joinText, parseClockMinute, rowOf } from '../text-layout/text-layout'
 
 const LABEL = {
@@ -67,9 +67,7 @@ const readFinalScore = (items: PositionedText[]): ScorePair | null => {
 }
 
 const sumScores = (pairs: (ScorePair | null)[]): ScorePair | null =>
-  pairs.every((pair) => pair === null)
-    ? null
-    : pairs.reduce<ScorePair>((total, pair) => ({ home: total.home + (pair?.home ?? 0), away: total.away + (pair?.away ?? 0) }), { home: 0, away: 0 })
+  pairs.every((pair) => pair === null) ? null : pairs.reduce<ScorePair>((total, pair) => ({ home: total.home + (pair?.home ?? 0), away: total.away + (pair?.away ?? 0) }), { home: 0, away: 0 })
 
 const readAddedTimes = (items: PositionedText[]): { firstHalf: number | null; secondHalf: number | null } => {
   const values = findItems(items, LABEL.ADDED_TIME).map((label) => ({ x: label.x, minute: parseClockMinute(itemRightOf(items, label)?.text ?? '') }))
@@ -83,9 +81,7 @@ const readAddedTimes = (items: PositionedText[]): { firstHalf: number | null; se
 export const parseSumulaHeader = (items: PositionedText[]): SumulaHeader => {
   const firstHalf = readScorePair(items, HALF_SCORE_PATTERNS.FIRST_HALF)
   const penalties = readScorePair(items, HALF_SCORE_PATTERNS.PENALTIES)
-  const finalScore =
-    readFinalScore(items) ??
-    sumScores([firstHalf, readScorePair(items, HALF_SCORE_PATTERNS.SECOND_HALF), readScorePair(items, HALF_SCORE_PATTERNS.EXTRA_TIME)])
+  const finalScore = readFinalScore(items) ?? sumScores([firstHalf, readScorePair(items, HALF_SCORE_PATTERNS.SECOND_HALF), readScorePair(items, HALF_SCORE_PATTERNS.EXTRA_TIME)])
   const hasPenalties = penalties !== null && penalties.home + penalties.away > 0
   const addedTimes = readAddedTimes(items)
 

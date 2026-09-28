@@ -23,17 +23,20 @@ type CuriosityListProps = { playerId: string; curiosities: CuriosityVM[]; canEdi
 
 export function CuriosityList({ playerId, curiosities, canEdit }: CuriosityListProps) {
   const [shownCuriosities, showCuriosityChange] = useOptimistic(curiosities, applyCuriosityChange)
+
   const submitCuriosity = async (previous: PlayerResult | null, formData: FormData): Promise<PlayerResult | null> => {
     const text = readText(formData, 'text')
     if (text) showCuriosityChange({ kind: 'added', curiosity: { id: `${PENDING_ID_PREFIX}${crypto.randomUUID()}`, text } })
 
     return addCuriosity(previous, formData)
   }
+
   const dropCuriosity = async (previous: PlayerResult | null, formData: FormData): Promise<PlayerResult | null> => {
     showCuriosityChange({ kind: 'removed', curiosityId: readText(formData, 'curiosityId') })
 
     return removeCuriosity(previous, formData)
   }
+
   const [addState, addAction] = useActionState(submitCuriosity, null)
   const [removeState, removeAction] = useActionState(dropCuriosity, null)
   const failure = [addState, removeState].find((state) => state?.ok === false)
@@ -64,21 +67,21 @@ export function CuriosityList({ playerId, curiosities, canEdit }: CuriosityListP
       </ul>
       {shownCuriosities.length === 0 ? <p className="text-[12.5px] text-tx4">Sem curiosidade cadastrada.</p> : null}
       {canEdit ? (
-      <form action={addAction} className="mt-[10px] flex gap-2">
-        <input type="hidden" name="playerId" value={playerId} />
-        <input
-          name="text"
-          required
-          maxLength={CURIOSITY_MAX_LENGTH}
-          autoComplete="off"
-          placeholder="nova curiosidade"
-          aria-label="Nova curiosidade"
-          className="h-10 min-w-0 flex-1 rounded-card border border-bd2 bg-bg px-3 text-[12.5px] text-tx outline-none placeholder:text-tx4 focus-visible:border-tx3"
-        />
-        <button type="submit" className="h-10 rounded-card border border-ac px-[14px] text-[10.8px] font-bold tracking-[-.01em] text-ac transition-colors hover:bg-pan2">
-          Adicionar
-        </button>
-      </form>
+        <form action={addAction} className="mt-[10px] flex gap-2">
+          <input type="hidden" name="playerId" value={playerId} />
+          <input
+            name="text"
+            required
+            maxLength={CURIOSITY_MAX_LENGTH}
+            autoComplete="off"
+            placeholder="nova curiosidade"
+            aria-label="Nova curiosidade"
+            className="h-10 min-w-0 flex-1 rounded-card border border-bd2 bg-bg px-3 text-[12.5px] text-tx outline-none placeholder:text-tx4 focus-visible:border-tx3"
+          />
+          <button type="submit" className="h-10 rounded-card border border-ac px-[14px] text-[10.8px] font-bold tracking-[-.01em] text-ac transition-colors hover:bg-pan2">
+            Adicionar
+          </button>
+        </form>
       ) : null}
       {errorMessage ? (
         <p role="alert" className="mt-[6px] text-[11.5px] text-vm">

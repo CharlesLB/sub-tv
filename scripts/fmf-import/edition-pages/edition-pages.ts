@@ -1,4 +1,4 @@
-import { EDITION_SELECT_NAME, buildCompetitionPageUrl } from '../constants/fmf-sources'
+import { buildCompetitionPageUrl, EDITION_SELECT_NAME } from '../constants/fmf-sources'
 import { parseHtml, textOf } from '../html-text/html-text'
 import { type CookieJar, createCookieJar, decodeUtf8, requestFmf } from '../http-client/http-client'
 import { pageRelativePath, readStoredFile, storeFile } from '../raw-storage/raw-storage'
@@ -26,9 +26,7 @@ export const readEditionOptions = (html: string): EditionOption[] =>
 const readHiddenFields = (html: string): URLSearchParams => {
   const document = parseHtml(html)
 
-  return new URLSearchParams(
-    HIDDEN_FIELD_NAMES.map((fieldName): [string, string] => [fieldName, document.querySelector(`input[name="${fieldName}"]`)?.getAttribute('value') ?? '']),
-  )
+  return new URLSearchParams(HIDDEN_FIELD_NAMES.map((fieldName): [string, string] => [fieldName, document.querySelector(`input[name="${fieldName}"]`)?.getAttribute('value') ?? '']))
 }
 
 const fetchLandingPage = async (pageId: number): Promise<LandingPage> => {
@@ -53,6 +51,7 @@ const fetchEditionByPostback = async (pageId: number, landing: LandingPage, edit
 const downloadEdition = async (pageId: number, landing: LandingPage, option: EditionOption, shouldRefresh: boolean): Promise<EditionPageFile> => {
   const relativePath = pageRelativePath(pageId, option.editionId)
   const cached = shouldRefresh ? null : await readStoredFile(relativePath)
+
   if (!cached) {
     const body = option.isSelected ? new TextEncoder().encode(landing.html) : await fetchEditionByPostback(pageId, landing, option.editionId)
     await storeFile(relativePath, body)
@@ -69,8 +68,5 @@ export const downloadEditionPages = async (pageId: number, selection: EditionSel
   const options = readEditionOptions(landing.html).filter(selection.selectEdition)
   console.info(`d=${pageId}: ${options.length} edições (${options.map((option) => option.label).join(' | ')})`)
 
-  return await options.reduce<Promise<EditionPageFile[]>>(
-    async (previous, option) => [...(await previous), await downloadEdition(pageId, landing, option, shouldRefresh)],
-    Promise.resolve([]),
-  )
+  return await options.reduce<Promise<EditionPageFile[]>>(async (previous, option) => [...(await previous), await downloadEdition(pageId, landing, option, shouldRefresh)], Promise.resolve([]))
 }

@@ -5,6 +5,7 @@ const MINIMUM_SQUAD_SIZE = 11
 
 const withPool = async <TResult>(work: (pool: Pool) => Promise<TResult>): Promise<TResult> => {
   const pool = new Pool({ connectionString: process.env.DATABASE_URL ?? LOCAL_DATABASE_URL, max: 1 })
+
   try {
     return await work(pool)
   } finally {
@@ -22,6 +23,7 @@ export const findSeasonWithFullSquads = (): Promise<string | null> =>
        having count(sq.id) >= $1`,
       [MINIMUM_SQUAD_SIZE],
     )
+
     const teamsBySeason = result.rows.reduce<Record<string, number>>((counts, row) => ({ ...counts, [row.season_id]: (counts[row.season_id] ?? 0) + 1 }), {})
 
     return Object.entries(teamsBySeason).find(([, teams]) => teams >= 2)?.[0] ?? null

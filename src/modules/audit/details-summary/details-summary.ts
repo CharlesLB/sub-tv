@@ -39,6 +39,7 @@ const formatValue = (value: unknown): string | null => {
   if (typeof value === 'string') return UUID_VALUE.test(value) ? null : value
   if (typeof value === 'number') return String(value)
   if (Array.isArray(value)) return `${value.length} itens`
+
   if (isPlainRecord(value)) {
     const nested = R.entries(value).flatMap(([key, nestedValue]) => {
       const formatted = typeof nestedValue === 'object' ? null : formatValue(nestedValue)

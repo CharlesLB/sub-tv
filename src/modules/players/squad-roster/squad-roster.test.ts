@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { SquadPlayerVM } from '../types'
-import { buildSquadPlayers, matchesSquadSearch, toRosterName, type SquadMembershipRow } from './squad-roster'
+import { buildSquadPlayers, matchesSquadSearch, type SquadMembershipRow, toRosterName } from './squad-roster'
 
 const FIRST_DIVISION_TEAM = 'first-division-team'
 const CUP_TEAM = 'cup-team'
@@ -56,6 +56,7 @@ describe('buildSquadPlayers', () => {
 
   it('buildSquadPlayers with stats in both competitions sums games, goals and cards', () => {
     const memberships = [makeMembership({}), makeMembership({ seasonTeamId: CUP_TEAM })]
+
     const stats = [
       { playerId: 'player-a', games: 5, goals: 2, yellowCards: 1, redCards: 0 },
       { playerId: 'player-a', games: 3, goals: 1, yellowCards: 1, redCards: 1 },
@@ -80,6 +81,7 @@ describe('buildSquadPlayers', () => {
 
   it('buildSquadPlayers with curiosities and another category squad keeps only the player curiosities and flags him', () => {
     const memberships = [makeMembership({})]
+
     const curiosities = [
       { id: 'c1', playerId: 'player-a', text: 'Canhoto nato' },
       { id: 'c2', playerId: 'player-b', text: 'Outro jogador' },

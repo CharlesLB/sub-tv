@@ -9,6 +9,7 @@ export type SeasonTouch = { seasonId: string; homeSeasonTeamId: string; awaySeas
 
 export const finalizeFinishedMatch = async (matchId: string): Promise<SeasonTouch | null> => {
   const { matches, matchEvents } = tables
+
   const [match] = await db
     .select({
       seasonId: matches.seasonId,
@@ -20,6 +21,7 @@ export const finalizeFinishedMatch = async (matchId: string): Promise<SeasonTouc
     .from(matches)
     .where(eq(matches.id, matchId))
     .limit(1)
+
   if (!match || match.status !== MATCH_STATUS.FINISHED) return null
 
   const events = await db
@@ -33,6 +35,7 @@ export const finalizeFinishedMatch = async (matchId: string): Promise<SeasonTouc
     })
     .from(matchEvents)
     .where(eq(matchEvents.matchId, matchId))
+
   const score = resolveNarratedScore(match, events)
   if (score) await db.update(matches).set({ homeScore: score.homeScore, awayScore: score.awayScore }).where(eq(matches.id, matchId))
   await recalculateSeasonStatistics(match.seasonId)

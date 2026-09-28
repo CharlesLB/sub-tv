@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 import { Suspense } from 'react'
 import { routes } from '@/lib/routes'
-import { ChampionshipList, ChampionshipListSkeleton, getCategoryClubs, getChampionshipsOfYear, getSeasonYears, resolveYear, toRibbonItems } from '@/modules/championships'
 import { getCurrentUser } from '@/modules/auth'
+import { ChampionshipList, ChampionshipListSkeleton, getCategoryClubs, getChampionshipsOfYear, getSeasonYears, resolveYear, toRibbonItems } from '@/modules/championships'
 import { ContextBar, SeasonRail, SeasonRailSkeleton } from '@/modules/platform'
 
 export const metadata: Metadata = { title: 'Campeonatos' }

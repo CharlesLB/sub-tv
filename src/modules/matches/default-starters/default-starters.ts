@@ -6,6 +6,7 @@ export type StarterCandidate = { playerId: string; shirtNumber: number; starts: 
 
 export const pickDefaultStarters = (candidates: StarterCandidate[]): string[] => {
   const hasStartHistory = candidates.some((candidate) => candidate.starts > 0)
+
   const chosen = new Set(
     R.pipe(
       candidates,

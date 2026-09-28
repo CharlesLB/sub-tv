@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { SUMULA_ITEMS_FIXTURE } from './sumula-parser.fixture'
 import { parseSumulaItems } from './sumula-parser'
+import { SUMULA_ITEMS_FIXTURE } from './sumula-parser.fixture'
 
 describe('parseSumulaItems', () => {
   it('reads the header with wrapped team names, final and half-time scores and added time', () => {
@@ -37,6 +37,7 @@ describe('parseSumulaItems', () => {
       ['away', 11, null, true, false],
       ['away', 17, '200002', false, false],
     ])
+
     expect(players.find((player) => player.shirtNumber === 114)?.fullName).toBe('Reserva Com Numero Longo')
     expect(players.find((player) => player.shirtNumber === 3)?.fullName).toBe('Zagueiro Teste Da Silva')
     expect(players.find((player) => player.shirtNumber === 10)).toMatchObject({ nickname: 'Camisa Dez', fullName: 'Camisa Dez Exemplo' })

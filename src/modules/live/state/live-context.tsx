@@ -1,13 +1,13 @@
 'use client'
 
-import { createContext, use, useReducer, type Dispatch, type ReactNode } from 'react'
+import { createContext, type Dispatch, type ReactNode, use, useReducer } from 'react'
 import type { LiveMatchSnapshot } from '@/modules/matches/client'
 import { useLiveSync } from '../sync/use-live-sync'
 import { useMatchStream } from '../sync/use-match-stream'
-import type { LiveAction } from './live-actions'
-import type { LiveState } from './live-state'
 import { createInitialState } from './initial-state'
+import type { LiveAction } from './live-actions'
 import { liveReducer } from './live-reducer'
+import type { LiveState } from './live-state'
 
 const MISSING_PROVIDER = 'LiveMatchProvider ausente: envolva a tela ao vivo com ele.'
 

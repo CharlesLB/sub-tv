@@ -2,9 +2,9 @@
 
 import { updateTag } from 'next/cache'
 import { tags } from '@/lib/cache/tags'
+import { isUuid } from '@/lib/utils/is-uuid/is-uuid'
 import { AUDIT_ACTION, AUDIT_ENTITY, recordAudit } from '@/modules/audit'
 import { requireUser } from '@/modules/auth'
-import { isUuid } from '@/lib/utils/is-uuid/is-uuid'
 import { broadcastService } from '../services/broadcast-service'
 
 export async function closeBroadcast(matchId: string): Promise<void> {

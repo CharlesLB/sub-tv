@@ -1,12 +1,12 @@
 'use client'
 
-import { useRef, useState, type PointerEvent as ReactPointerEvent } from 'react'
+import { type PointerEvent as ReactPointerEvent, useRef, useState } from 'react'
 import type { PitchPoint } from '@/modules/matches/client'
 import { useLiveState } from '../state/live-context'
 import { derivePlayerStates } from '../state/selectors'
 import { useLiveCommands } from '../state/use-live-commands'
-import { anchorOf, DRAG_KIND, type Anchor, type DragState, type HoverState, type MenuState } from './interaction-state'
-import { nearestDropTarget, pointFromPointer, type PlacedTarget } from './pitch-geometry'
+import { type Anchor, anchorOf, DRAG_KIND, type DragState, type HoverState, type MenuState } from './interaction-state'
+import { nearestDropTarget, type PlacedTarget, pointFromPointer } from './pitch-geometry'
 import { startPointerGesture } from './pointer-gesture'
 
 export const useBoardInteractions = () => {

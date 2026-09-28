@@ -1,5 +1,5 @@
 import { useFormStatus } from 'react-dom'
-import { categoryLabel, type Category } from '@/modules/championships/client'
+import { type Category, categoryLabel } from '@/modules/championships/client'
 import { footLabel, positionLabel } from '../../labels'
 import { PLAYER_POSITIONS, PREFERRED_FEET } from '../../schemas'
 import type { PlayerPosition, PreferredFoot } from '../../types'
@@ -22,11 +22,10 @@ export function ProfileChips({ position, preferredFoot, teamName, category }: Pr
   const { data } = useFormStatus()
   const shownPosition = readPendingChoice(data, 'position', PLAYER_POSITIONS, position)
   const shownFoot = readPendingChoice(data, 'preferredFoot', PREFERRED_FEET, preferredFoot)
-  const chips = [
-    shownPosition ? positionLabel[shownPosition].toUpperCase() : null,
-    shownFoot ? footLabel[shownFoot].toUpperCase() : null,
-    `${teamName} · ${categoryLabel[category]}`,
-  ].filter((chip) => chip !== null)
+
+  const chips = [shownPosition ? positionLabel[shownPosition].toUpperCase() : null, shownFoot ? footLabel[shownFoot].toUpperCase() : null, `${teamName} · ${categoryLabel[category]}`].filter(
+    (chip) => chip !== null,
+  )
 
   return (
     <div className="flex flex-wrap gap-2">

@@ -18,12 +18,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<'/'>) {
   return (
-    <html
-      lang="pt-BR"
-      data-tema="claro"
-      suppressHydrationWarning
-      className={`${geist.variable} ${barlowCondensed.variable}`}
-    >
+    <html lang="pt-BR" data-tema="claro" suppressHydrationWarning className={`${geist.variable} ${barlowCondensed.variable}`}>
       <head>
         {/* eslint-disable-next-line @next/next/no-sync-scripts -- aplica o tema salvo antes da primeira pintura para evitar flash */}
         <script src="/theme-init.js" />

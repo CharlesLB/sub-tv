@@ -1,6 +1,6 @@
 import * as R from 'remeda'
-import { toPhaseLabel } from '../../mappers'
 import type { Category } from '../../categories'
+import { toPhaseLabel } from '../../mappers'
 import type { MatchCardVM } from '../../types'
 import { CategoryTag } from '../category-tag/category-tag'
 import { MatchCard } from '../match-card/match-card'

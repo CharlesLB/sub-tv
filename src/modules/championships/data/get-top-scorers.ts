@@ -15,6 +15,7 @@ export const getTopScorers = async (seasonId: string): Promise<TopScorerVM[]> =>
   cacheTag(tags.season(seasonId), tags.seasonMatches(seasonId), tags.fmfData())
 
   const { playerSeasonStats, players, seasonTeams, seasonSquads, clubs } = tables
+
   const rows = await db
     .select({
       playerId: players.id,

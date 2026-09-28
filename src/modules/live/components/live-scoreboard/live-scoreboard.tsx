@@ -21,10 +21,7 @@ export function LiveScoreboard() {
   const canAddMinute = clock.running && clock.period !== MATCH_PERIOD.FULL_TIME
 
   return (
-    <div
-      data-screen-label="Placar"
-      className="flex flex-none flex-wrap items-center justify-center gap-[14px] border-b border-bd bg-pan px-5 py-3 mobile:gap-2 mobile:px-2 mobile:py-2"
-    >
+    <div data-screen-label="Placar" className="flex flex-none flex-wrap items-center justify-center gap-[14px] border-b border-bd bg-pan px-5 py-3 mobile:gap-2 mobile:px-2 mobile:py-2">
       {clock.running ? <LivePill /> : null}
       <CategoryTag category={category} className="px-[9px] py-[3px] text-[9.9px]" />
       <div role="group" aria-label={`${home.name} ${score[SIDE.HOME]} × ${score[SIDE.AWAY]} ${away.name}`} className="flex -skew-x-12 items-stretch">

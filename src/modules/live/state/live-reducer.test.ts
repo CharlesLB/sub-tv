@@ -1,10 +1,10 @@
 import { describe, expect, it, vi } from 'vitest'
 import { LIVE_EVENT_TYPE, MATCH_PERIOD, SIDE } from '@/modules/matches/client'
-import { CARD_COLOR, LIVE_ACTION, type LiveAction } from './live-actions'
-import { makeSnapshot, PLAYER } from './live-state.fixtures'
-import { SERVER_OPERATION, SYNC_STATE, TOAST_TONE, type LiveState } from './live-state'
 import { createInitialState } from './initial-state'
+import { CARD_COLOR, LIVE_ACTION, type LiveAction } from './live-actions'
 import { liveReducer } from './live-reducer'
+import { type LiveState, SERVER_OPERATION, SYNC_STATE, TOAST_TONE } from './live-state'
+import { makeSnapshot, PLAYER } from './live-state.fixtures'
 import { derivePlayerStates, selectScore } from './selectors'
 import { LIVE_MESSAGE, MAXIMUM_TOASTS } from './toasts'
 
@@ -123,6 +123,7 @@ describe('liveReducer', () => {
       clientId: 'sub-1',
       nowMs: NOW_MS,
     })
+
     const states = derivePlayerStates(state.players, state.events)
 
     expect(state.positions[PLAYER.HOME_RESERVE]).toEqual({ x: 44, y: 50 })

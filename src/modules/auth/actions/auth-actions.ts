@@ -1,11 +1,11 @@
 'use server'
 
+import type { Route } from 'next'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { z } from 'zod'
-import type { Route } from 'next'
-import { fail, type ActionResult } from '@/lib/actions/result'
-import { SESSION_COOKIE, SESSION_DURATION_SECONDS, createSessionToken } from '@/lib/auth/session-token/session-token'
+import { type ActionResult, fail } from '@/lib/actions/result'
+import { createSessionToken, SESSION_COOKIE, SESSION_DURATION_SECONDS } from '@/lib/auth/session-token/session-token'
 import { env } from '@/lib/env'
 import { AUDIT_ACTION, AUDIT_ENTITY, recordAudit } from '@/modules/audit'
 import { SignInInput } from '../schemas'
@@ -26,9 +26,11 @@ export async function signIn(_previous: ActionResult | null, formData: FormData)
     password: formData.get('password'),
     returnTo: formData.get('returnTo') ?? undefined,
   })
+
   if (!parsed.success) return fail('Preencha usuário e senha.', z.flattenError(parsed.error).fieldErrors)
 
   const user = await userService.authenticate(parsed.data.username, parsed.data.password)
+
   if (!user) {
     await wait(FAILED_ATTEMPT_DELAY_MS)
 
@@ -36,6 +38,7 @@ export async function signIn(_previous: ActionResult | null, formData: FormData)
   }
 
   const cookieStore = await cookies()
+
   cookieStore.set(SESSION_COOKIE, await createSessionToken(user.id, env.SESSION_SECRET, Math.floor(Date.now() / 1000)), {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
@@ -43,6 +46,7 @@ export async function signIn(_previous: ActionResult | null, formData: FormData)
     path: '/',
     maxAge: SESSION_DURATION_SECONDS,
   })
+
   await recordAudit({ userId: user.id, action: AUDIT_ACTION.SIGN_IN, entityType: AUDIT_ENTITY.USER, entityId: user.id })
   redirect(isInternalRoute(parsed.data.returnTo) ? parsed.data.returnTo : DEFAULT_DESTINATION)
 }

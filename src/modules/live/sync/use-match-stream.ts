@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, type Dispatch } from 'react'
+import { type Dispatch, useEffect } from 'react'
 import { apiRoutes } from '@/lib/routes'
 import { RemoteEventSchema, RemoteSnapshotSchema, STREAM_MESSAGE } from '@/modules/matches/client'
 import { LIVE_ACTION, type LiveAction } from '../state/live-actions'

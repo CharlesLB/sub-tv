@@ -2,12 +2,12 @@
 
 import { updateTag } from 'next/cache'
 import { z } from 'zod'
-import { fail, ok, type ActionResult } from '@/lib/actions/result'
+import { type ActionResult, fail, ok } from '@/lib/actions/result'
 import { tags } from '@/lib/cache/tags'
-import { AUDIT_ACTION, AUDIT_ENTITY, recordAudit, type AuditAction } from '@/modules/audit'
+import { AUDIT_ACTION, AUDIT_ENTITY, type AuditAction, recordAudit } from '@/modules/audit'
 import { requireUser } from '@/modules/auth'
 import { AddCuriosityInput, CreateManualPlayerInput, RemoveCuriosityInput, UpdatePlayerProfileInput } from '../schemas'
-import { playerService, type PlayerChange } from '../services/player-service'
+import { type PlayerChange, playerService } from '../services/player-service'
 
 const INVALID_FIELDS = 'Confira os campos.'
 

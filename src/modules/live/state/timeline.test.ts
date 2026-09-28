@@ -1,8 +1,8 @@
-import { describe, expect, it, vi } from 'vitest'
 import * as R from 'remeda'
+import { describe, expect, it, vi } from 'vitest'
 import { INITIAL_LIVE_CLOCK, LIVE_EVENT_TYPE, MATCH_PERIOD, SIDE } from '@/modules/matches/client'
-import { makeEvent, makeSnapshot, PLAYER } from './live-state.fixtures'
 import { SYNC_STATE } from './live-state'
+import { makeEvent, makeSnapshot, PLAYER } from './live-state.fixtures'
 import { buildTimeline, describeEvent, TIMELINE_MARKER } from './timeline'
 
 vi.mock('@/modules/matches/client', async () => ({
@@ -23,9 +23,7 @@ describe('timeline', () => {
   })
 
   it('substitution names the shirts leaving and entering', () => {
-    const substitution = confirmed(
-      makeEvent({ key: 's', type: LIVE_EVENT_TYPE.SUBSTITUTION, side: SIDE.HOME, playerId: PLAYER.HOME_RESERVE, playerOutId: PLAYER.HOME_STRIKER }),
-    )
+    const substitution = confirmed(makeEvent({ key: 's', type: LIVE_EVENT_TYPE.SUBSTITUTION, side: SIDE.HOME, playerId: PLAYER.HOME_RESERVE, playerOutId: PLAYER.HOME_STRIKER }))
 
     expect(describeEvent(substitution, playersById)).toBe('SUBSTITUIÇÃO — SAI #9 · ENTRA #12')
   })
@@ -35,6 +33,7 @@ describe('timeline', () => {
       confirmed(makeEvent({ key: 'first', type: LIVE_EVENT_TYPE.YELLOW_CARD, side: SIDE.AWAY, playerId: PLAYER.AWAY_STRIKER })),
       confirmed(makeEvent({ key: 'second', type: LIVE_EVENT_TYPE.GOAL, side: SIDE.HOME, playerId: PLAYER.HOME_STRIKER, period: MATCH_PERIOD.SECOND_HALF, minute: 3 })),
     ]
+
     const timeline = buildTimeline(events, { ...INITIAL_LIVE_CLOCK, period: MATCH_PERIOD.SECOND_HALF, firstHalfMinutes: 35 }, playersById)
 
     expect(timeline.map((item) => item.key)).toEqual(['first', TIMELINE_MARKER.HALF_TIME, 'second'])

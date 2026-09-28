@@ -1,4 +1,10 @@
 spec
 .data
+.next
 drizzle
+public
+test-results
+playwright-report
+storybook-static
+coverage
 pnpm-lock.yaml

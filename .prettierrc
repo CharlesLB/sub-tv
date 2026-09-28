@@ -1,7 +1,10 @@
 {
   "semi": false,
   "singleQuote": true,
-  "printWidth": 100,
+  "printWidth": 200,
   "trailingComma": "all",
-  "plugins": ["prettier-plugin-tailwindcss"]
+  "arrowParens": "always",
+  "plugins": ["prettier-plugin-tailwindcss"],
+  "tailwindStylesheet": "./src/app/globals.css",
+  "tailwindFunctions": ["cn", "clsx", "cva"]
 }

@@ -2,9 +2,9 @@
 
 import type { Dispatch } from 'react'
 import { useMediaQuery } from '@/lib/hooks/use-media-query/use-media-query'
-import { categoryLabel, type Category } from '@/modules/championships/client'
+import { type Category, categoryLabel } from '@/modules/championships/client'
 import { LINEUP_VIEW, type LineupView, type WizardAction } from '../../wizard-reducer/wizard-reducer'
-import { LineupBoard, type BoardSideVM } from '../lineup-board/lineup-board'
+import { type BoardSideVM, LineupBoard } from '../lineup-board/lineup-board'
 import { LineupViewToolbar } from '../lineup-view-toolbar/lineup-view-toolbar'
 import { LineupsStep } from '../lineups-step/lineups-step'
 

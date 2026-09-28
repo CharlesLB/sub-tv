@@ -1,9 +1,9 @@
 import Link from 'next/link'
-import { Crest } from '@/components/ui/crest/crest'
-import { Icon } from '@/components/ui/icon/icon'
 import { routes } from '@/lib/routes'
 import { cn } from '@/lib/utils/cn'
 import { formatShortDateTime } from '@/lib/utils/format-date/format-date'
+import { Crest } from '@/components/ui/crest/crest'
+import { Icon } from '@/components/ui/icon/icon'
 import type { ChampionshipCardVM } from '../../types'
 import { CategoryTag } from '../category-tag/category-tag'
 
@@ -11,9 +11,11 @@ const CARD_DELAY_STEP_MS = 45
 
 const describeStatus = (championship: ChampionshipCardVM): { text: string; meta: string } => {
   const { liveMatch, nextMatch } = championship
+
   if (liveMatch) {
     return { text: `${liveMatch.home.abbreviation} ${liveMatch.homeScore} × ${liveMatch.awayScore} ${liveMatch.away.abbreviation}`, meta: 'AO VIVO' }
   }
+
   if (nextMatch?.kickoffAt) return { text: `PRÓXIMA: ${formatShortDateTime(nextMatch.kickoffAt)}`, meta: nextMatch.round ? `R${nextMatch.round}` : '' }
   if (championship.isFinished) return { text: 'Campeonato encerrado', meta: '' }
 
@@ -49,9 +51,7 @@ export function ChampionshipCard({ championship, index }: ChampionshipCardProps)
             <div key={row.position} className="flex min-w-0 items-center gap-[9px] py-1">
               <span className={cn('w-3 flex-none text-[11px]', row.position === 1 ? 'text-ac' : 'text-tx4')}>{row.position}</span>
               <Crest color={row.team.color} imagePath={row.team.crestPath} width={16} />
-              <span className={cn('min-w-0 truncate text-[11.7px] font-bold tracking-[-.01em]', row.position === 1 ? 'text-tx' : 'text-tx2')}>
-                {row.team.name}
-              </span>
+              <span className={cn('min-w-0 truncate text-[11.7px] font-bold tracking-[-.01em]', row.position === 1 ? 'text-tx' : 'text-tx2')}>{row.team.name}</span>
               <span className={cn('ml-auto flex-none text-[12.5px] nums', row.position === 1 ? 'font-semibold text-tx' : 'text-tx2')}>{row.points}</span>
             </div>
           ))
@@ -68,12 +68,7 @@ export function ChampionshipCard({ championship, index }: ChampionshipCardProps)
         <span className={cn('min-w-0 truncate text-[11.3px] font-bold tracking-[-.01em]', isLive ? 'text-tx' : 'text-tx2')}>{status.text}</span>
         <span className={cn('ml-auto flex-none text-[11px]', isLive ? 'text-ac' : 'text-tx4')}>{status.meta}</span>
       </div>
-      <span
-        className={cn(
-          'flex h-9 items-center justify-center rounded-card border border-bd2 text-[11.3px] font-bold tracking-[-.01em] transition-colors',
-          isLive ? 'text-ac' : 'text-tx2',
-        )}
-      >
+      <span className={cn('flex h-9 items-center justify-center rounded-card border border-bd2 text-[11.3px] font-bold tracking-[-.01em] transition-colors', isLive ? 'text-ac' : 'text-tx2')}>
         {isLive ? 'Abrir transmissão' : 'Abrir campeonato'}
       </span>
     </Link>

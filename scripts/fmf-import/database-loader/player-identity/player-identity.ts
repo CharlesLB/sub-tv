@@ -4,7 +4,7 @@ import * as R from 'remeda'
 import { players, seasonSquads, seasonTeams } from '../../../../src/lib/db/schema'
 import type { SumulaPlayer } from '../../sumula/sumula-types/sumula-types'
 import { normalizeName } from '../../text-normalization/text-normalization'
-import { type Transaction, inChunks, inChunksReturning } from '../database-context/database-context'
+import { inChunks, inChunksReturning, type Transaction } from '../database-context/database-context'
 import type { LoadedMatch } from '../match-loader/match-loader'
 
 const CBF_IDENTITY_PREFIX = 'cbf:'
@@ -16,8 +16,7 @@ type ClubPlayerRow = { playerId: string; cbfId: string | null; fullName: string;
 
 export const clubNameKey = (clubId: string, fullName: string): string => `${clubId}|${normalizeName(fullName)}`
 
-export const identityOf = (cbfId: string | null, clubId: string, fullName: string): string =>
-  cbfId ? `${CBF_IDENTITY_PREFIX}${cbfId}` : `${NAME_IDENTITY_PREFIX}${clubNameKey(clubId, fullName)}`
+export const identityOf = (cbfId: string | null, clubId: string, fullName: string): string => (cbfId ? `${CBF_IDENTITY_PREFIX}${cbfId}` : `${NAME_IDENTITY_PREFIX}${clubNameKey(clubId, fullName)}`)
 
 const latestAppearances = (candidates: IdentifiedPlayer[]): IdentifiedPlayer[] =>
   R.pipe(
@@ -59,23 +58,21 @@ const uniqueIndex = (rows: { key: string; playerId: string }[]): Map<string, str
 
 const resolveNamelessPlayers = async (transaction: Transaction, candidates: IdentifiedPlayer[], cbfPlayerIds: Map<string, string>): Promise<Map<string, string>> => {
   const clubPlayers = await readClubPlayers(transaction, R.unique(candidates.map((candidate) => candidate.clubId)))
-  const cbfByName = uniqueIndex(
-    clubPlayers.filter((row) => row.cbfId !== null).map((row) => ({ key: clubNameKey(row.clubId, row.fullName), playerId: row.playerId })),
-  )
+  const cbfByName = uniqueIndex(clubPlayers.filter((row) => row.cbfId !== null).map((row) => ({ key: clubNameKey(row.clubId, row.fullName), playerId: row.playerId })))
   const namelessByName = uniqueIndex(clubPlayers.filter((row) => row.cbfId === null).map((row) => ({ key: clubNameKey(row.clubId, row.fullName), playerId: row.playerId })))
   const appearances = latestAppearances(candidates)
+
   const resolved = appearances.map((candidate) => {
     const key = clubNameKey(candidate.clubId, candidate.player.fullName)
     const existingId = cbfByName.get(key) ?? cbfPlayerIds.get(key) ?? namelessByName.get(key)
 
     return { candidate, playerId: existingId ?? randomUUID(), isNew: existingId === undefined }
   })
+
   await inChunks(
     resolved.filter((entry) => entry.isNew),
     async (chunk) =>
-      transaction
-        .insert(players)
-        .values(chunk.map((entry) => ({ id: entry.playerId, cbfId: null, fullName: entry.candidate.player.fullName, nickname: entry.candidate.player.nickname }))),
+      transaction.insert(players).values(chunk.map((entry) => ({ id: entry.playerId, cbfId: null, fullName: entry.candidate.player.fullName, nickname: entry.candidate.player.nickname }))),
   )
 
   return new Map(resolved.map((entry) => [entry.candidate.identity, entry.playerId]))
@@ -85,6 +82,7 @@ export const resolvePlayerIds = async (transaction: Transaction, candidates: Ide
   const withCbf = candidates.filter((candidate) => candidate.cbfId !== null)
   const cbfPlayerIds = await upsertCbfPlayers(transaction, withCbf)
   const editionCbfByName = new Map(withCbf.map((candidate) => [clubNameKey(candidate.clubId, candidate.player.fullName), cbfPlayerIds.get(candidate.identity) ?? '']))
+
   const namelessIds = await resolveNamelessPlayers(
     transaction,
     candidates.filter((candidate) => candidate.cbfId === null),

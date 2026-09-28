@@ -12,21 +12,24 @@ export function UsersTable({ users, currentUserId }: UsersTableProps) {
   return (
     <div className="flex flex-col overflow-hidden rounded-card border border-bd bg-pan" role="table" aria-label="Usuários">
       <div role="row" className="flex items-center gap-3 border-b border-bd2 px-3 pt-[9px] pb-2 text-[10px] tracking-[.05em] text-tx4 mobile:hidden">
-        <span role="columnheader" className="min-w-0 flex-1">Nome</span>
-        <span role="columnheader" className="w-[70px] flex-none">Situação</span>
-        <span role="columnheader" className="w-[118px] flex-none">Último acesso</span>
-        <span role="columnheader" className="w-[260px] flex-none text-right">Ações</span>
+        <span role="columnheader" className="min-w-0 flex-1">
+          Nome
+        </span>
+        <span role="columnheader" className="w-[70px] flex-none">
+          Situação
+        </span>
+        <span role="columnheader" className="w-[118px] flex-none">
+          Último acesso
+        </span>
+        <span role="columnheader" className="w-[260px] flex-none text-right">
+          Ações
+        </span>
       </div>
       {users.map((user, index) => {
         const isCurrentUser = user.id === currentUserId
 
         return (
-          <div
-            key={user.id}
-            role="row"
-            aria-label={user.username}
-            className={cn('flex items-center gap-3 px-3 py-[10px] mobile:flex-wrap', index % 2 === 1 ? 'bg-pan0' : 'bg-pan')}
-          >
+          <div key={user.id} role="row" aria-label={user.username} className={cn('flex items-center gap-3 px-3 py-[10px] mobile:flex-wrap', index % 2 === 1 ? 'bg-pan0' : 'bg-pan')}>
             <span role="cell" className="flex min-w-0 flex-1 items-baseline gap-2">
               <span className="truncate text-[13.5px] font-bold tracking-[-.01em] text-tx">{user.username}</span>
               {isCurrentUser ? <span className="flex-none text-[9.5px] tracking-[.06em] text-tx5">você</span> : null}

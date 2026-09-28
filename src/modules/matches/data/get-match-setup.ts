@@ -14,6 +14,7 @@ const SCHEDULED_STATUS = 'agendado'
 
 const readSeasonTeams = async (seasonId: string) => {
   const { seasonTeams, clubs } = tables
+
   const rows = await db
     .select({ seasonTeamId: seasonTeams.id, badge: teamBadgeColumns(clubs) })
     .from(seasonTeams)
@@ -28,6 +29,7 @@ const readSeasonTeams = async (seasonId: string) => {
 
 const readPrefillMatch = async (seasonId: string, matchId: string): Promise<PrefillMatchVM | null> => {
   const { matches } = tables
+
   const [match] = await db
     .select({
       matchId: matches.id,
@@ -40,6 +42,7 @@ const readPrefillMatch = async (seasonId: string, matchId: string): Promise<Pref
     .from(matches)
     .where(and(eq(matches.id, matchId), eq(matches.seasonId, seasonId), eq(matches.status, SCHEDULED_STATUS), isNull(matches.removedAt)))
     .limit(1)
+
   if (!match) return null
 
   return {
@@ -63,10 +66,12 @@ export const getMatchSetup = async (seasonId: string, prefillMatchId: string | n
     readSeasonTeams(seasonId),
     prefillMatchId ? readPrefillMatch(seasonId, prefillMatchId) : Promise.resolve(null),
   ])
+
   if (!header) return null
 
   if (seasonTeams.length > 0) cacheTag(...seasonTeams.map((team) => tags.teamSquad(team.seasonTeamId)))
   const squads = await readTeamSquads(seasonTeams.map((team) => team.seasonTeamId))
+
   const teams: SetupTeamVM[] = seasonTeams.map((team) => {
     const squad = squads[team.seasonTeamId] ?? []
 

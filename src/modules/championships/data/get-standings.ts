@@ -17,6 +17,7 @@ type StandingSource = Omit<StandingRowVM, 'form' | 'squad' | 'goalDifference'> &
 
 const readOfficialStandings = async (seasonId: string): Promise<StandingSource[]> => {
   const { fmfStandings, seasonTeams, clubs } = tables
+
   const rows = await db
     .select({
       phase: fmfStandings.phase,
@@ -44,6 +45,7 @@ const readOfficialStandings = async (seasonId: string): Promise<StandingSource[]
 
 const readComputedStandings = async (seasonId: string): Promise<StandingSource[]> => {
   const { teamSeasonStats, seasonTeams, clubs } = tables
+
   const rows = await db
     .select({
       points: teamSeasonStats.points,
@@ -69,6 +71,7 @@ const readComputedStandings = async (seasonId: string): Promise<StandingSource[]
 
 const readSquadPreviews = async (seasonId: string): Promise<Record<string, SquadPreviewPlayerVM[]>> => {
   const { seasonSquads, seasonTeams, players } = tables
+
   const rows = await db
     .select({
       seasonTeamId: seasonSquads.seasonTeamId,
@@ -110,7 +113,10 @@ export const getStandings = async (seasonId: string): Promise<StandingPhaseVM[]>
 
   return R.pipe(
     R.entries(phases),
-    R.sortBy(([phase, rows]) => phaseOrder(phase, rows.length)[0], ([phase, rows]) => phaseOrder(phase, rows.length)[1]),
+    R.sortBy(
+      ([phase, rows]) => phaseOrder(phase, rows.length)[0],
+      ([phase, rows]) => phaseOrder(phase, rows.length)[1],
+    ),
     R.map(([phase, rows]) => ({
       phase,
       groups: R.pipe(

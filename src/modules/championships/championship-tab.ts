@@ -12,5 +12,4 @@ export const CHAMPIONSHIP_TABS: readonly { tab: ChampionshipTab; label: string }
   { tab: CHAMPIONSHIP_TAB.MATCHES, label: 'Partidas' },
 ]
 
-export const parseChampionshipTab = (value: unknown): ChampionshipTab =>
-  CHAMPIONSHIP_TABS.find((entry) => entry.tab === value)?.tab ?? CHAMPIONSHIP_TAB.STANDINGS
+export const parseChampionshipTab = (value: unknown): ChampionshipTab => CHAMPIONSHIP_TABS.find((entry) => entry.tab === value)?.tab ?? CHAMPIONSHIP_TAB.STANDINGS

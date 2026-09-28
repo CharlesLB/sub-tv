@@ -57,6 +57,7 @@ export function NewMatchWizard({ setup, presentation }: NewMatchWizardProps) {
   const context: WizardContext = { setup, today, categoryLabel: categoryLabel[championship.category] }
   const isReady = canAdvance(state, today)
   const showNotices = presentation === 'page'
+
   const lineupSides: BoardSideVM[] = [
     { side: 'home' as const, team: findTeam(setup, state.homeTeamId), starterIds: state.homeStarterIds },
     { side: 'away' as const, team: findTeam(setup, state.awayTeamId), starterIds: state.awayStarterIds },
@@ -65,6 +66,7 @@ export function NewMatchWizard({ setup, presentation }: NewMatchWizardProps) {
   const leave = () => (presentation === 'sheet' ? router.back() : router.push(routes.championship(championship.id)))
   const goBack = () => (state.step === WIZARD_STEP.INFORMATION ? leave() : dispatch({ type: 'step/returned' }))
   const goNext = () => (isReady ? dispatch({ type: 'step/advanced' }) : undefined)
+
   const submit = () =>
     startSubmitting(async () => {
       setFailureMessage(null)
@@ -89,23 +91,23 @@ export function NewMatchWizard({ setup, presentation }: NewMatchWizardProps) {
         onPick={(side: MatchSide, team) => dispatch({ type: 'team/picked', side, team })}
       />
     ),
-    [WIZARD_STEP.LINEUPS]: (
-      <LineupEditor sides={lineupSides} view={state.lineupView} category={championship.category} year={championship.year} dispatch={dispatch} />
-    ),
-    [WIZARD_STEP.REVIEW]: (
-      <ReviewStep championshipName={championship.name} category={championship.category} subtitle={reviewSubtitle(state, context)} sides={lineupSides} />
-    ),
+    [WIZARD_STEP.LINEUPS]: <LineupEditor sides={lineupSides} view={state.lineupView} category={championship.category} year={championship.year} dispatch={dispatch} />,
+    [WIZARD_STEP.REVIEW]: <ReviewStep championshipName={championship.name} category={championship.category} subtitle={reviewSubtitle(state, context)} sides={lineupSides} />,
   }
 
   return (
     <div className="flex min-h-0 flex-1 flex-col bg-bg text-tx">
       <WizardStepper currentStep={state.step} values={stepValues(state, context)} onGoBackTo={(step) => dispatch({ type: 'step/went-back-to', step })} />
-      <div className="flex min-h-0 flex-[1_1_auto] flex-col overflow-x-hidden overflow-y-auto px-5 py-4 mobile:px-3 mobile:pt-[14px] mobile:pb-[22px]">
-        {stepContent[state.step]}
-      </div>
+      <div className="flex min-h-0 flex-[1_1_auto] flex-col overflow-x-hidden overflow-y-auto px-5 py-4 mobile:px-3 mobile:pt-[14px] mobile:pb-[22px]">{stepContent[state.step]}</div>
       {state.isSummaryOpen ? (
         <WizardSummary
-          sides={lineupSides.map(({ side, team, starterIds }) => ({ key: side, name: team.name, color: team.color, crestPath: team.crestPath, lineupCount: `${starterIds.length}/${STARTERS_PER_TEAM}` }))}
+          sides={lineupSides.map(({ side, team, starterIds }) => ({
+            key: side,
+            name: team.name,
+            color: team.color,
+            crestPath: team.crestPath,
+            lineupCount: `${starterIds.length}/${STARTERS_PER_TEAM}`,
+          }))}
           lines={summaryLines(state, context)}
           category={championship.category}
         />

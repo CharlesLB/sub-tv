@@ -6,11 +6,7 @@ type DragGhostProps = { shirtNumber: number; name: string; color: string; left: 
 
 export function DragGhost({ shirtNumber, name, color, left, top }: DragGhostProps) {
   return createPortal(
-    <div
-      aria-hidden
-      className="pointer-events-none fixed z-[90] flex -translate-x-1/2 -translate-y-[130%] items-center gap-2 rounded-card border border-bd2 bg-pan2 px-3 py-2"
-      style={{ left, top }}
-    >
+    <div aria-hidden className="pointer-events-none fixed z-[90] flex -translate-x-1/2 -translate-y-[130%] items-center gap-2 rounded-card border border-bd2 bg-pan2 px-3 py-2" style={{ left, top }}>
       <span className="text-[13.5px] font-bold nums" style={{ color }}>
         {shirtNumber}
       </span>

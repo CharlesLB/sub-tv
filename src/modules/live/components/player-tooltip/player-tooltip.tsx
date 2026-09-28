@@ -1,8 +1,8 @@
 'use client'
 
 import * as R from 'remeda'
-import { Icon } from '@/components/ui/icon/icon'
 import { cn } from '@/lib/utils/cn'
+import { Icon } from '@/components/ui/icon/icon'
 import { categoryLabel } from '@/modules/championships/client'
 import type { HoverState } from '../../interaction/interaction-state'
 import { footLabel, positionLabel } from '../../player-labels/player-labels'
@@ -10,7 +10,7 @@ import { useLiveState } from '../../state/live-context'
 import type { PlayerMatchState } from '../../state/live-state'
 import { seasonNumbersWithMatch } from '../../state/selectors'
 import { TooltipStat } from '../tooltip-stat/tooltip-stat'
-import { HIGHLIGHT_TONE, matchHighlightsOf, type HighlightTone } from './match-highlights'
+import { HIGHLIGHT_TONE, type HighlightTone, matchHighlightsOf } from './match-highlights'
 
 const HORIZONTAL_MARGIN = 170
 const ANCHOR_GAP = 12
@@ -38,9 +38,11 @@ export function PlayerTooltip({ hover, matchState }: PlayerTooltipProps) {
   const numbers = seasonNumbersWithMatch(player, events)
   const highlights = matchHighlightsOf(matchState)
   const status = matchState.subbedOut ? 'Substituído' : matchState.onPitch ? null : 'Reserva'
+
   const subtitle = [positionLabel(player.position), footLabel(player.preferredFoot), `${team.name} ${categoryLabel[category]}`, player.nickname ? `"${player.nickname}"` : null, status]
     .filter(Boolean)
     .join(' · ')
+
   const showBelow = hover.anchor.top < MINIMUM_SPACE_ABOVE
   const left = R.clamp(hover.anchor.x, { min: HORIZONTAL_MARGIN, max: window.innerWidth - HORIZONTAL_MARGIN })
   const top = showBelow ? hover.anchor.bottom + ANCHOR_GAP : hover.anchor.top - ANCHOR_GAP
@@ -49,7 +51,7 @@ export function PlayerTooltip({ hover, matchState }: PlayerTooltipProps) {
     <div
       role="tooltip"
       className={cn(
-        'chamfer-small pointer-events-none fixed z-[80] flex w-max max-w-[320px] -translate-x-1/2 animate-fade-in flex-col gap-[6px] border border-bd2 bg-pan2 px-[15px] py-3',
+        'pointer-events-none fixed z-[80] flex w-max max-w-[320px] -translate-x-1/2 animate-fade-in flex-col gap-[6px] border border-bd2 bg-pan2 px-[15px] py-3 chamfer-small',
         !showBelow && '-translate-y-full',
       )}
       style={{ left, top }}

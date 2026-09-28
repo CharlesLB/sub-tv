@@ -1,6 +1,6 @@
 import 'server-only'
 import { and, eq, or } from 'drizzle-orm'
-import { tables, type db } from '@/lib/db'
+import { type db, tables } from '@/lib/db'
 
 export type Transaction = Parameters<Parameters<typeof db.transaction>[0]>[0]
 
@@ -10,6 +10,7 @@ type LineupRow = { id: string; side: 'home' | 'away'; isStarter: boolean; pitchX
 
 export const findLineupRow = async (executor: DatabaseExecutor, matchId: string, playerId: string): Promise<LineupRow | null> => {
   const { matchLineups } = tables
+
   const [row] = await executor
     .select({ id: matchLineups.id, side: matchLineups.side, isStarter: matchLineups.isStarter, pitchX: matchLineups.pitchX, pitchY: matchLineups.pitchY })
     .from(matchLineups)
@@ -28,6 +29,7 @@ export const findExistingByClientId = async (executor: DatabaseExecutor, clientI
 
 export const findEventByKey = async (executor: DatabaseExecutor, matchId: string, eventKey: string) => {
   const { matchEvents } = tables
+
   const [row] = await executor
     .select({
       id: matchEvents.id,

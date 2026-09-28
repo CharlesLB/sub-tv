@@ -22,10 +22,7 @@ const POSITION_LABEL: Record<string, string> = {
 
 const readPlayer = async (playerId: string) => {
   const { players } = tables
-  const [row] = await db
-    .select({ fullName: players.fullName, nickname: players.nickname, displayName: players.displayName, position: players.position })
-    .from(players)
-    .where(eq(players.id, playerId))
+  const [row] = await db.select({ fullName: players.fullName, nickname: players.nickname, displayName: players.displayName, position: players.position }).from(players).where(eq(players.id, playerId))
 
   return row ?? null
 }
@@ -50,6 +47,7 @@ const readSeasons = async ({ playerId, filter }: AthleteScope): Promise<AthleteS
 
 const readLatestTeam = async ({ playerId, filter }: AthleteScope) => {
   const { playerSeasonStats, seasonTeams, seasons, competitions, clubs } = tables
+
   const [row] = await db
     .select({ category: competitions.category, badge: teamBadgeColumns(clubs) })
     .from(playerSeasonStats)
@@ -66,6 +64,7 @@ const readLatestTeam = async ({ playerId, filter }: AthleteScope) => {
 
 const readMostUsedShirtNumber = async ({ playerId, filter }: AthleteScope): Promise<number | null> => {
   const { matchLineups, matches, seasons, competitions } = tables
+
   const [row] = await db
     .select({ shirtNumber: sql<number | null>`mode() within group (order by ${matchLineups.shirtNumber})` })
     .from(matchLineups)
@@ -97,6 +96,10 @@ export const getAthleteHistory = async (playerId: string, filter: HistoryFilter)
     goals: R.sumBy(seasons, (season) => season.goals),
     games: R.sumBy(seasons, (season) => season.games),
     seasons,
-    bestSeason: R.firstBy(seasons.filter((season) => season.goals > 0), [(season) => season.goals, 'desc']) ?? null,
+    bestSeason:
+      R.firstBy(
+        seasons.filter((season) => season.goals > 0),
+        [(season) => season.goals, 'desc'],
+      ) ?? null,
   }
 }

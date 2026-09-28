@@ -1,10 +1,14 @@
 const DIACRITIC_PATTERN = /\p{Diacritic}/gu
 const NON_ALPHANUMERIC_PATTERN = /[^a-z0-9]+/g
 
-export const normalizeName = (text: string): string =>
-  text.normalize('NFD').replace(DIACRITIC_PATTERN, '').toLowerCase().replace(NON_ALPHANUMERIC_PATTERN, ' ').trim()
+export const normalizeName = (text: string): string => text.normalize('NFD').replace(DIACRITIC_PATTERN, '').toLowerCase().replace(NON_ALPHANUMERIC_PATTERN, ' ').trim()
 
-export const nameTokens = (text: string): Set<string> => new Set(normalizeName(text).split(' ').filter((token) => token.length > 0))
+export const nameTokens = (text: string): Set<string> =>
+  new Set(
+    normalizeName(text)
+      .split(' ')
+      .filter((token) => token.length > 0),
+  )
 
 export const tokenSimilarity = (first: string, second: string): number => {
   const firstTokens = nameTokens(first)
@@ -40,8 +44,7 @@ const significantTokens = (text: string): string[] =>
     .split(' ')
     .filter((token) => token.length > 0 && !LOWERCASE_WORDS.has(token))
 
-const tokensMatch = (first: string, second: string): boolean =>
-  first === second || (first.length === 1 && second.startsWith(first)) || (second.length === 1 && first.startsWith(second))
+const tokensMatch = (first: string, second: string): boolean => first === second || (first.length === 1 && second.startsWith(first)) || (second.length === 1 && first.startsWith(second))
 
 const isOrderedSubsequence = (shorter: string[], longer: string[]): boolean =>
   shorter.reduce<number>((searchFrom, token) => {

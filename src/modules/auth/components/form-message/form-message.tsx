@@ -1,5 +1,5 @@
-import { Icon } from '@/components/ui/icon/icon'
 import type { ActionResult } from '@/lib/actions/result'
+import { Icon } from '@/components/ui/icon/icon'
 
 type FormMessageProps = { state: ActionResult<unknown> | null; successMessage?: string | undefined }
 
@@ -12,6 +12,7 @@ export function FormMessage({ state, successMessage }: FormMessageProps) {
       </p>
     )
   }
+
   if (state?.ok === true && successMessage) {
     return (
       <p role="status" className="m-0 flex items-center gap-[6px] text-[11.5px] text-ac2">

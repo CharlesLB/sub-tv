@@ -27,9 +27,7 @@ export function LiveOverlays({ interactions }: LiveOverlaysProps) {
       {drag?.kind === DRAG_KIND.BENCH && ghostPlayer ? (
         <DragGhost player={ghostPlayer} teamColor={teams[ghostPlayer.side].color} clientX={drag.clientX} clientY={drag.clientY} hasTarget={drag.targetPlayerId !== null} />
       ) : null}
-      {cardPickerOpen && selectedPlayerId ? (
-        <CardPicker onPick={(color) => commands.recordCard(selectedPlayerId, color)} onCancel={commands.closeOverlays} />
-      ) : null}
+      {cardPickerOpen && selectedPlayerId ? <CardPicker onPick={(color) => commands.recordCard(selectedPlayerId, color)} onCancel={commands.closeOverlays} /> : null}
       <ToastStack />
     </>
   )

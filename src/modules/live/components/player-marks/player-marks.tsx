@@ -1,8 +1,8 @@
 import type { CSSProperties } from 'react'
-import { Icon } from '@/components/ui/icon/icon'
 import { cn } from '@/lib/utils/cn'
+import { Icon } from '@/components/ui/icon/icon'
 import type { PlayerMatchState } from '../../state/live-state'
-import { MARK_CORNER, MARK_TONE, marksOf, type MarkCorner, type MarkTone, type PlayerMark } from './marks-of'
+import { MARK_CORNER, MARK_TONE, type MarkCorner, type MarkTone, marksOf, type PlayerMark } from './marks-of'
 
 export const MARKS_VARIANT = { PITCH: 'pitch', BENCH: 'bench' } as const
 
@@ -79,11 +79,7 @@ export function PlayerMarks({ state, variant }: PlayerMarksProps) {
       )}
     >
       {mark.tone === MARK_TONE.SECOND_YELLOW ? <span className="absolute inset-0 bg-vm [clip-path:polygon(100%_0,100%_100%,0_100%)]" /> : null}
-      {mark.count ? (
-        <span className={cn('relative leading-none font-bold', sizes.countClass)}>{mark.count}</span>
-      ) : mark.icon ? (
-        <Icon name={mark.icon} className={sizes.iconClass} />
-      ) : null}
+      {mark.count ? <span className={cn('relative leading-none font-bold', sizes.countClass)}>{mark.count}</span> : mark.icon ? <Icon name={mark.icon} className={sizes.iconClass} /> : null}
     </span>
   ))
 }

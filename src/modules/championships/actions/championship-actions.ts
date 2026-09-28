@@ -2,7 +2,7 @@
 
 import { updateTag } from 'next/cache'
 import { z } from 'zod'
-import { fail, ok, type ActionResult } from '@/lib/actions/result'
+import { type ActionResult, fail, ok } from '@/lib/actions/result'
 import { tags } from '@/lib/cache/tags'
 import { AUDIT_ACTION, AUDIT_ENTITY, recordAudit } from '@/modules/audit'
 import { requireUser } from '@/modules/auth'
@@ -30,10 +30,12 @@ export async function createChampionship(_previous: CreateChampionshipResult | n
     phase: readText(formData, 'phase'),
     clubIds: formData.getAll(CLUB_FIELD).filter((value) => typeof value === 'string'),
   })
+
   if (!parsed.success) return fail(INVALID_FIELDS, z.flattenError(parsed.error).fieldErrors)
 
   const result = await championshipService.create(parsed.data)
   if (!result.ok) return result
+
   await recordAudit({
     userId: user.id,
     action: AUDIT_ACTION.CHAMPIONSHIP_CREATED,
@@ -41,6 +43,7 @@ export async function createChampionship(_previous: CreateChampionshipResult | n
     entityId: result.data.seasonId,
     details: { ...parsed.data, slug: result.data.slug, competitionId: result.data.competitionId },
   })
+
   updateTag(tags.seasons())
   updateTag(tags.fmfData())
 

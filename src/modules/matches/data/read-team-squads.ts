@@ -26,6 +26,7 @@ export const readTeamSquads = async (seasonTeamIds: string[]): Promise<Record<st
   if (seasonTeamIds.length === 0) return {}
 
   const { seasonSquads, players, playerSeasonStats } = tables
+
   const rows = await db
     .select({
       playerId: players.id,
@@ -45,9 +46,7 @@ export const readTeamSquads = async (seasonTeamIds: string[]): Promise<Record<st
   const rowsByTeam = R.groupBy(rows, (row) => row.seasonTeamId)
 
   return R.mapValues(rowsByTeam, (teamRows) => {
-    const shirtNumbers = assignShirtNumbers(
-      teamRows.map((row) => ({ playerId: row.playerId, usualShirtNumber: row.usualShirtNumber, starts: row.starts ?? 0, name: row.fullName })),
-    )
+    const shirtNumbers = assignShirtNumbers(teamRows.map((row) => ({ playerId: row.playerId, usualShirtNumber: row.usualShirtNumber, starts: row.starts ?? 0, name: row.fullName })))
 
     return byShirtThenName(
       teamRows.map((row) => ({

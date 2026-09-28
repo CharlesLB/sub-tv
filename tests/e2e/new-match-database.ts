@@ -8,6 +8,7 @@ export type LineupRow = { fullName: string; isStarter: boolean; pitchX: number |
 const withClient = async <TResult>(work: (client: pg.Client) => Promise<TResult>): Promise<TResult> => {
   const client = new pg.Client({ connectionString: DATABASE_URL })
   await client.connect()
+
   try {
     return await work(client)
   } finally {
@@ -25,6 +26,7 @@ export const findSeasonReadyForNewMatch = async (): Promise<string | null> =>
        having count(*) >= $1`,
       [MINIMUM_SQUAD_SIZE],
     )
+
     const counts = result.rows.reduce<Record<string, number>>((total, row) => ({ ...total, [row.seasonId]: (total[row.seasonId] ?? 0) + 1 }), {})
 
     return Object.entries(counts).find(([, readyTeams]) => readyTeams >= 2)?.[0] ?? null

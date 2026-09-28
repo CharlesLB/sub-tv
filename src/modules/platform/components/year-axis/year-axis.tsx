@@ -1,11 +1,11 @@
 'use client'
 
-import Link from 'next/link'
 import type { Route } from 'next'
+import Link from 'next/link'
 import { useState } from 'react'
-import { Icon } from '@/components/ui/icon/icon'
 import { useMediaQuery } from '@/lib/hooks/use-media-query/use-media-query'
 import { cn } from '@/lib/utils/cn'
+import { Icon } from '@/components/ui/icon/icon'
 import type { SeasonYearVM } from '@/modules/championships/client'
 
 const YEAR_DELAY_STEP_MS = 26
@@ -60,16 +60,11 @@ export function YearAxis({ years, activeYear, hrefForYear, onSelectYear }: YearA
                 onClick={() => onSelectYear(seasonYear.year)}
                 title={`${seasonYear.championshipCount} campeonatos · elenco ${seasonYear.year}`}
                 aria-current={isActive ? 'true' : undefined}
-                className={cn(
-                  'flex h-8 flex-none animate-fade-in items-center gap-[6px] border-b-2 px-[9px] transition-colors hover:text-tx',
-                  isActive ? 'border-ac' : 'border-transparent',
-                )}
+                className={cn('flex h-8 flex-none animate-fade-in items-center gap-[6px] border-b-2 px-[9px] transition-colors hover:text-tx', isActive ? 'border-ac' : 'border-transparent')}
                 style={{ animationDelay: `${index * YEAR_DELAY_STEP_MS}ms` }}
               >
                 <span className={cn('flex-none rounded-full transition-all duration-200', isActive ? 'size-2 bg-ac' : 'size-[5px] bg-bd3')} />
-                <span className={cn('tracking-[-.01em] transition-all duration-200', isActive ? 'text-[15px] font-extrabold text-tx' : 'text-[13px] font-bold text-tx4')}>
-                  {seasonYear.year}
-                </span>
+                <span className={cn('tracking-[-.01em] transition-all duration-200', isActive ? 'text-[15px] font-extrabold text-tx' : 'text-[13px] font-bold text-tx4')}>{seasonYear.year}</span>
               </Link>
             </span>
           )

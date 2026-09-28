@@ -2,7 +2,7 @@
 
 import { refresh } from 'next/cache'
 import { z } from 'zod'
-import { fail, ok, type ActionResult } from '@/lib/actions/result'
+import { type ActionResult, fail, ok } from '@/lib/actions/result'
 import { AUDIT_ACTION, AUDIT_ENTITY, recordAudit } from '@/modules/audit'
 import { CreateUserInput, ResetPasswordInput, SetUserActiveInput } from '../schemas'
 import { requireUser } from '../services/current-user'
@@ -52,6 +52,7 @@ export async function setUserActive(_previous: ActionResult | null, formData: Fo
     entityType: AUDIT_ENTITY.USER,
     entityId: result.data.id,
   })
+
   refresh()
 
   return ok(undefined)

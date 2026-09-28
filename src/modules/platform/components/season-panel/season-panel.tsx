@@ -1,11 +1,11 @@
 'use client'
 
 import * as Popover from '@radix-ui/react-popover'
-import Link from 'next/link'
 import type { Route } from 'next'
+import Link from 'next/link'
 import { useState } from 'react'
-import { Icon } from '@/components/ui/icon/icon'
 import { cn } from '@/lib/utils/cn'
+import { Icon } from '@/components/ui/icon/icon'
 import type { SeasonYearVM } from '@/modules/championships/client'
 
 const GRID_ITEM_DELAY_MS = 14
@@ -38,7 +38,7 @@ export function SeasonPanel({ years, activeYear, hrefForYear, onSelectYear }: Se
           side="bottom"
           align="start"
           sideOffset={7}
-          className="chamfer z-[60] flex w-[min(92vw,340px)] animate-pop-in flex-col gap-[9px] border border-bd2 bg-pan2 px-3 pt-[13px] pb-[11px] text-tx"
+          className="z-[60] flex w-[min(92vw,340px)] animate-pop-in flex-col gap-[9px] border border-bd2 bg-pan2 px-3 pt-[13px] pb-[11px] text-tx chamfer"
         >
           <div className="flex items-baseline justify-between gap-3">
             <span className="text-[11.3px] font-bold tracking-[-.01em] text-tx1">Temporadas</span>

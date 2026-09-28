@@ -1,10 +1,10 @@
 import { describe, expect, it, vi } from 'vitest'
-import { DATA_SOURCE, GOAL_TYPE, INITIAL_LIVE_CLOCK, LIVE_EVENT_TYPE, MATCH_PERIOD, SIDE, type RemoteEvent } from '@/modules/matches/client'
-import { LIVE_ACTION, type LiveAction } from './live-actions'
-import { makeEvent, makeSnapshot, PLAYER } from './live-state.fixtures'
-import { CLOCK_SYNC_KEY, type LiveState } from './live-state'
+import { DATA_SOURCE, GOAL_TYPE, INITIAL_LIVE_CLOCK, LIVE_EVENT_TYPE, MATCH_PERIOD, type RemoteEvent, SIDE } from '@/modules/matches/client'
 import { createInitialState, kickoffLineupOf } from './initial-state'
+import { LIVE_ACTION, type LiveAction } from './live-actions'
 import { liveReducer } from './live-reducer'
+import { CLOCK_SYNC_KEY, type LiveState } from './live-state'
+import { makeEvent, makeSnapshot, PLAYER } from './live-state.fixtures'
 import { derivePlayerStates, selectScore } from './selectors'
 
 vi.mock('@/modules/matches/client', async () => ({
@@ -85,6 +85,7 @@ describe('remote merge', () => {
       createInitialState(makeSnapshot()),
       received(remoteGoal({ key: 'sub', type: LIVE_EVENT_TYPE.SUBSTITUTION, side: SIDE.HOME, playerId: PLAYER.HOME_RESERVE, playerOutId: PLAYER.HOME_STRIKER, goalType: null })),
     )
+
     const states = derivePlayerStates(state.players, state.events)
 
     expect(states[PLAYER.HOME_RESERVE]?.onPitch).toBe(true)
@@ -113,9 +114,15 @@ describe('remote merge', () => {
 
   it('substitution already applied to the stored lineup is unwound to the kickoff eleven', () => {
     const snapshot = makeSnapshot()
+
     const swappedPlayers = snapshot.players.map((player) =>
-      player.playerId === PLAYER.HOME_STRIKER ? { ...player, isStarter: false, pitchPoint: null } : player.playerId === PLAYER.HOME_RESERVE ? { ...player, isStarter: true, pitchPoint: { x: 44, y: 50 } } : player,
+      player.playerId === PLAYER.HOME_STRIKER
+        ? { ...player, isStarter: false, pitchPoint: null }
+        : player.playerId === PLAYER.HOME_RESERVE
+          ? { ...player, isStarter: true, pitchPoint: { x: 44, y: 50 } }
+          : player,
     )
+
     const substitution = makeEvent({ key: 'sub', type: LIVE_EVENT_TYPE.SUBSTITUTION, side: SIDE.HOME, playerId: PLAYER.HOME_RESERVE, playerOutId: PLAYER.HOME_STRIKER, appliedToLineup: true })
     const kickoff = kickoffLineupOf(swappedPlayers, [substitution])
 

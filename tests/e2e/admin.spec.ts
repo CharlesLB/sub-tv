@@ -1,4 +1,4 @@
-import { expect, test, type Browser, type Page } from '@playwright/test'
+import { type Browser, expect, type Page, test } from '@playwright/test'
 import { E2E_USERNAME, signIn } from './sign-in'
 import { deleteUserAndAuditRows } from './user-database'
 

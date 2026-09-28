@@ -1,5 +1,5 @@
-import { Skeleton } from '@/components/ui/skeleton/skeleton'
 import { cn } from '@/lib/utils/cn'
+import { Skeleton } from '@/components/ui/skeleton/skeleton'
 import { ROSTER_GRID_CLASS } from '../roster-grid/roster-grid'
 
 const ROW_NAME_WIDTHS = ['64%', '52%', '72%', '58%', '66%', '48%'] as const
@@ -15,7 +15,7 @@ export function SquadWorkspaceSkeleton() {
     <>
       <div aria-hidden className="@container flex min-h-[300px] min-w-0 flex-[4_1_300px] flex-col bg-pan2">
         <div className="flex flex-wrap items-center gap-3 border-b border-bd px-4 py-3">
-          <Skeleton className="hexagon h-[27px] w-[22px] flex-none" />
+          <Skeleton className="h-[27px] w-[22px] flex-none hexagon" />
           <span className="flex min-w-0 flex-col gap-[6px]">
             <Skeleton className="h-[17px] w-[150px]" delayMs={50} />
             <Skeleton className="h-[11px] w-[190px] max-w-full" delayMs={100} />
@@ -48,9 +48,9 @@ export function SquadWorkspaceSkeleton() {
           })}
         </div>
       </div>
-      <div aria-hidden className="flex max-w-[420px] min-h-[260px] min-w-0 flex-[2_1_280px] flex-col gap-[14px] bg-pan px-5 py-[18px] mobile:hidden">
+      <div aria-hidden className="flex min-h-[260px] max-w-[420px] min-w-0 flex-[2_1_280px] flex-col gap-[14px] bg-pan px-5 py-[18px] mobile:hidden">
         <div className="flex items-center gap-3">
-          <Skeleton className="hexagon h-6 w-5 flex-none" />
+          <Skeleton className="h-6 w-5 flex-none hexagon" />
           <Skeleton className="h-[15px] w-[148px]" delayMs={50} />
           <Skeleton className="h-5 w-[58px]" delayMs={100} />
         </div>

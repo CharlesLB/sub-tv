@@ -1,18 +1,12 @@
 import { z } from 'zod'
-import { MATCH_PERIOD, MAXIMUM_EVENT_MINUTE, type LiveClock } from '../live-match/live-match'
+import { type LiveClock, MATCH_PERIOD, MAXIMUM_EVENT_MINUTE } from '../live-match/live-match'
 
 const SECONDS_PER_MINUTE = 60
 const MILLISECONDS_PER_SECOND = 1000
 const MAXIMUM_ADDED_MINUTES = 30
 const MAXIMUM_ELAPSED_SECONDS = MAXIMUM_EVENT_MINUTE * SECONDS_PER_MINUTE
 
-export const ClockPeriodSchema = z.enum([
-  MATCH_PERIOD.BEFORE_START,
-  MATCH_PERIOD.FIRST_HALF,
-  MATCH_PERIOD.HALF_TIME,
-  MATCH_PERIOD.SECOND_HALF,
-  MATCH_PERIOD.FULL_TIME,
-])
+export const ClockPeriodSchema = z.enum([MATCH_PERIOD.BEFORE_START, MATCH_PERIOD.FIRST_HALF, MATCH_PERIOD.HALF_TIME, MATCH_PERIOD.SECOND_HALF, MATCH_PERIOD.FULL_TIME])
 
 const HalfMinutes = z.number().int().min(0).max(MAXIMUM_EVENT_MINUTE).nullable()
 

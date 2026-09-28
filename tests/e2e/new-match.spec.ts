@@ -1,4 +1,4 @@
-import { expect, test, type Locator, type Page } from '@playwright/test'
+import { expect, type Locator, type Page, test } from '@playwright/test'
 import { deleteMatchAndRestoreBroadcasts, findSeasonReadyForNewMatch, readBroadcastMatchIds, readLineup } from './new-match-database'
 import { signIn } from './sign-in'
 
@@ -66,7 +66,12 @@ test('new match sheet walks the four steps, edits the lineup on the pitch and go
   await dots.nth(0).click()
   await expect(sheet.getByText('10/11 em campo')).toBeVisible()
   await expect(sheet.getByText('Etapa 3 de 4 — monte os 11 de cada time no campo (10/11 E 11/11)')).toBeVisible()
-  await sheet.getByRole('button', { name: /^Reserva camisa/ }).first().click()
+
+  await sheet
+    .getByRole('button', { name: /^Reserva camisa/ })
+    .first()
+    .click()
+
   await expect(sheet.getByText('10/11 em campo')).toHaveCount(0)
 
   await sheet.getByRole('button', { name: 'Continuar' }).click()

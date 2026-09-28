@@ -36,12 +36,14 @@ const serializeCookies = (cookieJar: CookieJar): string =>
 
 const storeCookies = (response: Response, cookieJar: CookieJar | undefined): void => {
   if (!cookieJar) return
+
   const receivedCookies = response.headers
     .getSetCookie()
     .map((cookie) => cookie.split(';')[0] ?? '')
     .map((pair) => pair.split('='))
     .filter((parts) => parts.length >= 2)
     .map(([name = '', ...valueParts]): [string, string] => [name.trim(), valueParts.join('=')])
+
   cookieJar.cookies = { ...cookieJar.cookies, ...Object.fromEntries(receivedCookies) }
 }
 

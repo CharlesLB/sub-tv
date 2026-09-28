@@ -20,6 +20,7 @@ const subscribeToTheme = (onChange: () => void) => {
 
 const applyTheme = (theme: Theme) => {
   document.documentElement.setAttribute(THEME_ATTRIBUTE, theme)
+
   try {
     localStorage.setItem(THEME_STORAGE_KEY, theme)
   } catch {

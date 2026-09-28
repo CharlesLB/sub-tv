@@ -1,6 +1,6 @@
 import { and, eq, sql } from 'drizzle-orm'
 import { fmfTopScorers, playerSeasonStats } from '../../../../src/lib/db/schema'
-import { type ImportIssue, SYNC_ISSUE, type Transaction, createIssue } from '../../database-loader/database-context/database-context'
+import { createIssue, type ImportIssue, SYNC_ISSUE, type Transaction } from '../../database-loader/database-context/database-context'
 
 export const compareTopScorers = async (transaction: Transaction, seasonId: string): Promise<ImportIssue[]> => {
   const rows = await transaction

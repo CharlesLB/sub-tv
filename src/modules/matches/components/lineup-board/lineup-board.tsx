@@ -1,7 +1,7 @@
 'use client'
 
-import { useRef, useState, type Dispatch, type PointerEvent } from 'react'
-import { DOT_DRAG_BOUNDS, findNearestStarter, isInsideField, RESERVE_DROP_BOUNDS, toFieldPoint, type FieldRectangle, type PointerPosition } from '../../board-geometry/board-geometry'
+import { type Dispatch, type PointerEvent, useRef, useState } from 'react'
+import { DOT_DRAG_BOUNDS, type FieldRectangle, findNearestStarter, isInsideField, type PointerPosition, RESERVE_DROP_BOUNDS, toFieldPoint } from '../../board-geometry/board-geometry'
 import { STARTERS_PER_TEAM } from '../../default-starters/default-starters'
 import type { PitchPoint } from '../../pitch-layout/pitch-layout'
 import { isPrimaryPointer, trackPointerGesture } from '../../pointer-gesture/pointer-gesture'
@@ -33,6 +33,7 @@ export function LineupBoard({ sides, categoryLabel, dispatch }: LineupBoardProps
     latestDrag.current = next
     setDrag(next)
   }
+
   const readField = (): FieldRectangle | null => {
     const rectangle = fieldRef.current?.getBoundingClientRect()
 
@@ -42,6 +43,7 @@ export function LineupBoard({ sides, categoryLabel, dispatch }: LineupBoardProps
   const startStarterDrag = (side: MatchSide, playerId: string, event: PointerEvent<HTMLButtonElement>) => {
     if (!isPrimaryPointer(event)) return
     event.preventDefault()
+
     trackPointerGesture(event, {
       onDrag: (pointer) => {
         const field = readField()
@@ -60,6 +62,7 @@ export function LineupBoard({ sides, categoryLabel, dispatch }: LineupBoardProps
     if (!isPrimaryPointer(event)) return
     event.preventDefault()
     const { side, team, positions } = boardSide
+
     trackPointerGesture(event, {
       onDrag: (pointer) => {
         const field = readField()
@@ -71,12 +74,15 @@ export function LineupBoard({ sides, categoryLabel, dispatch }: LineupBoardProps
         const current = latestDrag.current
         const swappedPoint = current?.kind === 'reserve' && current.overStarterId ? positions[current.overStarterId] : undefined
         if (!hasDragged) dispatch({ type: 'reserve/placed', side, playerId: player.playerId, point: null })
+
         if (hasDragged && current?.kind === 'reserve' && current.overStarterId && swappedPoint) {
           dispatch({ type: 'reserve/swapped', side, reserveId: player.playerId, starterId: current.overStarterId, point: swappedPoint })
         }
+
         if (hasDragged && current?.kind === 'reserve' && !current.overStarterId && current.dropPoint) {
           dispatch({ type: 'reserve/placed', side, playerId: player.playerId, point: current.dropPoint })
         }
+
         updateDrag(null)
       },
     })
@@ -102,7 +108,7 @@ export function LineupBoard({ sides, categoryLabel, dispatch }: LineupBoardProps
             />
           )
         })}
-        <div className="col-start-2 row-start-1 flex min-h-0 min-w-0 items-center justify-center overflow-hidden bg-pan p-4 [container-type:size]">
+        <div className="[container-type:size] col-start-2 row-start-1 flex min-h-0 min-w-0 items-center justify-center overflow-hidden bg-pan p-4">
           <div ref={fieldRef} data-field className="relative aspect-[105/64] w-[min(100%,164cqh)] flex-none rounded-card border border-gr-borda turf">
             <PitchMarkings />
             {sides.flatMap((boardSide) =>
@@ -131,9 +137,7 @@ export function LineupBoard({ sides, categoryLabel, dispatch }: LineupBoardProps
           </div>
         </div>
       </div>
-      {drag?.kind === 'reserve' ? (
-        <DragGhost shirtNumber={drag.player.shirtNumber} name={shortNameOf(drag.player)} color={drag.color} left={drag.pointer.clientX} top={drag.pointer.clientY} />
-      ) : null}
+      {drag?.kind === 'reserve' ? <DragGhost shirtNumber={drag.player.shirtNumber} name={shortNameOf(drag.player)} color={drag.color} left={drag.pointer.clientX} top={drag.pointer.clientY} /> : null}
       <span className="sr-only" aria-live="polite">
         {sides.map((boardSide) => `${boardSide.team.name}: ${boardSide.starterIds.length} de ${STARTERS_PER_TEAM} em campo`).join('. ')}
       </span>

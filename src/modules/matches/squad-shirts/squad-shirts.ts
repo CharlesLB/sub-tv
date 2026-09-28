@@ -25,15 +25,14 @@ const firstFreeNumberFrom = (takenNumbers: ReadonlySet<number>, start: number): 
 
 export const assignShirtNumbers = (claims: SquadShirtClaim[]): Record<string, number> => {
   const ordered = claimPriority(claims)
+
   const [keepingUsual, needingNumber] = R.partition(
     ordered,
     (claim, index) => claim.usualShirtNumber !== null && ordered.findIndex((other) => other.usualShirtNumber === claim.usualShirtNumber) === index,
   )
+
   const withUsual = keepingUsual.reduce((assignment, claim) => assign(assignment, claim.playerId, claim.usualShirtNumber ?? 0), EMPTY_ASSIGNMENT)
   const firstExtraNumber = Math.max(0, ...withUsual.takenNumbers) + 1
 
-  return needingNumber.reduce(
-    (assignment, claim) => assign(assignment, claim.playerId, firstFreeNumberFrom(assignment.takenNumbers, firstExtraNumber)),
-    withUsual,
-  ).numbersByPlayer
+  return needingNumber.reduce((assignment, claim) => assign(assignment, claim.playerId, firstFreeNumberFrom(assignment.takenNumbers, firstExtraNumber)), withUsual).numbersByPlayer
 }

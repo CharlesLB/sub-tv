@@ -1,6 +1,6 @@
-import { Crest } from '@/components/ui/crest/crest'
 import { cn } from '@/lib/utils/cn'
-import { CategoryTag, type Category } from '@/modules/championships/client'
+import { Crest } from '@/components/ui/crest/crest'
+import { type Category, CategoryTag } from '@/modules/championships/client'
 import { STARTERS_PER_TEAM } from '../../default-starters/default-starters'
 import type { SetupTeamVM } from '../../types'
 
@@ -19,17 +19,12 @@ export function LineupCard({ team, category, sourceLine, starterIds, onToggle }:
   const isComplete = starterIds.length === STARTERS_PER_TEAM
 
   return (
-    <section aria-label={`Escalação ${team.name}`} className="chamfer flex min-h-0 min-w-0 flex-col bg-pan2">
+    <section aria-label={`Escalação ${team.name}`} className="flex min-h-0 min-w-0 flex-col bg-pan2 chamfer">
       <div className="flex flex-wrap items-center gap-[10px] border-b border-bd px-[18px] py-4 mobile:px-[14px]">
         <Crest color={team.color} imagePath={team.crestPath} width={22} />
         <span className="text-[14.4px] font-bold tracking-[-.01em]">{team.name}</span>
         <CategoryTag category={category} size="medium" />
-        <span
-          className={cn(
-            'flex-none rounded-card border px-[10px] py-1 text-[10.3px] font-bold tracking-[-.01em]',
-            isComplete ? 'border-ac text-ac' : 'border-am text-am',
-          )}
-        >
+        <span className={cn('flex-none rounded-card border px-[10px] py-1 text-[10.3px] font-bold tracking-[-.01em]', isComplete ? 'border-ac text-ac' : 'border-am text-am')}>
           {starterIds.length}/{STARTERS_PER_TEAM} titulares
         </span>
       </div>

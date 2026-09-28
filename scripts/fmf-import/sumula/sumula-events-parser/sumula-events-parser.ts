@@ -1,6 +1,6 @@
 import * as R from 'remeda'
 import { sanitizePersonName } from '../../text-normalization/text-normalization'
-import { CARD_KIND, GOAL_TYPE, PERIODS, type CardKind, type GoalType, type Period, type PositionedText, type SumulaCard, type SumulaGoal, type SumulaSubstitution } from '../sumula-types/sumula-types'
+import { CARD_KIND, type CardKind, GOAL_TYPE, type GoalType, PERIODS, type Period, type PositionedText, type SumulaCard, type SumulaGoal, type SumulaSubstitution } from '../sumula-types/sumula-types'
 import { type AnchoredGroup, findItem, groupByAnchorAbove, isSameRow, joinText, parseClockMinute, rowOf } from '../text-layout/text-layout'
 
 const SECTION_TITLES = {
@@ -44,17 +44,21 @@ const isPeriod = (text: string): text is Period => PERIODS.some((period) => peri
 const readSection = (items: PositionedText[], title: string): Section | null => {
   const titleItem = findItem(items, title)
   if (!titleItem) return null
+
   const nextTitleY = Math.max(
     Number.NEGATIVE_INFINITY,
     ...Object.values(SECTION_TITLES)
       .map((candidate) => findItem(items, candidate)?.y)
       .filter((y): y is number => y !== undefined && y < titleItem.y),
   )
+
   const sectionItems = items.filter((item) => item.y < titleItem.y && item.y > nextTitleY)
+
   const timeHeader = R.sortBy(
     sectionItems.filter((item) => item.text === COLUMN.TIME),
     [(item) => item.y, 'desc'],
   )[0]
+
   if (!timeHeader) return null
   const headerRow = rowOf(sectionItems, timeHeader)
 
@@ -132,6 +136,7 @@ const parseSubstitutionGroup = (group: ColumnedGroup): SumulaSubstitution => {
     group.members.filter((item) => SUBSTITUTION_ENTRY_PATTERN.test(item.text)),
     (item) => item.x,
   )
+
   const firstEntryX = entries[0]?.x ?? Number.POSITIVE_INFINITY
   const teamItems = group.members.filter((item) => item.x < firstEntryX - 5 && parseClockMinute(item.text) === null && item.x > group.anchor.x)
   const entryNumber = (entry: PositionedText | undefined): number | null => (entry ? Number(SUBSTITUTION_ENTRY_PATTERN.exec(entry.text)?.[1]) : null)

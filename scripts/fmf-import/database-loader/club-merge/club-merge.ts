@@ -20,11 +20,13 @@ const mergeClubPair = async (transaction: Transaction, aliasCrestId: string, can
   const aliasId = aliasRows.rows[0]?.id
   const canonicalId = canonicalRows.rows[0]?.id
   if (!aliasId) return false
+
   if (!canonicalId) {
     await transaction.execute(sql`update clubs set fmf_crest_id = ${canonicalCrestId}, updated_at = now() where id = ${aliasId}`)
 
     return true
   }
+
   await transaction.execute(sql`
     update clubs canonical set
       official_name = coalesce(canonical.official_name, alias.official_name),
@@ -36,6 +38,7 @@ const mergeClubPair = async (transaction: Transaction, aliasCrestId: string, can
     from clubs alias
     where canonical.id = ${canonicalId} and alias.id = ${aliasId}
   `)
+
   await transaction.execute(sql`update season_teams set club_id = ${canonicalId}, updated_at = now() where club_id = ${aliasId}`)
   await transaction.execute(sql`delete from clubs where id = ${aliasId}`)
 
@@ -72,6 +75,7 @@ const repointStaff = async (transaction: Transaction, duplicate: StaffDuplicate)
     R.map((reference) => async () => {
       const table = sql.raw(reference.table)
       const column = sql.raw(reference.column)
+
       const conflict =
         reference.uniqueScope.length === 0
           ? sql`false`
@@ -79,6 +83,7 @@ const repointStaff = async (transaction: Transaction, duplicate: StaffDuplicate)
               reference.uniqueScope.map((scopeColumn) => sql`other.${sql.raw(scopeColumn)} = ${table}.${sql.raw(scopeColumn)}`),
               sql` and `,
             )})`
+
       await transaction.execute(sql`delete from ${table} where ${column} = ${duplicate.duplicateId} and ${conflict}`)
       await transaction.execute(sql`update ${table} set ${column} = ${duplicate.keeperId} where ${column} = ${duplicate.duplicateId}`)
     }),
@@ -86,6 +91,7 @@ const repointStaff = async (transaction: Transaction, duplicate: StaffDuplicate)
     await previous
     await step()
   }, Promise.resolve())
+
   await transaction.execute(sql`delete from staff_members where id = ${duplicate.duplicateId}`)
 }
 
@@ -95,11 +101,14 @@ export const mergeClubAliases = async (database: Database): Promise<number> =>
       async (previous, [aliasCrestId, canonicalCrestId]) => (await previous) + ((await mergeClubPair(transaction, aliasCrestId, canonicalCrestId)) ? 1 : 0),
       Promise.resolve(0),
     )
+
     const duplicates = await readStaffDuplicates(transaction)
+
     await duplicates.reduce<Promise<void>>(async (previous, duplicate) => {
       await previous
       await repointStaff(transaction, duplicate)
     }, Promise.resolve())
+
     console.info(`clubes unificados por alias de escudo: ${merged}; membros de comissão duplicados unificados: ${duplicates.length}`)
 
     return merged

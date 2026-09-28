@@ -1,6 +1,6 @@
 import * as R from 'remeda'
 import { LIVE_EVENT_TYPE, type LiveEventVM, type LiveMatchSnapshot, type LivePlayerVM, type PitchPoint } from '@/modules/matches/client'
-import { STREAM_STATUS, SYNC_STATE, type LiveEvent, type LiveState } from './live-state'
+import { type LiveEvent, type LiveState, STREAM_STATUS, SYNC_STATE } from './live-state'
 import { derivePlayerStates, pickInitialSelection } from './selectors'
 
 const replayUnappliedSubstitutions = (positions: Record<string, PitchPoint>, events: LiveEvent[]): Record<string, PitchPoint> =>

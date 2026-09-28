@@ -1,6 +1,6 @@
 import { Suspense } from 'react'
-import { categoryLabel, type Category } from '@/modules/championships'
-import { TeamList, type SeasonTeamVM } from '@/modules/teams'
+import { type Category, categoryLabel } from '@/modules/championships'
+import { type SeasonTeamVM, TeamList } from '@/modules/teams'
 import { SquadSection } from '../squad-section/squad-section'
 import { SquadWorkspaceSkeleton } from '../squad-workspace-skeleton/squad-workspace-skeleton'
 import { SquadsEmptyState } from '../squads-empty-state/squads-empty-state'

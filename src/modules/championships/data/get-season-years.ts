@@ -12,11 +12,7 @@ export const getSeasonYears = async (): Promise<SeasonYearVM[]> => {
   cacheLife('hours')
   cacheTag(tags.seasons(), tags.fmfData())
 
-  return db
-    .select({ year: tables.seasons.year, championshipCount: count() })
-    .from(tables.seasons)
-    .groupBy(tables.seasons.year)
-    .orderBy(desc(tables.seasons.year))
+  return db.select({ year: tables.seasons.year, championshipCount: count() }).from(tables.seasons).groupBy(tables.seasons.year).orderBy(desc(tables.seasons.year))
 }
 
 export const resolveYear = (requestedYear: string | undefined, years: SeasonYearVM[]): number => {

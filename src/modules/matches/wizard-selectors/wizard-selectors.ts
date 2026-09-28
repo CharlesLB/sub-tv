@@ -27,8 +27,7 @@ export const isInformationComplete = (state: WizardState, today: string): boolea
 
 export const areTeamsChosen = (state: WizardState): boolean => state.homeTeamId !== null && state.awayTeamId !== null && state.homeTeamId !== state.awayTeamId
 
-export const areLineupsComplete = (state: WizardState): boolean =>
-  state.homeStarterIds.length === STARTERS_PER_TEAM && state.awayStarterIds.length === STARTERS_PER_TEAM
+export const areLineupsComplete = (state: WizardState): boolean => state.homeStarterIds.length === STARTERS_PER_TEAM && state.awayStarterIds.length === STARTERS_PER_TEAM
 
 export const canAdvance = (state: WizardState, today: string): boolean => {
   const checks: Record<WizardStep, () => boolean> = {
@@ -65,12 +64,11 @@ export const stepValues = (state: WizardState, context: WizardContext): Record<W
 
 export const stepHint = (state: WizardState, context: WizardContext): string => {
   const ready = canAdvance(state, context.today)
+
   const hints: Record<WizardStep, string> = {
     [WIZARD_STEP.INFORMATION]: `Etapa 1 de 4 — data, horário, local e rodada${ready ? '' : ' (PREENCHA TODOS OS CAMPOS)'}`,
     [WIZARD_STEP.TEAMS]: `Etapa 2 de 4 — times ${context.categoryLabel} Inscritos no campeonato`,
-    [WIZARD_STEP.LINEUPS]: ready
-      ? `Etapa 3 de 4 — escalações ${context.categoryLabel} Confirmadas`
-      : `Etapa 3 de 4 — monte os 11 de cada time no campo (${lineupCountLabel(state)})`,
+    [WIZARD_STEP.LINEUPS]: ready ? `Etapa 3 de 4 — escalações ${context.categoryLabel} Confirmadas` : `Etapa 3 de 4 — monte os 11 de cada time no campo (${lineupCountLabel(state)})`,
     [WIZARD_STEP.REVIEW]: 'ETAPA 4 DE 4 — CONFIRME PARA CRIAR A PARTIDA E ABRIR A TRANSMISSÃO',
   }
 
@@ -113,8 +111,7 @@ export const summaryLines = (state: WizardState, context: WizardContext): string
   `Tempo de jogo ${MATCH_DURATION_LABEL}`,
 ]
 
-export const reviewSubtitle = (state: WizardState, context: WizardContext): string =>
-  `Rodada ${state.round.trim()} · ${displayDate(state, context.today)} · ${state.time} · ${state.venue.trim()}`
+export const reviewSubtitle = (state: WizardState, context: WizardContext): string => `Rodada ${state.round.trim()} · ${displayDate(state, context.today)} · ${state.time} · ${state.venue.trim()}`
 
 export const informationNotice = (context: WizardContext): string =>
   `Esta partida pertence a ${context.setup.championship.name} ${context.categoryLabel}. A categoria não é escolhida aqui: ela vem do campeonato e define quais times e atletas aparecem nas próximas etapas.`

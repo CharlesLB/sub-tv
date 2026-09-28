@@ -20,5 +20,6 @@ await database
   .insert(appUsers)
   .values({ username: displayName, normalizedUsername: normalizeUsername(displayName), passwordHash })
   .onConflictDoUpdate({ target: appUsers.normalizedUsername, set: { username: displayName, passwordHash, isActive: true } })
+
 await pool.end()
 console.info(`usuário "${displayName}" pronto`)

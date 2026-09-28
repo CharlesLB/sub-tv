@@ -1,13 +1,14 @@
 import Link from 'next/link'
 import { connection } from 'next/server'
-import { Icon } from '@/components/ui/icon/icon'
 import { routes } from '@/lib/routes'
+import { Icon } from '@/components/ui/icon/icon'
 import { signOut } from '../../actions/auth-actions'
 import { getCurrentUser } from '../../services/current-user'
 
 export async function UserChip() {
   await connection()
   const user = await getCurrentUser()
+
   if (!user) {
     return (
       <Link

@@ -20,8 +20,7 @@ export const rowOf = (items: PositionedText[], reference: PositionedText): Posit
     (item) => item.x,
   )
 
-export const itemRightOf = (items: PositionedText[], reference: PositionedText): PositionedText | undefined =>
-  rowOf(items, reference).find((item) => item.x > reference.x)
+export const itemRightOf = (items: PositionedText[], reference: PositionedText): PositionedText | undefined => rowOf(items, reference).find((item) => item.x > reference.x)
 
 export const readingOrder = (items: PositionedText[]): PositionedText[] => R.sortBy(items, [(item) => Math.round(item.y), 'desc'], (item) => item.x)
 
@@ -35,10 +34,7 @@ export const joinText = (items: PositionedText[]): string =>
 export const withinVerticalRange = (items: PositionedText[], upperY: number, lowerY: number): PositionedText[] => items.filter((item) => item.y < upperY && item.y > lowerY)
 
 const nearestAnchorIndex = (anchors: PositionedText[], item: PositionedText): number =>
-  anchors.reduce(
-    (bestIndex, anchor, index) => (bestIndex < 0 || Math.abs(anchor.y - item.y) < Math.abs((anchors[bestIndex]?.y ?? 0) - item.y) ? index : bestIndex),
-    -1,
-  )
+  anchors.reduce((bestIndex, anchor, index) => (bestIndex < 0 || Math.abs(anchor.y - item.y) < Math.abs((anchors[bestIndex]?.y ?? 0) - item.y) ? index : bestIndex), -1)
 
 const anchorAboveIndex = (anchors: PositionedText[], item: PositionedText): number =>
   anchors.reduce((bestIndex, anchor, index) => {
@@ -55,11 +51,9 @@ const groupByAnchor = (anchors: PositionedText[], members: PositionedText[], pic
     members: members.filter((member) => member !== anchor && pickIndex(member) === anchorIndex),
   }))
 
-export const groupByNearestAnchor = (anchors: PositionedText[], members: PositionedText[]): AnchoredGroup[] =>
-  groupByAnchor(anchors, members, (item) => nearestAnchorIndex(anchors, item))
+export const groupByNearestAnchor = (anchors: PositionedText[], members: PositionedText[]): AnchoredGroup[] => groupByAnchor(anchors, members, (item) => nearestAnchorIndex(anchors, item))
 
-export const groupByAnchorAbove = (anchors: PositionedText[], members: PositionedText[]): AnchoredGroup[] =>
-  groupByAnchor(anchors, members, (item) => anchorAboveIndex(anchors, item))
+export const groupByAnchorAbove = (anchors: PositionedText[], members: PositionedText[]): AnchoredGroup[] => groupByAnchor(anchors, members, (item) => anchorAboveIndex(anchors, item))
 
 export const parseClockMinute = (text: string): number | null => {
   const match = /^(\d{1,3}):(\d{2})$/.exec(text.trim())

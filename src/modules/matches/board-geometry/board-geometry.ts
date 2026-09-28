@@ -11,8 +11,7 @@ export const SWAP_RADIUS_PX = 56
 
 const clamp = (value: number, minimum: number, maximum: number): number => Math.min(maximum, Math.max(minimum, value))
 
-export const hasPassedDragThreshold = (start: PointerPosition, current: PointerPosition): boolean =>
-  Math.hypot(current.clientX - start.clientX, current.clientY - start.clientY) > DRAG_THRESHOLD_PX
+export const hasPassedDragThreshold = (start: PointerPosition, current: PointerPosition): boolean => Math.hypot(current.clientX - start.clientX, current.clientY - start.clientY) > DRAG_THRESHOLD_PX
 
 export const isInsideField = (pointer: PointerPosition, field: FieldRectangle): boolean =>
   pointer.clientX >= field.left && pointer.clientX <= field.left + field.width && pointer.clientY >= field.top && pointer.clientY <= field.top + field.height

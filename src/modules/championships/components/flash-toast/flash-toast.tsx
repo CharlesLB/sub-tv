@@ -1,8 +1,8 @@
 'use client'
 
 import { useEffect } from 'react'
-import { Icon } from '@/components/ui/icon/icon'
 import { cn } from '@/lib/utils/cn'
+import { Icon } from '@/components/ui/icon/icon'
 
 const TOAST_DURATION_MS = 3800
 const TITLE_SEPARATOR = ' · '

@@ -21,9 +21,7 @@ type StandingsTableProps = { group: StandingGroupVM; category: Category }
 export function StandingsTable({ group, category }: StandingsTableProps) {
   return (
     <div className="overflow-hidden rounded-card border border-bd bg-pan">
-      {group.groupName ? (
-        <div className="border-b border-bd px-[14px] py-2 text-[11.3px] font-bold tracking-[-.01em] text-tx2">Grupo {group.groupName}</div>
-      ) : null}
+      {group.groupName ? <div className="border-b border-bd px-[14px] py-2 text-[11.3px] font-bold tracking-[-.01em] text-tx2">Grupo {group.groupName}</div> : null}
       <div className={cn(STANDINGS_GRID_CLASS, 'border-b border-bd bg-pan2 py-[9px] compact:py-2')}>
         {HEADERS.map((header) => (
           <span key={header.label} className={cn('text-[10px] font-semibold tracking-[.14em] whitespace-nowrap text-tx4 compact:text-[9px] compact:tracking-[.1em]', header.className)}>

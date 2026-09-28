@@ -1,10 +1,11 @@
-import { toPhaseLabel } from '../../mappers'
 import type { Category } from '../../categories'
+import { toPhaseLabel } from '../../mappers'
 import type { StandingPhaseVM } from '../../types'
 import { FormSquare } from '../form-squares/form-squares'
 import { StandingsTable } from '../standings-table/standings-table'
 
 const JOINT_PHASE_PREFIX = 'CONJUNTA'
+
 const LEGEND = [
   { result: 'V', label: 'Vitória' },
   { result: 'E', label: 'Empate' },
@@ -20,7 +21,11 @@ export function StandingsPanel({ phases, category, roundsPlayed }: StandingsPane
     <section className="flex min-w-0 flex-[1_1_560px] flex-col gap-[10px]">
       <div className="flex flex-wrap items-center gap-3">
         <span className="text-[13.5px] font-bold tracking-[-.01em]">Classificação</span>
-        {roundsPlayed ? <span className="text-[10.5px] text-tx4">Após {roundsPlayed} {roundsPlayed === 1 ? 'Rodada' : 'Rodadas'}</span> : null}
+        {roundsPlayed ? (
+          <span className="text-[10.5px] text-tx4">
+            Após {roundsPlayed} {roundsPlayed === 1 ? 'Rodada' : 'Rodadas'}
+          </span>
+        ) : null}
         <span className="text-[12.5px] text-tx4">Clique num time para ver o elenco.</span>
       </div>
       {phases.length === 0 ? (

@@ -31,16 +31,19 @@ const fileExists = async (diskPath: string): Promise<boolean> =>
 const downloadCrest = async (source: CrestSource, diskPath: string): Promise<CrestOutcome> => {
   if (!shouldRefresh && (await fileExists(diskPath))) return CREST_OUTCOME.KEPT
   const result = await requestFmf({ url: source.crestUrl })
+
   if (!result.found) {
     console.warn(`${source.shortName}: HTTP ${result.status} em ${source.crestUrl}`)
 
     return CREST_OUTCOME.MISSING
   }
+
   if (!isPngImage(result.body)) {
     console.warn(`${source.shortName}: ${source.crestUrl} não devolveu um PNG`)
 
     return CREST_OUTCOME.INVALID
   }
+
   await storeFile(diskPath, result.body)
 
   return CREST_OUTCOME.DOWNLOADED
@@ -50,7 +53,11 @@ const syncCrest = async (source: CrestSource): Promise<CrestOutcome> => {
   const fileName = crestFileNameOf(source.crestId)
   const outcome = await downloadCrest(source, crestDiskPathOf(fileName))
   const hasFile = outcome === CREST_OUTCOME.DOWNLOADED || outcome === CREST_OUTCOME.KEPT
-  if (hasFile) await database.update(clubs).set({ crestPath: crestPublicPathOf(fileName) }).where(eq(clubs.id, source.clubId))
+  if (hasFile)
+    await database
+      .update(clubs)
+      .set({ crestPath: crestPublicPathOf(fileName) })
+      .where(eq(clubs.id, source.clubId))
 
   return outcome
 }
@@ -59,6 +66,7 @@ const rows = await database
   .select({ clubId: clubs.id, crestId: clubs.fmfCrestId, crestUrl: clubs.crestUrl, shortName: clubs.shortName })
   .from(clubs)
   .where(and(isNotNull(clubs.fmfCrestId), isNotNull(clubs.crestUrl)))
+
 const sources = rows.flatMap((row): CrestSource[] => (row.crestId && row.crestUrl ? [{ ...row, crestId: row.crestId, crestUrl: row.crestUrl }] : []))
 const outcomes = await sources.reduce<Promise<CrestOutcome[]>>(async (previous, source) => [...(await previous), await syncCrest(source)], Promise.resolve([]))
 await pool.end()
@@ -66,4 +74,5 @@ await pool.end()
 const summary = Object.entries(R.countBy(outcomes, (outcome) => outcome))
   .map(([outcome, count]) => `${count} ${outcome}`)
   .join(' · ')
+
 console.info(`escudos de ${sources.length} clubes: ${summary}`)

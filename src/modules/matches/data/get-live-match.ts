@@ -10,13 +10,13 @@ import {
   DATA_SOURCE,
   HALF_LENGTH_MINUTES,
   LIVE_EVENT_TYPE,
-  MATCH_PERIOD,
-  MATCH_STATUS,
-  SIDE,
   type LiveClock,
   type LiveEventVM,
   type LiveMatchSnapshot,
   type LiveOfficialVM,
+  MATCH_PERIOD,
+  MATCH_STATUS,
+  SIDE,
 } from '../live-match/live-match'
 import { readLivePlayers } from './read-live-players'
 
@@ -37,6 +37,7 @@ const LIVE_EVENT_TYPES = [LIVE_EVENT_TYPE.GOAL, LIVE_EVENT_TYPE.YELLOW_CARD, LIV
 
 const selectMatchHeader = async (matchId: string) => {
   const { matches, seasons, competitions } = tables
+
   const [row] = await db
     .select({
       id: matches.id,
@@ -71,17 +72,14 @@ const selectMatchHeader = async (matchId: string) => {
 
 const readOfficials = async (matchId: string): Promise<LiveOfficialVM[]> => {
   const { matchOfficials } = tables
-  const rows = await db
-    .select({ role: matchOfficials.role, name: matchOfficials.name })
-    .from(matchOfficials)
-    .where(eq(matchOfficials.matchId, matchId))
-    .orderBy(asc(matchOfficials.role))
+  const rows = await db.select({ role: matchOfficials.role, name: matchOfficials.name }).from(matchOfficials).where(eq(matchOfficials.matchId, matchId)).orderBy(asc(matchOfficials.role))
 
   return rows.map((row) => ({ label: OFFICIAL_LABEL[row.role], name: toTitleCase(row.name) }))
 }
 
 const readActiveEvents = async (matchId: string): Promise<LiveEventVM[]> => {
   const { matchEvents } = tables
+
   const rows = await db
     .select({
       id: matchEvents.id,

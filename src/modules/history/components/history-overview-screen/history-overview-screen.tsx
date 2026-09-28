@@ -1,6 +1,6 @@
 import { ContextBar } from '@/modules/platform'
 import { getHistoryOverview } from '../../data/get-history-overview'
-import { loadHistoryFilter, type HistoryQuery } from '../../data/load-history-filter'
+import { type HistoryQuery, loadHistoryFilter } from '../../data/load-history-filter'
 import { historyCrumbs } from '../../history-crumbs/history-crumbs'
 import { formatRatio } from '../../stat-format/stat-format'
 import { AccumulatedTable } from '../accumulated-table/accumulated-table'
@@ -18,6 +18,7 @@ const GOALS_PER_GAME_DIGITS = 1
 export async function HistoryOverviewScreen({ query }: { query: HistoryQuery }) {
   const { filter, availableYears, seasonLabel } = await loadHistoryFilter(query)
   const overview = await getHistoryOverview(filter)
+
   const kpis = [
     { label: 'Campeonatos', value: String(overview.championshipCount) },
     { label: 'Partidas', value: String(overview.matchCount) },

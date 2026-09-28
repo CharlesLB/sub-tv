@@ -1,5 +1,5 @@
-import { Icon } from '@/components/ui/icon/icon'
 import { cn } from '@/lib/utils/cn'
+import { Icon } from '@/components/ui/icon/icon'
 
 type WizardFooterProps = {
   hint: string
@@ -43,7 +43,7 @@ export function WizardFooter({ hint, isSummaryOpen, isFirstStep, isFinalStep, ca
           onClick={onSubmit}
           disabled={isSubmitting || !canAdvance}
           aria-busy={isSubmitting}
-          className="inline-flex h-12 items-center justify-center gap-[10px] bg-ac px-6 whitespace-nowrap mobile:flex-1 mobile:px-4 text-[13.5px] font-bold tracking-[-.01em] text-bg disabled:cursor-not-allowed disabled:opacity-70"
+          className="inline-flex h-12 items-center justify-center gap-[10px] bg-ac px-6 text-[13.5px] font-bold tracking-[-.01em] whitespace-nowrap text-bg disabled:cursor-not-allowed disabled:opacity-70 mobile:flex-1 mobile:px-4"
         >
           <Icon name="check" size={19} />
           {isSubmitting ? 'Criando partida…' : 'Criar e ir ao vivo'}
@@ -53,7 +53,7 @@ export function WizardFooter({ hint, isSummaryOpen, isFirstStep, isFinalStep, ca
           type="button"
           onClick={onNext}
           aria-disabled={!canAdvance}
-          className={cn('h-12 px-[26px] text-[13.5px] mobile:flex-1 font-bold tracking-[-.01em]', canAdvance ? 'cursor-pointer bg-ac text-bg' : 'cursor-not-allowed bg-bd2 text-tx4')}
+          className={cn('h-12 px-[26px] text-[13.5px] font-bold tracking-[-.01em] mobile:flex-1', canAdvance ? 'cursor-pointer bg-ac text-bg' : 'cursor-not-allowed bg-bd2 text-tx4')}
         >
           Continuar
         </button>

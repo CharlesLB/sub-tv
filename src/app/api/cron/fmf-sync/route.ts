@@ -16,6 +16,7 @@ const errorResponse = (status: number, code: string, message: string): Response 
 
 export const GET = async (request: NextRequest): Promise<Response> => {
   if (!env.CRON_SECRET) return errorResponse(SERVER_ERROR_STATUS, ERROR_CODE.NOT_CONFIGURED, 'Sincronização não configurada.')
+
   if (!isAuthorizedCronRequest(request.headers.get(AUTHORIZATION_HEADER), env.CRON_SECRET)) {
     return errorResponse(UNAUTHORIZED_STATUS, ERROR_CODE.UNAUTHORIZED, 'Acesso não autorizado.')
   }

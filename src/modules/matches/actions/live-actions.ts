@@ -2,18 +2,11 @@
 
 import { updateTag } from 'next/cache'
 import { z } from 'zod'
-import { fail, ok, type ActionResult } from '@/lib/actions/result'
+import { type ActionResult, fail, ok } from '@/lib/actions/result'
 import { tags } from '@/lib/cache/tags'
-import { AUDIT_ACTION, AUDIT_ENTITY, recordAudit, type AuditAction } from '@/modules/audit'
+import { AUDIT_ACTION, AUDIT_ENTITY, type AuditAction, recordAudit } from '@/modules/audit'
 import { requireUser } from '@/modules/auth'
-import {
-  ApplySubstitutionInput,
-  AttachAssistInput,
-  RecordLiveEventInput,
-  RevertLiveEventInput,
-  UpdateLineupPositionInput,
-  UpdateLiveClockInput,
-} from '../live-schemas/live-schemas'
+import { ApplySubstitutionInput, AttachAssistInput, RecordLiveEventInput, RevertLiveEventInput, UpdateLineupPositionInput, UpdateLiveClockInput } from '../live-schemas/live-schemas'
 import { liveService } from '../services/live-service'
 import type { SeasonTouch } from '../services/match-finalization/match-finalization'
 
@@ -41,6 +34,7 @@ export async function recordLiveEvent(input: RecordLiveEventInput): Promise<Acti
 
   const { result, seasonTouch } = await liveService.recordEvent(parsed.data, user.id)
   invalidateSeason(seasonTouch)
+
   if (result.ok) {
     updateTag(tags.match(parsed.data.matchId))
     await auditMatchChange(user.id, AUDIT_ACTION.LIVE_EVENT_RECORDED, parsed.data.matchId, { eventId: result.data.id, ...parsed.data })
@@ -56,6 +50,7 @@ export async function applySubstitution(input: ApplySubstitutionInput): Promise<
 
   const { result, seasonTouch } = await liveService.substitute(parsed.data, user.id)
   invalidateSeason(seasonTouch)
+
   if (result.ok) {
     updateTag(tags.match(parsed.data.matchId))
     await auditMatchChange(user.id, AUDIT_ACTION.SUBSTITUTION_APPLIED, parsed.data.matchId, { ...parsed.data })
@@ -71,6 +66,7 @@ export async function revertLiveEvent(input: RevertLiveEventInput): Promise<Acti
 
   const { result, seasonTouch } = await liveService.revertEvent(parsed.data.matchId, parsed.data.eventKey)
   invalidateSeason(seasonTouch)
+
   if (result.ok) {
     updateTag(tags.match(parsed.data.matchId))
     await auditMatchChange(user.id, AUDIT_ACTION.LIVE_EVENT_REVERTED, parsed.data.matchId, { ...parsed.data })
@@ -85,6 +81,7 @@ export async function attachAssist(input: AttachAssistInput): Promise<ActionResu
   if (!parsed.success) return invalid(parsed.error)
 
   const result = await liveService.attachAssist(parsed.data.matchId, parsed.data.goalKey, parsed.data.assistPlayerId)
+
   if (result.ok) {
     updateTag(tags.match(parsed.data.matchId))
     await auditMatchChange(user.id, AUDIT_ACTION.ASSIST_ATTACHED, parsed.data.matchId, { ...parsed.data })
@@ -104,6 +101,7 @@ export async function updateLiveClock(input: UpdateLiveClockInput): Promise<Acti
   await auditMatchChange(user.id, AUDIT_ACTION.LIVE_CLOCK_UPDATED, parsed.data.matchId, { clock: parsed.data.clock, statusChanged: result.data.statusChanged })
   updateTag(tags.match(parsed.data.matchId))
   invalidateSeason(result.data.seasonTouch)
+
   if (result.data.statusChanged) {
     updateTag(tags.liveMatches())
     updateTag(tags.seasonMatches(result.data.seasonId))
@@ -118,6 +116,7 @@ export async function updateLineupPosition(input: UpdateLineupPositionInput): Pr
   if (!parsed.success) return invalid(parsed.error)
 
   const result = await liveService.updatePosition(parsed.data.matchId, parsed.data.playerId, parsed.data.pitchX, parsed.data.pitchY)
+
   if (result.ok) {
     updateTag(tags.match(parsed.data.matchId))
     await auditMatchChange(user.id, AUDIT_ACTION.LINEUP_POSITION_UPDATED, parsed.data.matchId, { ...parsed.data })

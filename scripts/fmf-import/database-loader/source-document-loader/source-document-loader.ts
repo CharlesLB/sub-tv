@@ -1,7 +1,7 @@
 import { sourceDocuments } from '../../../../src/lib/db/schema'
 import type { EditionBundle } from '../../edition-bundle/edition-bundle'
 import { toBlobUrl } from '../../raw-storage/raw-storage'
-import { type Transaction, inChunks } from '../database-context/database-context'
+import { inChunks, type Transaction } from '../database-context/database-context'
 import type { LoadedMatch } from '../match-loader/match-loader'
 
 const DOCUMENT_KIND = { COMPETITION_PAGE: 'pagina_competicao', SUMULA: 'sumula' } as const
@@ -15,6 +15,7 @@ export const recordSourceDocuments = async (transaction: Transaction, bundle: Ed
     seasonId,
     matchId: null,
   }
+
   const sumulaDocuments = loadedMatches.flatMap((loaded) =>
     loaded.sumula?.sha256
       ? [
@@ -29,7 +30,11 @@ export const recordSourceDocuments = async (transaction: Transaction, bundle: Ed
         ]
       : [],
   )
+
   await inChunks([pageDocument, ...sumulaDocuments], async (chunk) =>
-    transaction.insert(sourceDocuments).values(chunk).onConflictDoNothing({ target: [sourceDocuments.url, sourceDocuments.sha256] }),
+    transaction
+      .insert(sourceDocuments)
+      .values(chunk)
+      .onConflictDoNothing({ target: [sourceDocuments.url, sourceDocuments.sha256] }),
   )
 }

@@ -19,6 +19,7 @@ const INPUT_CLASS = 'h-10 w-full rounded-card border border-bd2 bg-bg px-3 text-
 export function NewPlayerPopover({ squad, onPlayerCreated }: NewPlayerPopoverProps) {
   const [isOpen, setIsOpen] = useState(false)
   const category = categoryLabel[squad.category]
+
   const submitPlayer = async (previous: PlayerResult | null, formData: FormData): Promise<PlayerResult | null> => {
     const result = await createManualPlayer(previous, formData)
     if (!result.ok) return result
@@ -27,6 +28,7 @@ export function NewPlayerPopover({ squad, onPlayerCreated }: NewPlayerPopoverPro
 
     return null
   }
+
   const [state, formAction, isPending] = useActionState(submitPlayer, null)
   const fieldErrors = state?.ok === false ? state.fieldErrors : undefined
 
@@ -37,12 +39,7 @@ export function NewPlayerPopover({ squad, onPlayerCreated }: NewPlayerPopoverPro
         <span className="hidden mobile:inline">+ novo</span>
       </Popover.Trigger>
       <Popover.Portal>
-        <Popover.Content
-          side="bottom"
-          align="end"
-          sideOffset={7}
-          className="z-[60] w-[min(92vw,320px)] animate-pop-in rounded-card border border-bd2 bg-pan p-4 text-tx"
-        >
+        <Popover.Content side="bottom" align="end" sideOffset={7} className="z-[60] w-[min(92vw,320px)] animate-pop-in rounded-card border border-bd2 bg-pan p-4 text-tx">
           <form action={formAction} className="flex flex-col gap-3">
             <div className="flex items-baseline justify-between gap-3">
               <span className="text-[13.5px] font-bold tracking-[-.01em]">Novo jogador {category}</span>

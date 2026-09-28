@@ -3,10 +3,10 @@
 import type { Route } from 'next'
 import Link from 'next/link'
 import { usePathname, useSearchParams } from 'next/navigation'
+import { routes, SEASON_PARAMETER } from '@/lib/routes'
+import { cn } from '@/lib/utils/cn'
 import { Icon } from '@/components/ui/icon/icon'
 import type { IconName } from '@/components/ui/icon/icon-paths'
-import { cn } from '@/lib/utils/cn'
-import { SEASON_PARAMETER, routes } from '@/lib/routes'
 import { BrandLogo } from '../brand-logo/brand-logo'
 
 const LIVE_PATH_PREFIX = '/ao-vivo'
@@ -37,7 +37,7 @@ export function PlatformRail({ liveMatchId }: PlatformRailProps) {
   return (
     <nav
       aria-label="Principal"
-      className="chrome flex w-[78px] flex-none flex-col items-center gap-[14px] border-r border-bd bg-(--ch-rail) py-[14px] narrow:w-[62px] mobile:order-3 mobile:h-[60px] mobile:w-full mobile:flex-row mobile:items-stretch mobile:gap-0 mobile:border-t mobile:border-r-0 mobile:py-0"
+      className="flex w-[78px] flex-none flex-col items-center gap-[14px] border-r border-bd bg-(--ch-rail) py-[14px] chrome narrow:w-[62px] mobile:order-3 mobile:h-[60px] mobile:w-full mobile:flex-row mobile:items-stretch mobile:gap-0 mobile:border-t mobile:border-r-0 mobile:py-0"
     >
       <div className="mobile:hidden">
         <BrandLogo />
@@ -59,9 +59,7 @@ export function PlatformRail({ liveMatchId }: PlatformRailProps) {
               )}
             >
               <Icon name={destination.icon} size={22} className={cn('transition-colors', isActive ? 'text-ac' : 'text-tx5')} />
-              <span className={cn('block text-[9.5px] font-bold tracking-[-.01em] narrow:hidden mobile:block mobile:text-[9px]', isActive ? 'text-tx' : 'text-tx3')}>
-                {destination.label}
-              </span>
+              <span className={cn('block text-[9.5px] font-bold tracking-[-.01em] narrow:hidden mobile:block mobile:text-[9px]', isActive ? 'text-tx' : 'text-tx3')}>{destination.label}</span>
             </Link>
           )
         })}

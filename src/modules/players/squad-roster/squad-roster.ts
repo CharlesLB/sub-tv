@@ -65,10 +65,7 @@ export const buildSquadPlayers = (input: SquadRosterInput): SquadPlayerVM[] => {
     R.values(),
     R.map((memberships) => toSquadPlayer(memberships, input, statsByPlayer)),
     R.filter(R.isNonNullish),
-    R.sort(
-      (left, right) =>
-        (left.shirtNumber ?? MISSING_NUMBER_RANK) - (right.shirtNumber ?? MISSING_NUMBER_RANK) || left.fullName.localeCompare(right.fullName, SORT_LOCALE),
-    ),
+    R.sort((left, right) => (left.shirtNumber ?? MISSING_NUMBER_RANK) - (right.shirtNumber ?? MISSING_NUMBER_RANK) || left.fullName.localeCompare(right.fullName, SORT_LOCALE)),
   )
 }
 

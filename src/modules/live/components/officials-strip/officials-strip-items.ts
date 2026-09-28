@@ -1,5 +1,5 @@
-import type { IconName } from '@/components/ui/icon/icon-paths'
 import { formatTime, formatTitleDate } from '@/lib/utils/format-date/format-date'
+import type { IconName } from '@/components/ui/icon/icon-paths'
 import type { LiveMatchSnapshot } from '@/modules/matches/client'
 
 export type OfficialsStripItem = { key: string; icon: IconName; label: string; value: string }

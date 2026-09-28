@@ -13,5 +13,11 @@ export default function HistoryPage({ searchParams }: PageProps<'/historico'>) {
     </>
   )
 
-  return <Suspense fallback={fallback}>{searchParams.then((query) => <HistoryOverviewScreen query={query} />)}</Suspense>
+  return (
+    <Suspense fallback={fallback}>
+      {searchParams.then((query) => (
+        <HistoryOverviewScreen query={query} />
+      ))}
+    </Suspense>
+  )
 }

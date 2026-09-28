@@ -1,10 +1,10 @@
 import { describe, expect, it, vi } from 'vitest'
 import { MATCH_PERIOD } from '@/modules/matches/client'
-import { LIVE_ACTION, type LiveAction } from './live-actions'
-import { makeSnapshot } from './live-state.fixtures'
-import { SERVER_OPERATION, TOAST_TONE, type LiveState } from './live-state'
 import { createInitialState } from './initial-state'
+import { LIVE_ACTION, type LiveAction } from './live-actions'
 import { liveReducer } from './live-reducer'
+import { type LiveState, SERVER_OPERATION, TOAST_TONE } from './live-state'
+import { makeSnapshot } from './live-state.fixtures'
 import { LIVE_MESSAGE } from './toasts'
 
 vi.mock('@/modules/matches/client', async () => ({

@@ -1,7 +1,6 @@
 export const athleteHeroStyles = {
   card: 'rounded-card border-bd bg-pan flex items-center gap-[14px] border px-[18px] py-4',
-  shirtNumber:
-    'nums flex size-[54px] flex-none items-center justify-center border-2 text-[21.6px] font-bold',
+  shirtNumber: 'nums flex size-[54px] flex-none items-center justify-center border-2 text-[21.6px] font-bold',
   shirtNumberFallback: 'border-tx4 text-tx4',
   details: 'flex min-w-0 flex-col gap-[5px]',
   line: 'flex flex-wrap items-baseline gap-[11px]',

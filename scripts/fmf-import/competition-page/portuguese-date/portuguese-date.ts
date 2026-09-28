@@ -1,7 +1,7 @@
 const MONTH_NUMBERS: Readonly<Record<string, number>> = {
   janeiro: 1,
   fevereiro: 2,
-  'março': 3,
+  março: 3,
   marco: 3,
   abril: 4,
   maio: 5,

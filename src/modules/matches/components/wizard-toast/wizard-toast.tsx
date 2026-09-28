@@ -19,10 +19,7 @@ export function WizardToast({ message, onClose }: WizardToastProps) {
   }, [message, onClose])
 
   return (
-    <div
-      role="alert"
-      className="fixed right-5 bottom-5 z-[74] flex w-[min(370px,calc(100vw-40px))] animate-toast-in items-start gap-[11px] border border-pan3 bg-pan2 py-[13px] pr-[13px] pl-[18px]"
-    >
+    <div role="alert" className="fixed right-5 bottom-5 z-[74] flex w-[min(370px,calc(100vw-40px))] animate-toast-in items-start gap-[11px] border border-pan3 bg-pan2 py-[13px] pr-[13px] pl-[18px]">
       <span aria-hidden className="absolute inset-y-0 left-0 w-[3px] bg-am" />
       <Icon name="error" size={18} className="mt-px text-am" />
       <div className="flex min-w-0 flex-1 flex-col gap-[2px]">

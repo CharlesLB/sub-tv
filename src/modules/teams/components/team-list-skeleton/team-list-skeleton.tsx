@@ -1,5 +1,5 @@
-import { Skeleton } from '@/components/ui/skeleton/skeleton'
 import { cn } from '@/lib/utils/cn'
+import { Skeleton } from '@/components/ui/skeleton/skeleton'
 
 const ROWS = [
   { key: 'first', nameWidth: '82%', isActive: true, isFaded: false },
@@ -7,6 +7,7 @@ const ROWS = [
   { key: 'third', nameWidth: '88%', isActive: false, isFaded: false },
   { key: 'fourth', nameWidth: '64%', isActive: false, isFaded: true },
 ] as const
+
 const ROW_DELAY_MS = 100
 
 export function TeamListSkeleton() {
@@ -29,7 +30,7 @@ export function TeamListSkeleton() {
 
         return (
           <div key={row.key} className={cn('flex items-center gap-[10px] border-l-[3px] px-4 py-[10px]', row.isActive ? 'border-bd2 bg-pan2' : 'border-transparent')}>
-            <Skeleton className={cn('hexagon h-6 w-5 flex-none', fillClass)} delayMs={delay} />
+            <Skeleton className={cn('h-6 w-5 flex-none hexagon', fillClass)} delayMs={delay} />
             <span className="flex min-w-0 flex-1 flex-col gap-[5px]">
               <Skeleton className={cn('h-3', fillClass)} delayMs={delay + 50} style={{ width: row.nameWidth }} />
               <Skeleton className={cn('h-[14px] w-[46px]', fillClass)} delayMs={delay + 100} />

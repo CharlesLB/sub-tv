@@ -1,6 +1,6 @@
 import 'server-only'
 import { and, asc, eq, max } from 'drizzle-orm'
-import { fail, ok, type ActionResult } from '@/lib/actions/result'
+import { type ActionResult, fail, ok } from '@/lib/actions/result'
 import { db, tables } from '@/lib/db'
 import { categoryLabel } from '@/modules/championships'
 import type { AddCuriosityData, CreateManualPlayerData, RemoveCuriosityData, UpdatePlayerProfileData } from '../schemas'
@@ -54,6 +54,7 @@ export const playerService = {
       .set({ displayName: input.displayName || null, position: input.position ?? null, preferredFoot: input.preferredFoot ?? null })
       .where(eq(players.id, input.playerId))
       .returning({ id: players.id })
+
     if (!updated) return fail(PLAYER_NOT_FOUND)
 
     return toPlayerChange(updated.id)
@@ -62,7 +63,12 @@ export const playerService = {
   addCuriosity: async (input: AddCuriosityData, authorId: string): Promise<ActionResult<PlayerChange>> => {
     const [player] = await db.select({ id: players.id }).from(players).where(eq(players.id, input.playerId))
     if (!player) return fail(PLAYER_NOT_FOUND)
-    const [ordering] = await db.select({ lastSortOrder: max(curiosities.sortOrder) }).from(curiosities).where(eq(curiosities.playerId, player.id))
+
+    const [ordering] = await db
+      .select({ lastSortOrder: max(curiosities.sortOrder) })
+      .from(curiosities)
+      .where(eq(curiosities.playerId, player.id))
+
     await db.insert(curiosities).values({ playerId: player.id, text: input.text, sortOrder: (ordering?.lastSortOrder ?? -1) + 1, createdBy: authorId })
 
     return toPlayerChange(player.id)
@@ -78,11 +84,13 @@ export const playerService = {
   createManualPlayer: async (input: CreateManualPlayerData): Promise<ActionResult<ManualPlayerChange>> => {
     const team = await findPrimarySeasonTeam(input)
     if (!team) return fail(TEAM_NOT_FOUND)
+
     if (await isShirtNumberTaken(team.id, input.shirtNumber)) {
       const teamName = team.clubName ?? team.clubShortName
 
       return fail(`Número ${input.shirtNumber} já está em uso no ${teamName} ${categoryLabel[input.category]}. Escolha outro.`)
     }
+
     const playerId = await db.transaction(async (transaction) => {
       const [player] = await transaction.insert(players).values({ fullName: input.fullName, cbfId: null }).returning({ id: players.id })
       if (!player) throw new Error('Manual player insert returned no row')

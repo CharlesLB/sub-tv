@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { type ScoredEvent, countGoalsBySide, resolveNarratedScore } from './season-statistics'
+import { countGoalsBySide, resolveNarratedScore, type ScoredEvent } from './season-statistics'
 
 const event = (overrides: Partial<ScoredEvent>): ScoredEvent => ({
   type: 'gol',

@@ -1,5 +1,5 @@
 import { sanitizePersonName } from '../../text-normalization/text-normalization'
-import { SIDE, STAFF_ROLE, type PositionedText, type Side, type StaffRole, type SumulaStaff } from '../sumula-types/sumula-types'
+import { type PositionedText, SIDE, type Side, STAFF_ROLE, type StaffRole, type SumulaStaff } from '../sumula-types/sumula-types'
 import { findItems, groupByAnchorAbove, joinText } from '../text-layout/text-layout'
 
 const STAFF_TITLE = 'Comissão Técnica'

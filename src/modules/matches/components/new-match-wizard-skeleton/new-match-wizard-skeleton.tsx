@@ -18,7 +18,7 @@ export function NewMatchWizardSkeleton() {
         ))}
       </div>
       <div className="flex-1 px-5 py-4 mobile:px-3">
-        <div className="chamfer grid max-w-[820px] grid-cols-[repeat(auto-fit,minmax(min(100%,180px),1fr))] gap-4 bg-pan2 p-5">
+        <div className="grid max-w-[820px] grid-cols-[repeat(auto-fit,minmax(min(100%,180px),1fr))] gap-4 bg-pan2 p-5 chamfer">
           {FIELD_PLACEHOLDERS.map((field, index) => (
             <div key={field} className="flex flex-col gap-[6px]">
               <Skeleton className="h-[10px] w-14" delayMs={index * 80} />

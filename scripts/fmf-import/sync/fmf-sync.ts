@@ -4,9 +4,9 @@ import type { Database } from '../../../src/lib/db/connection'
 import { competitions, matches, seasons } from '../../../src/lib/db/schema'
 import { COMPETITION_SOURCES } from '../constants/fmf-sources'
 import { type EditionCounters, loadEdition } from '../database-loader/edition-loader/edition-loader'
-import { type RunSummary, finishSyncRun, startSyncRun } from '../database-loader/sync-run/sync-run'
+import { finishSyncRun, type RunSummary, startSyncRun } from '../database-loader/sync-run/sync-run'
 import { readEditionBundle } from '../edition-bundle/edition-bundle'
-import { type EditionPageFile, downloadEditionPages } from '../edition-pages/edition-pages'
+import { downloadEditionPages, type EditionPageFile } from '../edition-pages/edition-pages'
 import { downloadSumulas } from '../sumula-downloader/sumula-downloader'
 import type { SumulaReference } from '../sumula-reference/sumula-reference'
 
@@ -30,6 +30,7 @@ const readCurrentSeasons = async (database: Database): Promise<{ slug: string; y
 
 const readKnownSumulas = async (database: Database, fmfMatchIds: number[]): Promise<Map<number, KnownSumula>> => {
   if (fmfMatchIds.length === 0) return new Map()
+
   const rows = await database
     .select({ fmfMatchId: matches.fmfMatchId, sumulaUrl: matches.sumulaUrl, sumulaProcessedAt: matches.sumulaProcessedAt })
     .from(matches)
@@ -38,8 +39,7 @@ const readKnownSumulas = async (database: Database, fmfMatchIds: number[]): Prom
   return new Map(rows.map((row) => [row.fmfMatchId ?? 0, row]))
 }
 
-const isAlreadyProcessed = (known: KnownSumula | undefined, reference: SumulaReference): boolean =>
-  known !== undefined && known.sumulaUrl === reference.url && known.sumulaProcessedAt !== null
+const isAlreadyProcessed = (known: KnownSumula | undefined, reference: SumulaReference): boolean => known !== undefined && known.sumulaUrl === reference.url && known.sumulaProcessedAt !== null
 
 const runSequentially = async <Item, Result>(items: readonly Item[], work: (item: Item) => Promise<Result>): Promise<Result[]> =>
   await items.reduce<Promise<Result[]>>(async (previous, item) => [...(await previous), await work(item)], Promise.resolve([]))
@@ -50,10 +50,12 @@ const syncEdition = async (database: Database, runId: string, pageFile: EditionP
   const pageOnly = await readEditionBundle(pageFile, { parseSumulas: false, shouldLoadSumula: () => false })
   if (!pageOnly) return null
   const references = [...pageOnly.sumulas.values()].map((sumula) => sumula.reference)
+
   const known = await readKnownSumulas(
     database,
     references.map((reference) => reference.fmfMatchId),
   )
+
   const pending = references.filter((reference) => !isAlreadyProcessed(known.get(reference.fmfMatchId), reference))
   await downloadSumulas(pageOnly.page.label, pending, false)
   const toLoad = new Set(pending.map((reference) => reference.fmfMatchId))
@@ -74,27 +76,31 @@ const sumCounters = (outcomes: EditionOutcome[]): RunSummary => ({
 export const runFmfSync = async (database: Database): Promise<SyncSummary> => {
   const runId = await startSyncRun(database, NIGHTLY_KIND)
   const progress: { outcomes: EditionOutcome[] } = { outcomes: [] }
+
   try {
     const knownSlugs = new Set(COMPETITION_SOURCES.map((source) => source.slug))
     const currentSeasons = (await readCurrentSeasons(database)).filter((season) => knownSlugs.has(season.slug))
     const currentSlugs = new Set(currentSeasons.map((season) => season.slug))
     const minimumYear = Math.min(...currentSeasons.map((season) => season.year))
     const sources = COMPETITION_SOURCES.filter((source) => currentSlugs.has(source.slug))
+
     const pageFiles = (
-      await runSequentially(sources, async (source) =>
-        downloadEditionPages(source.pageId, { refresh: true, selectEdition: (edition) => (yearOfLabel(edition.label) ?? 0) >= minimumYear }),
-      )
+      await runSequentially(sources, async (source) => downloadEditionPages(source.pageId, { refresh: true, selectEdition: (edition) => (yearOfLabel(edition.label) ?? 0) >= minimumYear }))
     ).flat()
+
     await runSequentially(pageFiles, async (pageFile) => {
       const outcome = await syncEdition(database, runId, pageFile)
+
       if (outcome) {
         console.info(`${outcome.label}: ${outcome.downloaded} súmulas novas ou retificadas, ${outcome.unchanged} sem mudança`)
         progress.outcomes = [...progress.outcomes, outcome]
       }
     })
+
     await finishSyncRun(database, runId, sumCounters(progress.outcomes), null)
   } catch (error) {
     await finishSyncRun(database, runId, sumCounters(progress.outcomes), error instanceof Error ? error.message : String(error))
+
     throw error
   }
 

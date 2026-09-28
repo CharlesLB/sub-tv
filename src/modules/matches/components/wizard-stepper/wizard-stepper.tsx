@@ -1,5 +1,5 @@
-import { Icon } from '@/components/ui/icon/icon'
 import { cn } from '@/lib/utils/cn'
+import { Icon } from '@/components/ui/icon/icon'
 import { WIZARD_STEPS, type WizardStep } from '../../wizard-reducer/wizard-reducer'
 
 const revealActiveStep = (element: HTMLButtonElement | null) => element?.scrollIntoView({ block: 'nearest', inline: 'nearest' })
@@ -35,10 +35,7 @@ export function WizardStepper({ currentStep, values, onGoBackTo }: WizardStepper
             )}
           >
             <span
-              className={cn(
-                'flex size-6 flex-none items-center justify-center rounded-card border text-[12px] font-semibold',
-                isActive || isDone ? 'border-ac bg-ac text-bg' : 'border-bd2 text-tx4',
-              )}
+              className={cn('flex size-6 flex-none items-center justify-center rounded-card border text-[12px] font-semibold', isActive || isDone ? 'border-ac bg-ac text-bg' : 'border-bd2 text-tx4')}
             >
               {isDone ? <Icon name="check" size={15} /> : step}
             </span>

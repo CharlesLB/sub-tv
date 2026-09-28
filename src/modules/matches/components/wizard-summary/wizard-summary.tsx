@@ -1,5 +1,5 @@
 import { Crest } from '@/components/ui/crest/crest'
-import { CategoryTag, type Category } from '@/modules/championships/client'
+import { type Category, CategoryTag } from '@/modules/championships/client'
 
 export type SummarySideVM = { key: string; name: string; color: string; crestPath: string | null; lineupCount: string }
 

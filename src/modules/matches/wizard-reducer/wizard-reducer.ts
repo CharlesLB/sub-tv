@@ -1,7 +1,7 @@
 import * as R from 'remeda'
 import { STARTERS_PER_TEAM } from '../default-starters/default-starters'
 import type { PitchPoint } from '../pitch-layout/pitch-layout'
-import { seedStarterPositions, type StarterPositions } from '../starter-positions/starter-positions'
+import { type StarterPositions, seedStarterPositions } from '../starter-positions/starter-positions'
 import type { MatchSetupVM, MatchSide, SetupTeamVM } from '../types'
 
 export const WIZARD_STEP = { INFORMATION: 1, TEAMS: 2, LINEUPS: 3, REVIEW: 4 } as const
@@ -68,8 +68,16 @@ export const createInitialWizardState = ({ setup, defaultLineupView }: WizardIni
   const { prefill, teams, championship } = setup
   const homeTeamId = prefill?.homeSeasonTeamId ?? teams[0]?.seasonTeamId ?? null
   const awayTeamId = prefill?.awaySeasonTeamId ?? teams.find((team) => team.seasonTeamId !== homeTeamId)?.seasonTeamId ?? null
-  const home = lineupOf(teams.find((team) => team.seasonTeamId === homeTeamId), 'home')
-  const away = lineupOf(teams.find((team) => team.seasonTeamId === awayTeamId), 'away')
+
+  const home = lineupOf(
+    teams.find((team) => team.seasonTeamId === homeTeamId),
+    'home',
+  )
+
+  const away = lineupOf(
+    teams.find((team) => team.seasonTeamId === awayTeamId),
+    'away',
+  )
 
   return {
     step: WIZARD_STEP.INFORMATION,
@@ -128,6 +136,7 @@ export const wizardReducer = (state: WizardState, action: WizardAction): WizardS
       return { ...state, step: nextStep[state.step] }
     case 'step/returned':
       return { ...state, step: previousStep[state.step] }
+
     case 'team/picked': {
       const otherSide: MatchSide = action.side === 'home' ? 'away' : 'home'
       const teamId = action.team.seasonTeamId
@@ -136,14 +145,13 @@ export const wizardReducer = (state: WizardState, action: WizardAction): WizardS
 
       return { ...state, [TEAM_KEY[action.side]]: teamId, [STARTERS_KEY[action.side]]: lineup.starterIds, [POSITIONS_KEY[action.side]]: lineup.positions }
     }
+
     case 'starter/toggled':
       return toggleStarter(state, action.side, action.playerId)
     case 'view/changed':
       return { ...state, lineupView: action.view }
     case 'starter/moved':
-      return state[STARTERS_KEY[action.side]].includes(action.playerId)
-        ? { ...state, [POSITIONS_KEY[action.side]]: { ...state[POSITIONS_KEY[action.side]], [action.playerId]: action.point } }
-        : state
+      return state[STARTERS_KEY[action.side]].includes(action.playerId) ? { ...state, [POSITIONS_KEY[action.side]]: { ...state[POSITIONS_KEY[action.side]], [action.playerId]: action.point } } : state
     case 'starter/benched':
       return benchStarter(state, action.side, action.playerId)
     case 'reserve/swapped':

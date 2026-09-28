@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { categoryLabel } from '@/modules/championships/client'
 import type { HistoryFilter } from '../../history-filter/history-filter'
-import { historyHref, type HistoryTarget } from '../../history-href/history-href'
+import { type HistoryTarget, historyHref } from '../../history-href/history-href'
 import { formatPercent } from '../../stat-format/stat-format'
 import type { AccumulatedTeamRowVM, HistoryOverviewVM } from '../../types'
 
@@ -16,7 +16,14 @@ const buildHighlights = (overview: HistoryOverviewVM): Highlight[] => {
 
   return [
     ...(overview.bestWinRate
-      ? [{ label: 'Melhor aproveitamento', value: formatPercent(overview.bestWinRate.winRate), name: teamName(overview.bestWinRate), target: { kind: 'team', teamKey: overview.bestWinRate.teamKey } as const }]
+      ? [
+          {
+            label: 'Melhor aproveitamento',
+            value: formatPercent(overview.bestWinRate.winRate),
+            name: teamName(overview.bestWinRate),
+            target: { kind: 'team', teamKey: overview.bestWinRate.teamKey } as const,
+          },
+        ]
       : []),
     ...(topScorer
       ? [{ label: 'Maior artilheiro', value: String(topScorer.goals), name: `${topScorer.name} · ${topScorer.team.name}`, target: { kind: 'athlete', playerId: topScorer.playerId } as const }]

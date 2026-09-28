@@ -1,5 +1,5 @@
 import * as R from 'remeda'
-import { isCategory, type Category } from '@/modules/championships/client'
+import { type Category, isCategory } from '@/modules/championships/client'
 
 export type HistoryFilter = { category: Category | null; years: number[] }
 
@@ -22,6 +22,7 @@ export const normalizeYears = (requestedYears: readonly number[], availableYears
 
 export const parseHistoryFilter = (query: { category: SearchParamValue; years: SearchParamValue }, availableYears: readonly number[]): HistoryFilter => {
   const categoryValue = firstValue(query.category)
+
   const requestedYears = (firstValue(query.years) ?? '')
     .split(YEAR_SEPARATOR)
     .filter((part) => part.trim() !== '')

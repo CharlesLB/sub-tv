@@ -5,7 +5,7 @@ import { routes } from '@/lib/routes'
 import { isUuid } from '@/lib/utils/is-uuid/is-uuid'
 import { requireUser } from '@/modules/auth'
 import { LiveBoard, LiveEmptyState, LiveSkeleton, officialsStripItems } from '@/modules/live'
-import { getLiveMatch, MATCH_STATUS, type LiveMatchSnapshot } from '@/modules/matches'
+import { getLiveMatch, type LiveMatchSnapshot, MATCH_STATUS } from '@/modules/matches'
 import { ContextBar } from '@/modules/platform'
 
 const LOADING_TITLE = 'Abrindo partida'
@@ -13,13 +13,7 @@ const FINISHED_LABEL = 'Encerrada'
 const LIVE_LABEL = 'Ao vivo'
 
 const detailOf = (snapshot: LiveMatchSnapshot): string =>
-  [
-    snapshot.status === MATCH_STATUS.FINISHED ? FINISHED_LABEL : LIVE_LABEL,
-    snapshot.round === null ? null : `rodada ${snapshot.round}`,
-    snapshot.venue ?? snapshot.city,
-  ]
-    .filter(Boolean)
-    .join(' · ')
+  [snapshot.status === MATCH_STATUS.FINISHED ? FINISHED_LABEL : LIVE_LABEL, snapshot.round === null ? null : `rodada ${snapshot.round}`, snapshot.venue ?? snapshot.city].filter(Boolean).join(' · ')
 
 const titleOf = (snapshot: LiveMatchSnapshot): string => `${snapshot.teams.home.name} × ${snapshot.teams.away.name}`
 
@@ -29,6 +23,7 @@ async function LiveMatchScreen({ matchId }: { matchId: string }) {
   if (!snapshot) notFound()
 
   const { championship, seasonId } = snapshot
+
   const crumbs = [
     { label: 'Campeonatos', href: routes.championships(championship.year) },
     { label: championship.name, href: routes.championship(seasonId) },
@@ -38,11 +33,7 @@ async function LiveMatchScreen({ matchId }: { matchId: string }) {
   return (
     <>
       <ContextBar crumbs={crumbs} title={titleOf(snapshot)} category={championship.category} detail={detailOf(snapshot)} />
-      {snapshot.players.length === 0 ? (
-        <LiveEmptyState seasonId={seasonId} />
-      ) : (
-        <LiveBoard snapshot={snapshot} officialsItems={officialsStripItems(snapshot)} />
-      )}
+      {snapshot.players.length === 0 ? <LiveEmptyState seasonId={seasonId} /> : <LiveBoard snapshot={snapshot} officialsItems={officialsStripItems(snapshot)} />}
     </>
   )
 }
@@ -62,5 +53,11 @@ export default function LiveMatchPage({ params }: PageProps<'/ao-vivo/[partidaId
     </>
   )
 
-  return <Suspense fallback={fallback}>{params.then(({ partidaId }) => <LiveMatchScreen matchId={partidaId} />)}</Suspense>
+  return (
+    <Suspense fallback={fallback}>
+      {params.then(({ partidaId }) => (
+        <LiveMatchScreen matchId={partidaId} />
+      ))}
+    </Suspense>
+  )
 }

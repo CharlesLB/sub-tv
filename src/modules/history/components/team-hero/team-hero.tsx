@@ -1,14 +1,12 @@
-import { categoryLabel, categoryTextClass } from '@/modules/championships/client'
 import { cn } from '@/lib/utils/cn'
+import { categoryLabel, categoryTextClass } from '@/modules/championships/client'
 import { formatPercent, pluralize } from '../../stat-format/stat-format'
 import type { TeamHistoryVM } from '../../types'
 
 export function TeamHero({ history }: { history: TeamHistoryVM }) {
-  const subtitle = [
-    `${pluralize(history.seasons.length, 'Temporada', 'Temporadas')} No filtro`,
-    `${history.totals.played} Jogos`,
-    `${formatPercent(history.totals.winRate)} de aproveitamento`,
-  ].join(' · ')
+  const subtitle = [`${pluralize(history.seasons.length, 'Temporada', 'Temporadas')} No filtro`, `${history.totals.played} Jogos`, `${formatPercent(history.totals.winRate)} de aproveitamento`].join(
+    ' · ',
+  )
 
   return (
     <div className="flex items-center gap-[14px] rounded-card border border-bd bg-pan px-[18px] py-4">

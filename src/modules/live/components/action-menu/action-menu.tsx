@@ -2,13 +2,13 @@
 
 import { useEffect, useRef } from 'react'
 import * as R from 'remeda'
+import type { MenuState } from '../../interaction/interaction-state'
+import { positionLabel } from '../../player-labels/player-labels'
 import { CARD_COLOR } from '../../state/live-actions'
 import { useLiveState } from '../../state/live-context'
 import type { PlayerMatchState } from '../../state/live-state'
 import { useLiveCommands } from '../../state/use-live-commands'
-import type { MenuState } from '../../interaction/interaction-state'
 import { MENU_MARKER, MenuAction } from '../menu-action/menu-action'
-import { positionLabel } from '../../player-labels/player-labels'
 
 const MENU_HEIGHT = 232
 const MENU_WIDTH = 242
@@ -32,10 +32,12 @@ export function ActionMenu({ menu, matchState, onClose }: ActionMenuProps) {
   const centerY = menu.anchor.top + (menu.anchor.bottom - menu.anchor.top) / 2
   const top = R.clamp(centerY - MENU_HEIGHT / 2, { min: VIEWPORT_MARGIN, max: Math.max(VIEWPORT_MARGIN, window.innerHeight - MENU_HEIGHT - VIEWPORT_MARGIN) })
   const left = R.clamp(menu.anchor.x, { min: MENU_WIDTH / 2 + VIEWPORT_MARGIN, max: window.innerWidth - MENU_WIDTH / 2 - VIEWPORT_MARGIN })
+
   const run = (command: () => void) => () => {
     onClose()
     command()
   }
+
   const subtitle = [positionLabel(player.position), team.name].filter(Boolean).join(' · ')
 
   return (
@@ -57,7 +59,14 @@ export function ActionMenu({ menu, matchState, onClose }: ActionMenuProps) {
           </div>
         </div>
         <div ref={firstActionRef} className="flex flex-col gap-[3px]">
-          <MenuAction label="Gol" meta={matchState.goals ? `+${matchState.goals}` : ''} colorClass="bg-ac" marker={MENU_MARKER.ROUND} shortcut="G" onSelect={run(() => commands.recordGoal(player.playerId))} />
+          <MenuAction
+            label="Gol"
+            meta={matchState.goals ? `+${matchState.goals}` : ''}
+            colorClass="bg-ac"
+            marker={MENU_MARKER.ROUND}
+            shortcut="G"
+            onSelect={run(() => commands.recordGoal(player.playerId))}
+          />
           <MenuAction
             label="Assistência"
             meta={matchState.assists ? `+${matchState.assists}` : ''}

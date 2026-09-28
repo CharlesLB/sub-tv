@@ -7,11 +7,5 @@ export async function LiveBroadcastChip() {
   const broadcast = await getActiveBroadcast()
   if (!broadcast) return null
 
-  return (
-    <LiveChip
-      matchId={broadcast.matchId}
-      matchup={`${broadcast.homeName} × ${broadcast.awayName}`}
-      closeBroadcast={closeBroadcast.bind(null, broadcast.matchId)}
-    />
-  )
+  return <LiveChip matchId={broadcast.matchId} matchup={`${broadcast.homeName} × ${broadcast.awayName}`} closeBroadcast={closeBroadcast.bind(null, broadcast.matchId)} />
 }

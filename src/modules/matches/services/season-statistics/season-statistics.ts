@@ -48,6 +48,7 @@ const deriveNarratedScores = async (executor: SqlExecutor, seasonId: string): Pr
 
 const recomputePlayerStatistics = async (executor: SqlExecutor, seasonId: string): Promise<void> => {
   await executor.execute(sql`delete from player_season_stats where season_id = ${seasonId}`)
+
   await executor.execute(sql`
     with active_events as (
       select event.*
@@ -91,6 +92,7 @@ const recomputePlayerStatistics = async (executor: SqlExecutor, seasonId: string
     from appearances
     group by season_id, player_id, season_team_id
   `)
+
   await executor.execute(sql`
     update player_season_stats stats
     set rank_in_team_goals = ranked.position
@@ -105,6 +107,7 @@ const recomputePlayerStatistics = async (executor: SqlExecutor, seasonId: string
 
 const recomputeTeamStatistics = async (executor: SqlExecutor, seasonId: string): Promise<void> => {
   await executor.execute(sql`delete from team_season_stats where season_team_id in (select id from season_teams where season_id = ${seasonId})`)
+
   await executor.execute(sql`
     with team_matches as (
       select
@@ -163,6 +166,7 @@ const recomputeTeamStatistics = async (executor: SqlExecutor, seasonId: string):
 
 const recomputeStaffStatistics = async (executor: SqlExecutor, seasonId: string): Promise<void> => {
   await executor.execute(sql`delete from staff_season_stats where season_team_id in (select id from season_teams where season_id = ${seasonId})`)
+
   await executor.execute(sql`
     with staff_matches as (
       select distinct

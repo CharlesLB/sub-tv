@@ -9,6 +9,7 @@ import type { LastChangeVM } from '../types'
 export const getLastChange = async (entityType: AuditEntity, entityId: string): Promise<LastChangeVM | null> => {
   await connection()
   const { auditLog, appUsers } = tables
+
   const [row] = await db
     .select({ userName: appUsers.username, createdAt: auditLog.createdAt, action: auditLog.action })
     .from(auditLog)

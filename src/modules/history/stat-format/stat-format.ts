@@ -21,7 +21,6 @@ export const formatPosition = (position: number): string => String(position).pad
 
 export const shortYear = (year: number): string => String(year).slice(-SHORT_YEAR_LENGTH)
 
-export const barHeightPercent = (value: number, maximum: number, minimumPercent: number): number =>
-  Math.max(minimumPercent, Math.round((value / Math.max(1, maximum)) * PERCENT))
+export const barHeightPercent = (value: number, maximum: number, minimumPercent: number): number => Math.max(minimumPercent, Math.round((value / Math.max(1, maximum)) * PERCENT))
 
 export const barWidthPercent = (value: number, maximum: number): number => Math.round((value / Math.max(1, maximum)) * PERCENT)

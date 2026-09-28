@@ -15,6 +15,7 @@ export const getSeasonTeams = async (year: number): Promise<SeasonTeamVM[]> => {
   cacheLife('minutes')
 
   const { seasons, competitions, seasonTeams, seasonSquads, clubs } = tables
+
   const rows = await db
     .select({
       clubId: clubs.id,
@@ -29,6 +30,7 @@ export const getSeasonTeams = async (year: number): Promise<SeasonTeamVM[]> => {
     .leftJoin(seasonSquads, and(eq(seasonSquads.seasonTeamId, seasonTeams.id), eq(seasonSquads.isActive, true)))
     .where(eq(seasons.year, year))
     .groupBy(clubs.id, competitions.category)
+
   const seasonIds = await db.select({ id: seasons.id }).from(seasons).where(eq(seasons.year, year))
   cacheTag(tags.seasons(), tags.fmfData(), ...seasonIds.map((season) => tags.seasonTeams(season.id)))
 

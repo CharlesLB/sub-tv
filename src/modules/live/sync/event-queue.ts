@@ -44,6 +44,7 @@ export const createEventQueue = <TOperation>(options: EventQueueOptions<TOperati
     if (queue.isRunning || !head) return
 
     queue.isRunning = true
+
     try {
       settleHead(await options.send(head.operation), head)
     } catch {
@@ -51,6 +52,7 @@ export const createEventQueue = <TOperation>(options: EventQueueOptions<TOperati
       options.onFailure()
       await options.wait(retryDelayMs(queue.failedAttempts))
     }
+
     queue.isRunning = false
     await drain()
   }
@@ -65,6 +67,7 @@ export const createEventQueue = <TOperation>(options: EventQueueOptions<TOperati
 
         return pending.map((queued, index) => (index === replaceableIndex ? item : queued))
       }, queue.pending)
+
       void drain()
     },
     pendingCount: () => queue.pending.length,

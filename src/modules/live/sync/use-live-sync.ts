@@ -1,22 +1,22 @@
 'use client'
 
-import { useEffect, useState, type Dispatch } from 'react'
+import { type Dispatch, useEffect, useState } from 'react'
 import type { ActionResult } from '@/lib/actions/result'
 import {
   applySubstitution,
   attachAssist,
   LIVE_EVENT_TYPE,
+  type LiveEventType,
   MATCH_PERIOD,
+  type MatchPeriod,
   recordLiveEvent,
   revertLiveEvent,
   updateLineupPosition,
   updateLiveClock,
-  type LiveEventType,
-  type MatchPeriod,
 } from '@/modules/matches/client'
 import { LIVE_ACTION, type LiveAction } from '../state/live-actions'
-import { SERVER_OPERATION, syncKeyOf, type LiveEvent, type ServerOperation } from '../state/live-state'
-import { createEventQueue, SEND_OUTCOME, type EventQueue, type QueuedItem, type SendOutcome } from './event-queue'
+import { type LiveEvent, SERVER_OPERATION, type ServerOperation, syncKeyOf } from '../state/live-state'
+import { createEventQueue, type EventQueue, type QueuedItem, SEND_OUTCOME, type SendOutcome } from './event-queue'
 
 const UNSENDABLE_EVENT = 'Lance sem atleta ou período válido.'
 
@@ -46,9 +46,7 @@ const sendRecord = async (matchId: string, event: LiveEvent): Promise<SendOutcom
   const type = RECORDABLE_TYPES[event.type]
   if (!period || !type || !event.playerId) return rejected
 
-  return toOutcome(
-    await recordLiveEvent({ matchId, clientId: event.key, type, side: event.side, period, minute: event.minute, playerId: event.playerId, fromSecondYellow: event.fromSecondYellow }),
-  )
+  return toOutcome(await recordLiveEvent({ matchId, clientId: event.key, type, side: event.side, period, minute: event.minute, playerId: event.playerId, fromSecondYellow: event.fromSecondYellow }))
 }
 
 const sendSubstitution = async (matchId: string, operation: Extract<ServerOperation, { kind: typeof SERVER_OPERATION.SUBSTITUTION }>): Promise<SendOutcome> => {
@@ -56,9 +54,7 @@ const sendSubstitution = async (matchId: string, operation: Extract<ServerOperat
   const period = SENDABLE_PERIODS[event.period]
   if (!period || !event.playerId || !event.playerOutId) return rejected
 
-  return toOutcome(
-    await applySubstitution({ matchId, clientId: event.key, side: event.side, period, minute: event.minute, playerInId: event.playerId, playerOutId: event.playerOutId, pitchPoint }),
-  )
+  return toOutcome(await applySubstitution({ matchId, clientId: event.key, side: event.side, period, minute: event.minute, playerInId: event.playerId, playerOutId: event.playerOutId, pitchPoint }))
 }
 
 const sendOperation = async (matchId: string, operation: ServerOperation): Promise<SendOutcome> => {

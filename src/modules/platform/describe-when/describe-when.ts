@@ -4,10 +4,7 @@ const RECENT_WINDOW_DAYS = 14
 const TIME_ZONE = 'America/Sao_Paulo'
 
 const dayNumberIn = (date: Date): number => {
-  const [year, month, day] = new Intl.DateTimeFormat('en-CA', { timeZone: TIME_ZONE, year: 'numeric', month: '2-digit', day: '2-digit' })
-    .format(date)
-    .split('-')
-    .map(Number)
+  const [year, month, day] = new Intl.DateTimeFormat('en-CA', { timeZone: TIME_ZONE, year: 'numeric', month: '2-digit', day: '2-digit' }).format(date).split('-').map(Number)
 
   return Date.UTC(year ?? 1970, (month ?? 1) - 1, day ?? 1) / MILLISECONDS_PER_DAY
 }

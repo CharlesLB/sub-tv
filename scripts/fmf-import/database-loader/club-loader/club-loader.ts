@@ -11,10 +11,7 @@ import type { Transaction } from '../database-context/database-context'
 export type SeasonTeamLookup = Map<string, { clubId: string; seasonTeamId: string }>
 
 const collectTeams = (bundle: EditionBundle): TeamReference[] =>
-  R.uniqueBy(
-    [...bundle.page.standings.map((row) => row.team), ...bundle.page.matches.flatMap((match) => [match.home, match.away])],
-    (team) => team.crestId,
-  )
+  R.uniqueBy([...bundle.page.standings.map((row) => row.team), ...bundle.page.matches.flatMap((match) => [match.home, match.away])], (team) => team.crestId)
 
 const collectOfficialNames = (bundle: EditionBundle): Map<string, string> =>
   new Map(
@@ -32,11 +29,7 @@ const collectOfficialNames = (bundle: EditionBundle): Map<string, string> =>
 const collectGroups = (bundle: EditionBundle): Map<string, string> => {
   const firstPhase = bundle.page.standings[0]?.phase
 
-  return new Map(
-    bundle.page.standings
-      .filter((row) => row.phase === firstPhase && row.groupName !== null)
-      .map((row): [string, string] => [row.team.crestId, row.groupName ?? '']),
-  )
+  return new Map(bundle.page.standings.filter((row) => row.phase === firstPhase && row.groupName !== null).map((row): [string, string] => [row.team.crestId, row.groupName ?? '']))
 }
 
 export const upsertClubsAndSeasonTeams = async (transaction: Transaction, bundle: EditionBundle, seasonId: string): Promise<SeasonTeamLookup> => {
@@ -44,6 +37,7 @@ export const upsertClubsAndSeasonTeams = async (transaction: Transaction, bundle
   const officialNames = collectOfficialNames(bundle)
   const groups = collectGroups(bundle)
   if (teams.length === 0) return new Map()
+
   const buildClubRow = (team: TeamReference) => {
     const officialName = officialNames.get(team.crestId) ?? null
     const displayName = deriveDisplayName(team.shortName, officialName)
@@ -58,8 +52,10 @@ export const upsertClubsAndSeasonTeams = async (transaction: Transaction, bundle
       crestUrl: `${FMF_CREST_BASE_URL}${team.crestFileName}`,
     }
   }
+
   const nativeTeams = teams.filter((team) => !isAliasCrest(team.crestId))
   const aliasTeams = teams.filter((team) => isAliasCrest(team.crestId))
+
   const nativeRows =
     nativeTeams.length === 0
       ? []
@@ -79,6 +75,7 @@ export const upsertClubsAndSeasonTeams = async (transaction: Transaction, bundle
             },
           })
           .returning({ id: clubs.id, crestId: clubs.fmfCrestId })
+
   const aliasRows =
     aliasTeams.length === 0
       ? []
@@ -87,9 +84,11 @@ export const upsertClubsAndSeasonTeams = async (transaction: Transaction, bundle
           .values(R.uniqueBy(aliasTeams.map(buildClubRow), (row) => row.fmfCrestId))
           .onConflictDoUpdate({ target: clubs.fmfCrestId, set: { officialName: sql`coalesce(${clubs.officialName}, excluded.official_name)`, updatedAt: sql`now()` } })
           .returning({ id: clubs.id, crestId: clubs.fmfCrestId })
+
   const clubRows = [...nativeRows, ...aliasRows]
   const clubIdsByCanonicalCrest = new Map(clubRows.map((row) => [row.crestId ?? '', row.id]))
   const clubIdOf = (crestId: string): string => clubIdsByCanonicalCrest.get(canonicalCrestId(crestId)) ?? ''
+
   const seasonTeamRows = await transaction
     .insert(seasonTeams)
     .values(
@@ -100,6 +99,7 @@ export const upsertClubsAndSeasonTeams = async (transaction: Transaction, bundle
     )
     .onConflictDoUpdate({ target: [seasonTeams.seasonId, seasonTeams.clubId], set: { groupName: sql`excluded.group_name`, updatedAt: sql`now()` } })
     .returning({ id: seasonTeams.id, clubId: seasonTeams.clubId })
+
   const seasonTeamIds = new Map(seasonTeamRows.map((row) => [row.clubId, row.id]))
 
   return new Map(

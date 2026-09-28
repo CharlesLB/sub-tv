@@ -9,8 +9,7 @@ export type MenuState = { playerId: string; anchor: Anchor }
 export const DRAG_KIND = { DOT: 'dot', BENCH: 'bench' } as const
 
 export type DragState =
-  | { kind: typeof DRAG_KIND.DOT; playerId: string; point: PitchPoint }
-  | { kind: typeof DRAG_KIND.BENCH; playerId: string; clientX: number; clientY: number; targetPlayerId: string | null }
+  { kind: typeof DRAG_KIND.DOT; playerId: string; point: PitchPoint } | { kind: typeof DRAG_KIND.BENCH; playerId: string; clientX: number; clientY: number; targetPlayerId: string | null }
 
 export const anchorOf = (element: Element): Anchor => {
   const rect = element.getBoundingClientRect()

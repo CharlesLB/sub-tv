@@ -17,8 +17,7 @@ type RosterRowProps = {
   onSelect: (playerId: string) => void
 }
 
-const isPlainClick = (event: MouseEvent<HTMLAnchorElement>): boolean =>
-  event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey
+const isPlainClick = (event: MouseEvent<HTMLAnchorElement>): boolean => event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey
 
 export function RosterRow({ player, index, href, teamColor, isSelected, onSelect }: RosterRowProps) {
   const selectPlayer = (event: MouseEvent<HTMLAnchorElement>) => {
@@ -26,6 +25,7 @@ export function RosterRow({ player, index, href, teamColor, isSelected, onSelect
     event.preventDefault()
     onSelect(player.id)
   }
+
   const statClass = 'text-[12.5px] text-tx4 nums @max-[430px]:text-[11.5px]'
 
   return (

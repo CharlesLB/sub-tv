@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation'
 import { categoryLabel } from '@/modules/championships/client'
 import { ContextBar } from '@/modules/platform'
 import { getTeamHistory } from '../../data/get-team-history'
-import { loadHistoryFilter, type HistoryQuery } from '../../data/load-history-filter'
+import { type HistoryQuery, loadHistoryFilter } from '../../data/load-history-filter'
 import { historyCrumbs } from '../../history-crumbs/history-crumbs'
 import { formatPercent, formatSignedNumber } from '../../stat-format/stat-format'
 import { BackToOverviewLink } from '../back-to-overview-link/back-to-overview-link'
@@ -27,6 +27,7 @@ export async function TeamHistoryScreen({ teamKey, query }: TeamHistoryScreenPro
 
   const target = { kind: 'team', teamKey } as const
   const { totals } = history
+
   const kpis = [
     { label: 'Pontos', value: String(totals.points) },
     { label: 'Aproveitamento', value: formatPercent(totals.winRate) },
@@ -36,11 +37,7 @@ export async function TeamHistoryScreen({ teamKey, query }: TeamHistoryScreenPro
 
   return (
     <>
-      <ContextBar
-        crumbs={historyCrumbs(target, filter, seasonLabel, TEAM_PAGE_LABEL)}
-        title={`${history.team.name} ${categoryLabel[history.category]}`}
-        category={history.category}
-      />
+      <ContextBar crumbs={historyCrumbs(target, filter, seasonLabel, TEAM_PAGE_LABEL)} title={`${history.team.name} ${categoryLabel[history.category]}`} category={history.category} />
       <HistoryFrame>
         <HistoryFilters filter={filter} availableYears={availableYears} target={target} />
         <div className="flex animate-fade-in flex-col gap-[22px]">

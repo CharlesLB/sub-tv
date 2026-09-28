@@ -13,11 +13,7 @@ export function FormSquare({ result, size = 'medium' }: FormSquareProps) {
   return (
     <span
       title={FORM_STYLE[result].title}
-      className={cn(
-        'inline-flex flex-none items-center justify-center font-semibold',
-        size === 'medium' ? 'size-[18px] text-[10px]' : 'size-4 text-[9.5px]',
-        FORM_STYLE[result].className,
-      )}
+      className={cn('inline-flex flex-none items-center justify-center font-semibold', size === 'medium' ? 'size-[18px] text-[10px]' : 'size-4 text-[9.5px]', FORM_STYLE[result].className)}
     >
       {result}
     </span>

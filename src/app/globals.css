@@ -43,8 +43,7 @@
   --gr-anel: rgba(255, 255, 255, 0.92);
   --gr-turf:
     radial-gradient(150% 120% at 50% 45%, rgba(255, 255, 255, 0) 55%, rgba(8, 36, 24, 0.24) 100%),
-    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.08) 0 6.25%, rgba(8, 36, 24, 0.08) 6.25% 12.5%),
-    linear-gradient(180deg, #236546 0%, #18513a 100%);
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.08) 0 6.25%, rgba(8, 36, 24, 0.08) 6.25% 12.5%), linear-gradient(180deg, #236546 0%, #18513a 100%);
   --gr-linha: #ffffff;
   --gr-borda: rgba(5, 50, 27, 0.7);
   --sombra: rgba(15, 61, 43, 0.1);
@@ -101,8 +100,7 @@
   --gr-chip: rgba(0, 0, 0, 0.72);
   --gr-anel: #0e3b22;
   --gr-turf:
-    radial-gradient(150% 120% at 50% 45%, rgba(255, 255, 255, 0) 55%, rgba(0, 0, 0, 0.32) 100%),
-    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.06) 0 6.25%, rgba(0, 0, 0, 0.07) 6.25% 12.5%),
+    radial-gradient(150% 120% at 50% 45%, rgba(255, 255, 255, 0) 55%, rgba(0, 0, 0, 0.32) 100%), repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.06) 0 6.25%, rgba(0, 0, 0, 0.07) 6.25% 12.5%),
     linear-gradient(180deg, #14512f 0%, #0d3620 100%);
   --gr-linha: rgba(228, 247, 236, 0.62);
   --gr-borda: #1b5436;

@@ -36,8 +36,7 @@ const fileExists = async (relativePath: string): Promise<boolean> =>
     () => false,
   )
 
-export const readStoredFile = async (relativePath: string): Promise<Uint8Array | null> =>
-  (await fileExists(relativePath)) ? new Uint8Array(await readFile(relativePath)) : null
+export const readStoredFile = async (relativePath: string): Promise<Uint8Array | null> => ((await fileExists(relativePath)) ? new Uint8Array(await readFile(relativePath)) : null)
 
 export const isMarkedMissing = async (relativePath: string): Promise<boolean> => await fileExists(missingMarkerPath(relativePath))
 
@@ -61,5 +60,4 @@ export const listStoredPages = async (): Promise<StoredPage[]> => {
 
 export const computeSha256 = (body: Uint8Array): string => createHash('sha256').update(body).digest('hex')
 
-export const toBlobUrl = (relativePath: string): string =>
-  `${activeStorage.location.blobUrlPrefix}${path.relative(activeStorage.location.rootDirectory, relativePath).split(path.sep).join('/')}`
+export const toBlobUrl = (relativePath: string): string => `${activeStorage.location.blobUrlPrefix}${path.relative(activeStorage.location.rootDirectory, relativePath).split(path.sep).join('/')}`

@@ -34,11 +34,7 @@ export function ResetPasswordForm({ userId, username }: ResetPasswordFormProps) 
   }
 
   return (
-    <form
-      action={action}
-      aria-label={`Nova senha para ${username}`}
-      className="flex flex-col items-end gap-1"
-    >
+    <form action={action} aria-label={`Nova senha para ${username}`} className="flex flex-col items-end gap-1">
       <input type="hidden" name="userId" value={userId} />
       <div className="flex flex-wrap items-center justify-end gap-[6px]">
         <input name="password" type="password" aria-label="Nova senha" placeholder="nova senha" autoComplete="new-password" required minLength={8} className={FIELD_CLASS} />
