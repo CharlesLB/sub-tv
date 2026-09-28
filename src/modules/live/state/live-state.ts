@@ -72,7 +72,6 @@ export type LiveState = {
   selectedPlayerId: string | null
   cardPickerOpen: boolean
   pendingSubstitution: boolean
-  pulseCount: number
   toasts: Toast[]
   nextToastId: number
   outbox: ServerOperation[]

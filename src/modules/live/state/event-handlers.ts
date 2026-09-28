@@ -55,7 +55,7 @@ export const recordGoal = (state: LiveState, playerId: string, clientId: string,
   if (active.matchState.sentOff) return warn(state, LIVE_MESSAGE.PLAYER_SENT_OFF)
 
   const goal = createEvent(state, { key: clientId, type: LIVE_EVENT_TYPE.GOAL, side: active.player.side, playerId, goalType: GOAL_TYPE.NORMAL }, nowMs)
-  const withGoal = { ...addEvents(state, [goal]), pulseCount: state.pulseCount + 1, selectedPlayerId: playerId }
+  const withGoal = { ...addEvents(state, [goal]), selectedPlayerId: playerId }
 
   return pushToast(withGoal, `GOL MARCADO — ${playerTag(active.player)}`, TOAST_TONE.OK, { addedEventKeys: [clientId], assistChange: null })
 }

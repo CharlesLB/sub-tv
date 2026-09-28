@@ -43,7 +43,6 @@ export const createInitialState = (snapshot: LiveMatchSnapshot): LiveState => {
     selectedPlayerId: pickInitialSelection(players, derivePlayerStates(players, events)),
     cardPickerOpen: false,
     pendingSubstitution: false,
-    pulseCount: 0,
     toasts: [],
     nextToastId: 1,
     outbox: [],

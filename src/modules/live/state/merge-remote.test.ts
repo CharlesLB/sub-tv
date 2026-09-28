@@ -41,7 +41,6 @@ describe('remote merge', () => {
     const state = run(createInitialState(makeSnapshot()), received(remoteGoal()))
 
     expect(selectScore(state.events)).toEqual({ [SIDE.HOME]: 0, [SIDE.AWAY]: 1 })
-    expect(state.pulseCount).toBe(1)
   })
 
   it('own optimistic goal still being sent is not duplicated by the stream', () => {

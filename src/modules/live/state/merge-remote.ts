@@ -1,5 +1,5 @@
 import * as R from 'remeda'
-import { LIVE_EVENT_TYPE, MATCH_PERIOD, type MatchPeriod, type RemoteEvent, type RemoteSnapshot } from '@/modules/matches/client'
+import { MATCH_PERIOD, type MatchPeriod, type RemoteEvent, type RemoteSnapshot } from '@/modules/matches/client'
 import { CLOCK_SYNC_KEY, type LiveEvent, type LiveState, positionSyncKey, SYNC_STATE } from './live-state'
 
 const PERIOD_ORDER: Record<MatchPeriod, number> = {
@@ -37,9 +37,7 @@ const insertRemote = (state: LiveState, remote: RemoteEvent): LiveState => {
   const knownPlayers = [remote.playerId, remote.playerOutId].every((playerId) => playerId === null || playerId in state.playersById)
   if (!knownPlayers || state.revertedKeys.includes(remote.key)) return state
 
-  const isGoal = remote.type === LIVE_EVENT_TYPE.GOAL
-
-  return { ...state, events: chronologically([...state.events, toLiveEvent(remote)]), pulseCount: isGoal ? state.pulseCount + 1 : state.pulseCount }
+  return { ...state, events: chronologically([...state.events, toLiveEvent(remote)]) }
 }
 
 export const mergeRemoteEvent = (state: LiveState, remote: RemoteEvent): LiveState => {
@@ -49,13 +47,8 @@ export const mergeRemoteEvent = (state: LiveState, remote: RemoteEvent): LiveSta
   if (!local) return insertRemote(state, remote)
 
   const updated = toLiveEvent(remote)
-  const scoreChanged = remote.type === LIVE_EVENT_TYPE.GOAL && local.side !== updated.side
 
-  return {
-    ...state,
-    events: state.events.map((event) => (event.key === remote.key ? updated : event)),
-    pulseCount: scoreChanged ? state.pulseCount + 1 : state.pulseCount,
-  }
+  return { ...state, events: state.events.map((event) => (event.key === remote.key ? updated : event)) }
 }
 
 export const mergeRemoteSnapshot = (state: LiveState, snapshot: RemoteSnapshot): LiveState => {

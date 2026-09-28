@@ -52,7 +52,6 @@ describe('liveReducer', () => {
 
     expect(selectScore(state.events)).toEqual({ [SIDE.HOME]: 1, [SIDE.AWAY]: 0 })
     expect(state.events[0]).toMatchObject({ key: 'goal-1', minute: 12, period: MATCH_PERIOD.FIRST_HALF, syncState: SYNC_STATE.PENDING })
-    expect(state.pulseCount).toBe(1)
     expect(state.outbox.at(-1)).toMatchObject({ kind: SERVER_OPERATION.RECORD })
     expect(lastToast(state)).toMatchObject({ tone: TOAST_TONE.OK, undo: { addedEventKeys: ['goal-1'] } })
   })
