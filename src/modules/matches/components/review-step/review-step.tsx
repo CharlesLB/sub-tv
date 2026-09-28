@@ -40,7 +40,7 @@ export function ReviewStep({ championshipName, category, subtitle, sides }: Revi
           return (
             <div key={side} className="chamfer flex min-h-0 flex-col gap-[10px] bg-pan2 px-4 py-[14px]">
               <div className="flex flex-none flex-wrap items-center gap-[10px]">
-                <Crest color={team.color} width={18} />
+                <Crest color={team.color} imagePath={team.crestPath} width={18} />
                 <span className="text-[13.5px] font-bold tracking-[-.01em]">{team.name}</span>
                 <CategoryTag category={category} size="medium" />
               </div>

@@ -32,12 +32,21 @@ const describeClock = (match: MatchCardVM): string => {
   return match.kickoffAt ? formatTime(match.kickoffAt) : '--:--'
 }
 
+type CardAction = { href: ReturnType<typeof routes.live> | ReturnType<typeof routes.newMatch>; label: string; isPrimary: boolean }
+
+const actionOf = (match: MatchCardVM, seasonId: string): CardAction => {
+  if (match.status === 'encerrado') return { href: routes.live(match.id), label: 'Ver partida', isPrimary: false }
+  if (match.isBroadcast) return { href: routes.live(match.id), label: 'Entrar', isPrimary: true }
+
+  return { href: routes.newMatch(seasonId, match.id), label: 'Narrar', isPrimary: false }
+}
+
 type TeamColumnProps = { team: TeamBadgeVM }
 
 function TeamColumn({ team }: TeamColumnProps) {
   return (
     <div className="flex min-w-0 flex-col items-center gap-2">
-      <Crest color={team.color} width={30} />
+      <Crest color={team.color} imagePath={team.crestPath} width={30} />
       <span className="text-center text-[12.2px] font-bold tracking-[-.01em] text-balance">{team.name}</span>
     </div>
   )
@@ -47,7 +56,7 @@ type MatchCardProps = { match: MatchCardVM; seasonId: string; category: Category
 
 export function MatchCard({ match, seasonId, category }: MatchCardProps) {
   const isLive = match.status === 'ao_vivo'
-  const isFinished = match.status === 'encerrado'
+  const action = actionOf(match, seasonId)
   const hasScore = match.homeScore !== null && match.awayScore !== null
   const winner = hasScore && match.homeScore !== match.awayScore ? ((match.homeScore ?? 0) > (match.awayScore ?? 0) ? 'home' : 'away') : null
   const scoreClass = (side: 'home' | 'away') => cn('text-[41.4px] leading-[.85] font-bold nums', !hasScore ? 'text-bd3' : winner && winner !== side ? 'text-tx2' : 'text-tx')
@@ -77,17 +86,15 @@ export function MatchCard({ match, seasonId, category }: MatchCardProps) {
       </div>
       <div className="flex items-center gap-[10px] border-t border-bd px-[13px] py-[10px]">
         <span className="min-w-0 truncate text-[10.5px] whitespace-nowrap text-tx3">{[match.venue, match.city].filter(Boolean).join(' · ') || 'Local a definir'}</span>
-        {isFinished ? null : (
-          <Link
-            href={match.isBroadcast ? routes.live(match.id) : routes.newMatch(seasonId, match.id)}
-            className={cn(
-              'ml-auto flex h-[30px] flex-none items-center px-[13px] text-[10.3px] font-bold tracking-[-.01em]',
-              match.isBroadcast ? 'bg-ac text-bg' : 'border border-bd2 bg-transparent text-tx hover:border-tx',
-            )}
-          >
-            {match.isBroadcast ? 'Entrar' : 'Narrar'}
-          </Link>
-        )}
+        <Link
+          href={action.href}
+          className={cn(
+            'ml-auto flex h-[30px] flex-none items-center px-[13px] text-[10.3px] font-bold tracking-[-.01em]',
+            action.isPrimary ? 'bg-ac text-bg' : 'border border-bd2 bg-transparent text-tx hover:border-tx',
+          )}
+        >
+          {action.label}
+        </Link>
       </div>
     </article>
   )

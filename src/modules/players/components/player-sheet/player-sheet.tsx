@@ -43,7 +43,7 @@ export function PlayerSheet({ player, squad, categoryFilter, canEdit, lastChange
         Fechar ✕
       </button>
       <div className="flex flex-wrap items-center gap-3">
-        <Crest color={squad.badge.color} width={20} />
+        <Crest color={squad.badge.color} imagePath={squad.badge.crestPath} width={20} />
         <h2 className="text-[14.4px] font-bold tracking-[-.01em]">Ficha do jogador</h2>
         <CategoryTag category={squad.category} size="extraLarge" className="text-[12.5px]" />
       </div>

@@ -9,6 +9,7 @@ export type TeamBadgeRow = {
   shortName: string
   abbreviation: string | null
   color: string | null
+  crestPath: string | null
 }
 
 const stripAccents = (text: string): string => text.normalize('NFD').replace(/[̀-ͯ]/g, '')
@@ -26,6 +27,7 @@ export const toTeamBadge = (row: TeamBadgeRow): TeamBadgeVM => {
     name,
     abbreviation: row.abbreviation ?? deriveAbbreviation(name),
     color: row.color ?? FALLBACK_TEAM_COLOR,
+    crestPath: row.crestPath,
   }
 }
 

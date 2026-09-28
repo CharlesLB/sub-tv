@@ -8,6 +8,7 @@ const team: SetupTeamVM = {
   name: 'Time',
   abbreviation: 'TIM',
   color: '#123456',
+  crestPath: null,
   players: R.range(1, 15).map((shirtNumber) => ({ playerId: `p${shirtNumber}`, shirtNumber, name: `Atleta ${shirtNumber}`, nickname: null, position: null })),
   defaultStarterIds: [],
 }

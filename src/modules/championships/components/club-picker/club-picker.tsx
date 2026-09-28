@@ -26,7 +26,7 @@ export function ClubPicker({ clubs, selectedClubIds, onToggle }: ClubPickerProps
             style={isSelected ? { borderColor: club.badge.color } : undefined}
           >
             <input type="checkbox" name="clubId" value={club.clubId} checked={isSelected} onChange={() => onToggle(club.clubId)} className="sr-only" />
-            <Crest color={club.badge.color} width={18} />
+            <Crest color={club.badge.color} imagePath={club.badge.crestPath} width={18} />
             <span className="truncate text-[11.7px] font-bold tracking-[-.01em] whitespace-nowrap">{club.badge.name}</span>
           </label>
         )

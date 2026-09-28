@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import type { MatchCardVM } from '../types'
 import { buildRecentForm } from './recent-form'
 
-const BADGE = { name: 'Time', abbreviation: 'TIM', color: '#000000' }
+const BADGE = { name: 'Time', abbreviation: 'TIM', color: '#000000', crestPath: null }
 
 const makeMatch = (overrides: Partial<MatchCardVM>): MatchCardVM => ({
   id: 'match',

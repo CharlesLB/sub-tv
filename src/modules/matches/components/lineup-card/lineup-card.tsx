@@ -21,7 +21,7 @@ export function LineupCard({ team, category, sourceLine, starterIds, onToggle }:
   return (
     <section aria-label={`Escalação ${team.name}`} className="chamfer flex min-h-0 min-w-0 flex-col bg-pan2">
       <div className="flex flex-wrap items-center gap-[10px] border-b border-bd px-[18px] py-4 mobile:px-[14px]">
-        <Crest color={team.color} width={22} />
+        <Crest color={team.color} imagePath={team.crestPath} width={22} />
         <span className="text-[14.4px] font-bold tracking-[-.01em]">{team.name}</span>
         <CategoryTag category={category} size="medium" />
         <span

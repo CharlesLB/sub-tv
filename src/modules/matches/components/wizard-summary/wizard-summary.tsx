@@ -1,7 +1,7 @@
 import { Crest } from '@/components/ui/crest/crest'
 import { CategoryTag, type Category } from '@/modules/championships/client'
 
-export type SummarySideVM = { key: string; name: string; color: string; lineupCount: string }
+export type SummarySideVM = { key: string; name: string; color: string; crestPath: string | null; lineupCount: string }
 
 type WizardSummaryProps = {
   sides: SummarySideVM[]
@@ -18,7 +18,7 @@ export function WizardSummary({ sides, lines, category }: WizardSummaryProps) {
         <span className={SECTION_LABEL_CLASS}>Confronto</span>
         {sides.map((side) => (
           <div key={side.key} className="flex min-w-0 items-center gap-[10px]">
-            <Crest color={side.color} width={14} />
+            <Crest color={side.color} imagePath={side.crestPath} width={14} />
             <span className="min-w-0 truncate text-[13.5px] font-bold tracking-[-.01em]">{side.name}</span>
             <span className="ml-auto text-[10.5px] whitespace-nowrap text-tx4">{side.lineupCount}</span>
           </div>

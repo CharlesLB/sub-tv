@@ -23,6 +23,7 @@ export type SetupTeamVM = {
   name: string
   abbreviation: string
   color: string
+  crestPath: string | null
   players: SetupPlayerVM[]
   defaultStarterIds: string[]
 }

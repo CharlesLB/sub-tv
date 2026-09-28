@@ -49,7 +49,7 @@ export function TeamsStep({ teams, category, chosenTeamIds, notice, onPick }: Te
                       )}
                       style={isSelected ? { borderColor: team.color } : undefined}
                     >
-                      <Crest color={isDisabled ? DISABLED_CREST_COLOR : team.color} width={18} />
+                      <Crest color={isDisabled ? DISABLED_CREST_COLOR : team.color} imagePath={team.crestPath} width={18} className={cn(isDisabled && 'grayscale')} />
                       <span className="truncate text-[11.7px] font-bold tracking-[-.01em] whitespace-nowrap">{team.name}</span>
                     </button>
                   )

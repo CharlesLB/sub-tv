@@ -2,7 +2,7 @@ import type { Category } from './categories'
 
 export type SeasonYearVM = { year: number; championshipCount: number }
 
-export type TeamBadgeVM = { name: string; abbreviation: string; color: string }
+export type TeamBadgeVM = { name: string; abbreviation: string; color: string; crestPath: string | null }
 
 export type PodiumRowVM = { position: number; team: TeamBadgeVM; points: number }
 

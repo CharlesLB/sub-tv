@@ -105,7 +105,7 @@ export function NewMatchWizard({ setup, presentation }: NewMatchWizardProps) {
       </div>
       {state.isSummaryOpen ? (
         <WizardSummary
-          sides={lineupSides.map(({ side, team, starterIds }) => ({ key: side, name: team.name, color: team.color, lineupCount: `${starterIds.length}/${STARTERS_PER_TEAM}` }))}
+          sides={lineupSides.map(({ side, team, starterIds }) => ({ key: side, name: team.name, color: team.color, crestPath: team.crestPath, lineupCount: `${starterIds.length}/${STARTERS_PER_TEAM}` }))}
           lines={summaryLines(state, context)}
           category={championship.category}
         />

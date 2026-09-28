@@ -20,6 +20,7 @@
     "fmf:import": "tsx --env-file-if-exists=.env.local scripts/fmf-import/main.ts",
     "fmf:sync": "tsx --env-file-if-exists=.env.local scripts/fmf-import/sync-main.ts",
     "screenshot": "tsx --env-file-if-exists=.env.local scripts/dev-screenshot/dev-screenshot.ts",
+    "crests:download": "tsx --env-file-if-exists=.env.local scripts/crest-download/crest-download.ts",
     "users:create": "tsx --env-file-if-exists=.env.local scripts/create-user/create-user.ts"
   },
   "dependencies": {

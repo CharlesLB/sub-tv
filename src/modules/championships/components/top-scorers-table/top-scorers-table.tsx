@@ -51,7 +51,7 @@ export function TopScorersTable({ scorers, category }: TopScorersTableProps) {
               {scorer.position ? <span className="text-[9px] font-semibold tracking-[-.01em] whitespace-nowrap text-tx4 uppercase">{scorer.position}</span> : null}
             </div>
             <div className="flex min-w-0 items-center gap-[9px] compact:hidden">
-              <Crest color={scorer.team.color} width={13} />
+              <Crest color={scorer.team.color} imagePath={scorer.team.crestPath} width={18} />
               <span className="truncate text-[11.7px] font-bold tracking-[-.01em] whitespace-nowrap text-tx2">{scorer.team.name}</span>
             </div>
             <span className="text-center text-[17px] font-extrabold text-ac nums">{scorer.goals}</span>

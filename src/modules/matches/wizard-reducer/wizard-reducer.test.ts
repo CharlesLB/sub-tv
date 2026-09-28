@@ -6,7 +6,7 @@ import { createInitialWizardState, LINEUP_VIEW, WIZARD_STEP, wizardReducer } fro
 const teamOf = (seasonTeamId: string, abbreviation: string): SetupTeamVM => {
   const players = R.range(1, 15).map((shirtNumber) => ({ playerId: `${seasonTeamId}-${shirtNumber}`, shirtNumber, name: `Atleta ${shirtNumber}`, nickname: null, position: null }))
 
-  return { seasonTeamId, name: abbreviation, abbreviation, color: '#123456', players, defaultStarterIds: players.slice(0, 11).map((player) => player.playerId) }
+  return { seasonTeamId, name: abbreviation, abbreviation, color: '#123456', crestPath: null, players, defaultStarterIds: players.slice(0, 11).map((player) => player.playerId) }
 }
 
 const setupOf = (overrides: Partial<MatchSetupVM> = {}): MatchSetupVM => ({

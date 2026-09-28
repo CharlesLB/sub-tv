@@ -134,6 +134,7 @@ export const clubs = pgTable("clubs", {
   abbreviation: text("abbreviation"),
   color: text("color"),
   crestUrl: text("crest_url"),
+  crestPath: text("crest_path"),
   city: text("city"),
   ...timestamps,
 });

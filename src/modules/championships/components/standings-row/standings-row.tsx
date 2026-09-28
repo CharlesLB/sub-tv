@@ -1,6 +1,6 @@
 import { Crest } from '@/components/ui/crest/crest'
 import { cn } from '@/lib/utils/cn'
-import { otherCategory, categoryLabel, type Category } from '../../categories'
+import { type Category } from '../../categories'
 import type { StandingRowVM } from '../../types'
 import { CategoryTag } from '../category-tag/category-tag'
 import { FormSquares } from '../form-squares/form-squares'
@@ -42,7 +42,7 @@ export function StandingsRow({ row, index, groupSize, category }: StandingsRowPr
         <span className={cn('font-mono text-[12px] nums', positionClass(row.position, groupSize))}>{row.position}</span>
         <span className="flex min-w-0 items-center gap-[9px]">
           <span className="w-[9px] flex-none text-[13.5px] leading-none text-bd3 transition-transform duration-100 group-open:rotate-90 group-open:text-ac">›</span>
-          <Crest color={row.team.color} width={11} />
+          <Crest color={row.team.color} imagePath={row.team.crestPath} width={18} />
           <span className="min-w-[54px] flex-[1_1_auto] truncate text-[12.6px] font-bold tracking-[-.01em]">{row.team.name}</span>
         </span>
         <span className="text-center text-[16px] font-extrabold text-tx nums compact:text-[15px]">{row.points}</span>
@@ -70,9 +70,6 @@ export function StandingsRow({ row, index, groupSize, category }: StandingsRowPr
             </div>
           ))}
         </div>
-        <p className="text-[12.5px] text-pretty text-tx4">
-          Elenco exclusivo de {row.team.name} {categoryLabel[category]}. O {categoryLabel[otherCategory[category]]} do mesmo clube tem elenco e classificação próprios.
-        </p>
       </div>
     </details>
   )

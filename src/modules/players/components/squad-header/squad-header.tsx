@@ -16,7 +16,7 @@ export function SquadHeader({ squad, searchText, canEdit, onSearchChange, onPlay
 
   return (
     <div className="flex flex-wrap items-center gap-3 border-b border-bd px-4 py-3 mobile:gap-2 mobile:px-3 mobile:py-[10px]">
-      <Crest color={squad.badge.color} width={22} />
+      <Crest color={squad.badge.color} imagePath={squad.badge.crestPath} width={22} />
       <div className="min-w-0 mobile:flex-[1_1_calc(100%_-_30px)]">
         <div className="flex flex-wrap items-center gap-[10px]">
           <h2 className="text-[16.2px] font-bold tracking-[-.01em]">{squad.badge.name}</h2>

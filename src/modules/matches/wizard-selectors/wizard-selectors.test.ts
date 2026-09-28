@@ -8,8 +8,8 @@ const TODAY = '2026-09-19'
 const setup: MatchSetupVM = {
   championship: { id: 'season', name: 'Mineiro', category: 'sub14', year: 2026, currentRound: 7 },
   teams: [
-    { seasonTeamId: 'alpha', name: 'Alfa', abbreviation: 'ALF', color: '#111111', players: [], defaultStarterIds: [] },
-    { seasonTeamId: 'beta', name: 'Beta', abbreviation: 'BET', color: '#222222', players: [], defaultStarterIds: [] },
+    { seasonTeamId: 'alpha', name: 'Alfa', abbreviation: 'ALF', color: '#111111', crestPath: null, players: [], defaultStarterIds: [] },
+    { seasonTeamId: 'beta', name: 'Beta', abbreviation: 'BET', color: '#222222', crestPath: null, players: [], defaultStarterIds: [] },
   ],
   prefill: null,
 }

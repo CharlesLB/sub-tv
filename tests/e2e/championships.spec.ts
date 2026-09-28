@@ -39,7 +39,18 @@ test('championship list opens a championship and switches between its tabs', asy
   await expect(page.getByText('Artilharia', { exact: true })).toBeVisible()
 
   await page.getByRole('link', { name: 'Partidas' }).click()
-  await expect(page.getByText('Toda partida nasce dentro deste campeonato.')).toBeVisible()
+  await expect(page.getByRole('link', { name: 'Partidas' })).toHaveAttribute('aria-current', 'page')
+})
+
+test('finished match card opens the match on the broadcast page', async ({ page }) => {
+  await signIn(page, '/campeonatos')
+  await page.getByRole('link', { name: /Abrir campeonato/ }).first().click()
+  await page.getByRole('link', { name: 'Partidas' }).click()
+
+  await page.locator('article', { hasText: 'ENCERRADA' }).first().getByRole('link', { name: 'Ver partida' }).click()
+
+  await expect(page).toHaveURL(/\/ao-vivo\//)
+  await expect(page.getByText(/^Encerrada · /)).toBeVisible()
 })
 
 test('season panel switches the list to another year', async ({ page }) => {

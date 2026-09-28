@@ -36,7 +36,6 @@ export function MatchGrid({ matches, seasonId, category }: MatchGridProps) {
       <div className="mb-[14px] flex flex-wrap items-center gap-3">
         <span className="text-[13.5px] font-bold tracking-[-.01em]">Partidas</span>
         <CategoryTag category={category} size="extraLarge" />
-        <span className="text-[12.5px] text-tx4">Toda partida nasce dentro deste campeonato.</span>
       </div>
       {groups.length === 0 ? <div className="rounded-card border border-bd bg-pan px-4 py-6 text-center text-[12.5px] text-tx4">Nenhuma partida cadastrada.</div> : null}
       <div className="flex flex-col gap-6">

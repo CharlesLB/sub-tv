@@ -26,7 +26,7 @@ export function TeamListItem({ team, year, categoryFilter, isActive }: TeamListI
         isActive ? cn('bg-pan2', categoryBorderClass[team.category]) : 'border-transparent hover:bg-pan2 mobile:border-bd',
       )}
     >
-      <Crest color={team.badge.color} width={18} />
+      <Crest color={team.badge.color} imagePath={team.badge.crestPath} width={18} />
       <span className="flex min-w-0 flex-1 flex-col gap-[3px]">
         <span className="truncate text-[12.2px] font-bold tracking-[-.01em] whitespace-nowrap">{team.badge.name}</span>
         <CategoryTag category={team.category} className="self-start px-[7px]" />

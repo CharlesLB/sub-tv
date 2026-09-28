@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { Crest } from '@/components/ui/crest/crest'
 import { Icon } from '@/components/ui/icon/icon'
 import { routes } from '@/lib/routes'
 import { cn } from '@/lib/utils/cn'
@@ -47,7 +48,7 @@ export function ChampionshipCard({ championship, index }: ChampionshipCardProps)
           championship.podium.map((row) => (
             <div key={row.position} className="flex min-w-0 items-center gap-[9px] py-1">
               <span className={cn('w-3 flex-none text-[11px]', row.position === 1 ? 'text-ac' : 'text-tx4')}>{row.position}</span>
-              <span className="size-2 flex-none" style={{ background: row.team.color }} />
+              <Crest color={row.team.color} imagePath={row.team.crestPath} width={16} />
               <span className={cn('min-w-0 truncate text-[11.7px] font-bold tracking-[-.01em]', row.position === 1 ? 'text-tx' : 'text-tx2')}>
                 {row.team.name}
               </span>
@@ -57,7 +58,7 @@ export function ChampionshipCard({ championship, index }: ChampionshipCardProps)
         ) : (
           <div className="flex items-center gap-[9px] py-1">
             <span className="w-3 flex-none text-[9.9px] text-tx4">—</span>
-            <span className="size-2 flex-none bg-bd2" />
+            <span className="h-[19px] w-4 flex-none" />
             <span className="text-[10.8px] font-semibold tracking-[-.01em] text-tx4">Sem partidas com resultado</span>
           </div>
         )}
