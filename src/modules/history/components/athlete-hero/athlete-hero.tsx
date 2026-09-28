@@ -2,8 +2,8 @@ import { categoryLabel, categoryTextClass } from '@/modules/championships/client
 import { cn } from '@/lib/utils/cn'
 import { pluralize } from '../../stat-format/stat-format'
 import type { AthleteHistoryVM } from '../../types'
+import { athleteHeroStyles as styles } from './athlete-hero.styles'
 
-const FALLBACK_COLOR_CLASS = 'border-tx4 text-tx4'
 const MISSING_VALUE = '–'
 
 export function AthleteHero({ history }: { history: AthleteHistoryVM }) {
@@ -15,43 +15,36 @@ export function AthleteHero({ history }: { history: AthleteHistoryVM }) {
   const subtitle = `${pluralize(history.seasons.length, 'Temporada', 'Temporadas')} No filtro · ${history.games} Jogos`
 
   return (
-    <div className="rounded-card border-bd bg-pan flex items-center gap-[14px] border px-[18px] py-4">
+    <div className={styles.card}>
       <span
-        className={cn(
-          'nums flex size-[54px] flex-none items-center justify-center border-2 text-[21.6px] font-bold',
-          teamColor ? null : FALLBACK_COLOR_CLASS,
-        )}
+        className={cn(styles.shirtNumber, teamColor ? null : styles.shirtNumberFallback)}
         style={teamColor ? { borderColor: teamColor, color: teamColor } : undefined}
       >
         {history.shirtNumber ?? MISSING_VALUE}
       </span>
-      <div className="flex min-w-0 flex-col gap-[5px]">
-        <div className="flex flex-wrap items-baseline gap-[11px]">
-          <span className="text-tx text-[24.3px] leading-[1.05] font-bold tracking-[-.01em]">
-            {history.name}
-          </span>
+      <div className={styles.details}>
+        <div className={styles.line}>
+          <span className={styles.name}>{history.name}</span>
           {history.nickname ? (
-            <span className="text-tx3 text-[11.5px] tracking-[.08em]">{`“${history.nickname}”`}</span>
+            <span className={styles.nickname}>{`“${history.nickname}”`}</span>
           ) : null}
         </div>
         {history.position || teamLine ? (
-          <div className="flex flex-wrap items-baseline gap-[11px]">
+          <div className={styles.line}>
             {history.position ? (
               <span
                 className={cn(
-                  'text-[10px] tracking-[.05em]',
-                  history.category ? categoryTextClass[history.category] : 'text-tx3',
+                  styles.position,
+                  history.category ? categoryTextClass[history.category] : styles.positionFallback,
                 )}
               >
                 {history.position}
               </span>
             ) : null}
-            {teamLine ? (
-              <span className="text-tx2 text-[12.6px] font-bold tracking-[-.01em]">{teamLine}</span>
-            ) : null}
+            {teamLine ? <span className={styles.teamLine}>{teamLine}</span> : null}
           </div>
         ) : null}
-        <span className="text-tx4 text-[10px] tracking-[.1em]">{subtitle}</span>
+        <span className={styles.subtitle}>{subtitle}</span>
       </div>
     </div>
   )
