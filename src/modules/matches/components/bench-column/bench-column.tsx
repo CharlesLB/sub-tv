@@ -28,7 +28,7 @@ export function BenchColumn({ team, categoryLabel, starterCount, reserves, dragg
   }
 
   return (
-    <div aria-label={`Banco ${team.name}`} className={cn(styles.column, placement === 'left' ? styles.columnLeft : styles.columnRight)} style={{ borderTopColor: team.color }}>
+    <section aria-label={`Banco ${team.name}`} className={cn(styles.column, placement === 'left' ? styles.columnLeft : styles.columnRight)} style={{ borderTopColor: team.color }}>
       <div className={styles.header}>
         <div className={styles.title}>Banco</div>
         <div className={styles.teamLine} style={{ color: team.color }}>
@@ -58,6 +58,6 @@ export function BenchColumn({ team, categoryLabel, starterCount, reserves, dragg
           </button>
         )
       })}
-    </div>
+    </section>
   )
 }

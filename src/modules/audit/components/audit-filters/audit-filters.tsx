@@ -6,14 +6,13 @@ import { AUDIT_ACTION_LABEL, AUDIT_ACTIONS, AUDIT_ENTITIES, AUDIT_ENTITY_LABEL }
 import type { AuditUserOptionVM } from '../../types'
 import { auditFiltersStyles as styles } from './audit-filters.styles'
 
-const AUDIT_PATH = '/registro'
 const ANY_VALUE = ''
 
 type AuditFiltersProps = { filter: AuditFilter; users: AuditUserOptionVM[] }
 
 export function AuditFilters({ filter, users }: AuditFiltersProps) {
   return (
-    <Form action={AUDIT_PATH} className={styles.form}>
+    <Form action={routes.auditLog()} className={styles.form}>
       <label className={styles.label}>
         Usuário
         <select name={USER_PARAMETER} defaultValue={filter.userId ?? ANY_VALUE} className={styles.field}>

@@ -2,7 +2,8 @@ import * as R from 'remeda'
 import { STARTERS_PER_TEAM } from '../default-starters/default-starters'
 import type { PitchPoint } from '../pitch-layout/pitch-layout'
 import { type StarterPositions, seedStarterPositions } from '../starter-positions/starter-positions'
-import type { MatchSetupVM, MatchSide, SetupTeamVM } from '../types'
+import { opponentSide, type Side } from '../live-match/live-match'
+import type { MatchSetupVM, SetupTeamVM } from '../types'
 
 export const WIZARD_STEP = { INFORMATION: 1, TEAMS: 2, LINEUPS: 3, REVIEW: 4 } as const
 
@@ -39,29 +40,29 @@ export type WizardAction =
   | { type: 'step/went-back-to'; step: WizardStep }
   | { type: 'step/advanced' }
   | { type: 'step/returned' }
-  | { type: 'team/picked'; side: MatchSide; team: SetupTeamVM }
-  | { type: 'starter/toggled'; side: MatchSide; playerId: string }
+  | { type: 'team/picked'; side: Side; team: SetupTeamVM }
+  | { type: 'starter/toggled'; side: Side; playerId: string }
   | { type: 'view/changed'; view: LineupView }
-  | { type: 'starter/moved'; side: MatchSide; playerId: string; point: PitchPoint }
-  | { type: 'starter/benched'; side: MatchSide; playerId: string }
-  | { type: 'reserve/swapped'; side: MatchSide; reserveId: string; starterId: string; point: PitchPoint }
-  | { type: 'reserve/placed'; side: MatchSide; playerId: string; point: PitchPoint | null }
+  | { type: 'starter/moved'; side: Side; playerId: string; point: PitchPoint }
+  | { type: 'starter/benched'; side: Side; playerId: string }
+  | { type: 'reserve/swapped'; side: Side; reserveId: string; starterId: string; point: PitchPoint }
+  | { type: 'reserve/placed'; side: Side; playerId: string; point: PitchPoint | null }
   | { type: 'summary/toggled' }
 
 const DEFAULT_TIME = '10:00'
 const FIRST_ROUND = 1
 
-const TEAM_KEY = { home: 'homeTeamId', away: 'awayTeamId' } as const satisfies Record<MatchSide, keyof WizardState>
-const STARTERS_KEY = { home: 'homeStarterIds', away: 'awayStarterIds' } as const satisfies Record<MatchSide, keyof WizardState>
-const POSITIONS_KEY = { home: 'homePositions', away: 'awayPositions' } as const satisfies Record<MatchSide, keyof WizardState>
-const ATTACKS_RIGHT: Record<MatchSide, boolean> = { home: true, away: false }
+const TEAM_KEY = { home: 'homeTeamId', away: 'awayTeamId' } as const satisfies Record<Side, keyof WizardState>
+const STARTERS_KEY = { home: 'homeStarterIds', away: 'awayStarterIds' } as const satisfies Record<Side, keyof WizardState>
+const POSITIONS_KEY = { home: 'homePositions', away: 'awayPositions' } as const satisfies Record<Side, keyof WizardState>
+const ATTACKS_RIGHT: Record<Side, boolean> = { home: true, away: false }
 
 const nextStep: Record<WizardStep, WizardStep> = { 1: 2, 2: 3, 3: 4, 4: 4 }
 const previousStep: Record<WizardStep, WizardStep> = { 1: 1, 2: 1, 3: 2, 4: 3 }
 
 const EMPTY_POSITIONS: StarterPositions = {}
 
-const lineupOf = (team: SetupTeamVM | undefined, side: MatchSide): { starterIds: string[]; positions: StarterPositions } =>
+const lineupOf = (team: SetupTeamVM | undefined, side: Side): { starterIds: string[]; positions: StarterPositions } =>
   team ? { starterIds: team.defaultStarterIds, positions: seedStarterPositions(team, team.defaultStarterIds, ATTACKS_RIGHT[side]) } : { starterIds: [], positions: EMPTY_POSITIONS }
 
 export const createInitialWizardState = ({ setup, defaultLineupView }: WizardInitialization): WizardState => {
@@ -98,13 +99,13 @@ export const createInitialWizardState = ({ setup, defaultLineupView }: WizardIni
 
 const withoutKey = (positions: StarterPositions, playerId: string): StarterPositions => R.omitBy(positions, (_point, key) => key === playerId)
 
-const benchStarter = (state: WizardState, side: MatchSide, playerId: string): WizardState => ({
+const benchStarter = (state: WizardState, side: Side, playerId: string): WizardState => ({
   ...state,
   [STARTERS_KEY[side]]: state[STARTERS_KEY[side]].filter((starterId) => starterId !== playerId),
   [POSITIONS_KEY[side]]: withoutKey(state[POSITIONS_KEY[side]], playerId),
 })
 
-const addStarter = (state: WizardState, side: MatchSide, playerId: string, point: PitchPoint | null): WizardState => {
+const addStarter = (state: WizardState, side: Side, playerId: string, point: PitchPoint | null): WizardState => {
   const starterIds = state[STARTERS_KEY[side]]
   if (starterIds.includes(playerId) || starterIds.length >= STARTERS_PER_TEAM) return state
   const positions = state[POSITIONS_KEY[side]]
@@ -123,7 +124,7 @@ const swapReserve = (state: WizardState, action: Extract<WizardAction, { type: '
   }
 }
 
-const toggleStarter = (state: WizardState, side: MatchSide, playerId: string): WizardState =>
+const toggleStarter = (state: WizardState, side: Side, playerId: string): WizardState =>
   state[STARTERS_KEY[side]].includes(playerId) ? benchStarter(state, side, playerId) : addStarter(state, side, playerId, null)
 
 export const wizardReducer = (state: WizardState, action: WizardAction): WizardState => {
@@ -138,7 +139,7 @@ export const wizardReducer = (state: WizardState, action: WizardAction): WizardS
       return { ...state, step: previousStep[state.step] }
 
     case 'team/picked': {
-      const otherSide: MatchSide = action.side === 'home' ? 'away' : 'home'
+      const otherSide = opponentSide[action.side]
       const teamId = action.team.seasonTeamId
       if (state[TEAM_KEY[otherSide]] === teamId || state[TEAM_KEY[action.side]] === teamId) return state
       const lineup = lineupOf(action.team, action.side)

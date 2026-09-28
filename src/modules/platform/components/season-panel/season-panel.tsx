@@ -3,7 +3,7 @@
 import * as Popover from '@radix-ui/react-popover'
 import type { Route } from 'next'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useId, useState } from 'react'
 import { cn } from '@/lib/utils/cn'
 import { Icon } from '@/components/ui/icon/icon'
 import type { SeasonYearVM } from '@/modules/championships/client'
@@ -20,6 +20,7 @@ type SeasonPanelProps = {
 
 export function SeasonPanel({ years, activeYear, hrefForYear, onSelectYear }: SeasonPanelProps) {
   const [isOpen, setIsOpen] = useState(false)
+  const headingId = useId()
 
   return (
     <Popover.Root open={isOpen} onOpenChange={setIsOpen}>
@@ -28,9 +29,11 @@ export function SeasonPanel({ years, activeYear, hrefForYear, onSelectYear }: Se
       </Popover.Trigger>
       {isOpen ? <div aria-hidden className={styles.scrim} /> : null}
       <Popover.Portal>
-        <Popover.Content side="bottom" align="start" sideOffset={7} className={styles.panel}>
+        <Popover.Content side="bottom" align="start" sideOffset={7} aria-labelledby={headingId} className={styles.panel}>
           <div className={styles.header}>
-            <span className={styles.heading}>Temporadas</span>
+            <span id={headingId} className={styles.heading}>
+              Temporadas
+            </span>
             <span className={styles.subheading}>Elenco próprio por ano</span>
           </div>
           <div className={styles.grid}>
@@ -49,7 +52,7 @@ export function SeasonPanel({ years, activeYear, hrefForYear, onSelectYear }: Se
                   className={cn(styles.yearLink, isActive ? styles.yearLinkActive : styles.yearLinkIdle)}
                   style={{ animationDelay: `${index * GRID_ITEM_DELAY_MS}ms` }}
                 >
-                  <span className={cn(styles.year, isActive ? styles.yearActive : styles.yearIdle)}>{seasonYear.year}</span>
+                  <span className={cn(styles.year, isActive ? styles.yearActive : styles.yearIdle)}>{seasonYear.year}</span>{' '}
                   <span className={styles.championshipCount}>{seasonYear.championshipCount} Camp.</span>
                 </Link>
               )

@@ -83,4 +83,31 @@ describe('CuriosityList', () => {
     await act(async () => pendingResult.resolve({ ok: true, data: { playerId: squadPlayerFixture.id } }))
     expect(screen.getByText('Bateu o pênalti decisivo na final da Copa do Interior.')).toBeInTheDocument()
   })
+
+  it('shows the error of the most recent action when a remove fails after a failed add', async () => {
+    vi.mocked(addCuriosity).mockResolvedValue({ ok: false, error: 'Não foi possível adicionar.' })
+    vi.mocked(removeCuriosity).mockResolvedValue({ ok: false, error: 'Curiosidade não encontrada.' })
+    render(<CuriosityList playerId={squadPlayerFixture.id} curiosities={curiositiesFixture} canEdit />)
+    await userEvent.type(screen.getByRole('textbox', { name: 'Nova curiosidade' }), NEW_CURIOSITY)
+    await userEvent.click(screen.getByRole('button', { name: 'Adicionar' }))
+    await screen.findByText('Não foi possível adicionar.')
+
+    await userEvent.click(screen.getAllByRole('button', { name: 'Remover curiosidade' })[0] ?? document.body)
+
+    expect(await screen.findByRole('alert')).toHaveTextContent('Curiosidade não encontrada.')
+  })
+
+  it('clears a previous add error when a later remove succeeds', async () => {
+    vi.mocked(addCuriosity).mockResolvedValue({ ok: false, error: 'Não foi possível adicionar.' })
+    vi.mocked(removeCuriosity).mockResolvedValue({ ok: true, data: { playerId: squadPlayerFixture.id } })
+    render(<CuriosityList playerId={squadPlayerFixture.id} curiosities={curiositiesFixture} canEdit />)
+    await userEvent.type(screen.getByRole('textbox', { name: 'Nova curiosidade' }), NEW_CURIOSITY)
+    await userEvent.click(screen.getByRole('button', { name: 'Adicionar' }))
+    await screen.findByText('Não foi possível adicionar.')
+
+    await userEvent.click(screen.getAllByRole('button', { name: 'Remover curiosidade' })[0] ?? document.body)
+
+    await vi.waitFor(() => expect(removeCuriosity).toHaveBeenCalled())
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument()
+  })
 })

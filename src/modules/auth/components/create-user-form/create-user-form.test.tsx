@@ -44,6 +44,34 @@ describe('CreateUserForm', () => {
     expect(screen.getByLabelText('Nome')).toHaveValue('')
   })
 
+  it('keeps the typed name when a submit fails after a user was created', async () => {
+    vi.mocked(createUser).mockResolvedValueOnce({ ok: true, data: { username: 'Marina Couto' } })
+    vi.mocked(createUser).mockResolvedValueOnce({ ok: false, error: 'Confira os campos.', fieldErrors: { confirmation: ['As senhas não conferem.'] } })
+    render(<CreateUserForm />)
+    await fillAndSubmit()
+    await screen.findByRole('status')
+
+    await userEvent.type(screen.getByLabelText(/^Nome/), 'Rui Tavares')
+    await userEvent.type(screen.getByLabelText(/^Senha/), 'segredo123')
+    await userEvent.type(screen.getByLabelText(/^Confirmação/), 'segredo124')
+    await userEvent.click(screen.getByRole('button', { name: 'Criar usuário' }))
+
+    expect(await screen.findByRole('alert')).toHaveTextContent('Confira os campos.')
+    expect(screen.getByLabelText(/^Nome/)).toHaveValue('Rui Tavares')
+  })
+
+  it('marks each invalid field and links it to its error message', async () => {
+    vi.mocked(createUser).mockResolvedValue({ ok: false, error: 'Confira os campos.', fieldErrors: { confirmation: ['As senhas não conferem.'] } })
+    render(<CreateUserForm />)
+
+    await fillAndSubmit()
+
+    await screen.findByRole('alert')
+    expect(screen.getByLabelText('Confirmação')).toHaveAttribute('aria-invalid', 'true')
+    expect(screen.getByLabelText('Confirmação')).toHaveAccessibleDescription('As senhas não conferem.')
+    expect(screen.getByLabelText('Nome')).not.toHaveAttribute('aria-invalid')
+  })
+
   it('shows each field error under its field and the general error when validation fails', async () => {
     vi.mocked(createUser).mockResolvedValue({
       ok: false,

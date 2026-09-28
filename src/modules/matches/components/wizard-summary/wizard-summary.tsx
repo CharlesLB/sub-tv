@@ -1,12 +1,13 @@
 import { Crest } from '@/components/ui/crest/crest'
 import { type Category, CategoryTag } from '@/modules/championships/client'
+import type { SummaryLineVM } from '../../wizard-selectors/wizard-selectors'
 import { wizardSummaryStyles as styles } from './wizard-summary.styles'
 
 export type SummarySideVM = { key: string; name: string; color: string; crestPath: string | null; lineupCount: string }
 
 type WizardSummaryProps = {
   sides: SummarySideVM[]
-  lines: string[]
+  lines: SummaryLineVM[]
   category: Category
 }
 
@@ -25,9 +26,9 @@ export function WizardSummary({ sides, lines, category }: WizardSummaryProps) {
       </div>
       <div className={styles.scheduleSection}>
         <span className={styles.sectionLabel}>Quando e onde</span>
-        {lines.map((line, index) => (
-          <span key={`${line}-${index}`} className={styles.scheduleLine}>
-            {line}
+        {lines.map((line) => (
+          <span key={line.id} className={styles.scheduleLine}>
+            {line.text}
           </span>
         ))}
       </div>

@@ -1,20 +1,20 @@
 import { cn } from '@/lib/utils/cn'
 import { Crest } from '@/components/ui/crest/crest'
 import { type Category, CategoryTag } from '@/modules/championships/client'
-import type { MatchSide, SetupTeamVM } from '../../types'
+import { opponentSide, SIDE, SIDES, type Side } from '../../live-match/live-match'
+import type { SetupTeamVM } from '../../types'
 import { WizardNotice } from '../wizard-notice/wizard-notice'
 import { teamsStepStyles as styles } from './teams-step.styles'
 
 const DISABLED_CREST_COLOR = 'var(--bd2)'
-const SIDE_TITLE: Record<MatchSide, string> = { home: 'Time mandante', away: 'Time visitante' }
-const SIDES: MatchSide[] = ['home', 'away']
+const SIDE_TITLE: Record<Side, string> = { [SIDE.HOME]: 'Time mandante', [SIDE.AWAY]: 'Time visitante' }
 
 type TeamsStepProps = {
   teams: SetupTeamVM[]
   category: Category
-  chosenTeamIds: Record<MatchSide, string | null>
+  chosenTeamIds: Record<Side, string | null>
   notice: string | null
-  onPick: (side: MatchSide, team: SetupTeamVM) => void
+  onPick: (side: Side, team: SetupTeamVM) => void
 }
 
 export function TeamsStep({ teams, category, chosenTeamIds, notice, onPick }: TeamsStepProps) {
@@ -22,10 +22,10 @@ export function TeamsStep({ teams, category, chosenTeamIds, notice, onPick }: Te
     <div className={styles.step}>
       <div className={styles.sides}>
         {SIDES.map((side) => {
-          const otherTeamId = chosenTeamIds[side === 'home' ? 'away' : 'home']
+          const otherTeamId = chosenTeamIds[opponentSide[side]]
 
           return (
-            <div key={side} role="group" aria-label={SIDE_TITLE[side]} className={styles.side}>
+            <fieldset key={side} aria-label={SIDE_TITLE[side]} className={styles.side}>
               <div className={styles.sideHeader}>
                 <span className={styles.sideTitle}>{SIDE_TITLE[side]}</span>
                 <CategoryTag category={category} size="medium" />
@@ -52,7 +52,7 @@ export function TeamsStep({ teams, category, chosenTeamIds, notice, onPick }: Te
                   )
                 })}
               </div>
-            </div>
+            </fieldset>
           )
         })}
       </div>

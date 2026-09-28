@@ -1,7 +1,7 @@
 export const teamsStepStyles = {
   step: 'flex max-w-[1100px] animate-fade-up flex-col gap-4',
   sides: 'grid grid-cols-[repeat(auto-fit,minmax(min(100%,360px),1fr))] gap-4',
-  side: 'flex flex-col gap-3 bg-pan2 p-[18px] chamfer mobile:p-[14px]',
+  side: 'flex min-w-0 flex-col gap-3 bg-pan2 p-[18px] chamfer mobile:p-[14px]',
   sideHeader: 'flex flex-wrap items-center gap-[10px]',
   sideTitle: 'text-[10.3px] font-semibold tracking-[-.01em] text-tx4',
   emptyMessage: 'text-[12.5px] text-tx4',

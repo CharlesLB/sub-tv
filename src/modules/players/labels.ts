@@ -23,3 +23,5 @@ export const footLabel: Record<PreferredFoot, string> = {
   canhoto: 'Canhoto',
   ambidestro: 'Ambidestro',
 }
+
+export const EMPTY_SQUAD_MESSAGE = 'Nenhum atleta vinculado a este time ainda.'

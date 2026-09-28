@@ -8,8 +8,6 @@ export type ActiveBroadcastVM = {
   awayName: string
 }
 
-export type MatchSide = 'home' | 'away'
-
 export type SetupPlayerVM = {
   playerId: string
   shirtNumber: number

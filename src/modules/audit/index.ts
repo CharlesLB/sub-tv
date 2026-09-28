@@ -3,7 +3,6 @@ export { AUDIT_ACTION_LABEL, AUDIT_ENTITY_LABEL } from './audit-labels/audit-lab
 export { AuditLogScreen } from './components/audit-log-screen/audit-log-screen'
 export { AuditLogSkeleton } from './components/audit-log-skeleton/audit-log-skeleton'
 export { LastChange } from './components/last-change/last-change'
-export { PageFrame } from './components/page-frame/page-frame'
 export { UsersLink } from './components/users-link/users-link'
 export { formatAuditTime } from './format-audit-time/format-audit-time'
 export { type AuditEntry, recordAudit } from './services/audit-service'

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useEffectEvent } from 'react'
 import { Icon } from '@/components/ui/icon/icon'
 import { wizardToastStyles as styles } from './wizard-toast.styles'
 
@@ -13,11 +13,13 @@ export function WizardToast({ message, onClose }: WizardToastProps) {
   const [title, ...descriptionParts] = message.split(TITLE_SEPARATOR)
   const description = descriptionParts.join(TITLE_SEPARATOR)
 
+  const closeWhenExpired = useEffectEvent(() => onClose())
+
   useEffect(() => {
-    const timer = setTimeout(onClose, TOAST_DURATION_MS)
+    const timer = setTimeout(closeWhenExpired, TOAST_DURATION_MS)
 
     return () => clearTimeout(timer)
-  }, [message, onClose])
+  }, [])
 
   return (
     <div role="alert" className={styles.toast}>

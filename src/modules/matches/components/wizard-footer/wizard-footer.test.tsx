@@ -36,14 +36,14 @@ describe('WizardFooter', () => {
     expect(screen.queryByRole('button', { name: 'Cancelar' })).not.toBeInTheDocument()
   })
 
-  it('marks continue as disabled but still reports the click when the step is incomplete', async () => {
+  it('marks continue as disabled and ignores the click when the step is incomplete', async () => {
     const onNext = vi.fn()
     render(<WizardFooter {...propsOf({ canAdvance: false, onNext })} />)
 
     await userEvent.click(screen.getByRole('button', { name: 'Continuar' }))
 
     expect(screen.getByRole('button', { name: 'Continuar' })).toHaveAttribute('aria-disabled', 'true')
-    expect(onNext).toHaveBeenCalledOnce()
+    expect(onNext).not.toHaveBeenCalled()
   })
 
   it('shows the create button on the final step and submits on click', async () => {

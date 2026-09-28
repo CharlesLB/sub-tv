@@ -1,3 +1,5 @@
+'use client'
+
 import { useFormStatus } from 'react-dom'
 import { type Category, categoryLabel } from '@/modules/championships/client'
 import { footLabel, positionLabel } from '../../labels'

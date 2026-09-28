@@ -6,7 +6,7 @@ const FIELD_PLACEHOLDERS = ['date', 'time', 'round']
 
 export function NewMatchWizardSkeleton() {
   return (
-    <div aria-busy aria-label="Carregando nova partida" className={styles.wizard}>
+    <section aria-busy aria-label="Carregando nova partida" className={styles.wizard}>
       <div className={styles.stepper}>
         {STEP_PLACEHOLDERS.map((step) => (
           <div key={step} className={styles.step}>
@@ -38,6 +38,6 @@ export function NewMatchWizardSkeleton() {
         <Skeleton className={styles.footerBack} />
         <Skeleton className={styles.footerNext} />
       </div>
-    </div>
+    </section>
   )
 }

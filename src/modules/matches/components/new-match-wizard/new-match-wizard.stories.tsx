@@ -4,24 +4,11 @@ import { createBroadcastMatch } from '../../actions/match-setup-actions'
 import { NewMatchWizard } from './new-match-wizard'
 import { matchSetupFixture, prefilledMatchSetupFixture } from './new-match-wizard.fixtures'
 
-const COLOR_CONTRAST_RULE = 'color-contrast'
-const SCROLLABLE_REGION_FOCUSABLE_RULE = 'scrollable-region-focusable'
-
 const meta = {
   title: 'Matches/NewMatchWizard',
   component: NewMatchWizard,
   args: { setup: matchSetupFixture, presentation: 'page' },
-  parameters: {
-    layout: 'fullscreen',
-    a11y: {
-      config: {
-        rules: [
-          { id: COLOR_CONTRAST_RULE, enabled: false },
-          { id: SCROLLABLE_REGION_FOCUSABLE_RULE, enabled: false },
-        ],
-      },
-    },
-  },
+  parameters: { layout: 'fullscreen' },
   decorators: [
     (Story) => (
       <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>

@@ -1,9 +1,8 @@
 import type { Metadata } from 'next'
 import { Suspense } from 'react'
 import { routes } from '@/lib/routes'
-import { PageFrame } from '@/modules/audit'
 import { UsersScreen, UsersSkeleton } from '@/modules/auth'
-import { ContextBar } from '@/modules/platform'
+import { ContextBar, PageFrame } from '@/modules/platform'
 
 export const metadata: Metadata = { title: 'Usuários' }
 

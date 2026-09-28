@@ -10,11 +10,14 @@ import type { SeasonYearVM } from '@/modules/championships/client'
 import { yearAxisStyles as styles } from './year-axis.styles'
 
 const YEAR_DELAY_STEP_MS = 26
+const PHONE_QUERY = '(max-width: 619px)'
+const NARROW_QUERY = '(max-width: 899px)'
+const COMPACT_QUERY = '(max-width: 1079px)'
 
 const useVisibleYearCount = (): number => {
-  const isPhone = useMediaQuery('(max-width: 619px)')
-  const isNarrow = useMediaQuery('(max-width: 899px)')
-  const isCompact = useMediaQuery('(max-width: 1149px)')
+  const isPhone = useMediaQuery(PHONE_QUERY)
+  const isNarrow = useMediaQuery(NARROW_QUERY)
+  const isCompact = useMediaQuery(COMPACT_QUERY)
   if (isPhone) return 1
   if (isNarrow) return 3
   if (isCompact) return 4

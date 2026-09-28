@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 import { Suspense } from 'react'
-import { AuditLogScreen, AuditLogSkeleton, PageFrame, UsersLink } from '@/modules/audit'
+import { AuditLogScreen, AuditLogSkeleton, UsersLink } from '@/modules/audit'
 import { requireUser } from '@/modules/auth'
-import { ContextBar } from '@/modules/platform'
+import { ContextBar, PageFrame } from '@/modules/platform'
 
 export const metadata: Metadata = { title: 'Registro de alterações' }
 

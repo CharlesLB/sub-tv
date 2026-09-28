@@ -17,7 +17,7 @@ describe('PlatformRail', () => {
 
     render(<PlatformRail liveMatchId={null} />)
 
-    expect(screen.getByRole('link', { name: 'Campeo.' })).toHaveAttribute('href', '/campeonatos')
+    expect(screen.getByRole('link', { name: 'Campeonatos' })).toHaveAttribute('href', '/campeonatos')
     expect(screen.getByRole('link', { name: 'Elencos' })).toHaveAttribute('href', '/elencos')
     expect(screen.getByRole('link', { name: 'Histórico' })).toHaveAttribute('href', '/historico')
   })
@@ -27,7 +27,7 @@ describe('PlatformRail', () => {
 
     render(<PlatformRail liveMatchId={null} />)
 
-    expect(screen.getByRole('link', { name: 'Campeo.' })).toHaveAttribute('href', '/campeonatos?temporada=2025')
+    expect(screen.getByRole('link', { name: 'Campeonatos' })).toHaveAttribute('href', '/campeonatos?temporada=2025')
     expect(screen.getByRole('link', { name: 'Elencos' })).toHaveAttribute('href', '/elencos?temporada=2025')
     expect(screen.getByRole('link', { name: 'Histórico' })).toHaveAttribute('href', '/historico')
   })
@@ -37,7 +37,7 @@ describe('PlatformRail', () => {
 
     render(<PlatformRail liveMatchId={null} />)
 
-    expect(screen.getByRole('link', { name: 'Campeo.' })).toHaveAttribute('href', '/campeonatos')
+    expect(screen.getByRole('link', { name: 'Campeonatos' })).toHaveAttribute('href', '/campeonatos')
   })
 
   it('marks the destination that starts the current path as the current page', () => {
@@ -46,7 +46,7 @@ describe('PlatformRail', () => {
     render(<PlatformRail liveMatchId={null} />)
 
     expect(screen.getByRole('link', { name: 'Elencos' })).toHaveAttribute('aria-current', 'page')
-    expect(screen.getByRole('link', { name: 'Campeo.' })).not.toHaveAttribute('aria-current')
+    expect(screen.getByRole('link', { name: 'Campeonatos' })).not.toHaveAttribute('aria-current')
   })
 
   it('hides the live link when there is no broadcast', () => {

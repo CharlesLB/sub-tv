@@ -41,7 +41,7 @@ export function ChampionshipRibbon({ championships, activeChampionshipId }: Cham
     update()
 
     return () => observer.disconnect()
-  }, [championships])
+  }, [])
 
   const scrollBy = (direction: number) => {
     const ribbon = ribbonRef.current

@@ -1,39 +1,112 @@
 'use client'
 
-import { useActionState } from 'react'
+import { type FormEvent, startTransition, useActionState, useId } from 'react'
+import type { ActionResult } from '@/lib/actions/result'
 import { createUser } from '../../actions/user-admin-actions'
+import { PASSWORD_MIN_LENGTH } from '../../schemas'
 import { FormMessage } from '../form-message/form-message'
 import { createUserFormStyles as styles } from './create-user-form.styles'
 
-export function CreateUserForm() {
-  const [state, action, isPending] = useActionState(createUser, null)
-  const fieldErrors = state?.ok === false ? state.fieldErrors : undefined
-  const formKey = state?.ok === true ? state.data.username : 'new-user'
+const USERNAME_FIELD = 'username'
+const PASSWORD_FIELD = 'password'
+const CONFIRMATION_FIELD = 'confirmation'
+
+type CreatedUser = { username: string }
+
+type CreateUserFormState = { result: ActionResult<CreatedUser> | null; createdCount: number }
+
+const INITIAL_STATE: CreateUserFormState = { result: null, createdCount: 0 }
+
+const submitNewUser = async (previous: CreateUserFormState, formData: FormData): Promise<CreateUserFormState> => {
+  const result = await createUser(previous.result, formData)
+
+  return { result, createdCount: result.ok ? previous.createdCount + 1 : previous.createdCount }
+}
+
+type FieldErrorProps = { id: string; message: string | undefined }
+
+function FieldError({ id, message }: FieldErrorProps) {
+  if (!message) return null
 
   return (
-    <form key={formKey} action={action} aria-label="Novo usuário" className={styles.form}>
+    <span id={id} className={styles.fieldError}>
+      {message}
+    </span>
+  )
+}
+
+export function CreateUserForm() {
+  const [{ result, createdCount }, action, isPending] = useActionState(submitNewUser, INITIAL_STATE)
+  const fieldErrors = result?.ok === false ? result.fieldErrors : undefined
+  const usernameError = fieldErrors?.[USERNAME_FIELD]?.[0]
+  const passwordError = fieldErrors?.[PASSWORD_FIELD]?.[0]
+  const confirmationError = fieldErrors?.[CONFIRMATION_FIELD]?.[0]
+  const errorIdPrefix = useId()
+  const usernameErrorId = `${errorIdPrefix}-${USERNAME_FIELD}`
+  const passwordErrorId = `${errorIdPrefix}-${PASSWORD_FIELD}`
+  const confirmationErrorId = `${errorIdPrefix}-${CONFIRMATION_FIELD}`
+
+  const submitKeepingTypedValues = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    const formData = new FormData(event.currentTarget)
+    startTransition(() => action(formData))
+  }
+
+  return (
+    <form key={createdCount} action={action} onSubmit={submitKeepingTypedValues} aria-label="Novo usuário" className={styles.form}>
       <span className={styles.title}>Novo usuário</span>
       <div className={styles.fields}>
-        <label className={styles.label}>
-          Nome
-          <input name="username" type="text" autoComplete="off" required className={styles.field} />
-          {fieldErrors?.username ? <span className={styles.fieldError}>{fieldErrors.username[0]}</span> : null}
-        </label>
-        <label className={styles.label}>
-          Senha
-          <input name="password" type="password" autoComplete="new-password" required minLength={8} className={styles.field} />
-          {fieldErrors?.password ? <span className={styles.fieldError}>{fieldErrors.password[0]}</span> : null}
-        </label>
-        <label className={styles.label}>
-          Confirmação
-          <input name="confirmation" type="password" autoComplete="new-password" required className={styles.field} />
-          {fieldErrors?.confirmation ? <span className={styles.fieldError}>{fieldErrors.confirmation[0]}</span> : null}
-        </label>
+        <div className={styles.fieldGroup}>
+          <label className={styles.label}>
+            Nome
+            <input
+              name={USERNAME_FIELD}
+              type="text"
+              autoComplete="off"
+              required
+              aria-invalid={usernameError ? true : undefined}
+              aria-describedby={usernameError ? usernameErrorId : undefined}
+              className={styles.field}
+            />
+          </label>
+          <FieldError id={usernameErrorId} message={usernameError} />
+        </div>
+        <div className={styles.fieldGroup}>
+          <label className={styles.label}>
+            Senha
+            <input
+              name={PASSWORD_FIELD}
+              type="password"
+              autoComplete="new-password"
+              required
+              minLength={PASSWORD_MIN_LENGTH}
+              aria-invalid={passwordError ? true : undefined}
+              aria-describedby={passwordError ? passwordErrorId : undefined}
+              className={styles.field}
+            />
+          </label>
+          <FieldError id={passwordErrorId} message={passwordError} />
+        </div>
+        <div className={styles.fieldGroup}>
+          <label className={styles.label}>
+            Confirmação
+            <input
+              name={CONFIRMATION_FIELD}
+              type="password"
+              autoComplete="new-password"
+              required
+              aria-invalid={confirmationError ? true : undefined}
+              aria-describedby={confirmationError ? confirmationErrorId : undefined}
+              className={styles.field}
+            />
+          </label>
+          <FieldError id={confirmationErrorId} message={confirmationError} />
+        </div>
         <button type="submit" disabled={isPending} className={styles.submitButton}>
           {isPending ? 'Criando…' : 'Criar usuário'}
         </button>
       </div>
-      <FormMessage state={state} successMessage={state?.ok === true ? `Usuário “${state.data.username}” criado.` : undefined} />
+      <FormMessage state={result} successMessage={result?.ok === true ? `Usuário “${result.data.username}” criado.` : undefined} />
     </form>
   )
 }

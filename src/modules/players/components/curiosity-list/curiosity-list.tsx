@@ -1,4 +1,6 @@
-import { useActionState, useOptimistic } from 'react'
+'use client'
+
+import { useActionState, useOptimistic, useState } from 'react'
 import type { ActionResult } from '@/lib/actions/result'
 import { addCuriosity, removeCuriosity } from '../../actions/player-actions'
 import { CURIOSITY_MAX_LENGTH } from '../../schemas'
@@ -10,6 +12,10 @@ type PlayerResult = ActionResult<{ playerId: string }>
 type CuriosityChange = { kind: 'added'; curiosity: CuriosityVM } | { kind: 'removed'; curiosityId: string }
 
 const PENDING_ID_PREFIX = 'pending-'
+
+const CURIOSITY_ACTION = { ADD: 'add', REMOVE: 'remove' } as const
+
+type CuriosityAction = (typeof CURIOSITY_ACTION)[keyof typeof CURIOSITY_ACTION]
 
 const applyCuriosityChange = (current: CuriosityVM[], change: CuriosityChange): CuriosityVM[] =>
   change.kind === 'added' ? [...current, change.curiosity] : current.filter((curiosity) => curiosity.id !== change.curiosityId)
@@ -24,8 +30,10 @@ type CuriosityListProps = { playerId: string; curiosities: CuriosityVM[]; canEdi
 
 export function CuriosityList({ playerId, curiosities, canEdit }: CuriosityListProps) {
   const [shownCuriosities, showCuriosityChange] = useOptimistic(curiosities, applyCuriosityChange)
+  const [latestAction, setLatestAction] = useState<CuriosityAction | null>(null)
 
   const submitCuriosity = async (previous: PlayerResult | null, formData: FormData): Promise<PlayerResult | null> => {
+    setLatestAction(CURIOSITY_ACTION.ADD)
     const text = readText(formData, 'text')
     if (text) showCuriosityChange({ kind: 'added', curiosity: { id: `${PENDING_ID_PREFIX}${crypto.randomUUID()}`, text } })
 
@@ -33,6 +41,7 @@ export function CuriosityList({ playerId, curiosities, canEdit }: CuriosityListP
   }
 
   const dropCuriosity = async (previous: PlayerResult | null, formData: FormData): Promise<PlayerResult | null> => {
+    setLatestAction(CURIOSITY_ACTION.REMOVE)
     showCuriosityChange({ kind: 'removed', curiosityId: readText(formData, 'curiosityId') })
 
     return removeCuriosity(previous, formData)
@@ -40,8 +49,9 @@ export function CuriosityList({ playerId, curiosities, canEdit }: CuriosityListP
 
   const [addState, addAction] = useActionState(submitCuriosity, null)
   const [removeState, removeAction] = useActionState(dropCuriosity, null)
-  const failure = [addState, removeState].find((state) => state?.ok === false)
-  const errorMessage = failure?.ok === false ? (failure.fieldErrors?.text?.[0] ?? failure.error) : null
+  const stateByAction: Record<CuriosityAction, PlayerResult | null> = { [CURIOSITY_ACTION.ADD]: addState, [CURIOSITY_ACTION.REMOVE]: removeState }
+  const latestState = latestAction === null ? null : stateByAction[latestAction]
+  const errorMessage = latestState?.ok === false ? (latestState.fieldErrors?.text?.[0] ?? latestState.error) : null
 
   return (
     <div>

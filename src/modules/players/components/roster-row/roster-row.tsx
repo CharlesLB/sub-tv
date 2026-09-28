@@ -6,6 +6,7 @@ import type { SquadPlayerVM } from '../../types'
 import { rosterRowStyles as styles } from './roster-row.styles'
 
 const ROW_DELAY_STEP_MS = 20
+const MAX_ROW_DELAY_MS = 400
 const EMPTY_VALUE = '—'
 
 type RosterRowProps = {
@@ -32,7 +33,7 @@ export function RosterRow({ player, index, href, teamColor, isSelected, onSelect
       onClick={selectPlayer}
       aria-current={isSelected ? 'true' : undefined}
       className={cn(styles.grid, styles.row, isSelected ? styles.rowSelected : styles.rowIdle)}
-      style={{ animationDelay: `${index * ROW_DELAY_STEP_MS}ms`, boxShadow: isSelected ? `inset 3px 0 0 ${teamColor}` : 'none' }}
+      style={{ animationDelay: `${Math.min(MAX_ROW_DELAY_MS, index * ROW_DELAY_STEP_MS)}ms`, boxShadow: isSelected ? `inset 3px 0 0 ${teamColor}` : 'none' }}
     >
       <span className={styles.shirtNumber} style={{ color: teamColor }}>
         {player.shirtNumber ?? EMPTY_VALUE}

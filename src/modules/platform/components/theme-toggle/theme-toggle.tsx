@@ -2,13 +2,8 @@
 
 import { useSyncExternalStore } from 'react'
 import { Icon } from '@/components/ui/icon/icon'
+import { THEME, THEME_ATTRIBUTE, THEME_STORAGE_KEY, type Theme } from '../../theme/theme'
 import { themeToggleStyles as styles } from './theme-toggle.styles'
-
-const THEME_STORAGE_KEY = 'subtv-tema'
-const THEME_ATTRIBUTE = 'data-tema'
-const THEME = { LIGHT: 'claro', DARK: 'escuro' } as const
-
-type Theme = (typeof THEME)[keyof typeof THEME]
 
 const readTheme = (): Theme => (document.documentElement.getAttribute(THEME_ATTRIBUTE) === THEME.DARK ? THEME.DARK : THEME.LIGHT)
 

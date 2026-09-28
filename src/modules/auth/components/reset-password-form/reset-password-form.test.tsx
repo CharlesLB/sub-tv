@@ -86,6 +86,18 @@ describe('ResetPasswordForm', () => {
     expect(screen.queryByRole('alert')).not.toBeInTheDocument()
   })
 
+  it('marks the confirmation field as invalid and describes it with its error', async () => {
+    vi.mocked(resetUserPassword).mockResolvedValue({ ok: false, error: 'Confira os campos.', fieldErrors: { confirmation: ['As senhas não conferem.'] } })
+    renderForm()
+
+    await openAndSubmit()
+
+    await screen.findByText('As senhas não conferem.')
+    expect(screen.getByLabelText('Confirmar nova senha')).toHaveAttribute('aria-invalid', 'true')
+    expect(screen.getByLabelText('Confirmar nova senha')).toHaveAccessibleDescription('As senhas não conferem.')
+    expect(screen.getByLabelText('Nova senha')).not.toHaveAttribute('aria-invalid')
+  })
+
   it('shows the general error as an alert when the action fails without field errors', async () => {
     vi.mocked(resetUserPassword).mockResolvedValue({ ok: false, error: 'Usuário não encontrado.' })
     renderForm()

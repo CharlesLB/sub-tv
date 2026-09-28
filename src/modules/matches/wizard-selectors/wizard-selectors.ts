@@ -1,7 +1,8 @@
 import { STARTERS_PER_TEAM } from '../default-starters/default-starters'
 import { formatDateInput, isDateInput, isTimeInput } from '../kickoff-time/kickoff-time'
 import { resolveStarterPositions, type StarterPositions } from '../starter-positions/starter-positions'
-import type { MatchSetupVM, MatchSide, SetupPlayerVM, SetupTeamVM } from '../types'
+import type { Side } from '../live-match/live-match'
+import type { MatchSetupVM, SetupPlayerVM, SetupTeamVM } from '../types'
 import { WIZARD_STEP, type WizardState, type WizardStep } from '../wizard-reducer/wizard-reducer'
 
 export const MATCH_DURATION_LABEL = '2 × 30 min'
@@ -78,9 +79,9 @@ export const stepHint = (state: WizardState, context: WizardContext): string => 
 const SIDE_LINEUP = {
   home: { teamKey: 'homeTeamId', startersKey: 'homeStarterIds', positionsKey: 'homePositions', attacksRight: true },
   away: { teamKey: 'awayTeamId', startersKey: 'awayStarterIds', positionsKey: 'awayPositions', attacksRight: false },
-} as const satisfies Record<MatchSide, { teamKey: keyof WizardState; startersKey: keyof WizardState; positionsKey: keyof WizardState; attacksRight: boolean }>
+} as const satisfies Record<Side, { teamKey: keyof WizardState; startersKey: keyof WizardState; positionsKey: keyof WizardState; attacksRight: boolean }>
 
-export const starterPositionsOf = (state: WizardState, setup: MatchSetupVM, side: MatchSide): StarterPositions => {
+export const starterPositionsOf = (state: WizardState, setup: MatchSetupVM, side: Side): StarterPositions => {
   const keys = SIDE_LINEUP[side]
   const team = findTeam(setup, state[keys.teamKey])
 
@@ -104,11 +105,15 @@ export const toCreateInput = (state: WizardState, context: WizardContext) => ({
   awayStarterPositions: toPositionList(starterPositionsOf(state, context.setup, 'away')),
 })
 
-export const summaryLines = (state: WizardState, context: WizardContext): string[] => [
-  `${context.setup.championship.name} · R${state.round.trim()}`,
-  `${displayDate(state, context.today)} · ${state.time}`,
-  state.venue.trim(),
-  `Tempo de jogo ${MATCH_DURATION_LABEL}`,
+export const SUMMARY_LINE = { CHAMPIONSHIP: 'championship', KICKOFF: 'kickoff', VENUE: 'venue', DURATION: 'duration' } as const
+
+export type SummaryLineVM = { id: string; text: string }
+
+export const summaryLines = (state: WizardState, context: WizardContext): SummaryLineVM[] => [
+  { id: SUMMARY_LINE.CHAMPIONSHIP, text: `${context.setup.championship.name} · R${state.round.trim()}` },
+  { id: SUMMARY_LINE.KICKOFF, text: `${displayDate(state, context.today)} · ${state.time}` },
+  { id: SUMMARY_LINE.VENUE, text: state.venue.trim() },
+  { id: SUMMARY_LINE.DURATION, text: `Tempo de jogo ${MATCH_DURATION_LABEL}` },
 ]
 
 export const reviewSubtitle = (state: WizardState, context: WizardContext): string => `Rodada ${state.round.trim()} · ${displayDate(state, context.today)} · ${state.time} · ${state.venue.trim()}`

@@ -1,15 +1,16 @@
 import { type Category, categoryLabel } from '@/modules/championships/client'
-import type { MatchSide, SetupTeamVM } from '../../types'
+import type { Side } from '../../live-match/live-match'
+import type { SetupTeamVM } from '../../types'
 import { LineupCard } from '../lineup-card/lineup-card'
 import { lineupsStepStyles as styles } from './lineups-step.styles'
 
-export type LineupSideVM = { side: MatchSide; team: SetupTeamVM; starterIds: string[] }
+export type LineupSideVM = { side: Side; team: SetupTeamVM; starterIds: string[] }
 
 type LineupsStepProps = {
   sides: LineupSideVM[]
   category: Category
   year: number
-  onToggle: (side: MatchSide, playerId: string) => void
+  onToggle: (side: Side, playerId: string) => void
 }
 
 export function LineupsStep({ sides, category, year, onToggle }: LineupsStepProps) {

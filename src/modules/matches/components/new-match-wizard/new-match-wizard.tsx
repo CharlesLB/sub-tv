@@ -1,13 +1,14 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { useCallback, useReducer, useState, useSyncExternalStore, useTransition } from 'react'
+import { useReducer, useState, useSyncExternalStore, useTransition } from 'react'
 import { routes } from '@/lib/routes'
-import { CATEGORY, categoryLabel, otherCategory } from '@/modules/championships/client'
+import { type Category, categoryLabel, otherCategory } from '@/modules/championships/client'
 import { createBroadcastMatch } from '../../actions/match-setup-actions'
 import { STARTERS_PER_TEAM } from '../../default-starters/default-starters'
 import { toDateInputInSaoPaulo } from '../../kickoff-time/kickoff-time'
-import type { MatchSetupVM, MatchSide } from '../../types'
+import { SIDE, type Side } from '../../live-match/live-match'
+import type { MatchSetupVM } from '../../types'
 import { createInitialWizardState, LINEUP_VIEW, WIZARD_STEP, wizardReducer } from '../../wizard-reducer/wizard-reducer'
 import {
   canAdvance,
@@ -36,7 +37,11 @@ import { newMatchWizardStyles as styles } from './new-match-wizard.styles'
 
 export type WizardPresentation = 'sheet' | 'page'
 
-const OTHER_CATEGORY_NAME = { [CATEGORY.SUB13]: 'Sub-13', [CATEGORY.SUB14]: 'Sub-14' } as const
+const categoryNameOf = (category: Category): string => {
+  const label = categoryLabel[category]
+
+  return `${label.charAt(0)}${label.slice(1).toLowerCase()}`
+}
 
 const DEFAULT_LINEUP_VIEW = { sheet: LINEUP_VIEW.FIELD, page: LINEUP_VIEW.LIST } as const satisfies Record<WizardPresentation, string>
 
@@ -52,7 +57,6 @@ export function NewMatchWizard({ setup, presentation }: NewMatchWizardProps) {
   const [state, dispatch] = useReducer(wizardReducer, { setup, defaultLineupView: DEFAULT_LINEUP_VIEW[presentation] }, createInitialWizardState)
   const [failureMessage, setFailureMessage] = useState<string | null>(null)
   const [isSubmitting, startSubmitting] = useTransition()
-  const closeToast = useCallback(() => setFailureMessage(null), [])
 
   const { championship } = setup
   const context: WizardContext = { setup, today, categoryLabel: categoryLabel[championship.category] }
@@ -60,8 +64,8 @@ export function NewMatchWizard({ setup, presentation }: NewMatchWizardProps) {
   const showNotices = presentation === 'page'
 
   const lineupSides: BoardSideVM[] = [
-    { side: 'home' as const, team: findTeam(setup, state.homeTeamId), starterIds: state.homeStarterIds },
-    { side: 'away' as const, team: findTeam(setup, state.awayTeamId), starterIds: state.awayStarterIds },
+    { side: SIDE.HOME, team: findTeam(setup, state.homeTeamId), starterIds: state.homeStarterIds },
+    { side: SIDE.AWAY, team: findTeam(setup, state.awayTeamId), starterIds: state.awayStarterIds },
   ].flatMap((entry) => (entry.team ? [{ side: entry.side, team: entry.team, starterIds: entry.starterIds, positions: starterPositionsOf(state, setup, entry.side) }] : []))
 
   const leave = () => (presentation === 'sheet' ? router.back() : router.push(routes.championship(championship.id)))
@@ -88,8 +92,8 @@ export function NewMatchWizard({ setup, presentation }: NewMatchWizardProps) {
         teams={setup.teams}
         category={championship.category}
         chosenTeamIds={{ home: state.homeTeamId, away: state.awayTeamId }}
-        notice={showNotices ? teamsNotice(context, OTHER_CATEGORY_NAME[otherCategory[championship.category]]) : null}
-        onPick={(side: MatchSide, team) => dispatch({ type: 'team/picked', side, team })}
+        notice={showNotices ? teamsNotice(context, categoryNameOf(otherCategory[championship.category])) : null}
+        onPick={(side: Side, team) => dispatch({ type: 'team/picked', side, team })}
       />
     ),
     [WIZARD_STEP.LINEUPS]: <LineupEditor sides={lineupSides} view={state.lineupView} category={championship.category} year={championship.year} dispatch={dispatch} />,
@@ -125,7 +129,7 @@ export function NewMatchWizard({ setup, presentation }: NewMatchWizardProps) {
         onNext={goNext}
         onSubmit={submit}
       />
-      {failureMessage ? <WizardToast message={failureMessage} onClose={closeToast} /> : null}
+      {failureMessage ? <WizardToast key={failureMessage} message={failureMessage} onClose={() => setFailureMessage(null)} /> : null}
     </div>
   )
 }

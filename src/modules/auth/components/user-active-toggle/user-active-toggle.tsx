@@ -3,6 +3,7 @@
 import { useActionState } from 'react'
 import { cn } from '@/lib/utils/cn'
 import { setUserActive } from '../../actions/user-admin-actions'
+import { ACTIVE_VALUE, INACTIVE_VALUE } from '../../schemas'
 import { FormMessage } from '../form-message/form-message'
 import { userActiveToggleStyles as styles } from './user-active-toggle.styles'
 
@@ -15,7 +16,7 @@ export function UserActiveToggle({ userId, isActive, isCurrentUser }: UserActive
   return (
     <form action={action} className={styles.form}>
       <input type="hidden" name="userId" value={userId} />
-      <input type="hidden" name="isActive" value={isActive ? 'false' : 'true'} />
+      <input type="hidden" name="isActive" value={isActive ? INACTIVE_VALUE : ACTIVE_VALUE} />
       <button
         type="submit"
         disabled={isPending || isLocked}

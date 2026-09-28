@@ -35,7 +35,15 @@ describe('SeasonPanel', () => {
 
     expect(screen.getByText('Elenco próprio por ano')).toBeInTheDocument()
     expect(screen.getAllByRole('link')).toHaveLength(seasonYearsFixture.length)
-    expect(screen.getByRole('link', { name: '20233 Camp.' })).toHaveAttribute('href', '/campeonatos?temporada=2023')
+    expect(screen.getByRole('link', { name: '2023 3 Camp.' })).toHaveAttribute('href', '/campeonatos?temporada=2023')
+  })
+
+  it('names the open panel after its heading', async () => {
+    renderPanel()
+
+    await userEvent.click(screen.getByRole('button', { name: 'Todas as temporadas' }))
+
+    expect(screen.getByRole('dialog', { name: 'Temporadas' })).toBeInTheDocument()
   })
 
   it('marks only the active season as current', async () => {
@@ -43,8 +51,8 @@ describe('SeasonPanel', () => {
 
     await userEvent.click(screen.getByRole('button', { name: 'Todas as temporadas' }))
 
-    expect(screen.getByRole('link', { name: '20254 Camp.' })).toHaveAttribute('aria-current', 'true')
-    expect(screen.getByRole('link', { name: '20245 Camp.' })).not.toHaveAttribute('aria-current')
+    expect(screen.getByRole('link', { name: '2025 4 Camp.' })).toHaveAttribute('aria-current', 'true')
+    expect(screen.getByRole('link', { name: '2024 5 Camp.' })).not.toHaveAttribute('aria-current')
   })
 
   it('reports the chosen season and closes when a season is clicked', async () => {
@@ -52,7 +60,7 @@ describe('SeasonPanel', () => {
     renderPanel(onSelectYear)
     await userEvent.click(screen.getByRole('button', { name: 'Todas as temporadas' }))
 
-    await userEvent.click(screen.getByRole('link', { name: '20224 Camp.' }))
+    await userEvent.click(screen.getByRole('link', { name: '2022 4 Camp.' }))
 
     expect(onSelectYear).toHaveBeenCalledWith(2022)
     expect(screen.queryByText('Elenco próprio por ano')).not.toBeInTheDocument()

@@ -4,24 +4,11 @@ import { getMatchSetup } from '../../data/get-match-setup'
 import { matchSetupFixture, prefilledMatchSetupFixture } from '../new-match-wizard/new-match-wizard.fixtures'
 import { NewMatchSetup } from './new-match-setup'
 
-const COLOR_CONTRAST_RULE = 'color-contrast'
-const SCROLLABLE_REGION_FOCUSABLE_RULE = 'scrollable-region-focusable'
-
 const meta = {
   title: 'Matches/NewMatchSetup',
   component: NewMatchSetup,
   args: { seasonId: matchSetupFixture.championship.id, prefillMatchId: null, presentation: 'page' },
-  parameters: {
-    layout: 'fullscreen',
-    a11y: {
-      config: {
-        rules: [
-          { id: COLOR_CONTRAST_RULE, enabled: false },
-          { id: SCROLLABLE_REGION_FOCUSABLE_RULE, enabled: false },
-        ],
-      },
-    },
-  },
+  parameters: { layout: 'fullscreen' },
   beforeEach: () => {
     mocked(getMatchSetup).mockResolvedValue(matchSetupFixture)
   },

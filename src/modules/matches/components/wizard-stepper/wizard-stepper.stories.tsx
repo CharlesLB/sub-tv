@@ -4,9 +4,6 @@ import { WIZARD_STEP } from '../../wizard-reducer/wizard-reducer'
 import { WizardStepper } from './wizard-stepper'
 import { stepValuesFixture } from './wizard-stepper.fixtures'
 
-const COLOR_CONTRAST_RULE = 'color-contrast'
-const SCROLLABLE_REGION_FOCUSABLE_RULE = 'scrollable-region-focusable'
-
 const meta = {
   title: 'Matches/WizardStepper',
   component: WizardStepper,
@@ -18,18 +15,7 @@ export default meta
 
 type Story = StoryObj<typeof meta>
 
-export const FirstStep: Story = {
-  parameters: {
-    a11y: {
-      config: {
-        rules: [
-          { id: COLOR_CONTRAST_RULE, enabled: false },
-          { id: SCROLLABLE_REGION_FOCUSABLE_RULE, enabled: false },
-        ],
-      },
-    },
-  },
-}
+export const FirstStep: Story = {}
 
 export const LastStep: Story = {
   args: { currentStep: WIZARD_STEP.REVIEW },

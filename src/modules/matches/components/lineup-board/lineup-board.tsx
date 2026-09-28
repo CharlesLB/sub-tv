@@ -6,7 +6,8 @@ import { STARTERS_PER_TEAM } from '../../default-starters/default-starters'
 import type { PitchPoint } from '../../pitch-layout/pitch-layout'
 import { isPrimaryPointer, trackPointerGesture } from '../../pointer-gesture/pointer-gesture'
 import type { StarterPositions } from '../../starter-positions/starter-positions'
-import type { MatchSide, SetupPlayerVM, SetupTeamVM } from '../../types'
+import type { Side } from '../../live-match/live-match'
+import type { SetupPlayerVM, SetupTeamVM } from '../../types'
 import type { WizardAction } from '../../wizard-reducer/wizard-reducer'
 import { shortNameOf } from '../../wizard-selectors/wizard-selectors'
 import { BenchColumn } from '../bench-column/bench-column'
@@ -15,11 +16,11 @@ import { PitchDot } from '../pitch-dot/pitch-dot'
 import { PitchMarkings } from '../pitch-markings/pitch-markings'
 import { lineupBoardStyles as styles } from './lineup-board.styles'
 
-export type BoardSideVM = { side: MatchSide; team: SetupTeamVM; starterIds: string[]; positions: StarterPositions }
+export type BoardSideVM = { side: Side; team: SetupTeamVM; starterIds: string[]; positions: StarterPositions }
 
 type DragState =
-  | { kind: 'starter'; side: MatchSide; playerId: string; point: PitchPoint }
-  | { kind: 'reserve'; side: MatchSide; player: SetupPlayerVM; color: string; pointer: PointerPosition; overStarterId: string | null; dropPoint: PitchPoint | null }
+  | { kind: 'starter'; side: Side; playerId: string; point: PitchPoint }
+  | { kind: 'reserve'; side: Side; player: SetupPlayerVM; color: string; pointer: PointerPosition; overStarterId: string | null; dropPoint: PitchPoint | null }
 
 type LineupBoardProps = { sides: BoardSideVM[]; categoryLabel: string; dispatch: Dispatch<WizardAction> }
 
@@ -41,7 +42,7 @@ export function LineupBoard({ sides, categoryLabel, dispatch }: LineupBoardProps
     return rectangle ? { left: rectangle.left, top: rectangle.top, width: rectangle.width, height: rectangle.height } : null
   }
 
-  const startStarterDrag = (side: MatchSide, playerId: string, event: PointerEvent<HTMLButtonElement>) => {
+  const startStarterDrag = (side: Side, playerId: string, event: PointerEvent<HTMLButtonElement>) => {
     if (!isPrimaryPointer(event)) return
     event.preventDefault()
 
@@ -114,10 +115,13 @@ export function LineupBoard({ sides, categoryLabel, dispatch }: LineupBoardProps
             <PitchMarkings />
             {sides.flatMap((boardSide) =>
               boardSide.team.players
-                .filter((player) => boardSide.positions[player.playerId])
-                .map((player) => {
+                .flatMap((player) => {
+                  const savedPoint = boardSide.positions[player.playerId]
+
+                  return savedPoint ? [{ player, savedPoint }] : []
+                })
+                .map(({ player, savedPoint }) => {
                   const isDragging = drag?.kind === 'starter' && drag.playerId === player.playerId
-                  const savedPoint = boardSide.positions[player.playerId] ?? { x: 50, y: 50 }
 
                   return (
                     <PitchDot

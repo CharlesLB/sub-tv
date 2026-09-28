@@ -67,7 +67,7 @@ const describeChampionships = async (seasonIds: string[]): Promise<Record<string
   if (seasonIds.length === 0) return {}
 
   const rows = await db
-    .select({ id: seasons.id, name: competitions.name, category: competitions.category, year: seasons.year })
+    .select({ id: seasons.id, name: competitions.name, year: seasons.year })
     .from(seasons)
     .innerJoin(competitions, eq(competitions.id, seasons.competitionId))
     .where(inArray(seasons.id, seasonIds))

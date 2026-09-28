@@ -1,3 +1,5 @@
+'use client'
+
 import { type ChangeEvent, type FocusEvent, useActionState } from 'react'
 import type { Category } from '@/modules/championships/client'
 import { updatePlayerProfile } from '../../actions/player-actions'

@@ -1,5 +1,7 @@
+'use client'
+
 import * as Popover from '@radix-ui/react-popover'
-import { useActionState, useState } from 'react'
+import { useActionState, useId, useState } from 'react'
 import type { ActionResult } from '@/lib/actions/result'
 import { categoryLabel } from '@/modules/championships/client'
 import { createManualPlayer } from '../../actions/player-actions'
@@ -17,6 +19,7 @@ type NewPlayerPopoverProps = {
 export function NewPlayerPopover({ squad, onPlayerCreated }: NewPlayerPopoverProps) {
   const [isOpen, setIsOpen] = useState(false)
   const category = categoryLabel[squad.category]
+  const titleId = useId()
 
   const submitPlayer = async (previous: PlayerResult | null, formData: FormData): Promise<PlayerResult | null> => {
     const result = await createManualPlayer(previous, formData)
@@ -32,15 +35,17 @@ export function NewPlayerPopover({ squad, onPlayerCreated }: NewPlayerPopoverPro
 
   return (
     <Popover.Root open={isOpen} onOpenChange={setIsOpen}>
-      <Popover.Trigger className={styles.trigger}>
+      <Popover.Trigger aria-label={`Cadastrar novo jogador ${category}`} className={styles.trigger}>
         <span className={styles.triggerFullLabel}>+ novo jogador {category}</span>
         <span className={styles.triggerCompactLabel}>+ novo</span>
       </Popover.Trigger>
       <Popover.Portal>
-        <Popover.Content side="bottom" align="end" sideOffset={7} className={styles.content}>
+        <Popover.Content side="bottom" align="end" sideOffset={7} aria-labelledby={titleId} className={styles.content}>
           <form action={formAction} className={styles.form}>
             <div className={styles.header}>
-              <span className={styles.title}>Novo jogador {category}</span>
+              <span id={titleId} className={styles.title}>
+                Novo jogador {category}
+              </span>
               <span className={styles.subtitle}>cadastro manual</span>
             </div>
             <input type="hidden" name="year" value={squad.year} />

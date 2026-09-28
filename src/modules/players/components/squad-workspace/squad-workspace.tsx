@@ -5,6 +5,7 @@ import { type ReactNode, useState } from 'react'
 import { PLAYER_PARAMETER, routes } from '@/lib/routes'
 import { cn } from '@/lib/utils/cn'
 import type { Category } from '@/modules/championships/client'
+import { EMPTY_SQUAD_MESSAGE } from '../../labels'
 import { matchesSquadSearch } from '../../squad-roster/squad-roster'
 import type { TeamSquadVM } from '../../types'
 import { PlayerSheet } from '../player-sheet/player-sheet'
@@ -54,7 +55,7 @@ export function SquadWorkspace({ squad, categoryFilter, canEdit, lastChange }: S
         ) : (
           <div className={styles.emptySheet}>
             <span className={styles.emptySheetTitle}>Ficha do jogador</span>
-            <p className={styles.emptySheetMessage}>Nenhum atleta vinculado a este time ainda.</p>
+            <p className={styles.emptySheetMessage}>{EMPTY_SQUAD_MESSAGE}</p>
           </div>
         )}
       </aside>

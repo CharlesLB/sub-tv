@@ -32,7 +32,7 @@ export function WizardFooter({ hint, isSummaryOpen, isFirstStep, isFinalStep, ca
           {isSubmitting ? 'Criando partida…' : 'Criar e ir ao vivo'}
         </button>
       ) : (
-        <button type="button" onClick={onNext} aria-disabled={!canAdvance} className={cn(styles.nextButton, canAdvance ? styles.nextButtonReady : styles.nextButtonBlocked)}>
+        <button type="button" onClick={canAdvance ? onNext : undefined} aria-disabled={!canAdvance} className={cn(styles.nextButton, canAdvance ? styles.nextButtonReady : styles.nextButtonBlocked)}>
           Continuar
         </button>
       )}

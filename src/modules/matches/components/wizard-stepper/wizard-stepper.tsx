@@ -1,11 +1,16 @@
 import { cn } from '@/lib/utils/cn'
 import { Icon } from '@/components/ui/icon/icon'
-import { WIZARD_STEPS, type WizardStep } from '../../wizard-reducer/wizard-reducer'
+import { WIZARD_STEP, WIZARD_STEPS, type WizardStep } from '../../wizard-reducer/wizard-reducer'
 import { wizardStepperStyles as styles } from './wizard-stepper.styles'
 
 const revealActiveStep = (element: HTMLButtonElement | null) => element?.scrollIntoView({ block: 'nearest', inline: 'nearest' })
 
-const STEP_TITLE: Record<WizardStep, string> = { 1: 'Informações', 2: 'Times', 3: 'Escalações', 4: 'Revisão' }
+const STEP_TITLE: Record<WizardStep, string> = {
+  [WIZARD_STEP.INFORMATION]: 'Informações',
+  [WIZARD_STEP.TEAMS]: 'Times',
+  [WIZARD_STEP.LINEUPS]: 'Escalações',
+  [WIZARD_STEP.REVIEW]: 'Revisão',
+}
 
 type WizardStepperProps = {
   currentStep: WizardStep
@@ -15,7 +20,8 @@ type WizardStepperProps = {
 
 export function WizardStepper({ currentStep, values, onGoBackTo }: WizardStepperProps) {
   return (
-    <nav aria-label="Etapas da nova partida" className={styles.stepper}>
+    // biome-ignore lint/a11y/noNoninteractiveTabindex: a trilha de etapas rola na horizontal e todos os botões ficam desabilitados na primeira etapa, então a própria trilha precisa receber foco para ser rolada pelo teclado
+    <nav aria-label="Etapas da nova partida" tabIndex={0} className={styles.stepper}>
       {WIZARD_STEPS.map((step, index) => {
         const isActive = step === currentStep
         const isDone = step < currentStep

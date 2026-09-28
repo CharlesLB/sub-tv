@@ -25,6 +25,18 @@ describe('RosterRow', () => {
     expect(screen.getByText('Tiago Pereira Lopes')).toBeInTheDocument()
   })
 
+  it('staggers the entrance of the first rows by their position', () => {
+    render(<RosterRow player={squadPlayerFixture} index={3} href={PLAYER_HREF} teamColor={TEAM_COLOR} isSelected={false} onSelect={vi.fn()} />)
+
+    expect(screen.getByRole('link')).toHaveStyle({ animationDelay: '60ms' })
+  })
+
+  it('caps the entrance delay of a row far down a long squad', () => {
+    render(<RosterRow player={squadPlayerFixture} index={100} href={PLAYER_HREF} teamColor={TEAM_COLOR} isSelected={false} onSelect={vi.fn()} />)
+
+    expect(screen.getByRole('link')).toHaveStyle({ animationDelay: '400ms' })
+  })
+
   it('marks the row as current when the player is selected', () => {
     render(<RosterRow player={squadPlayerFixture} index={0} href={PLAYER_HREF} teamColor={TEAM_COLOR} isSelected onSelect={vi.fn()} />)
 

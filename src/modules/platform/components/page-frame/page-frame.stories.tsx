@@ -3,7 +3,7 @@ import { expect, within } from 'storybook/test'
 import { PageFrame } from './page-frame'
 
 const meta = {
-  title: 'Audit/PageFrame',
+  title: 'Platform/PageFrame',
   component: PageFrame,
   args: { children: <h1>Registro de alterações</h1> },
   parameters: { layout: 'fullscreen' },

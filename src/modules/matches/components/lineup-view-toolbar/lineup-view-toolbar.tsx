@@ -18,7 +18,7 @@ type LineupViewToolbarProps = { view: LineupView; onChange: (view: LineupView) =
 
 export function LineupViewToolbar({ view, onChange }: LineupViewToolbarProps) {
   return (
-    <div role="group" aria-label="Visualização" className={styles.toolbar}>
+    <fieldset aria-label="Visualização" className={styles.toolbar}>
       <span className={styles.label}>Visualização</span>
       {VIEW_OPTIONS.map((option) => {
         const isActive = option.view === view
@@ -31,6 +31,6 @@ export function LineupViewToolbar({ view, onChange }: LineupViewToolbarProps) {
         )
       })}
       <span className={styles.note}>{VIEW_NOTE[view]}</span>
-    </div>
+    </fieldset>
   )
 }

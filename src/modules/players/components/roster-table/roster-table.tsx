@@ -1,18 +1,11 @@
 import { cn } from '@/lib/utils/cn'
+import { EMPTY_SQUAD_MESSAGE } from '../../labels'
+import { ROSTER_COLUMNS } from '../../roster-columns/roster-columns'
 import type { SquadPlayerVM } from '../../types'
 import { RosterRow } from '../roster-row/roster-row'
 import { rosterTableStyles as styles } from './roster-table.styles'
 
-const COLUMNS = [
-  { key: 'number', label: 'Nº', compactLabel: 'Nº' },
-  { key: 'name', label: 'Nome', compactLabel: 'Nome' },
-  { key: 'position', label: 'Posição', compactLabel: 'Pos' },
-  { key: 'games', label: 'J', compactLabel: 'J' },
-  { key: 'goals', label: 'G', compactLabel: 'G' },
-  { key: 'curiosities', label: 'Curios.', compactLabel: 'Cur' },
-] as const
-
-const LAST_COLUMN_INDEX = COLUMNS.length - 1
+const LAST_COLUMN_INDEX = ROSTER_COLUMNS.length - 1
 
 type RosterTableProps = {
   players: SquadPlayerVM[]
@@ -29,7 +22,7 @@ export function RosterTable({ players, teamColor, selectedPlayerId, searchText, 
   return (
     <>
       <div className={cn(styles.grid, styles.header)}>
-        {COLUMNS.map((column, index) => (
+        {ROSTER_COLUMNS.map((column, index) => (
           <span key={column.key} className={cn(styles.columnLabel, index === LAST_COLUMN_INDEX ? styles.lastColumnLabel : styles.columnLabelAligned)}>
             <span className={styles.fullLabel}>{column.label}</span>
             <span className={styles.compactLabel}>{column.compactLabel}</span>
@@ -40,7 +33,7 @@ export function RosterTable({ players, teamColor, selectedPlayerId, searchText, 
         {players.map((player, index) => (
           <RosterRow key={player.id} player={player} index={index} href={hrefFor(player.id)} teamColor={teamColor} isSelected={player.id === selectedPlayerId} onSelect={onSelect} />
         ))}
-        {players.length === 0 ? <p className={styles.emptyMessage}>{hasSearch ? `Nenhum atleta encontrado para “${searchText.trim()}”.` : 'Nenhum atleta vinculado a este time ainda.'}</p> : null}
+        {players.length === 0 ? <p className={styles.emptyMessage}>{hasSearch ? `Nenhum atleta encontrado para “${searchText.trim()}”.` : EMPTY_SQUAD_MESSAGE}</p> : null}
       </div>
     </>
   )

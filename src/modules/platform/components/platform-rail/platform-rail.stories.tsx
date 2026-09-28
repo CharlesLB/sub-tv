@@ -16,7 +16,7 @@ type Story = StoryObj<typeof meta>
 
 export const OnChampionships: Story = {
   play: async ({ canvasElement }) => {
-    const championshipsLink = within(canvasElement).getByRole('link', { name: 'Campeo.' })
+    const championshipsLink = within(canvasElement).getByRole('link', { name: 'Campeonatos' })
 
     await expect(championshipsLink).toHaveAttribute('aria-current', 'page')
     await expect(championshipsLink).toHaveAttribute('href', '/campeonatos?temporada=2025')

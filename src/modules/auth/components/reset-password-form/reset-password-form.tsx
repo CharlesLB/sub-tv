@@ -1,8 +1,9 @@
 'use client'
 
-import { useActionState, useState } from 'react'
+import { useActionState, useId, useState } from 'react'
 import type { ActionResult } from '@/lib/actions/result'
 import { resetUserPassword } from '../../actions/user-admin-actions'
+import { PASSWORD_MIN_LENGTH } from '../../schemas'
 import { FormMessage } from '../form-message/form-message'
 import { resetPasswordFormStyles as styles } from './reset-password-form.styles'
 
@@ -13,7 +14,11 @@ export function ResetPasswordForm({ userId, username }: ResetPasswordFormProps) 
   const [state, action, isPending] = useActionState(resetUserPassword, null)
   const [acknowledgedState, setAcknowledgedState] = useState<ActionResult | null>(null)
   const hasFreshSuccess = state?.ok === true && state !== acknowledgedState
-  const passwordError = state?.ok === false ? (state.fieldErrors?.password?.[0] ?? state.fieldErrors?.confirmation?.[0]) : undefined
+  const fieldErrors = state?.ok === false ? state.fieldErrors : undefined
+  const newPasswordError = fieldErrors?.password?.[0]
+  const confirmationError = fieldErrors?.confirmation?.[0]
+  const passwordError = newPasswordError ?? confirmationError
+  const passwordErrorId = useId()
 
   const openForm = () => {
     setAcknowledgedState(state)
@@ -35,8 +40,29 @@ export function ResetPasswordForm({ userId, username }: ResetPasswordFormProps) 
     <form action={action} aria-label={`Nova senha para ${username}`} className={styles.container}>
       <input type="hidden" name="userId" value={userId} />
       <div className={styles.fields}>
-        <input name="password" type="password" aria-label="Nova senha" placeholder="nova senha" autoComplete="new-password" required minLength={8} className={styles.field} />
-        <input name="confirmation" type="password" aria-label="Confirmar nova senha" placeholder="confirmação" autoComplete="new-password" required className={styles.field} />
+        <input
+          name="password"
+          type="password"
+          aria-label="Nova senha"
+          placeholder="nova senha"
+          autoComplete="new-password"
+          required
+          minLength={PASSWORD_MIN_LENGTH}
+          aria-invalid={newPasswordError ? true : undefined}
+          aria-describedby={newPasswordError ? passwordErrorId : undefined}
+          className={styles.field}
+        />
+        <input
+          name="confirmation"
+          type="password"
+          aria-label="Confirmar nova senha"
+          placeholder="confirmação"
+          autoComplete="new-password"
+          required
+          aria-invalid={confirmationError && !newPasswordError ? true : undefined}
+          aria-describedby={confirmationError && !newPasswordError ? passwordErrorId : undefined}
+          className={styles.field}
+        />
         <button type="submit" disabled={isPending} className={styles.submitButton}>
           {isPending ? 'Salvando…' : 'Salvar'}
         </button>
@@ -44,7 +70,13 @@ export function ResetPasswordForm({ userId, username }: ResetPasswordFormProps) 
           Cancelar
         </button>
       </div>
-      {passwordError ? <span className={styles.passwordError}>{passwordError}</span> : <FormMessage state={state} />}
+      {passwordError ? (
+        <span id={passwordErrorId} className={styles.passwordError}>
+          {passwordError}
+        </span>
+      ) : (
+        <FormMessage state={state} />
+      )}
     </form>
   )
 }

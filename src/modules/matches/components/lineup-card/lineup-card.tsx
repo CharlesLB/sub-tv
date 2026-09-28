@@ -37,16 +37,15 @@ export function LineupCard({ team, category, sourceLine, starterIds, onToggle }:
           const isLocked = !isStarter && isComplete
 
           return (
-            <button
-              key={player.playerId}
-              type="button"
-              role="checkbox"
-              aria-checked={isStarter}
-              aria-disabled={isLocked}
-              onClick={() => onToggle(player.playerId)}
-              className={cn(styles.player, isStarter ? styles.playerStarter : styles.playerReserve, isLocked ? styles.playerLocked : styles.playerAvailable)}
-            >
-              <span aria-hidden className={cn(styles.checkbox, !isStarter && styles.checkboxUnchecked)} style={isStarter ? { borderColor: team.color, background: team.color } : undefined} />
+            <label key={player.playerId} className={cn(styles.player, isStarter ? styles.playerStarter : styles.playerReserve, isLocked ? styles.playerLocked : styles.playerAvailable)}>
+              <input
+                type="checkbox"
+                checked={isStarter}
+                aria-disabled={isLocked}
+                onChange={() => (isLocked ? undefined : onToggle(player.playerId))}
+                className={cn(styles.checkbox, !isStarter && styles.checkboxUnchecked)}
+                style={isStarter ? { borderColor: team.color, background: team.color } : undefined}
+              />
               <span className={cn(styles.shirtNumber, !isStarter && styles.shirtNumberReserve)} style={isStarter ? { color: team.color } : undefined}>
                 {player.shirtNumber}
               </span>
@@ -55,7 +54,7 @@ export function LineupCard({ team, category, sourceLine, starterIds, onToggle }:
                 {nicknameSuffix(player.name, player.nickname)}
               </span>
               {player.position ? <span className={styles.position}>{player.position}</span> : null}
-            </button>
+            </label>
           )
         })}
       </div>

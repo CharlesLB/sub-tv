@@ -5,10 +5,13 @@ import { ACTIVE_YEAR_FIXTURE, championshipsHrefForYear, seasonYearsFixture } fro
 import { YearAxis } from './year-axis'
 
 const PHONE_QUERY = '(max-width: 619px)'
+const COMPACT_QUERY = '(max-width: 1079px)'
 
-const stubViewport = ({ isPhone }: { isPhone: boolean }) => {
-  vi.stubGlobal('matchMedia', (query: string) => ({ matches: isPhone && query === PHONE_QUERY, addEventListener: vi.fn(), removeEventListener: vi.fn() }))
+const stubMatchingQueries = (matchingQueries: readonly string[]) => {
+  vi.stubGlobal('matchMedia', (query: string) => ({ matches: matchingQueries.includes(query), addEventListener: vi.fn(), removeEventListener: vi.fn() }))
 }
+
+const stubViewport = ({ isPhone }: { isPhone: boolean }) => stubMatchingQueries(isPhone ? [PHONE_QUERY] : [])
 
 const visibleYears = () => screen.getAllByRole('link').map((link) => link.textContent)
 
@@ -65,6 +68,14 @@ describe('YearAxis', () => {
     renderAxis()
 
     expect(visibleYears()).toEqual(['2025'])
+  })
+
+  it('shows four seasons on a compact screen at the compact breakpoint of the design', () => {
+    stubMatchingQueries([COMPACT_QUERY])
+
+    renderAxis()
+
+    expect(visibleYears()).toEqual(['2022', '2023', '2024', '2025'])
   })
 
   it('reports the chosen season when a year is clicked', async () => {

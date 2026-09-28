@@ -90,6 +90,17 @@ describe('SeasonRail', () => {
     expect(replace).not.toHaveBeenCalled()
   })
 
+  it('reads the remembered season only once when the rail renders again with the same address', () => {
+    arrangeLocation('/campeonatos')
+    const readStorage = vi.spyOn(Storage.prototype, 'getItem')
+    const { rerender } = render(<SeasonRail years={seasonYearsFixture} activeYear={ACTIVE_YEAR_FIXTURE} championships={championshipRibbonFixture} basePath="/campeonatos" />)
+
+    rerender(<SeasonRail years={seasonYearsFixture} activeYear={ACTIVE_YEAR_FIXTURE} championships={championshipRibbonFixture} basePath="/campeonatos" />)
+
+    expect(readStorage.mock.calls.filter(([key]) => key === SEASON_STORAGE_KEY)).toHaveLength(1)
+    readStorage.mockRestore()
+  })
+
   it('does not redirect on a page below the base path', () => {
     localStorage.setItem(SEASON_STORAGE_KEY, '2023')
     const replace = arrangeLocation(`/campeonatos/${activeChampionshipIdFixture}`)

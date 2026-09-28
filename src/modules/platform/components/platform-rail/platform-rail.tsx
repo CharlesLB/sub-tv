@@ -13,6 +13,7 @@ import { platformRailStyles as styles } from './platform-rail.styles'
 const LIVE_PATH_PREFIX = '/ao-vivo'
 
 type Destination = {
+  name: string
   label: string
   title: string
   icon: IconName
@@ -21,9 +22,9 @@ type Destination = {
 }
 
 const DESTINATIONS: readonly Destination[] = [
-  { label: 'Campeo.', title: 'Torneios, tabelas e partidas', icon: 'trophy', pathPrefix: '/campeonatos', href: (year) => routes.championships(year) },
-  { label: 'Elencos', title: 'Times e elencos por categoria', icon: 'groups', pathPrefix: '/elencos', href: (year) => routes.squads({ year }) },
-  { label: 'Histórico', title: 'Estatísticas de todas as temporadas', icon: 'queryStats', pathPrefix: '/historico', href: () => routes.history() },
+  { name: 'Campeonatos', label: 'Campeo.', title: 'Torneios, tabelas e partidas', icon: 'trophy', pathPrefix: '/campeonatos', href: (year) => routes.championships(year) },
+  { name: 'Elencos', label: 'Elencos', title: 'Times e elencos por categoria', icon: 'groups', pathPrefix: '/elencos', href: (year) => routes.squads({ year }) },
+  { name: 'Histórico', label: 'Histórico', title: 'Estatísticas de todas as temporadas', icon: 'queryStats', pathPrefix: '/historico', href: () => routes.history() },
 ]
 
 type PlatformRailProps = { liveMatchId: string | null }
@@ -49,6 +50,7 @@ export function PlatformRail({ liveMatchId }: PlatformRailProps) {
               key={destination.pathPrefix}
               href={destination.href(year)}
               title={destination.title}
+              aria-label={destination.name}
               aria-current={isActive ? 'page' : undefined}
               className={cn(styles.destination, styles.destinationMobile, isActive && styles.destinationActive)}
             >

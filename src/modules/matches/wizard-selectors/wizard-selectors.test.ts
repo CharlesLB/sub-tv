@@ -74,7 +74,7 @@ describe('wizard-selectors texts', () => {
   it('summaryLines and reviewSubtitle describe round, date, time and venue', () => {
     const state = stateOf()
 
-    expect(summaryLines(state, context)).toEqual(['Mineiro · R7', 'SÁB 19 SET · 10:00', 'Arena', 'Tempo de jogo 2 × 30 min'])
+    expect(summaryLines(state, context).map((line) => line.text)).toEqual(['Mineiro · R7', 'SÁB 19 SET · 10:00', 'Arena', 'Tempo de jogo 2 × 30 min'])
     expect(reviewSubtitle(state, context)).toBe('Rodada 7 · SÁB 19 SET · 10:00 · Arena')
   })
 })

@@ -3,8 +3,8 @@ import { STARTERS_PER_TEAM } from './default-starters/default-starters'
 import { isDateInput, isTimeInput } from './kickoff-time/kickoff-time'
 import { PitchPointSchema } from './pitch-coordinate/pitch-coordinate'
 
-const MAXIMUM_ROUND = 99
-const MAXIMUM_VENUE_LENGTH = 120
+export const MAXIMUM_ROUND = 99
+export const MAXIMUM_VENUE_LENGTH = 120
 
 const StarterIds = z
   .array(z.uuid())

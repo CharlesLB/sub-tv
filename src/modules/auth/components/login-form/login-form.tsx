@@ -17,6 +17,7 @@ export function LoginForm({ returnTo }: LoginFormProps) {
         <label htmlFor="username" className={styles.label}>
           Usuário
         </label>
+        {/* biome-ignore lint/a11y/noAutofocus: a página /entrar existe só para este formulário, então o foco inicial no usuário é o único propósito dela */}
         <input id="username" name="username" type="text" autoComplete="username" autoCapitalize="words" required autoFocus className={styles.field} />
       </div>
       <div className={styles.fieldGroup}>

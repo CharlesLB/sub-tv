@@ -13,7 +13,7 @@ export const lineupCardStyles = {
   playerReserve: 'bg-transparent',
   playerLocked: 'cursor-not-allowed',
   playerAvailable: 'cursor-pointer',
-  checkbox: 'size-4 flex-none rounded-card border',
+  checkbox: 'size-4 flex-none appearance-none rounded-card border',
   checkboxUnchecked: 'border-bd2 bg-transparent',
   shirtNumber: 'w-6 flex-none text-[13.5px] font-bold nums',
   shirtNumberReserve: 'text-tx4',

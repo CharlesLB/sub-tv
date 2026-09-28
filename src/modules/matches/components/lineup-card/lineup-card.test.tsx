@@ -43,17 +43,27 @@ describe('LineupCard', () => {
     render(<LineupCard team={homeTeamFixture} category={CATEGORY.SUB14} sourceLine={SOURCE_LINE} starterIds={[]} onToggle={vi.fn()} />)
 
     expect(screen.getByText('Matheus Rocha "Teteu"')).toBeInTheDocument()
-    expect(screen.getByRole('checkbox', { name: /Pedro Henrique Alves/ }).textContent).toBe('13Pedro Henrique Alves')
-    expect(screen.getByRole('checkbox', { name: /Caio Ribeiro/ })).toHaveTextContent('goleiro')
+    expect(screen.getByRole('checkbox', { name: '13Pedro Henrique Alves' })).toBeInTheDocument()
+    expect(screen.getByRole('checkbox', { name: /Caio Ribeiro/ })).toHaveAccessibleName(/goleiro/)
   })
 
-  it('calls onToggle with the player id even when the player is locked', async () => {
+  it('calls onToggle with the player id when an available player is clicked', async () => {
+    const onToggle = vi.fn()
+    render(<LineupCard team={homeTeamFixture} category={CATEGORY.SUB14} sourceLine={SOURCE_LINE} starterIds={homeTeamFixture.defaultStarterIds} onToggle={onToggle} />)
+
+    await userEvent.click(screen.getByRole('checkbox', { name: /Caio Ribeiro/ }))
+
+    expect(onToggle).toHaveBeenCalledWith('estrela-1')
+  })
+
+  it('ignores the click and keeps the reserve unchecked when the player is locked', async () => {
     const onToggle = vi.fn()
     render(<LineupCard team={homeTeamFixture} category={CATEGORY.SUB14} sourceLine={SOURCE_LINE} starterIds={homeTeamFixture.defaultStarterIds} onToggle={onToggle} />)
 
     await userEvent.click(screen.getByRole('checkbox', { name: /Otávio Siqueira/ }))
 
-    expect(onToggle).toHaveBeenCalledWith('estrela-12')
+    expect(onToggle).not.toHaveBeenCalled()
+    expect(screen.getByRole('checkbox', { name: /Otávio Siqueira/ })).not.toBeChecked()
   })
 
   it('shows the empty message when the team has no players in the season', () => {

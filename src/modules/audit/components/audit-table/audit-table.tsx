@@ -1,10 +1,20 @@
 import { cn } from '@/lib/utils/cn'
+import { DataTable, type DataTableColumn } from '@/components/ui/data-table/data-table'
 import { formatAuditTime } from '../../format-audit-time/format-audit-time'
 import type { AuditRowVM } from '../../types'
 import { auditTableStyles as styles } from './audit-table.styles'
 
 const ROW_DELAY_STEP_MS = 12
 const MAX_ROW_DELAY_MS = 300
+const MISSING_ENTITY_DESCRIPTION = '—'
+
+const COLUMNS: readonly DataTableColumn[] = [
+  { id: 'time', label: 'Quando', className: styles.timeHeader },
+  { id: 'user', label: 'Quem', className: styles.userHeader },
+  { id: 'action', label: 'O quê', className: styles.actionHeader },
+  { id: 'entity', label: 'Onde', className: styles.entityHeader },
+  { id: 'details', label: 'Detalhes', className: styles.detailsHeader },
+]
 
 export function AuditTable({ rows }: { rows: AuditRowVM[] }) {
   if (rows.length === 0) {
@@ -12,49 +22,21 @@ export function AuditTable({ rows }: { rows: AuditRowVM[] }) {
   }
 
   return (
-    <div className={styles.table} role="table" aria-label="Registro de alterações">
-      <div role="row" className={styles.headerRow}>
-        <span role="columnheader" className={cn(styles.fixedHeader, styles.timeHeader)}>
-          Quando
-        </span>
-        <span role="columnheader" className={cn(styles.fixedHeader, styles.userHeader)}>
-          Quem
-        </span>
-        <span role="columnheader" className={cn(styles.fixedHeader, styles.actionHeader)}>
-          O quê
-        </span>
-        <span role="columnheader" className={styles.entityHeader}>
-          Onde
-        </span>
-        <span role="columnheader" className={styles.detailsHeader}>
-          Detalhes
-        </span>
-      </div>
+    <DataTable label="Registro de alterações" columns={COLUMNS}>
       {rows.map((row, index) => (
-        <div
-          key={row.id}
-          role="row"
-          className={cn(styles.row, index % 2 === 1 ? styles.rowOdd : styles.rowEven)}
-          style={{ animationDelay: `${Math.min(MAX_ROW_DELAY_MS, index * ROW_DELAY_STEP_MS)}ms` }}
-        >
-          <span role="cell" className={styles.timeCell}>
-            {formatAuditTime(row.createdAt)}
-          </span>
-          <span role="cell" className={styles.userCell}>
-            {row.userName}
-          </span>
-          <span role="cell" className={styles.actionCell}>
-            {row.actionLabel}
-          </span>
-          <span role="cell" className={styles.entityCell}>
+        <tr key={row.id} className={cn(styles.row, index % 2 === 1 ? styles.rowOdd : styles.rowEven)} style={{ animationDelay: `${Math.min(MAX_ROW_DELAY_MS, index * ROW_DELAY_STEP_MS)}ms` }}>
+          <td className={styles.timeCell}>{formatAuditTime(row.createdAt)}</td>
+          <td className={styles.userCell}>{row.userName}</td>
+          <td className={styles.actionCell}>{row.actionLabel}</td>
+          <td className={styles.entityCell}>
             {row.entityLabel ? <span className={styles.entityLabel}>{row.entityLabel}</span> : null}
-            <span className={styles.entityDescription}>{row.entityDescription ?? '—'}</span>
-          </span>
-          <span role="cell" className={styles.detailsCell} title={row.detailsSummary}>
+            <span className={styles.entityDescription}>{row.entityDescription ?? MISSING_ENTITY_DESCRIPTION}</span>
+          </td>
+          <td className={styles.detailsCell} title={row.detailsSummary}>
             {row.detailsSummary}
-          </span>
-        </div>
+          </td>
+        </tr>
       ))}
-    </div>
+    </DataTable>
   )
 }

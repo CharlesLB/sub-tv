@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import { CATEGORY } from '@/modules/championships/client'
+import { SUMMARY_LINE } from '../../wizard-selectors/wizard-selectors'
 import { WizardSummary } from './wizard-summary'
 import { summaryLinesFixture, summarySidesFixture } from './wizard-summary.fixtures'
 
@@ -24,7 +25,16 @@ describe('WizardSummary', () => {
   })
 
   it('keeps repeated schedule lines instead of dropping duplicates', () => {
-    render(<WizardSummary sides={summarySidesFixture} lines={['A definir', 'A definir']} category={CATEGORY.SUB13} />)
+    render(
+      <WizardSummary
+        sides={summarySidesFixture}
+        lines={[
+          { id: SUMMARY_LINE.KICKOFF, text: 'A definir' },
+          { id: SUMMARY_LINE.VENUE, text: 'A definir' },
+        ]}
+        category={CATEGORY.SUB13}
+      />,
+    )
 
     expect(screen.getAllByText('A definir')).toHaveLength(2)
   })

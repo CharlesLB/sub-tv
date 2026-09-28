@@ -1,9 +1,18 @@
 import { cn } from '@/lib/utils/cn'
 import { Skeleton } from '@/components/ui/skeleton/skeleton'
+import { ROSTER_COLUMNS } from '../../roster-columns/roster-columns'
 import { squadWorkspaceSkeletonStyles as styles } from './squad-workspace-skeleton.styles'
 
-const ROW_NAME_WIDTHS = ['64%', '52%', '72%', '58%', '66%', '48%'] as const
-const HEADER_CELL_KEYS = ['number', 'name', 'position', 'games', 'goals', 'curiosities'] as const
+const ROW_PLACEHOLDERS = [
+  { id: 'first', nameWidth: '64%' },
+  { id: 'second', nameWidth: '52%' },
+  { id: 'third', nameWidth: '72%' },
+  { id: 'fourth', nameWidth: '58%' },
+  { id: 'fifth', nameWidth: '66%' },
+  { id: 'sixth', nameWidth: '48%' },
+] as const
+
+const HEADER_CELL_KEYS = ROSTER_COLUMNS.map((column) => column.key)
 const ROW_DELAY_MS = 80
 const CELL_DELAY_MS = 50
 const FADED_ROW_START = 4
@@ -29,12 +38,12 @@ export function SquadWorkspaceSkeleton() {
           ))}
         </div>
         <div className={styles.rows}>
-          {ROW_NAME_WIDTHS.map((nameWidth, rowIndex) => {
+          {ROW_PLACEHOLDERS.map(({ id, nameWidth }, rowIndex) => {
             const delay = rowIndex * ROW_DELAY_MS
             const fillClass = rowIndex >= FADED_ROW_START ? styles.cellFaded : styles.cellFilled
 
             return (
-              <div key={`${nameWidth}-${rowIndex}`} className={cn(styles.grid, styles.row)}>
+              <div key={id} className={cn(styles.grid, styles.row)}>
                 {HEADER_CELL_KEYS.map((cellKey, cellIndex) => (
                   <Skeleton
                     key={cellKey}
