@@ -1,5 +1,6 @@
 import { cn } from '@/lib/utils/cn'
 import { ICON_PATHS, ICON_VIEW_BOX, type IconName } from './icon-paths'
+import { iconStyles as styles } from './icon.styles'
 
 type IconProps = {
   name: IconName
@@ -15,7 +16,7 @@ export function Icon({ name, size = 16, className, label }: IconProps) {
       width={size}
       height={size}
       fill="currentColor"
-      className={cn('flex-none', className)}
+      className={cn(styles.icon, className)}
       role={label ? 'img' : undefined}
       aria-label={label}
       aria-hidden={label ? undefined : true}

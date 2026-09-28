@@ -1,0 +1,18 @@
+export const seasonPanelStyles = {
+  trigger: 'flex size-[30px] flex-none items-center justify-center rounded-card border hover:border-tx3 hover:text-tx',
+  triggerOpen: 'border-ac bg-pan2 text-ac',
+  triggerClosed: 'border-bd bg-transparent text-tx4',
+  scrim: 'fixed inset-0 z-[55] animate-fade-in bg-scrim-leve',
+  panel: 'z-[60] flex w-[min(92vw,340px)] animate-pop-in flex-col gap-[9px] border border-bd2 bg-pan2 px-3 pt-[13px] pb-[11px] text-tx chamfer',
+  header: 'flex items-baseline justify-between gap-3',
+  heading: 'text-[11.3px] font-bold tracking-[-.01em] text-tx1',
+  subheading: 'text-[9.5px] tracking-[.1em] text-tx4',
+  grid: 'grid grid-cols-4 gap-1',
+  yearLink: 'flex animate-grade-in flex-col items-start gap-[2px] rounded-card border px-2 py-[7px] transition-colors hover:bg-bd',
+  yearLinkActive: 'border-ac bg-bd',
+  yearLinkIdle: 'border-transparent bg-transparent',
+  year: 'text-[12.6px] font-bold tracking-[-.01em]',
+  yearActive: 'text-ac',
+  yearIdle: 'text-tx1',
+  championshipCount: 'text-[9px] tracking-[.08em] text-tx4',
+} as const

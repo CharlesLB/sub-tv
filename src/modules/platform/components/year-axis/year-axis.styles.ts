@@ -1,0 +1,15 @@
+export const yearAxisStyles = {
+  arrow: 'flex h-[30px] w-[26px] flex-none items-center justify-center rounded-card border border-bd bg-transparent text-tx3 hover:border-tx3 hover:text-tx',
+  years: 'flex flex-none items-stretch',
+  yearSlot: 'flex flex-none items-center',
+  connector: 'h-px w-4 flex-none bg-bd2',
+  yearLink: 'flex h-8 flex-none animate-fade-in items-center gap-[6px] border-b-2 px-[9px] transition-colors hover:text-tx',
+  yearLinkActive: 'border-ac',
+  yearLinkIdle: 'border-transparent',
+  yearDot: 'flex-none rounded-full transition-all duration-200',
+  yearDotActive: 'size-2 bg-ac',
+  yearDotIdle: 'size-[5px] bg-bd3',
+  year: 'tracking-[-.01em] transition-all duration-200',
+  yearActive: 'text-[15px] font-extrabold text-tx',
+  yearIdle: 'text-[13px] font-bold text-tx4',
+} as const

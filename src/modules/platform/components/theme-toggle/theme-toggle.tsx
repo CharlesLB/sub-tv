@@ -2,6 +2,7 @@
 
 import { useSyncExternalStore } from 'react'
 import { Icon } from '@/components/ui/icon/icon'
+import { themeToggleStyles as styles } from './theme-toggle.styles'
 
 const THEME_STORAGE_KEY = 'subtv-tema'
 const THEME_ATTRIBUTE = 'data-tema'
@@ -34,13 +35,7 @@ export function ThemeToggle() {
   const title = isDark ? 'Mudar para o modo claro' : 'Mudar para o modo escuro'
 
   return (
-    <button
-      type="button"
-      onClick={() => applyTheme(isDark ? THEME.LIGHT : THEME.DARK)}
-      title={title}
-      aria-label={title}
-      className="flex size-[34px] flex-none items-center justify-center rounded-card border border-bd2 bg-transparent text-tx2 transition-colors hover:border-tx hover:text-tx mobile:size-8"
-    >
+    <button type="button" onClick={() => applyTheme(isDark ? THEME.LIGHT : THEME.DARK)} title={title} aria-label={title} className={styles.button}>
       <Icon name={isDark ? 'lightMode' : 'darkMode'} size={18} />
     </button>
   )

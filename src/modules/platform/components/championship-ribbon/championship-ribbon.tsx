@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils/cn'
 import { Icon } from '@/components/ui/icon/icon'
 import { type ChampionshipRibbonItemVM, categoryBackgroundClass, categoryLabel, categoryTextClass } from '@/modules/championships/client'
 import { describeWhen } from '../../describe-when/describe-when'
+import { championshipRibbonStyles as styles } from './championship-ribbon.styles'
 
 const CHIP_DELAY_STEP_MS = 45
 const SCROLL_TOLERANCE_PX = 2
@@ -48,20 +49,14 @@ export function ChampionshipRibbon({ championships, activeChampionshipId }: Cham
     ribbon.scrollBy({ left: direction * Math.max(MINIMUM_SCROLL_STEP_PX, ribbon.clientWidth * SCROLL_STEP_RATIO), behavior: 'smooth' })
   }
 
-  const arrowClassName = 'flex size-[26px] flex-none animate-fade-in items-center justify-center rounded-card border border-bd bg-transparent text-tx4 hover:border-tx3 hover:text-tx'
-
   return (
     <>
       {scrollState.canScrollBack ? (
-        <button type="button" title="Campeonatos anteriores" aria-label="Campeonatos anteriores" onClick={() => scrollBy(-1)} className={arrowClassName}>
+        <button type="button" title="Campeonatos anteriores" aria-label="Campeonatos anteriores" onClick={() => scrollBy(-1)} className={styles.arrow}>
           <Icon name="chevronLeft" size={16} />
         </button>
       ) : null}
-      <div
-        ref={ribbonRef}
-        onScroll={(event) => setScrollState(readScrollState(event.currentTarget))}
-        className="no-scrollbar flex min-w-0 flex-[1_1_auto] items-center gap-[6px] overflow-x-auto overflow-y-hidden p-[2px]"
-      >
+      <div ref={ribbonRef} onScroll={(event) => setScrollState(readScrollState(event.currentTarget))} className={styles.ribbon}>
         {championships.map((championship, index) => {
           const isActive = championship.id === activeChampionshipId
 
@@ -70,23 +65,20 @@ export function ChampionshipRibbon({ championships, activeChampionshipId }: Cham
               key={championship.id}
               href={routes.championship(championship.id)}
               aria-current={isActive ? 'page' : undefined}
-              className={cn(
-                'flex h-[30px] flex-none animate-chip-in items-center gap-2 rounded-card border px-[11px] text-tx transition-[border-color,background,transform] duration-150 hover:-translate-y-px hover:border-bd3',
-                isActive ? 'border-ac bg-pan2' : 'border-bd bg-transparent',
-              )}
+              className={cn(styles.chip, isActive ? styles.chipActive : styles.chipIdle)}
               style={{ animationDelay: `${index * CHIP_DELAY_STEP_MS}ms` }}
             >
-              <span className={cn('size-[7px] flex-none', categoryBackgroundClass[championship.category])} />
-              <span className={cn('text-[11.3px] font-bold tracking-[-.01em] whitespace-nowrap', isActive ? 'text-tx' : 'text-tx1')}>{championship.name}</span>
-              <span className={cn('text-[9.5px] tracking-[.08em] whitespace-nowrap', categoryTextClass[championship.category])}>{categoryLabel[championship.category]}</span>
-              <span className="text-[9.5px] tracking-[.08em] whitespace-nowrap text-tx4">{describeWhen(championship.lastActivityAt, now)}</span>
+              <span className={cn(styles.categoryDot, categoryBackgroundClass[championship.category])} />
+              <span className={cn(styles.name, isActive ? styles.nameActive : styles.nameIdle)}>{championship.name}</span>
+              <span className={cn(styles.category, categoryTextClass[championship.category])}>{categoryLabel[championship.category]}</span>
+              <span className={styles.lastActivity}>{describeWhen(championship.lastActivityAt, now)}</span>
             </Link>
           )
         })}
       </div>
       {scrollState.canScrollForward ? (
-        <span className="flex flex-none items-center pl-[6px]">
-          <button type="button" title="Mais campeonatos" aria-label="Mais campeonatos" onClick={() => scrollBy(1)} className={arrowClassName}>
+        <span className={styles.forwardSlot}>
+          <button type="button" title="Mais campeonatos" aria-label="Mais campeonatos" onClick={() => scrollBy(1)} className={styles.arrow}>
             <Icon name="chevronRight" size={16} />
           </button>
         </span>

@@ -1,0 +1,20 @@
+export const platformRailStyles = {
+  rail: 'flex w-[78px] flex-none flex-col items-center gap-[14px] border-r border-bd bg-(--ch-rail) py-[14px] chrome narrow:w-[62px] mobile:order-3 mobile:h-[60px] mobile:w-full mobile:flex-row mobile:items-stretch mobile:gap-0 mobile:border-t mobile:border-r-0 mobile:py-0',
+  brand: 'mobile:hidden',
+  destinations: 'flex w-full flex-col items-center gap-1 mobile:min-w-0 mobile:flex-[3_1_0] mobile:flex-row mobile:items-stretch mobile:gap-0',
+  destination: 'flex w-full flex-col items-center gap-[5px] border-l-2 border-transparent py-[10px] transition-[background,border-color] duration-150 hover:bg-pan2',
+  destinationMobile: 'mobile:min-w-0 mobile:flex-[1_1_0] mobile:justify-center mobile:gap-[3px] mobile:border-t-2 mobile:border-l-0 mobile:px-[2px] mobile:py-[6px]',
+  destinationActive: 'border-ac bg-pan2',
+  destinationIcon: 'transition-colors',
+  destinationIconActive: 'text-ac',
+  destinationIconIdle: 'text-tx5',
+  destinationLabel: 'block text-[9.5px] font-bold tracking-[-.01em] narrow:hidden mobile:block mobile:text-[9px]',
+  destinationLabelActive: 'text-tx',
+  destinationLabelIdle: 'text-tx3',
+  liveLink: 'mt-auto flex w-full flex-col items-center gap-[6px] border-t border-l-2 border-t-bd border-l-transparent py-[10px]',
+  liveLinkMobile:
+    'mobile:mt-0 mobile:min-w-0 mobile:flex-[1_1_0] mobile:justify-center mobile:gap-1 mobile:border-t-2 mobile:border-l mobile:border-t-transparent mobile:border-l-bd mobile:px-[2px] mobile:py-[6px]',
+  liveLinkActive: 'border-l-ac bg-pan2 mobile:border-t-ac',
+  liveDot: 'size-[9px] animate-live-dot rounded-full bg-ac',
+  liveLabel: 'text-[8.1px] font-bold tracking-[-.01em] text-ac',
+} as const

@@ -7,6 +7,7 @@ import { useState } from 'react'
 import { cn } from '@/lib/utils/cn'
 import { Icon } from '@/components/ui/icon/icon'
 import type { SeasonYearVM } from '@/modules/championships/client'
+import { seasonPanelStyles as styles } from './season-panel.styles'
 
 const GRID_ITEM_DELAY_MS = 14
 
@@ -22,29 +23,17 @@ export function SeasonPanel({ years, activeYear, hrefForYear, onSelectYear }: Se
 
   return (
     <Popover.Root open={isOpen} onOpenChange={setIsOpen}>
-      <Popover.Trigger
-        title="Todas as temporadas"
-        aria-label="Todas as temporadas"
-        className={cn(
-          'flex size-[30px] flex-none items-center justify-center rounded-card border hover:border-tx3 hover:text-tx',
-          isOpen ? 'border-ac bg-pan2 text-ac' : 'border-bd bg-transparent text-tx4',
-        )}
-      >
+      <Popover.Trigger title="Todas as temporadas" aria-label="Todas as temporadas" className={cn(styles.trigger, isOpen ? styles.triggerOpen : styles.triggerClosed)}>
         <Icon name="calendarMonth" size={16} />
       </Popover.Trigger>
-      {isOpen ? <div aria-hidden className="fixed inset-0 z-[55] animate-fade-in bg-scrim-leve" /> : null}
+      {isOpen ? <div aria-hidden className={styles.scrim} /> : null}
       <Popover.Portal>
-        <Popover.Content
-          side="bottom"
-          align="start"
-          sideOffset={7}
-          className="z-[60] flex w-[min(92vw,340px)] animate-pop-in flex-col gap-[9px] border border-bd2 bg-pan2 px-3 pt-[13px] pb-[11px] text-tx chamfer"
-        >
-          <div className="flex items-baseline justify-between gap-3">
-            <span className="text-[11.3px] font-bold tracking-[-.01em] text-tx1">Temporadas</span>
-            <span className="text-[9.5px] tracking-[.1em] text-tx4">Elenco próprio por ano</span>
+        <Popover.Content side="bottom" align="start" sideOffset={7} className={styles.panel}>
+          <div className={styles.header}>
+            <span className={styles.heading}>Temporadas</span>
+            <span className={styles.subheading}>Elenco próprio por ano</span>
           </div>
-          <div className="grid grid-cols-4 gap-1">
+          <div className={styles.grid}>
             {years.map((seasonYear, index) => {
               const isActive = seasonYear.year === activeYear
 
@@ -57,14 +46,11 @@ export function SeasonPanel({ years, activeYear, hrefForYear, onSelectYear }: Se
                     setIsOpen(false)
                   }}
                   aria-current={isActive ? 'true' : undefined}
-                  className={cn(
-                    'flex animate-grade-in flex-col items-start gap-[2px] rounded-card border px-2 py-[7px] transition-colors hover:bg-bd',
-                    isActive ? 'border-ac bg-bd' : 'border-transparent bg-transparent',
-                  )}
+                  className={cn(styles.yearLink, isActive ? styles.yearLinkActive : styles.yearLinkIdle)}
                   style={{ animationDelay: `${index * GRID_ITEM_DELAY_MS}ms` }}
                 >
-                  <span className={cn('text-[12.6px] font-bold tracking-[-.01em]', isActive ? 'text-ac' : 'text-tx1')}>{seasonYear.year}</span>
-                  <span className="text-[9px] tracking-[.08em] text-tx4">{seasonYear.championshipCount} Camp.</span>
+                  <span className={cn(styles.year, isActive ? styles.yearActive : styles.yearIdle)}>{seasonYear.year}</span>
+                  <span className={styles.championshipCount}>{seasonYear.championshipCount} Camp.</span>
                 </Link>
               )
             })}

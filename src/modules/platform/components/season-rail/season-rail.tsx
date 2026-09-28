@@ -8,6 +8,7 @@ import type { ChampionshipRibbonItemVM, SeasonYearVM } from '@/modules/champions
 import { ChampionshipRibbon } from '../championship-ribbon/championship-ribbon'
 import { SeasonPanel } from '../season-panel/season-panel'
 import { YearAxis } from '../year-axis/year-axis'
+import { seasonRailStyles as styles } from './season-rail.styles'
 
 const SEASON_STORAGE_KEY = 'futebol-temporada'
 const PRESERVED_PARAMETERS = ['cat'] as const
@@ -68,12 +69,12 @@ export function SeasonRail({ years, activeYear, championships, activeChampionshi
   })
 
   return (
-    <div className="relative z-20 flex h-[52px] flex-none items-center gap-[2px] overflow-visible border-b border-bd bg-pan0 px-[14px] mobile:h-[46px] mobile:px-2">
-      <div className="relative flex flex-none items-center gap-[2px]">
+    <div className={styles.rail}>
+      <div className={styles.seasonControls}>
         <SeasonPanel years={years} activeYear={activeYear} hrefForYear={hrefForYear} onSelectYear={rememberYear} />
         <YearAxis key={activeYear} years={years} activeYear={activeYear} hrefForYear={hrefForYear} onSelectYear={rememberYear} />
       </div>
-      <span className="mx-[6px] my-[7px] w-px flex-none self-stretch bg-bd" />
+      <span className={styles.divider} />
       <ChampionshipRibbon championships={championships} activeChampionshipId={activeChampionshipId} />
     </div>
   )

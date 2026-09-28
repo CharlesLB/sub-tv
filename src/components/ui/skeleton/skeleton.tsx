@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'react'
 import { cn } from '@/lib/utils/cn'
+import { skeletonStyles as styles } from './skeleton.styles'
 
 type SkeletonProps = {
   className?: string
@@ -8,5 +9,5 @@ type SkeletonProps = {
 }
 
 export function Skeleton({ className, delayMs = 0, style }: SkeletonProps) {
-  return <span aria-hidden className={cn('block animate-skeleton bg-bd', className)} style={{ animationDelay: `${delayMs}ms`, ...style }} />
+  return <span aria-hidden className={cn(styles.skeleton, className)} style={{ animationDelay: `${delayMs}ms`, ...style }} />
 }

@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { Fragment } from 'react'
 import type { AppHref } from '@/lib/routes'
+import { breadcrumbsStyles as styles } from './breadcrumbs.styles'
 
 export type Crumb = { label: string; href?: AppHref; separator?: '/' | '·' }
 
@@ -10,20 +11,17 @@ type BreadcrumbsProps = { crumbs: Crumb[] }
 
 export function Breadcrumbs({ crumbs }: BreadcrumbsProps) {
   return (
-    <nav aria-label="Trilha de navegação" className="flex min-w-0 items-center gap-[5px]">
+    <nav aria-label="Trilha de navegação" className={styles.trail}>
       {crumbs.map((crumb, index) => (
         <Fragment key={`${crumb.label}-${index}`}>
-          <span className="inline-flex min-w-0 animate-crumb-in items-center gap-[5px]" style={{ animationDelay: `${index * CRUMB_DELAY_STEP_MS}ms` }}>
-            {index > 0 ? <span className="text-[10.5px] text-tx5">{crumb.separator ?? '/'}</span> : null}
+          <span className={styles.crumb} style={{ animationDelay: `${index * CRUMB_DELAY_STEP_MS}ms` }}>
+            {index > 0 ? <span className={styles.separator}>{crumb.separator ?? '/'}</span> : null}
             {crumb.href ? (
-              <Link
-                href={crumb.href}
-                className="max-w-[30vw] truncate text-[10.5px] tracking-[.1em] whitespace-nowrap text-crumb-tinta underline decoration-crumb-tinta underline-offset-[3px] transition-colors hover:text-ac hover:decoration-ac"
-              >
+              <Link href={crumb.href} className={styles.link}>
                 {crumb.label}
               </Link>
             ) : (
-              <span aria-current="page" className="max-w-[30vw] truncate text-[10.5px] tracking-[.1em] whitespace-nowrap text-crumb-apagado">
+              <span aria-current="page" className={styles.currentPage}>
                 {crumb.label}
               </span>
             )}
