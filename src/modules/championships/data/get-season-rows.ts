@@ -1,5 +1,5 @@
 import 'server-only'
-import { countDistinct, desc, eq, inArray } from 'drizzle-orm'
+import { and, countDistinct, desc, eq, inArray } from 'drizzle-orm'
 import { cacheLife, cacheTag } from 'next/cache'
 import * as R from 'remeda'
 import { tags } from '@/lib/cache/tags'
@@ -28,7 +28,7 @@ const countTeamsAndAthletes = async (seasonIds: string[]) => {
       athleteCount: countDistinct(seasonSquads.playerId),
     })
     .from(seasonTeams)
-    .leftJoin(seasonSquads, eq(seasonSquads.seasonTeamId, seasonTeams.id))
+    .leftJoin(seasonSquads, and(eq(seasonSquads.seasonTeamId, seasonTeams.id), eq(seasonSquads.isActive, true)))
     .where(inArray(seasonTeams.seasonId, seasonIds))
     .groupBy(seasonTeams.seasonId)
 }
@@ -56,6 +56,7 @@ export const getSeasonRows = async (filter: { year: number } | { seasonId: strin
     .where(condition)
     .orderBy(desc(seasons.year), competitions.category, competitions.division)
 
+  cacheTag(...seasonRows.map((season) => tags.seasonTeams(season.id)))
   const counts = R.indexBy(await countTeamsAndAthletes(seasonRows.map((season) => season.id)), (row) => row.seasonId)
 
   return seasonRows.map((season) => ({

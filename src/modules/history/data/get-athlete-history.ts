@@ -79,7 +79,7 @@ const readMostUsedShirtNumber = async ({ playerId, filter }: AthleteScope): Prom
 export const getAthleteHistory = async (playerId: string, filter: HistoryFilter): Promise<AthleteHistoryVM | null> => {
   'use cache'
   cacheLife('hours')
-  cacheTag(tags.history(), tags.fmfData())
+  cacheTag(tags.history(), tags.fmfData(), tags.player(playerId))
 
   const scope = { playerId, filter }
   const [player, seasons, latestTeam, shirtNumber] = await Promise.all([readPlayer(playerId), readSeasons(scope), readLatestTeam(scope), readMostUsedShirtNumber(scope)])

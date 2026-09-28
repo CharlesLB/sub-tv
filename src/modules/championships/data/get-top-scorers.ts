@@ -1,6 +1,7 @@
 import 'server-only'
 import { and, asc, desc, eq, gt } from 'drizzle-orm'
 import { cacheLife, cacheTag } from 'next/cache'
+import * as R from 'remeda'
 import { tags } from '@/lib/cache/tags'
 import { db, tables } from '@/lib/db'
 import { toTeamBadge } from '../mappers'
@@ -36,6 +37,8 @@ export const getTopScorers = async (seasonId: string): Promise<TopScorerVM[]> =>
     .where(and(eq(playerSeasonStats.seasonId, seasonId), gt(playerSeasonStats.goals, 0)))
     .orderBy(desc(playerSeasonStats.goals), asc(playerSeasonStats.games), asc(players.fullName))
     .limit(TOP_SCORERS_LIMIT)
+
+  cacheTag(...R.unique(rows.map((row) => tags.teamSquad(row.seasonTeamId))))
 
   return rows.map((row) => ({
     playerId: row.playerId,

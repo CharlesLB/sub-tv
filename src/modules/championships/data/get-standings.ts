@@ -1,9 +1,10 @@
 import 'server-only'
-import { asc, desc, eq } from 'drizzle-orm'
+import { and, asc, eq } from 'drizzle-orm'
 import { cacheLife, cacheTag } from 'next/cache'
 import * as R from 'remeda'
 import { tags } from '@/lib/cache/tags'
 import { db, tables } from '@/lib/db'
+import { rankWithinGroups } from '../computed-standings/computed-standings'
 import { toTeamBadge } from '../mappers'
 import { buildRecentForm } from '../recent-form/recent-form'
 import type { SquadPreviewPlayerVM, StandingPhaseVM, StandingRowVM } from '../types'
@@ -64,9 +65,8 @@ const readComputedStandings = async (seasonId: string): Promise<StandingSource[]
     .innerJoin(seasonTeams, eq(seasonTeams.id, teamSeasonStats.seasonTeamId))
     .innerJoin(clubs, eq(clubs.id, seasonTeams.clubId))
     .where(eq(seasonTeams.seasonId, seasonId))
-    .orderBy(desc(teamSeasonStats.points), desc(teamSeasonStats.wins))
 
-  return rows.map(({ badge, ...row }, index) => ({ ...row, phase: OVERALL_PHASE, position: index + 1, team: toTeamBadge(badge) }))
+  return rankWithinGroups(rows.map(({ badge, ...row }) => ({ ...row, phase: OVERALL_PHASE, team: toTeamBadge(badge) })))
 }
 
 const readSquadPreviews = async (seasonId: string): Promise<Record<string, SquadPreviewPlayerVM[]>> => {
@@ -84,7 +84,7 @@ const readSquadPreviews = async (seasonId: string): Promise<Record<string, Squad
     .from(seasonSquads)
     .innerJoin(seasonTeams, eq(seasonTeams.id, seasonSquads.seasonTeamId))
     .innerJoin(players, eq(players.id, seasonSquads.playerId))
-    .where(eq(seasonTeams.seasonId, seasonId))
+    .where(and(eq(seasonTeams.seasonId, seasonId), eq(seasonSquads.isActive, true)))
     .orderBy(asc(seasonSquads.usualShirtNumber))
 
   return R.groupBy(
@@ -108,6 +108,7 @@ export const getStandings = async (seasonId: string): Promise<StandingPhaseVM[]>
 
   const [officialRows, matches, squads] = await Promise.all([readOfficialStandings(seasonId), getSeasonMatches(seasonId), readSquadPreviews(seasonId)])
   const sourceRows = officialRows.length > 0 ? officialRows : await readComputedStandings(seasonId)
+  cacheTag(...R.unique(sourceRows.map((row) => tags.teamSquad(row.seasonTeamId))))
   const recentForm = buildRecentForm(matches)
   const phases = R.groupBy(sourceRows, (row) => row.phase)
 
