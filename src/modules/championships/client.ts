@@ -3,6 +3,7 @@ export { CategoryTag } from './components/category-tag/category-tag'
 export { FlashToastHost } from './components/flash-toast-host/flash-toast-host'
 export { toFormSlots } from './form-slots/form-slots'
 export { toPhaseLabel, toTitleCase } from './mappers'
+export { MATCH_STATUS } from './match-status/match-status'
 export type {
   CategoryClubsVM,
   ChampionshipCardVM,

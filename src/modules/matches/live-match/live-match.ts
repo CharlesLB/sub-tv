@@ -1,4 +1,4 @@
-import type { Category } from '@/modules/championships/client'
+import type { Category, MatchStatus } from '@/modules/championships/client'
 import type { PitchPoint, PlayerPosition } from '../pitch-layout/pitch-layout'
 
 export const HALF_LENGTH_MINUTES = 30
@@ -39,17 +39,6 @@ export const MATCH_PERIOD = {
 export type MatchPeriod = (typeof MATCH_PERIOD)[keyof typeof MATCH_PERIOD]
 
 export type ClockPeriod = typeof MATCH_PERIOD.BEFORE_START | typeof MATCH_PERIOD.FIRST_HALF | typeof MATCH_PERIOD.HALF_TIME | typeof MATCH_PERIOD.SECOND_HALF | typeof MATCH_PERIOD.FULL_TIME
-
-export const MATCH_STATUS = {
-  SCHEDULED: 'agendado',
-  LIVE: 'ao_vivo',
-  FINISHED: 'encerrado',
-  POSTPONED: 'adiado',
-  CANCELLED: 'cancelado',
-  WALKOVER: 'wo',
-} as const
-
-export type MatchStatus = (typeof MATCH_STATUS)[keyof typeof MATCH_STATUS]
 
 export const PREFERRED_FOOT = { RIGHT: 'destro', LEFT: 'canhoto', BOTH: 'ambidestro' } as const
 

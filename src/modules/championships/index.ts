@@ -23,6 +23,7 @@ export { getStandings } from './data/get-standings'
 export { getTopScorers } from './data/get-top-scorers'
 export { teamBadgeColumns } from './data/team-badge-columns'
 export { toPhaseLabel, toTeamBadge, toTitleCase } from './mappers'
+export { MATCH_STATUS } from './match-status/match-status'
 export { CreateChampionshipInput } from './schemas'
 export { describeSeasonStatus, summarizeSeasonMatches } from './season-summary/season-summary'
 export type {

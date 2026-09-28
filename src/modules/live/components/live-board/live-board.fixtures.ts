@@ -1,4 +1,5 @@
-import { GOAL_TYPE, INITIAL_LIVE_CLOCK, LIVE_EVENT_TYPE, type LiveClock, type LiveMatchSnapshot, MATCH_PERIOD, MATCH_STATUS, PLAYER_POSITION, PREFERRED_FOOT, SIDE } from '@/modules/matches/client'
+import { MATCH_STATUS } from '@/modules/championships/client'
+import { GOAL_TYPE, INITIAL_LIVE_CLOCK, LIVE_EVENT_TYPE, type LiveClock, type LiveMatchSnapshot, MATCH_PERIOD, PLAYER_POSITION, PREFERRED_FOOT, SIDE } from '@/modules/matches/client'
 import { makeEvent, makePlayer, makeSnapshot, PLAYER } from '../../state/live-state.fixtures'
 import { type OfficialsStripItem, officialsStripItems } from '../officials-strip/officials-strip-items'
 

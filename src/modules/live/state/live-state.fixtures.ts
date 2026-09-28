@@ -1,4 +1,4 @@
-import { CATEGORY } from '@/modules/championships/client'
+import { CATEGORY, MATCH_STATUS } from '@/modules/championships/client'
 import {
   DATA_SOURCE,
   GOAL_TYPE,
@@ -9,7 +9,6 @@ import {
   type LiveMatchSnapshot,
   type LivePlayerVM,
   MATCH_PERIOD,
-  MATCH_STATUS,
   SIDE,
   type Side,
 } from '@/modules/matches/client'

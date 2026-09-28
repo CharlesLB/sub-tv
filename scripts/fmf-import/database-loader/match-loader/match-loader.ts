@@ -1,6 +1,6 @@
 import { getTableColumns, inArray, type SQL, sql } from 'drizzle-orm'
 import { matches, matchOfficials } from '../../../../src/lib/db/schema'
-import { MATCH_STATUS } from '../../../../src/modules/matches/live-match/live-match'
+import { MATCH_STATUS } from '../../../../src/modules/championships/match-status/match-status'
 import type { TableMatch } from '../../competition-page/table-tab-parser/table-tab-parser'
 import { type EditionBundle, type LoadedSumula, sumulaOfMatch } from '../../edition-bundle/edition-bundle'
 import { SIDE } from '../../sumula/sumula-types/sumula-types'

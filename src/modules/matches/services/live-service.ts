@@ -1,9 +1,10 @@
 import 'server-only'
 import { and, eq } from 'drizzle-orm'
 import { type ActionResult, fail, ok } from '@/lib/actions/result'
-import { db, tables, type Transaction } from '@/lib/db'
+import { db, type Transaction, tables } from '@/lib/db'
+import { MATCH_STATUS, type MatchStatus } from '@/modules/championships'
 import { toPersistedClock } from '../live-clock/live-clock'
-import { DATA_SOURCE, GOAL_TYPE, LIVE_EVENT_TYPE, type LiveClock, MATCH_PERIOD, MATCH_STATUS, type MatchStatus, type Side } from '../live-match/live-match'
+import { DATA_SOURCE, GOAL_TYPE, LIVE_EVENT_TYPE, type LiveClock, MATCH_PERIOD, type Side } from '../live-match/live-match'
 import { applyLineupSwap, findEventByKey, findExistingByClientId, findLineupRow, revertLineupSwap } from './live-lineup-rows'
 import { finalizeFinishedMatch, refreshReopenedMatch, type SeasonTouch } from './match-finalization/match-finalization'
 

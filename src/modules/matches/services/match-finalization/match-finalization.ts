@@ -1,7 +1,7 @@
 import 'server-only'
 import { eq } from 'drizzle-orm'
 import { db, tables } from '@/lib/db'
-import { MATCH_STATUS } from '../../live-match/live-match'
+import { MATCH_STATUS } from '@/modules/championships'
 import { resolveNarratedScore } from '../season-statistics/season-statistics'
 import { recalculateSeasonStatistics } from '../season-statistics/season-statistics.server'
 

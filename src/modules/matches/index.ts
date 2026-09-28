@@ -7,7 +7,7 @@ export { SheetChampionshipDetails } from './components/sheet-championship-detail
 export { getActiveBroadcast } from './data/get-active-broadcast'
 export { getLiveMatch } from './data/get-live-match'
 export { getMatchSetup } from './data/get-match-setup'
-export { type LiveMatchSnapshot, MATCH_STATUS } from './live-match/live-match'
+export type { LiveMatchSnapshot } from './live-match/live-match'
 export { inferPosition, layoutStarters, type PitchPlayer, type PitchPoint, PLAYER_POSITION, type PlayerPosition } from './pitch-layout/pitch-layout'
 export { CreateBroadcastMatchInput } from './schemas'
 export { createLiveChangeStream } from './services/live-change-stream'
