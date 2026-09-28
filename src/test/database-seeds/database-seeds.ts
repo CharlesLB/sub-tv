@@ -30,6 +30,7 @@ export const seedSeason = async (): Promise<SeededSeason> => {
       .values({ name: 'Mineiro Sub-14', slug: `mineiro-sub-14-${randomUUID()}`, category: 'sub14', division: 'primeira' })
       .returning({ id: tables.competitions.id }),
   )
+
   const season = firstRow(await db.insert(tables.seasons).values({ competitionId: competition.id, year: 2026, label: '2026' }).returning({ id: tables.seasons.id }))
 
   const [homeTeamId, awayTeamId, homePlayerId, awayPlayerId, homeBenchPlayerId] = await Promise.all([

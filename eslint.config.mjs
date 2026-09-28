@@ -46,12 +46,12 @@ const eslintConfig = defineConfig([
     },
   },
   {
-    files: ['**/*.test.{ts,tsx}', '**/*.stories.tsx', 'tests/**'],
+    files: ['**/*.test.{ts,tsx}', '**/*.stories.tsx', 'tests/**', 'e2e/**'],
     rules: { 'no-restricted-syntax': ['error', ...RESTRICTED_SYNTAX.filter((restriction) => !restriction.selector.startsWith('TSAsExpression'))] },
   },
   {
     files: ['src/**/*.{ts,tsx}'],
-    ignores: ['src/modules/*/data/**', 'src/modules/*/services/**', 'src/lib/db/**', 'src/modules/*/actions/**', 'src/**/*.test.{ts,tsx}', 'src/**/*.stories.tsx'],
+    ignores: ['src/modules/*/data/**', 'src/modules/*/services/**', 'src/lib/db/**', 'src/modules/*/actions/**', 'src/**/*.test.{ts,tsx}', 'src/**/*.stories.tsx', 'src/test/**'],
     rules: {
       'no-restricted-imports': ['error', { paths: [{ name: '@/lib/db', message: DATABASE_ACCESS_MESSAGE }] }],
     },
