@@ -2,10 +2,10 @@ import { randomUUID } from 'node:crypto'
 import { and, eq } from 'drizzle-orm'
 import { describe, expect, it } from 'vitest'
 import { db } from '@/lib/db'
-import { matches, matchEvents, matchLineups, teamSeasonStats } from '@/lib/db/schema'
-import { seedEvent, seedMatch, seedSeason } from '@/test/database-seeds/database-seeds'
+import { matchEvents, matches, matchLineups, teamSeasonStats } from '@/lib/db/schema'
 import type { LiveClock } from '../live-match/live-match'
 import { liveService } from './live-service'
+import { seedEvent, seedMatch, seedSeason } from '@/test/database-seeds/database-seeds'
 
 const OPERATOR = 'operador-teste'
 

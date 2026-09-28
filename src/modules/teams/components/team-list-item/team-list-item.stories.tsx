@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 import { TeamListItem } from './team-list-item'
-import { secondSeasonTeamFixture, seasonTeamFixture } from './team-list-item.fixtures'
+import { seasonTeamFixture, secondSeasonTeamFixture } from './team-list-item.fixtures'
 
 const meta = {
   title: 'Teams/TeamListItem',

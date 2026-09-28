@@ -1,4 +1,4 @@
-import { type Toast, TOAST_TONE } from '../../state/live-state'
+import { TOAST_TONE, type Toast } from '../../state/live-state'
 import { LIVE_MESSAGE } from '../../state/toasts'
 
 export const goalToastFixture: Toast = {

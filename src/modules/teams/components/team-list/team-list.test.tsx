@@ -1,6 +1,6 @@
 import { render, screen, within } from '@testing-library/react'
 import { beforeAll, describe, expect, it, vi } from 'vitest'
-import { secondSeasonTeamFixture, seasonTeamFixture, seasonTeamsFixture } from '../team-list-item/team-list-item.fixtures'
+import { seasonTeamFixture, seasonTeamsFixture, secondSeasonTeamFixture } from '../team-list-item/team-list-item.fixtures'
 import { TeamList } from './team-list'
 
 describe('TeamList', () => {

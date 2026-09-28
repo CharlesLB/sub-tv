@@ -1,6 +1,6 @@
 import { sql } from 'drizzle-orm'
-import type { SqlExecutor } from '../sql-executor/sql-executor'
 import { isCountedMatch } from '../counted-match/counted-match'
+import type { SqlExecutor } from '../sql-executor/sql-executor'
 
 export const recomputePlayerStatistics = async (executor: SqlExecutor, seasonId: string): Promise<void> => {
   await executor.execute(sql`delete from player_season_stats where season_id = ${seasonId}`)

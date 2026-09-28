@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils/cn'
-import { ICON_PATHS, ICON_VIEW_BOX, type IconName } from './icon-paths'
 import { iconStyles as styles } from './icon.styles'
+import { ICON_PATHS, ICON_VIEW_BOX, type IconName } from './icon-paths'
 
 type IconProps = {
   name: IconName

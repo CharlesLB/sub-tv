@@ -1,6 +1,6 @@
 import { Icon } from '@/components/ui/icon/icon'
-import type { OfficialsStripItem } from './officials-strip-items'
 import { officialsStripStyles as styles } from './officials-strip.styles'
+import type { OfficialsStripItem } from './officials-strip-items'
 
 type OfficialsStripProps = { items: OfficialsStripItem[] }
 

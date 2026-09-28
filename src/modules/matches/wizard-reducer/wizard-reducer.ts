@@ -1,8 +1,8 @@
 import * as R from 'remeda'
 import { STARTERS_PER_TEAM } from '../default-starters/default-starters'
+import { opponentSide, type Side } from '../live-match/live-match'
 import type { PitchPoint } from '../pitch-layout/pitch-layout'
 import { type StarterPositions, seedStarterPositions } from '../starter-positions/starter-positions'
-import { opponentSide, type Side } from '../live-match/live-match'
 import type { MatchSetupVM, SetupTeamVM } from '../types'
 
 export const WIZARD_STEP = { INFORMATION: 1, TEAMS: 2, LINEUPS: 3, REVIEW: 4 } as const

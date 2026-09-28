@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import { db } from '@/lib/db'
 import { seasonSquads } from '@/lib/db/schema'
-import { type SeededSeason, seedSeason } from '@/test/database-seeds/database-seeds'
 import { matchSetupService } from './match-setup-service'
+import { type SeededSeason, seedSeason } from '@/test/database-seeds/database-seeds'
 
 const enrollSquads = async (season: SeededSeason, sharedPlayerId: string) => {
   await db.insert(seasonSquads).values([

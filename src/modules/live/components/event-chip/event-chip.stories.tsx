@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 import { awayTeamFixture, homeTeamFixture } from '../live-board/live-board.fixtures'
 import { EventChip } from './event-chip'
-import { halfTimeItemFixture, goalItemFixture, yellowCardItemFixture } from './event-chip.fixtures'
+import { goalItemFixture, halfTimeItemFixture, yellowCardItemFixture } from './event-chip.fixtures'
 
 const meta = {
   title: 'Live/EventChip',

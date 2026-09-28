@@ -2,8 +2,8 @@ import { eq } from 'drizzle-orm'
 import { describe, expect, it } from 'vitest'
 import { db } from '@/lib/db'
 import { matchEvents, playerSeasonStats } from '@/lib/db/schema'
-import { seedEvent, seedMatch, seedSeason } from '@/test/database-seeds/database-seeds'
 import { recomputeSeasonStatistics } from './season-statistics'
+import { seedEvent, seedMatch, seedSeason } from '@/test/database-seeds/database-seeds'
 
 const statisticsOf = async (playerId: string) => (await db.select().from(playerSeasonStats).where(eq(playerSeasonStats.playerId, playerId)))[0]
 

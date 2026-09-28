@@ -1,7 +1,7 @@
 import { CATEGORY } from '@/modules/championships/client'
 import type { PeriodScorerVM } from '../../types'
-import { athleteHistoryFixture } from '../athlete-hero/athlete-hero.fixtures'
 import { atleticoBadgeFixture, cruzeiroBadgeFixture, tupiBadgeFixture } from '../accumulated-table/accumulated-table.fixtures'
+import { athleteHistoryFixture } from '../athlete-hero/athlete-hero.fixtures'
 
 export const topPeriodScorerFixture: PeriodScorerVM = {
   playerId: athleteHistoryFixture.playerId,

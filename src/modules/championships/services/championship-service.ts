@@ -1,7 +1,7 @@
 import 'server-only'
 import { and, desc, eq, inArray, max, ne, sql } from 'drizzle-orm'
 import { type ActionResult, fail, ok } from '@/lib/actions/result'
-import { db, tables, type Transaction } from '@/lib/db'
+import { db, type Transaction, tables } from '@/lib/db'
 import { categoryLabel } from '../categories'
 import { toChampionshipSlug } from '../championship-slug/championship-slug'
 import type { CreateChampionshipData } from '../schemas'

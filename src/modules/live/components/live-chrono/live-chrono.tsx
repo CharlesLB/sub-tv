@@ -3,8 +3,8 @@
 import { cn } from '@/lib/utils/cn'
 import { Icon } from '@/components/ui/icon/icon'
 import { elapsedSecondsAt, type LiveClock } from '@/modules/matches/client'
-import { useClockTick } from '../../hooks/use-clock-tick'
 import { CHRONO_TONE, chronoDisplayOf, formatElapsed } from '../../chrono-display/chrono-display'
+import { useClockTick } from '../../hooks/use-clock-tick'
 import { liveChronoStyles as styles } from './live-chrono.styles'
 
 type LiveChronoProps = { clock: LiveClock; onAdvance: () => void }

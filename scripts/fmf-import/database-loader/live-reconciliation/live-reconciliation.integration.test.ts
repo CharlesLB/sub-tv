@@ -2,8 +2,8 @@ import { eq } from 'drizzle-orm'
 import { describe, expect, it } from 'vitest'
 import { db } from '@/lib/db'
 import { matchEvents } from '@/lib/db/schema'
-import { seedMatch, seedSeason } from '@/test/database-seeds/database-seeds'
 import { reconcileLiveEvents } from './live-reconciliation'
+import { seedMatch, seedSeason } from '@/test/database-seeds/database-seeds'
 
 const insertGoal = async (goal: { matchId: string; playerId: string; minute: number; source: 'fmf' | 'ao_vivo'; assistPlayerId: string | null }): Promise<string> => {
   const [row] = await db

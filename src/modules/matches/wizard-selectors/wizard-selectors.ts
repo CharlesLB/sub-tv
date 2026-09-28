@@ -1,7 +1,7 @@
 import { STARTERS_PER_TEAM } from '../default-starters/default-starters'
 import { formatDateInput, isDateInput, isTimeInput } from '../kickoff-time/kickoff-time'
-import { resolveStarterPositions, type StarterPositions } from '../starter-positions/starter-positions'
 import type { Side } from '../live-match/live-match'
+import { resolveStarterPositions, type StarterPositions } from '../starter-positions/starter-positions'
 import type { MatchSetupVM, SetupPlayerVM, SetupTeamVM } from '../types'
 import { WIZARD_STEP, type WizardState, type WizardStep } from '../wizard-reducer/wizard-reducer'
 
