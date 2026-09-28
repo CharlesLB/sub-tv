@@ -1,0 +1,18 @@
+export const periodScorersStyles = {
+  section: 'max-w-[720px]',
+  list: 'flex flex-col overflow-hidden rounded-card border border-bd bg-pan',
+  row: 'flex w-full animate-fade-up items-center gap-[11px] px-3 py-[9px] text-left transition-colors duration-150 hover:bg-pan2',
+  rowOdd: 'bg-pan0',
+  rowEven: 'bg-pan',
+  position: 'w-6 flex-none text-[11px] nums',
+  positionLeader: 'text-ac',
+  positionFollower: 'text-tx5',
+  colorSwatch: 'size-[9px] flex-none',
+  identity: 'flex min-w-0 flex-1 flex-col gap-[3px]',
+  name: 'truncate text-[12.6px] font-bold tracking-[-.01em] text-tx',
+  team: 'truncate text-[9.5px] tracking-[.08em] text-tx4',
+  barTrack: 'h-1 w-[72px] flex-none bg-bd mobile:hidden',
+  bar: 'block h-full transition-[width] duration-400',
+  goals: 'w-[30px] flex-none text-right text-[15.3px] font-bold text-tx nums',
+  seasonCount: 'w-[62px] flex-none text-right text-[9.5px] tracking-[.08em] text-tx5 mobile:hidden',
+} as const

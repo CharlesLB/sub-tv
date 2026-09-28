@@ -15,6 +15,7 @@ import { SeasonBarChart } from '../season-bar-chart/season-bar-chart'
 import { TeamCampaign } from '../team-campaign/team-campaign'
 import { TeamHero } from '../team-hero/team-hero'
 import { TeamScorers } from '../team-scorers/team-scorers'
+import { teamHistoryScreenStyles as styles } from './team-history-screen.styles'
 
 const TEAM_PAGE_LABEL = 'Time'
 
@@ -40,7 +41,7 @@ export async function TeamHistoryScreen({ teamKey, query }: TeamHistoryScreenPro
       <ContextBar crumbs={historyCrumbs(target, filter, seasonLabel, TEAM_PAGE_LABEL)} title={`${history.team.name} ${categoryLabel[history.category]}`} category={history.category} />
       <HistoryFrame>
         <HistoryFilters filter={filter} availableYears={availableYears} target={target} />
-        <div className="flex animate-fade-in flex-col gap-[22px]">
+        <div className={styles.content}>
           <BackToOverviewLink filter={filter} />
           <TeamHero history={history} />
           <KpiGrid kpis={kpis} variant="detail" />
@@ -52,12 +53,12 @@ export async function TeamHistoryScreen({ teamKey, query }: TeamHistoryScreenPro
                 title="Pontos por temporada"
                 bars={history.seasons.map((season) => ({ year: season.year, value: season.points }))}
                 color={history.team.color}
-                trackHeightClass="h-[92px]"
+                trackHeightClass={styles.seasonChartTrack}
               />
               <TeamCampaign seasons={history.seasons} />
             </>
           )}
-          <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,340px),1fr))] items-start gap-[22px]">
+          <div className={styles.sideBySide}>
             <TeamScorers scorers={history.scorers} color={history.team.color} filter={filter} />
             <CompetitionPresenceList presences={history.presences} color={history.team.color} />
           </div>

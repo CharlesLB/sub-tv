@@ -1,5 +1,6 @@
 import { cn } from '@/lib/utils/cn'
 import { Skeleton } from '@/components/ui/skeleton/skeleton'
+import { rowsSkeletonStyles as styles } from './rows-skeleton.styles'
 
 const ROW_DELAY_STEP_MS = 60
 
@@ -7,15 +8,15 @@ type RowsSkeletonProps = { rowCount: number; titleWidthClass: string; className?
 
 export function RowsSkeleton({ rowCount, titleWidthClass, className }: RowsSkeletonProps) {
   return (
-    <div aria-hidden className={cn('flex min-w-0 flex-col gap-[10px]', className)}>
-      <Skeleton className={cn('h-[15px]', titleWidthClass)} />
-      <div className="flex flex-col overflow-hidden rounded-card border border-bd bg-pan">
+    <div aria-hidden className={cn(styles.section, className)}>
+      <Skeleton className={cn(styles.title, titleWidthClass)} />
+      <div className={styles.rows}>
         {Array.from({ length: rowCount }, (_, index) => (
-          <div key={index} className={cn('flex h-[41px] items-center gap-[10px] px-3', index % 2 === 1 ? 'bg-pan0' : 'bg-pan')}>
-            <Skeleton className="h-[10px] w-5 flex-none" delayMs={index * ROW_DELAY_STEP_MS} />
-            <Skeleton className="size-[9px] flex-none" delayMs={index * ROW_DELAY_STEP_MS} />
-            <Skeleton className="h-3 w-[38%]" delayMs={index * ROW_DELAY_STEP_MS + 30} />
-            <Skeleton className="ml-auto h-3 w-[22%]" delayMs={index * ROW_DELAY_STEP_MS + 60} />
+          <div key={index} className={cn(styles.row, index % 2 === 1 ? styles.rowOdd : styles.rowEven)}>
+            <Skeleton className={styles.position} delayMs={index * ROW_DELAY_STEP_MS} />
+            <Skeleton className={styles.colorSwatch} delayMs={index * ROW_DELAY_STEP_MS} />
+            <Skeleton className={styles.name} delayMs={index * ROW_DELAY_STEP_MS + 30} />
+            <Skeleton className={styles.value} delayMs={index * ROW_DELAY_STEP_MS + 60} />
           </div>
         ))}
       </div>
