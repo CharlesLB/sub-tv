@@ -16,6 +16,10 @@ describe('describeWhen', () => {
     expect(describeWhen('2023-11-29T12:00:00.000Z', NOW)).toBe('NOV 2023')
   })
 
+  it('describeWhen with an old match late at night in São Paulo uses the local month', () => {
+    expect(describeWhen('2023-10-01T01:00:00.000Z', NOW)).toBe('SET 2023')
+  })
+
   it('describeWhen without a date returns an empty label', () => {
     expect(describeWhen(null, NOW)).toBe('')
   })
