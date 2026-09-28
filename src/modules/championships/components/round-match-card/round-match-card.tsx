@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils/cn'
 import { formatShortDateTime } from '@/lib/utils/format-date/format-date'
 import { Crest } from '@/components/ui/crest/crest'
 import type { MatchCardVM, TeamBadgeVM } from '../../types'
+import { roundMatchCardStyles as styles } from './round-match-card.styles'
 
 const FINISHED_STATUS = 'encerrado'
 const LIVE_STATUS = 'ao_vivo'
@@ -36,10 +37,10 @@ type TeamLineProps = { team: TeamBadgeVM; score: number | null; isDimmed: boolea
 
 function TeamLine({ team, score, isDimmed }: TeamLineProps) {
   return (
-    <div className="flex min-w-0 items-center gap-[9px]">
+    <div className={styles.teamLine}>
       <Crest color={team.color} imagePath={team.crestPath} width={16} />
-      <span className={cn('min-w-0 flex-1 truncate text-[12.6px] font-bold tracking-[-.01em]', isDimmed ? 'text-tx2' : 'text-tx')}>{team.name}</span>
-      <span className={cn('flex-none font-mono text-[17px] font-semibold nums', score === null ? 'text-tx5' : isDimmed ? 'text-tx2' : 'text-tx')}>{score ?? '—'}</span>
+      <span className={cn(styles.teamName, isDimmed ? styles.teamDimmed : styles.teamHighlighted)}>{team.name}</span>
+      <span className={cn(styles.score, score === null ? styles.scoreEmpty : isDimmed ? styles.teamDimmed : styles.teamHighlighted)}>{score ?? '—'}</span>
     </div>
   )
 }
@@ -52,17 +53,11 @@ export function RoundMatchCard({ match, seasonId }: RoundMatchCardProps) {
   const action = actionOf(match, seasonId)
 
   return (
-    <div className={cn('flex flex-col gap-[5px] border-l-2 bg-pan2 px-3 py-[11px]', isLive ? 'border-ac' : 'border-bd')}>
-      <span className={cn('text-[10px] tracking-[.1em]', isLive ? 'text-ac' : 'text-tx4')}>{describeKicker(match)}</span>
+    <div className={cn(styles.card, isLive ? styles.cardLive : styles.cardIdle)}>
+      <span className={cn(styles.kicker, isLive ? styles.kickerLive : styles.kickerIdle)}>{describeKicker(match)}</span>
       <TeamLine team={match.home} score={match.homeScore} isDimmed={winner === 'away'} />
       <TeamLine team={match.away} score={match.awayScore} isDimmed={winner === 'home'} />
-      <Link
-        href={action.href}
-        className={cn(
-          'mt-1 flex h-8 items-center justify-center text-[10.3px] font-bold tracking-[-.01em]',
-          action.isPrimary ? 'bg-ac text-bg' : 'border border-bd2 bg-transparent text-tx2 hover:border-tx hover:text-tx',
-        )}
-      >
+      <Link href={action.href} className={cn(styles.action, action.isPrimary ? styles.actionPrimary : styles.actionSecondary)}>
         {action.label}
       </Link>
     </div>

@@ -1,31 +1,13 @@
 import { cn } from '@/lib/utils/cn'
 import { type Category, categoryBorderClass, categoryLabel, categoryTextClass } from '../../categories'
-
-const TAG_SIZE_CLASS = {
-  small: 'px-2 py-[2px] text-[10px]',
-  medium: 'px-2 py-[3px] text-[10.5px]',
-  large: 'px-[10px] py-[3px] text-[11.5px]',
-  extraLarge: 'px-[11px] py-1 text-[13px]',
-} as const
+import { categoryTagStyles as styles } from './category-tag.styles'
 
 type CategoryTagProps = {
   category: Category
-  size?: keyof typeof TAG_SIZE_CLASS
+  size?: keyof typeof styles.size
   className?: string
 }
 
 export function CategoryTag({ category, size = 'small', className }: CategoryTagProps) {
-  return (
-    <span
-      className={cn(
-        'inline-flex flex-none items-center self-center rounded-card border font-bold tracking-[-.01em] whitespace-nowrap',
-        TAG_SIZE_CLASS[size],
-        categoryBorderClass[category],
-        categoryTextClass[category],
-        className,
-      )}
-    >
-      {categoryLabel[category]}
-    </span>
-  )
+  return <span className={cn(styles.tag, styles.size[size], categoryBorderClass[category], categoryTextClass[category], className)}>{categoryLabel[category]}</span>
 }

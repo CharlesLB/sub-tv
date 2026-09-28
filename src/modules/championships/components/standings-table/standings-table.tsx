@@ -2,29 +2,29 @@ import { cn } from '@/lib/utils/cn'
 import type { Category } from '../../categories'
 import type { StandingGroupVM } from '../../types'
 import { StandingsRow } from '../standings-row/standings-row'
-import { STANDINGS_GRID_CLASS } from './standings-grid'
+import { standingsTableStyles as styles } from './standings-table.styles'
 
 const HEADERS = [
-  { label: '#', className: 'text-left' },
-  { label: 'Clube', className: 'text-left' },
-  { label: 'PTS', className: 'text-center' },
-  { label: 'J', className: 'text-center' },
-  { label: 'V', className: 'text-center compact:hidden' },
-  { label: 'E', className: 'text-center compact:hidden' },
-  { label: 'D', className: 'text-center compact:hidden' },
-  { label: 'SG', className: 'text-center' },
-  { label: 'Últimos 5', className: 'text-right compact:hidden' },
+  { label: '#', className: styles.headerAlignStart },
+  { label: 'Clube', className: styles.headerAlignStart },
+  { label: 'PTS', className: styles.headerAlignCenter },
+  { label: 'J', className: styles.headerAlignCenter },
+  { label: 'V', className: styles.headerAlignCenterWideOnly },
+  { label: 'E', className: styles.headerAlignCenterWideOnly },
+  { label: 'D', className: styles.headerAlignCenterWideOnly },
+  { label: 'SG', className: styles.headerAlignCenter },
+  { label: 'Últimos 5', className: styles.headerAlignEndWideOnly },
 ] as const
 
 type StandingsTableProps = { group: StandingGroupVM; category: Category }
 
 export function StandingsTable({ group, category }: StandingsTableProps) {
   return (
-    <div className="overflow-hidden rounded-card border border-bd bg-pan">
-      {group.groupName ? <div className="border-b border-bd px-[14px] py-2 text-[11.3px] font-bold tracking-[-.01em] text-tx2">Grupo {group.groupName}</div> : null}
-      <div className={cn(STANDINGS_GRID_CLASS, 'border-b border-bd bg-pan2 py-[9px] compact:py-2')}>
+    <div className={styles.table}>
+      {group.groupName ? <div className={styles.groupName}>Grupo {group.groupName}</div> : null}
+      <div className={cn(styles.grid, styles.headerRow)}>
         {HEADERS.map((header) => (
-          <span key={header.label} className={cn('text-[10px] font-semibold tracking-[.14em] whitespace-nowrap text-tx4 compact:text-[9px] compact:tracking-[.1em]', header.className)}>
+          <span key={header.label} className={cn(styles.headerCell, header.className)}>
             {header.label}
           </span>
         ))}

@@ -9,6 +9,7 @@ import { MatchGrid } from '../match-grid/match-grid'
 import { RoundPanel } from '../round-panel/round-panel'
 import { StandingsPanel } from '../standings-panel/standings-panel'
 import { TopScorersTable } from '../top-scorers-table/top-scorers-table'
+import { championshipTabContentStyles as styles } from './championship-tab-content.styles'
 
 type TabRendererProps = { header: ChampionshipHeaderVM }
 
@@ -17,7 +18,7 @@ async function StandingsTab({ header }: TabRendererProps) {
   const summary = summarizeSeasonMatches(matches)
 
   return (
-    <div className="flex animate-fade-up flex-wrap items-start gap-[18px]">
+    <div className={styles.standingsLayout}>
       <StandingsPanel phases={phases} category={header.category} roundsPlayed={summary.currentRound} />
       <RoundPanel seasonId={header.id} matches={matches} currentRound={summary.currentRound} currentPhase={summary.currentPhase} />
     </div>
@@ -44,8 +45,8 @@ export function ChampionshipTabContent({ header, tab }: ChampionshipTabContentPr
   const TabRenderer = TAB_RENDERERS[tab]
 
   return (
-    <div className="min-h-0 flex-1 overflow-y-auto p-5 mobile:px-3 mobile:pt-[14px] mobile:pb-[26px]">
-      <div className="mx-auto max-w-[1280px]">
+    <div className={styles.scroller}>
+      <div className={styles.content}>
         <TabRenderer header={header} />
       </div>
     </div>

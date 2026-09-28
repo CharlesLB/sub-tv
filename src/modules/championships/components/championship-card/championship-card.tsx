@@ -6,6 +6,7 @@ import { Crest } from '@/components/ui/crest/crest'
 import { Icon } from '@/components/ui/icon/icon'
 import type { ChampionshipCardVM } from '../../types'
 import { CategoryTag } from '../category-tag/category-tag'
+import { championshipCardStyles as styles } from './championship-card.styles'
 
 const CARD_DELAY_STEP_MS = 45
 
@@ -30,47 +31,38 @@ export function ChampionshipCard({ championship, index }: ChampionshipCardProps)
   const href = championship.liveMatch ? routes.live(championship.liveMatch.matchId) : routes.championship(championship.id)
 
   return (
-    <Link
-      href={href}
-      className={cn(
-        'flex animate-rise-in flex-col gap-3 rounded-card border bg-pan p-4 text-tx transition-[background,border-color] duration-200 hover:border-bd2 hover:bg-pan4',
-        isLive ? 'border-bd2' : 'border-bd',
-      )}
-      style={{ animationDelay: `${index * CARD_DELAY_STEP_MS}ms` }}
-    >
-      <div className="flex items-start gap-[10px]">
-        <div className="flex min-w-0 flex-col gap-[5px]">
-          <span className="text-[19.8px] leading-none font-bold tracking-[-.01em] text-pretty">{championship.name}</span>
-          <span className="text-[10.5px] tracking-[.08em] text-tx4">{championship.statusLine}</span>
+    <Link href={href} className={cn(styles.card, isLive ? styles.cardLive : styles.cardIdle)} style={{ animationDelay: `${index * CARD_DELAY_STEP_MS}ms` }}>
+      <div className={styles.header}>
+        <div className={styles.titleBlock}>
+          <span className={styles.name}>{championship.name}</span>
+          <span className={styles.statusLine}>{championship.statusLine}</span>
         </div>
-        <CategoryTag category={championship.category} size="medium" className="self-start" />
+        <CategoryTag category={championship.category} size="medium" className={styles.categoryTag} />
       </div>
-      <div className="flex flex-col gap-px bg-pan2 px-[10px] py-2">
+      <div className={styles.podium}>
         {championship.podium.length > 0 ? (
           championship.podium.map((row) => (
-            <div key={row.position} className="flex min-w-0 items-center gap-[9px] py-1">
-              <span className={cn('w-3 flex-none text-[11px]', row.position === 1 ? 'text-ac' : 'text-tx4')}>{row.position}</span>
+            <div key={row.position} className={styles.podiumRow}>
+              <span className={cn(styles.podiumPosition, row.position === 1 ? styles.podiumPositionLeader : styles.podiumPositionOther)}>{row.position}</span>
               <Crest color={row.team.color} imagePath={row.team.crestPath} width={16} />
-              <span className={cn('min-w-0 truncate text-[11.7px] font-bold tracking-[-.01em]', row.position === 1 ? 'text-tx' : 'text-tx2')}>{row.team.name}</span>
-              <span className={cn('ml-auto flex-none text-[12.5px] nums', row.position === 1 ? 'font-semibold text-tx' : 'text-tx2')}>{row.points}</span>
+              <span className={cn(styles.podiumTeam, row.position === 1 ? styles.podiumTeamLeader : styles.podiumTeamOther)}>{row.team.name}</span>
+              <span className={cn(styles.podiumPoints, row.position === 1 ? styles.podiumPointsLeader : styles.podiumPointsOther)}>{row.points}</span>
             </div>
           ))
         ) : (
-          <div className="flex items-center gap-[9px] py-1">
-            <span className="w-3 flex-none text-[9.9px] text-tx4">—</span>
-            <span className="h-[19px] w-4 flex-none" />
-            <span className="text-[10.8px] font-semibold tracking-[-.01em] text-tx4">Sem partidas com resultado</span>
+          <div className={styles.emptyPodiumRow}>
+            <span className={styles.emptyPodiumPosition}>—</span>
+            <span className={styles.emptyPodiumCrest} />
+            <span className={styles.emptyPodiumMessage}>Sem partidas com resultado</span>
           </div>
         )}
       </div>
-      <div className={cn('flex min-w-0 items-center gap-2 rounded-card border px-[10px] py-2', isLive ? 'border-ac bg-pan2' : 'border-bd bg-transparent')}>
-        {isLive ? <span className="size-[7px] flex-none animate-live-dot rounded-full bg-ac" /> : <Icon name="schedule" size={16} className="text-tx4" />}
-        <span className={cn('min-w-0 truncate text-[11.3px] font-bold tracking-[-.01em]', isLive ? 'text-tx' : 'text-tx2')}>{status.text}</span>
-        <span className={cn('ml-auto flex-none text-[11px]', isLive ? 'text-ac' : 'text-tx4')}>{status.meta}</span>
+      <div className={cn(styles.status, isLive ? styles.statusLive : styles.statusIdle)}>
+        {isLive ? <span className={styles.liveDot} /> : <Icon name="schedule" size={16} className={styles.scheduleIcon} />}
+        <span className={cn(styles.statusText, isLive ? styles.statusTextLive : styles.statusTextIdle)}>{status.text}</span>
+        <span className={cn(styles.statusMeta, isLive ? styles.statusMetaLive : styles.statusMetaIdle)}>{status.meta}</span>
       </div>
-      <span className={cn('flex h-9 items-center justify-center rounded-card border border-bd2 text-[11.3px] font-bold tracking-[-.01em] transition-colors', isLive ? 'text-ac' : 'text-tx2')}>
-        {isLive ? 'Abrir transmissão' : 'Abrir campeonato'}
-      </span>
+      <span className={cn(styles.openLabel, isLive ? styles.openLabelLive : styles.openLabelIdle)}>{isLive ? 'Abrir transmissão' : 'Abrir campeonato'}</span>
     </Link>
   )
 }

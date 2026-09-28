@@ -4,6 +4,7 @@ import { createContext, type ReactNode, use, useState } from 'react'
 import type { Category } from '../../categories'
 import type { CategoryClubsVM } from '../../types'
 import { NewChampionshipPanel } from '../new-championship-panel/new-championship-panel'
+import { newChampionshipProviderStyles as styles } from './new-championship-provider.styles'
 
 type NewChampionshipLauncher = { openFor: (category: Category) => void }
 
@@ -29,7 +30,7 @@ export function NewChampionshipProvider({ year, clubs, children }: NewChampionsh
 
   return (
     <NewChampionshipContext value={{ openFor }}>
-      <div className="mx-auto flex max-w-[1240px] flex-col gap-[18px]">
+      <div className={styles.stack}>
         {openForm ? <NewChampionshipPanel key={openForm.openedAt} initialCategory={openForm.category} defaultYear={year} clubs={clubs} onClose={() => setOpenForm(null)} /> : null}
         {children}
       </div>

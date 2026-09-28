@@ -4,6 +4,7 @@ import { CategoryTag } from '../category-tag/category-tag'
 import { ChampionshipCard } from '../championship-card/championship-card'
 import { NewChampionshipButton } from '../new-championship-button/new-championship-button'
 import { NewChampionshipProvider } from '../new-championship-provider/new-championship-provider'
+import { championshipListStyles as styles } from './championship-list.styles'
 
 const pluralize = (count: number, singular: string, plural: string): string => `${count} ${count === 1 ? singular : plural}`
 
@@ -21,27 +22,25 @@ export function ChampionshipList({ championships, year, clubs, canEdit }: Champi
   }))
 
   return (
-    <div className="min-h-0 flex-1 animate-fade-in overflow-y-auto p-5 mobile:px-3 mobile:pt-[14px] mobile:pb-[26px]">
+    <div className={styles.scroller}>
       <NewChampionshipProvider year={year} clubs={clubs}>
-        <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,400px),1fr))] gap-[18px]">
+        <div className={styles.columns}>
           {columns.map((column) => {
             const teamCount = column.championships.reduce((total, championship) => total + championship.teamCount, 0)
             const athleteCount = column.championships.reduce((total, championship) => total + championship.athleteCount, 0)
 
             return (
-              <section key={column.category} aria-label={`Campeonatos ${column.category}`} className="flex min-w-0 flex-col gap-3">
-                <div className={`flex items-center gap-[10px] border-b-2 pb-[9px] ${categoryBorderClass[column.category]}`}>
+              <section key={column.category} aria-label={`Campeonatos ${column.category}`} className={styles.column}>
+                <div className={`${styles.columnHeader} ${categoryBorderClass[column.category]}`}>
                   <CategoryTag category={column.category} size="extraLarge" />
-                  <span className="text-[11px] text-tx4">
+                  <span className={styles.columnSummary}>
                     {[pluralize(column.championships.length, 'campeonato', 'campeonatos'), pluralize(teamCount, 'time', 'times'), pluralize(athleteCount, 'atleta', 'atletas')].join(' · ')}
                   </span>
                 </div>
                 {column.championships.map((championship, index) => (
                   <ChampionshipCard key={championship.id} championship={championship} index={index} />
                 ))}
-                {column.championships.length === 0 ? (
-                  <div className="flex h-11 items-center justify-center border border-dashed border-bd2 text-[10.8px] font-bold tracking-[-.01em] text-tx4">Nenhum campeonato nesta temporada</div>
-                ) : null}
+                {column.championships.length === 0 ? <div className={styles.emptyColumn}>Nenhum campeonato nesta temporada</div> : null}
                 {canEdit ? <NewChampionshipButton category={column.category} /> : null}
               </section>
             )

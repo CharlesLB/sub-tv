@@ -11,9 +11,8 @@ import { CHAMPIONSHIP_NAME_MAX_LENGTH, CHAMPIONSHIP_PHASE_MAX_LENGTH, CHAMPIONSH
 import type { CategoryClubsVM } from '../../types'
 import { ClubPicker } from '../club-picker/club-picker'
 import { FlashToast } from '../flash-toast/flash-toast'
+import { newChampionshipPanelStyles as styles } from './new-championship-panel.styles'
 
-const LABEL_CLASS = 'mb-[6px] block text-[10.3px] font-semibold tracking-[-.01em] text-tx4'
-const INPUT_CLASS = 'h-10 w-full rounded-card border border-bd2 bg-bg px-3 text-[13px] text-tx outline-none placeholder:text-tx5 focus-visible:border-tx3'
 const DEFAULT_PHASE = '1ª FASE · RODADA 1'
 const INCOMPLETE_MESSAGE = 'Defina nome e categoria do campeonato'
 
@@ -60,11 +59,11 @@ export function NewChampionshipPanel({ initialCategory, defaultYear, clubs, onCl
   const toggleClub = (clubId: string) => setSelectedClubIds((current) => (current.includes(clubId) ? current.filter((selected) => selected !== clubId) : [...current, clubId]))
 
   return (
-    <form ref={scrollIntoViewOnMount} action={formAction} onSubmit={blockIncomplete} className="flex animate-rise-in flex-col gap-4 bg-pan2 p-5 chamfer mobile:p-[14px]">
-      <h2 className="text-[13.5px] font-bold tracking-[-.01em]">Novo campeonato</h2>
-      <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,220px),1fr))] gap-[14px]">
+    <form ref={scrollIntoViewOnMount} action={formAction} onSubmit={blockIncomplete} className={styles.form}>
+      <h2 className={styles.title}>Novo campeonato</h2>
+      <div className={styles.fields}>
         <label>
-          <span className={LABEL_CLASS}>Nome</span>
+          <span className={styles.label}>Nome</span>
           <input
             name="name"
             value={name}
@@ -72,23 +71,20 @@ export function NewChampionshipPanel({ initialCategory, defaultYear, clubs, onCl
             maxLength={CHAMPIONSHIP_NAME_MAX_LENGTH}
             autoComplete="off"
             placeholder="ex.: COPA DO VALE"
-            className={INPUT_CLASS}
+            className={styles.input}
           />
         </label>
         <div role="group" aria-label="Categoria">
-          <span className="mb-[6px] block text-[10.3px] font-semibold tracking-[-.01em] text-am">Categoria · obrigatória</span>
+          <span className={styles.requiredLabel}>Categoria · obrigatória</span>
           <input type="hidden" name="category" value={category} />
-          <div className="flex gap-2">
+          <div className={styles.categoryOptions}>
             {CATEGORIES.map((option) => (
               <button
                 key={option}
                 type="button"
                 aria-pressed={option === category}
                 onClick={() => chooseCategory(option)}
-                className={cn(
-                  'h-10 flex-1 rounded-card border text-[11.7px] font-bold tracking-[-.01em] transition-colors duration-[140ms]',
-                  option === category ? cn('text-bg', categoryBackgroundClass[option], categoryBorderClass[option]) : 'border-bd2 bg-transparent text-tx2 hover:border-bd3',
-                )}
+                className={cn(styles.categoryOption, option === category ? cn(styles.categoryOptionSelected, categoryBackgroundClass[option], categoryBorderClass[option]) : styles.categoryOptionIdle)}
               >
                 {categoryLabel[option]}
               </button>
@@ -96,39 +92,39 @@ export function NewChampionshipPanel({ initialCategory, defaultYear, clubs, onCl
           </div>
         </div>
         <label>
-          <span className={LABEL_CLASS}>Temporada</span>
-          <input name="year" type="number" inputMode="numeric" defaultValue={defaultYear} min={CHAMPIONSHIP_YEAR_MIN} max={CHAMPIONSHIP_YEAR_MAX} className={cn(INPUT_CLASS, 'nums')} />
+          <span className={styles.label}>Temporada</span>
+          <input name="year" type="number" inputMode="numeric" defaultValue={defaultYear} min={CHAMPIONSHIP_YEAR_MIN} max={CHAMPIONSHIP_YEAR_MAX} className={cn(styles.input, styles.yearInput)} />
         </label>
         <label>
-          <span className={LABEL_CLASS}>Fase</span>
-          <input name="phase" defaultValue={DEFAULT_PHASE} maxLength={CHAMPIONSHIP_PHASE_MAX_LENGTH} placeholder="ex.: 1ª FASE · RODADA 1" className={INPUT_CLASS} />
+          <span className={styles.label}>Fase</span>
+          <input name="phase" defaultValue={DEFAULT_PHASE} maxLength={CHAMPIONSHIP_PHASE_MAX_LENGTH} placeholder="ex.: 1ª FASE · RODADA 1" className={styles.input} />
         </label>
       </div>
       <div>
-        <span className={cn(LABEL_CLASS, 'flex items-baseline justify-between gap-3')}>
+        <span className={cn(styles.label, styles.clubsLabel)}>
           <span>Times participantes · opcional</span>
-          <span className="nums">{selectedClubIds.length} selecionados</span>
+          <span className={styles.selectedCount}>{selectedClubIds.length} selecionados</span>
         </span>
         <ClubPicker clubs={clubs[category]} selectedClubIds={selectedClubIds} onToggle={toggleClub} />
-        <p className="mt-2 text-[11.5px] leading-[1.45] text-tx4">O elenco de cada time é copiado da última temporada do clube nesta categoria.</p>
+        <p className={styles.clubsHint}>O elenco de cada time é copiado da última temporada do clube nesta categoria.</p>
       </div>
       {failure ? (
-        <p role="alert" className="text-[12px] text-vm">
+        <p role="alert" className={styles.failure}>
           {failure}
         </p>
       ) : null}
-      <div className="flex flex-wrap items-center gap-[14px]">
+      <div className={styles.actions}>
         <button
           type="submit"
           disabled={isPending}
-          className={cn('h-11 px-5 text-[12.6px] font-bold tracking-[-.01em]', isComplete ? 'cursor-pointer bg-ac text-bg' : 'cursor-not-allowed bg-bd2 text-tx4', isPending ? 'opacity-70' : null)}
+          className={cn(styles.submitButton, isComplete ? styles.submitButtonReady : styles.submitButtonIncomplete, isPending ? styles.submitButtonPending : null)}
         >
           {isPending ? 'Criando…' : 'Criar campeonato'}
         </button>
-        <button type="button" onClick={onClose} className="h-11 rounded-card border border-bd2 bg-transparent px-[18px] text-[11.7px] font-bold tracking-[-.01em] text-tx2 hover:text-tx">
+        <button type="button" onClick={onClose} className={styles.cancelButton}>
           Cancelar
         </button>
-        <span className="text-[13px] text-pretty text-tx4">A categoria define os times, elencos, partidas e a tabela do campeonato — e não muda depois de criado.</span>
+        <span className={styles.categoryNotice}>A categoria define os times, elencos, partidas e a tabela do campeonato — e não muda depois de criado.</span>
       </div>
       {warning ? <FlashToast message={warning} tone="warning" onClose={() => setWarning(null)} /> : null}
     </form>

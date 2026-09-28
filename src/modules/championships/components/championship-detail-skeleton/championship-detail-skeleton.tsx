@@ -1,36 +1,37 @@
 import { Skeleton } from '@/components/ui/skeleton/skeleton'
+import { championshipDetailSkeletonStyles as styles } from './championship-detail-skeleton.styles'
 
 const ROW_KEYS = ['first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eighth'] as const
 const ROW_DELAY_STEP_MS = 60
 
 export function ChampionshipDetailSkeleton() {
   return (
-    <div aria-hidden className="flex min-h-0 flex-1 flex-col">
-      <div className="flex gap-1 border-b border-bd bg-pan px-5 pt-[14px] pb-3">
-        <Skeleton className="h-[30px] w-[150px]" />
-        <Skeleton className="h-[30px] w-[90px]" delayMs={80} />
-        <Skeleton className="h-[30px] w-[70px]" delayMs={160} />
+    <div aria-hidden className={styles.root}>
+      <div className={styles.tabs}>
+        <Skeleton className={styles.standingsTab} />
+        <Skeleton className={styles.statisticsTab} delayMs={80} />
+        <Skeleton className={styles.matchesTab} delayMs={160} />
       </div>
-      <div className="flex flex-wrap items-start gap-[18px] overflow-hidden p-5">
-        <div className="flex min-w-0 flex-[1_1_560px] flex-col gap-[10px]">
-          <Skeleton className="h-4 w-[260px]" />
-          <div className="overflow-hidden rounded-card border border-bd bg-pan">
-            <Skeleton className="h-[34px] rounded-none bg-pan2" />
+      <div className={styles.body}>
+        <div className={styles.standingsColumn}>
+          <Skeleton className={styles.standingsTitle} />
+          <div className={styles.table}>
+            <Skeleton className={styles.tableHeader} />
             {ROW_KEYS.map((rowKey, index) => (
-              <div key={rowKey} className="flex h-11 items-center gap-3 border-b border-pan2 px-[14px]">
-                <Skeleton className="h-3 w-4" delayMs={index * ROW_DELAY_STEP_MS} />
-                <Skeleton className="h-[13px] w-[11px]" delayMs={index * ROW_DELAY_STEP_MS} />
-                <Skeleton className="h-3 w-[40%]" delayMs={index * ROW_DELAY_STEP_MS + 40} />
-                <Skeleton className="ml-auto h-4 w-6" delayMs={index * ROW_DELAY_STEP_MS + 80} />
+              <div key={rowKey} className={styles.row}>
+                <Skeleton className={styles.rowPosition} delayMs={index * ROW_DELAY_STEP_MS} />
+                <Skeleton className={styles.rowCrest} delayMs={index * ROW_DELAY_STEP_MS} />
+                <Skeleton className={styles.rowName} delayMs={index * ROW_DELAY_STEP_MS + 40} />
+                <Skeleton className={styles.rowPoints} delayMs={index * ROW_DELAY_STEP_MS + 80} />
               </div>
             ))}
           </div>
         </div>
-        <div className="flex min-w-[280px] flex-[0_1_340px] flex-col gap-[10px]">
-          <Skeleton className="h-4 w-[120px]" />
-          <Skeleton className="h-[88px] bg-pan2" delayMs={100} />
-          <Skeleton className="h-[88px] bg-pan2" delayMs={200} />
-          <Skeleton className="h-[88px] bg-pan2" delayMs={300} />
+        <div className={styles.roundColumn}>
+          <Skeleton className={styles.roundTitle} />
+          <Skeleton className={styles.roundCard} delayMs={100} />
+          <Skeleton className={styles.roundCard} delayMs={200} />
+          <Skeleton className={styles.roundCard} delayMs={300} />
         </div>
       </div>
     </div>

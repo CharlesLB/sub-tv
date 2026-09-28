@@ -1,0 +1,17 @@
+export const roundMatchCardStyles = {
+  card: 'flex flex-col gap-[5px] border-l-2 bg-pan2 px-3 py-[11px]',
+  cardLive: 'border-ac',
+  cardIdle: 'border-bd',
+  kicker: 'text-[10px] tracking-[.1em]',
+  kickerLive: 'text-ac',
+  kickerIdle: 'text-tx4',
+  teamLine: 'flex min-w-0 items-center gap-[9px]',
+  teamName: 'min-w-0 flex-1 truncate text-[12.6px] font-bold tracking-[-.01em]',
+  teamDimmed: 'text-tx2',
+  teamHighlighted: 'text-tx',
+  score: 'flex-none font-mono text-[17px] font-semibold nums',
+  scoreEmpty: 'text-tx5',
+  action: 'mt-1 flex h-8 items-center justify-center text-[10.3px] font-bold tracking-[-.01em]',
+  actionPrimary: 'bg-ac text-bg',
+  actionSecondary: 'border border-bd2 bg-transparent text-tx2 hover:border-tx hover:text-tx',
+} as const

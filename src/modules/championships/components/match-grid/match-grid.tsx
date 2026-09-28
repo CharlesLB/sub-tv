@@ -4,6 +4,7 @@ import { toPhaseLabel } from '../../mappers'
 import type { MatchCardVM } from '../../types'
 import { CategoryTag } from '../category-tag/category-tag'
 import { MatchCard } from '../match-card/match-card'
+import { matchGridStyles as styles } from './match-grid.styles'
 
 type RoundGroup = { key: string; title: string; matches: MatchCardVM[] }
 
@@ -32,17 +33,17 @@ export function MatchGrid({ matches, seasonId, category }: MatchGridProps) {
   const groups = groupByRound(matches)
 
   return (
-    <section className="animate-fade-up">
-      <div className="mb-[14px] flex flex-wrap items-center gap-3">
-        <span className="text-[13.5px] font-bold tracking-[-.01em]">Partidas</span>
+    <section className={styles.section}>
+      <div className={styles.header}>
+        <span className={styles.title}>Partidas</span>
         <CategoryTag category={category} size="extraLarge" />
       </div>
-      {groups.length === 0 ? <div className="rounded-card border border-bd bg-pan px-4 py-6 text-center text-[12.5px] text-tx4">Nenhuma partida cadastrada.</div> : null}
-      <div className="flex flex-col gap-6">
+      {groups.length === 0 ? <div className={styles.emptyState}>Nenhuma partida cadastrada.</div> : null}
+      <div className={styles.groups}>
         {groups.map((group) => (
-          <div key={group.key} className="flex flex-col gap-[10px]">
-            <span className="text-[11px] tracking-[.1em] text-tx4 uppercase">{group.title}</span>
-            <div className="grid grid-cols-[repeat(auto-fill,minmax(min(100%,344px),1fr))] gap-[14px]">
+          <div key={group.key} className={styles.group}>
+            <span className={styles.groupTitle}>{group.title}</span>
+            <div className={styles.cards}>
               {group.matches.map((match) => (
                 <MatchCard key={match.id} match={match} seasonId={seasonId} category={category} />
               ))}
