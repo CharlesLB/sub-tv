@@ -1,14 +1,26 @@
-import { and, eq, inArray, isNull, or } from 'drizzle-orm'
+import { and, eq, inArray, isNull, lt, or } from 'drizzle-orm'
 import type { Database } from '../../../../src/lib/db/connection'
 import { syncIssues, syncRuns } from '../../../../src/lib/db/schema'
 import { type ImportIssue, inChunks, type Transaction } from '../database-context/database-context'
 
 const RESOLVED_BY_REIMPORT = 'reimportacao_carga_historica'
 const SYNC_STATUS = { RUNNING: 'rodando', SUCCESS: 'sucesso', PARTIAL: 'parcial', FAILED: 'falhou' } as const
+const STALE_RUN_THRESHOLD_MS = 6 * 60 * 60 * 1_000
+const STALE_RUN_ERROR = 'execução interrompida sem finalizar; marcada como falha ao iniciar a seguinte'
 
 export type RunSummary = { newMatches: number; sumulasProcessed: number; retifications: number; errors: number }
 
+const failStaleRuns = async (database: Database, kind: string, now: Date): Promise<void> => {
+  const staleBefore = new Date(now.getTime() - STALE_RUN_THRESHOLD_MS)
+
+  await database
+    .update(syncRuns)
+    .set({ status: SYNC_STATUS.FAILED, finishedAt: now, error: STALE_RUN_ERROR })
+    .where(and(eq(syncRuns.kind, kind), eq(syncRuns.status, SYNC_STATUS.RUNNING), lt(syncRuns.startedAt, staleBefore)))
+}
+
 export const startSyncRun = async (database: Database, kind: string): Promise<string> => {
+  await failStaleRuns(database, kind, new Date())
   const [run] = await database.insert(syncRuns).values({ kind, status: SYNC_STATUS.RUNNING }).returning({ id: syncRuns.id })
   if (!run) throw new Error('não foi possível registrar a execução em sync_runs')
 

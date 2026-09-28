@@ -3,6 +3,7 @@ import { FMF_USER_AGENT } from '../constants/fmf-sources'
 const MINIMUM_INTERVAL_MS = 1_200
 const MAXIMUM_ATTEMPTS = 4
 const BACKOFF_BASE_MS = 3_000
+const REQUEST_TIMEOUT_MS = 30_000
 const NOT_FOUND_STATUS = 404
 const HTTP_METHOD = { GET: 'GET', POST: 'POST' } as const
 const FORM_CONTENT_TYPE = 'application/x-www-form-urlencoded'
@@ -61,6 +62,7 @@ const performRequest = async (request: HttpRequest): Promise<Response> => {
     headers: buildHeaders(request),
     ...(request.form ? { body: request.form.toString() } : {}),
     redirect: 'follow',
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
   })
 }
 

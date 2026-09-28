@@ -1,4 +1,4 @@
-import { and, eq, inArray, sql } from 'drizzle-orm'
+import { and, eq, inArray, ne, sql } from 'drizzle-orm'
 import * as R from 'remeda'
 import { matchLineups, seasonSquads } from '../../../../src/lib/db/schema'
 import type { Side, SumulaPlayer } from '../../sumula/sumula-types/sumula-types'
@@ -127,6 +127,9 @@ export const loadLineups = async (transaction: Transaction, loadedMatches: Loade
     })),
     (row) => `${row.matchId}|${row.playerId}`,
   )
+
+  const officialLineupMatchIds = R.unique(lineupRows.map((row) => row.matchId))
+  if (officialLineupMatchIds.length > 0) await transaction.delete(matchLineups).where(and(inArray(matchLineups.matchId, officialLineupMatchIds), ne(matchLineups.source, FMF_SOURCE)))
 
   await inChunks(lineupRows, async (chunk) => transaction.insert(matchLineups).values(chunk).onConflictDoNothing())
 

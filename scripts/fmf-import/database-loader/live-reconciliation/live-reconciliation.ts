@@ -40,7 +40,7 @@ export const reconcileLiveEvents = async (transaction: Transaction, matchIds: st
   if (matchIds.length === 0) return []
 
   const liveEvents = await transaction
-    .select(comparableColumns)
+    .select({ ...comparableColumns, assistPlayerId: matchEvents.assistPlayerId })
     .from(matchEvents)
     .where(and(inArray(matchEvents.matchId, matchIds), eq(matchEvents.source, LIVE_SOURCE), isNull(matchEvents.deletedAt), or(isNull(matchEvents.supersededAt), isNull(matchEvents.reconciledWithId))))
 
@@ -57,9 +57,19 @@ export const reconcileLiveEvents = async (transaction: Transaction, matchIds: st
   const pairedIds = new Set(pairs.map((pair) => pair.liveEventId))
   const reconciledAt = new Date()
 
+  const assistByLiveEventId = new Map(liveEvents.map((event) => [event.id, event.assistPlayerId]))
+
   await pairs.reduce<Promise<void>>(async (previous, pair) => {
     await previous
     await transaction.update(matchEvents).set({ supersededAt: reconciledAt, reconciledWithId: pair.fmfEventId }).where(eq(matchEvents.id, pair.liveEventId))
+    const liveAssistPlayerId = assistByLiveEventId.get(pair.liveEventId) ?? null
+
+    if (liveAssistPlayerId) {
+      await transaction
+        .update(matchEvents)
+        .set({ assistPlayerId: liveAssistPlayerId })
+        .where(and(eq(matchEvents.id, pair.fmfEventId), isNull(matchEvents.assistPlayerId)))
+    }
   }, Promise.resolve())
 
   const unpaired = liveEvents.filter((event) => !pairedIds.has(event.id) && fmfMatchIds.has(event.matchId))

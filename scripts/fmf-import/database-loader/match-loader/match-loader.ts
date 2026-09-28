@@ -1,5 +1,6 @@
 import { getTableColumns, inArray, type SQL, sql } from 'drizzle-orm'
 import { matches, matchOfficials } from '../../../../src/lib/db/schema'
+import { MATCH_STATUS } from '../../../../src/modules/matches/live-match/live-match'
 import type { TableMatch } from '../../competition-page/table-tab-parser/table-tab-parser'
 import { type EditionBundle, type LoadedSumula, sumulaOfMatch } from '../../edition-bundle/edition-bundle'
 import { SIDE } from '../../sumula/sumula-types/sumula-types'
@@ -7,7 +8,8 @@ import type { SeasonTeamLookup } from '../club-loader/club-loader'
 import { createIssue, type ImportIssue, inChunks, inChunksReturning, SYNC_ISSUE, type Transaction } from '../database-context/database-context'
 import { adoptNarratedMatches } from '../narrated-match-adoption/narrated-match-adoption'
 
-const MATCH_STATUS = { SCHEDULED: 'agendado', FINISHED: 'encerrado', WALKOVER: 'wo' } as const
+const OPERATOR_OWNED_STATUSES = [MATCH_STATUS.LIVE, MATCH_STATUS.FINISHED, MATCH_STATUS.POSTPONED, MATCH_STATUS.CANCELLED]
+const operatorOwnedStatusList = OPERATOR_OWNED_STATUSES.map((status) => `'${status}'`).join(', ')
 const SAO_PAULO_OFFSET = '-03:00'
 const DEFAULT_KICKOFF_TIME = '00:00'
 
@@ -81,7 +83,7 @@ const excludedAssignments: Record<string, SQL> = Object.fromEntries([
   assignment('fmf_match_id', 'coalesce(excluded.fmf_match_id, matches.fmf_match_id)'),
   assignment('home_score', 'coalesce(excluded.home_score, matches.home_score)'),
   assignment('away_score', 'coalesce(excluded.away_score, matches.away_score)'),
-  assignment('status', `case when excluded.home_score is null and matches.status in ('ao_vivo', 'encerrado', 'adiado', 'cancelado') then matches.status else excluded.status end`),
+  assignment('status', `case when excluded.home_score is null and matches.status in (${operatorOwnedStatusList}) then matches.status else excluded.status end`),
 ])
 
 const replaceOfficials = async (transaction: Transaction, loadedMatches: LoadedMatch[]): Promise<void> => {
@@ -99,7 +101,7 @@ export const upsertMatches = async (transaction: Transaction, bundle: EditionBun
     awaySeasonTeamId: teams.get(tableMatch.away.crestId)?.seasonTeamId ?? '',
   }))
 
-  const invalid = candidates.filter((candidate) => !candidate.homeSeasonTeamId || candidate.homeSeasonTeamId === candidate.awaySeasonTeamId)
+  const invalid = candidates.filter((candidate) => !candidate.homeSeasonTeamId || !candidate.awaySeasonTeamId || candidate.homeSeasonTeamId === candidate.awaySeasonTeamId)
   const valid = candidates.filter((candidate) => !invalid.includes(candidate))
 
   const issues = invalid.map((candidate) =>
