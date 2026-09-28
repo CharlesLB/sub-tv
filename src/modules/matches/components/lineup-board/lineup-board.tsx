@@ -13,6 +13,7 @@ import { BenchColumn } from '../bench-column/bench-column'
 import { DragGhost } from '../drag-ghost/drag-ghost'
 import { PitchDot } from '../pitch-dot/pitch-dot'
 import { PitchMarkings } from '../pitch-markings/pitch-markings'
+import { lineupBoardStyles as styles } from './lineup-board.styles'
 
 export type BoardSideVM = { side: MatchSide; team: SetupTeamVM; starterIds: string[]; positions: StarterPositions }
 
@@ -90,7 +91,7 @@ export function LineupBoard({ sides, categoryLabel, dispatch }: LineupBoardProps
 
   return (
     <>
-      <div className="grid max-h-[min(46vh,520px)] min-h-[180px] max-w-[1400px] flex-1 animate-fade-up grid-cols-[minmax(104px,124px)_minmax(0,1fr)_minmax(104px,124px)] grid-rows-[minmax(0,1fr)] items-stretch gap-px overflow-hidden bg-bd">
+      <div className={styles.board}>
         {sides.map((boardSide) => {
           const starterSet = new Set(boardSide.starterIds)
 
@@ -108,8 +109,8 @@ export function LineupBoard({ sides, categoryLabel, dispatch }: LineupBoardProps
             />
           )
         })}
-        <div className="[container-type:size] col-start-2 row-start-1 flex min-h-0 min-w-0 items-center justify-center overflow-hidden bg-pan p-4">
-          <div ref={fieldRef} data-field className="relative aspect-[105/64] w-[min(100%,164cqh)] flex-none rounded-card border border-gr-borda turf">
+        <div className={styles.fieldArea}>
+          <div ref={fieldRef} data-field className={styles.field}>
             <PitchMarkings />
             {sides.flatMap((boardSide) =>
               boardSide.team.players
@@ -138,7 +139,7 @@ export function LineupBoard({ sides, categoryLabel, dispatch }: LineupBoardProps
         </div>
       </div>
       {drag?.kind === 'reserve' ? <DragGhost shirtNumber={drag.player.shirtNumber} name={shortNameOf(drag.player)} color={drag.color} left={drag.pointer.clientX} top={drag.pointer.clientY} /> : null}
-      <span className="sr-only" aria-live="polite">
+      <span className={styles.announcement} aria-live="polite">
         {sides.map((boardSide) => `${boardSide.team.name}: ${boardSide.starterIds.length} de ${STARTERS_PER_TEAM} em campo`).join('. ')}
       </span>
     </>

@@ -1,41 +1,42 @@
 import { Skeleton } from '@/components/ui/skeleton/skeleton'
+import { newMatchWizardSkeletonStyles as styles } from './new-match-wizard-skeleton.styles'
 
 const STEP_PLACEHOLDERS = [1, 2, 3, 4]
 const FIELD_PLACEHOLDERS = ['date', 'time', 'round']
 
 export function NewMatchWizardSkeleton() {
   return (
-    <div aria-busy aria-label="Carregando nova partida" className="flex min-h-[420px] flex-1 flex-col bg-bg">
-      <div className="flex flex-none overflow-hidden border-b border-bd bg-pan">
+    <div aria-busy aria-label="Carregando nova partida" className={styles.wizard}>
+      <div className={styles.stepper}>
         {STEP_PLACEHOLDERS.map((step) => (
-          <div key={step} className="flex min-w-[158px] flex-[1_1_0] items-center gap-[11px] border-b-2 border-bd px-4 py-[13px] [&+&]:border-l [&+&]:border-l-bd">
-            <Skeleton className="size-6 rounded-card" delayMs={step * 60} />
-            <span className="flex flex-col gap-[6px]">
-              <Skeleton className="h-[10px] w-20" delayMs={step * 60} />
-              <Skeleton className="h-2 w-24" delayMs={step * 60} />
+          <div key={step} className={styles.step}>
+            <Skeleton className={styles.stepBadge} delayMs={step * 60} />
+            <span className={styles.stepText}>
+              <Skeleton className={styles.stepTitle} delayMs={step * 60} />
+              <Skeleton className={styles.stepValue} delayMs={step * 60} />
             </span>
           </div>
         ))}
       </div>
-      <div className="flex-1 px-5 py-4 mobile:px-3">
-        <div className="grid max-w-[820px] grid-cols-[repeat(auto-fit,minmax(min(100%,180px),1fr))] gap-4 bg-pan2 p-5 chamfer">
+      <div className={styles.content}>
+        <div className={styles.fields}>
           {FIELD_PLACEHOLDERS.map((field, index) => (
-            <div key={field} className="flex flex-col gap-[6px]">
-              <Skeleton className="h-[10px] w-14" delayMs={index * 80} />
-              <Skeleton className="h-[42px] w-full rounded-card" delayMs={index * 80} />
+            <div key={field} className={styles.field}>
+              <Skeleton className={styles.fieldLabel} delayMs={index * 80} />
+              <Skeleton className={styles.fieldInput} delayMs={index * 80} />
             </div>
           ))}
-          <div className="col-span-full flex flex-col gap-[6px]">
-            <Skeleton className="h-[10px] w-14" delayMs={240} />
-            <Skeleton className="h-[42px] w-full rounded-card" delayMs={240} />
+          <div className={styles.fieldWide}>
+            <Skeleton className={styles.fieldLabel} delayMs={240} />
+            <Skeleton className={styles.fieldInput} delayMs={240} />
           </div>
         </div>
       </div>
-      <div className="flex flex-none items-center gap-[14px] border-t border-bd bg-pan px-5 py-3">
-        <Skeleton className="h-[34px] w-[96px] rounded-card" />
-        <Skeleton className="h-[10px] w-56" />
-        <Skeleton className="ml-auto h-11 w-[104px] rounded-card" />
-        <Skeleton className="h-12 w-[128px]" />
+      <div className={styles.footer}>
+        <Skeleton className={styles.footerSummary} />
+        <Skeleton className={styles.footerHint} />
+        <Skeleton className={styles.footerBack} />
+        <Skeleton className={styles.footerNext} />
       </div>
     </div>
   )

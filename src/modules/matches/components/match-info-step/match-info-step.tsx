@@ -2,6 +2,7 @@ import { useId } from 'react'
 import { cn } from '@/lib/utils/cn'
 import type { InformationField } from '../../wizard-reducer/wizard-reducer'
 import { WizardNotice } from '../wizard-notice/wizard-notice'
+import { matchInfoStepStyles as styles } from './match-info-step.styles'
 
 type FieldDefinition = { field: InformationField; label: string; type: 'date' | 'time' | 'text'; placeholder?: string; inputMode?: 'numeric'; isWide?: boolean }
 
@@ -22,11 +23,11 @@ export function MatchInfoStep({ values, notice, onChange }: MatchInfoStepProps) 
   const idPrefix = useId()
 
   return (
-    <div className="flex max-w-[820px] animate-fade-up flex-col gap-4">
-      <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,180px),1fr))] gap-4 bg-pan2 p-5 chamfer mobile:p-4">
+    <div className={styles.step}>
+      <div className={styles.fields}>
         {FIELDS.map((definition) => (
-          <div key={definition.field} className={cn(definition.isWide && 'col-span-full')}>
-            <label htmlFor={`${idPrefix}-${definition.field}`} className="mb-[6px] block text-[10.3px] font-semibold tracking-[-.01em] text-tx4">
+          <div key={definition.field} className={cn(definition.isWide && styles.fieldWide)}>
+            <label htmlFor={`${idPrefix}-${definition.field}`} className={styles.label}>
               {definition.label}
             </label>
             <input
@@ -38,7 +39,7 @@ export function MatchInfoStep({ values, notice, onChange }: MatchInfoStepProps) 
               maxLength={definition.field === 'round' ? 2 : 120}
               required
               onChange={(event) => onChange(definition.field, event.target.value)}
-              className="box-border h-[42px] w-full rounded-card border border-bd2 bg-bg px-3 text-[13px] text-tx transition-colors focus:border-tx"
+              className={styles.input}
             />
           </div>
         ))}

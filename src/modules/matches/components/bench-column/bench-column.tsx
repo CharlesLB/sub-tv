@@ -3,6 +3,7 @@ import { cn } from '@/lib/utils/cn'
 import { STARTERS_PER_TEAM } from '../../default-starters/default-starters'
 import type { SetupPlayerVM, SetupTeamVM } from '../../types'
 import { shortNameOf } from '../../wizard-selectors/wizard-selectors'
+import { benchColumnStyles as styles } from './bench-column.styles'
 
 type BenchColumnProps = {
   team: SetupTeamVM
@@ -27,17 +28,13 @@ export function BenchColumn({ team, categoryLabel, starterCount, reserves, dragg
   }
 
   return (
-    <div
-      aria-label={`Banco ${team.name}`}
-      className={cn('row-start-1 flex min-h-0 flex-col items-center gap-2 overflow-x-hidden overflow-y-auto border-t-2 bg-pan px-2 py-[10px]', placement === 'left' ? 'col-start-1' : 'col-start-3')}
-      style={{ borderTopColor: team.color }}
-    >
-      <div className="sticky top-0 z-[1] w-full bg-pan pb-[6px] text-center">
-        <div className="text-[9.5px] font-bold tracking-[-.01em] text-tx4">Banco</div>
-        <div className="mt-[2px] text-[9.9px] leading-[1.25] font-bold tracking-[-.01em] text-pretty" style={{ color: team.color }}>
+    <div aria-label={`Banco ${team.name}`} className={cn(styles.column, placement === 'left' ? styles.columnLeft : styles.columnRight)} style={{ borderTopColor: team.color }}>
+      <div className={styles.header}>
+        <div className={styles.title}>Banco</div>
+        <div className={styles.teamLine} style={{ color: team.color }}>
           {team.name} · {categoryLabel}
         </div>
-        <div className={cn('mt-[3px] text-[9px] font-bold tracking-[-.01em]', isFull ? 'text-ac' : 'text-am')}>
+        <div className={cn(styles.starterCount, isFull ? styles.starterCountFull : styles.starterCountIncomplete)}>
           {starterCount}/{STARTERS_PER_TEAM} em campo
         </div>
       </div>
@@ -52,12 +49,12 @@ export function BenchColumn({ team, categoryLabel, starterCount, reserves, dragg
             aria-label={`Reserva camisa ${player.shirtNumber}, ${player.name}`}
             onPointerDown={(event) => onPointerDown(player, event)}
             onKeyDown={(event) => addFromKeyboard(player, event)}
-            className={cn('flex w-[100px] max-w-full flex-none cursor-grab touch-none flex-col items-center gap-[2px] bg-transparent select-none', isDragging && 'opacity-50')}
+            className={cn(styles.reserve, isDragging && styles.reserveDragging)}
           >
-            <span className={cn('relative flex size-9 items-center justify-center rounded-full border-2', isDragging ? 'border-tx' : 'border-pan')} style={{ background: team.color }}>
-              <span className="text-[14.4px] leading-none font-bold text-bg nums">{player.shirtNumber}</span>
+            <span className={cn(styles.reserveDot, isDragging ? styles.reserveDotDragging : styles.reserveDotIdle)} style={{ background: team.color }}>
+              <span className={styles.reserveShirtNumber}>{player.shirtNumber}</span>
             </span>
-            <span className="max-w-full truncate text-center text-[9.5px] font-semibold tracking-[-.01em] whitespace-nowrap text-tx2">{shortNameOf(player)}</span>
+            <span className={styles.reserveName}>{shortNameOf(player)}</span>
           </button>
         )
       })}

@@ -32,6 +32,7 @@ import { WizardFooter } from '../wizard-footer/wizard-footer'
 import { WizardStepper } from '../wizard-stepper/wizard-stepper'
 import { WizardSummary } from '../wizard-summary/wizard-summary'
 import { WizardToast } from '../wizard-toast/wizard-toast'
+import { newMatchWizardStyles as styles } from './new-match-wizard.styles'
 
 export type WizardPresentation = 'sheet' | 'page'
 
@@ -96,9 +97,9 @@ export function NewMatchWizard({ setup, presentation }: NewMatchWizardProps) {
   }
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col bg-bg text-tx">
+    <div className={styles.wizard}>
       <WizardStepper currentStep={state.step} values={stepValues(state, context)} onGoBackTo={(step) => dispatch({ type: 'step/went-back-to', step })} />
-      <div className="flex min-h-0 flex-[1_1_auto] flex-col overflow-x-hidden overflow-y-auto px-5 py-4 mobile:px-3 mobile:pt-[14px] mobile:pb-[22px]">{stepContent[state.step]}</div>
+      <div className={styles.content}>{stepContent[state.step]}</div>
       {state.isSummaryOpen ? (
         <WizardSummary
           sides={lineupSides.map(({ side, team, starterIds }) => ({

@@ -1,0 +1,18 @@
+export const benchColumnStyles = {
+  column: 'row-start-1 flex min-h-0 flex-col items-center gap-2 overflow-x-hidden overflow-y-auto border-t-2 bg-pan px-2 py-[10px]',
+  columnLeft: 'col-start-1',
+  columnRight: 'col-start-3',
+  header: 'sticky top-0 z-[1] w-full bg-pan pb-[6px] text-center',
+  title: 'text-[9.5px] font-bold tracking-[-.01em] text-tx4',
+  teamLine: 'mt-[2px] text-[9.9px] leading-[1.25] font-bold tracking-[-.01em] text-pretty',
+  starterCount: 'mt-[3px] text-[9px] font-bold tracking-[-.01em]',
+  starterCountFull: 'text-ac',
+  starterCountIncomplete: 'text-am',
+  reserve: 'flex w-[100px] max-w-full flex-none cursor-grab touch-none flex-col items-center gap-[2px] bg-transparent select-none',
+  reserveDragging: 'opacity-50',
+  reserveDot: 'relative flex size-9 items-center justify-center rounded-full border-2',
+  reserveDotDragging: 'border-tx',
+  reserveDotIdle: 'border-pan',
+  reserveShirtNumber: 'text-[14.4px] leading-none font-bold text-bg nums',
+  reserveName: 'max-w-full truncate text-center text-[9.5px] font-semibold tracking-[-.01em] whitespace-nowrap text-tx2',
+} as const

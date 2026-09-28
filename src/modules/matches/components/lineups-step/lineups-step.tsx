@@ -1,6 +1,7 @@
 import { type Category, categoryLabel } from '@/modules/championships/client'
 import type { MatchSide, SetupTeamVM } from '../../types'
 import { LineupCard } from '../lineup-card/lineup-card'
+import { lineupsStepStyles as styles } from './lineups-step.styles'
 
 export type LineupSideVM = { side: MatchSide; team: SetupTeamVM; starterIds: string[] }
 
@@ -13,7 +14,7 @@ type LineupsStepProps = {
 
 export function LineupsStep({ sides, category, year, onToggle }: LineupsStepProps) {
   return (
-    <div className="grid min-h-0 max-w-[1180px] flex-1 animate-fade-up grid-cols-[repeat(auto-fit,minmax(min(100%,420px),1fr))] gap-4 overflow-hidden mobile:flex-none mobile:overflow-visible">
+    <div className={styles.grid}>
       {sides.map(({ side, team, starterIds }) => (
         <LineupCard
           key={side}

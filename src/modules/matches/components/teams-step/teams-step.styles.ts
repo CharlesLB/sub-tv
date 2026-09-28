@@ -1,0 +1,16 @@
+export const teamsStepStyles = {
+  step: 'flex max-w-[1100px] animate-fade-up flex-col gap-4',
+  sides: 'grid grid-cols-[repeat(auto-fit,minmax(min(100%,360px),1fr))] gap-4',
+  side: 'flex flex-col gap-3 bg-pan2 p-[18px] chamfer mobile:p-[14px]',
+  sideHeader: 'flex flex-wrap items-center gap-[10px]',
+  sideTitle: 'text-[10.3px] font-semibold tracking-[-.01em] text-tx4',
+  emptyMessage: 'text-[12.5px] text-tx4',
+  teams: 'grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-2',
+  team: 'flex min-w-0 items-center gap-[10px] rounded-card border px-[14px] py-3 text-left transition-[border-color,background] duration-[140ms]',
+  teamSelected: 'bg-pan',
+  teamIdle: 'border-bd2 bg-transparent hover:border-bd3',
+  teamDisabled: 'cursor-not-allowed text-tx4 opacity-45',
+  teamEnabled: 'text-tx',
+  crestDisabled: 'grayscale',
+  teamName: 'truncate text-[11.7px] font-bold tracking-[-.01em] whitespace-nowrap',
+} as const

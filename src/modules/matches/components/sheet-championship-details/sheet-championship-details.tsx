@@ -1,4 +1,5 @@
 import { CategoryTag, getChampionshipHeader } from '@/modules/championships'
+import { sheetChampionshipDetailsStyles as styles } from './sheet-championship-details.styles'
 
 type SheetChampionshipDetailsProps = { seasonId: string }
 
@@ -9,7 +10,7 @@ export async function SheetChampionshipDetails({ seasonId }: SheetChampionshipDe
   return (
     <>
       <CategoryTag category={header.category} size="medium" />
-      <span className="min-w-0 truncate text-[11.3px] font-semibold tracking-[-.01em] whitespace-nowrap text-tx4">{header.name}</span>
+      <span className={styles.name}>{header.name}</span>
     </>
   )
 }
