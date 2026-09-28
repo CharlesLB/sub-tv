@@ -11,6 +11,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 # sub.tv — project rules
 
 - Rules live in `.claude/rules/nextjs/` (architecture, Next.js 16 APIs) and `.claude/rules/general/` (code style). When they conflict, the Next.js rules win for architecture; the style rules still apply: no code comments, no `any`/`as` casts, no `let`/`var`, no imperative loops (Remeda), full descriptive names, named string constants.
+- Every component folder has `<name>.styles.ts`, `<name>.test.tsx`, `<name>.stories.tsx` (and `<name>.fixtures.ts` when data is shared) — see `.claude/rules/nextjs/15-component-files.md`. Server modules are auto-mocked in tests and stories by `tools/server-module-mocks`.
 - Product and design source of truth: `spec/README.md`, `spec/design_files/*.dc.html`, `spec/screenshots/`. The design has light (default) and dark themes (`data-tema` on `<html>`); tokens are in `src/app/globals.css`.
 - Data: Postgres via Drizzle (`src/lib/db`); schema from `spec/tech_spec/db`. FMF history (Sub-13/Sub-14, 2017→today) is loaded by `pnpm fmf:import` (`scripts/fmf-import/`), idempotent; columns marked editorial are never overwritten by the importer.
 - Local database: `pnpm db:local` (PGlite server on :5432) → `pnpm db:migrate` → `pnpm fmf:import`. Production: Neon Postgres on Vercel (`DATABASE_URL`), same commands pointed at it.
