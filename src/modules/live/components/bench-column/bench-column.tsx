@@ -6,6 +6,7 @@ import { DRAG_KIND } from '../../interaction/interaction-state'
 import type { BoardInteractions } from '../../interaction/use-board-interactions'
 import { useLiveState } from '../../state/live-context'
 import { BenchDot } from '../bench-dot/bench-dot'
+import { benchColumnStyles as styles } from './bench-column.styles'
 
 type BenchColumnProps = { side: Side; interactions: BoardInteractions }
 
@@ -18,14 +19,10 @@ export function BenchColumn({ side, interactions }: BenchColumnProps) {
   const isAwaitingEntry = pendingSubstitution && selectedSide === side
 
   return (
-    <div
-      data-screen-label="Banco"
-      className="row-start-1 flex min-h-0 flex-col items-center gap-2 overflow-x-hidden overflow-y-auto border-t-2 bg-pan px-2 pb-[10px] mobile:px-1"
-      style={{ gridColumn: side === SIDE.HOME ? 1 : 3, borderTopColor: team.color }}
-    >
-      <div className="sticky top-0 z-[2] flex-none self-stretch border-b border-bd bg-pan pt-[10px] pb-[6px] text-center">
-        <div className="text-[9.5px] font-bold tracking-[-.01em] text-tx4">Banco</div>
-        <div className="mt-[2px] text-[11px] leading-[1.25] font-bold tracking-[-.01em] text-pretty mobile:text-[9px]" style={{ color: team.color }}>
+    <div data-screen-label="Banco" className={styles.column} style={{ gridColumn: side === SIDE.HOME ? 1 : 3, borderTopColor: team.color }}>
+      <div className={styles.header}>
+        <div className={styles.title}>Banco</div>
+        <div className={styles.team} style={{ color: team.color }}>
           {team.name} · {categoryLabel[category]}
         </div>
       </div>

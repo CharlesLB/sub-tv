@@ -10,22 +10,12 @@ import { useLiveState } from '../../state/live-context'
 import type { PlayerMatchState } from '../../state/live-state'
 import { seasonNumbersWithMatch } from '../../state/selectors'
 import { TooltipStat } from '../tooltip-stat/tooltip-stat'
-import { HIGHLIGHT_TONE, type HighlightTone, matchHighlightsOf } from './match-highlights'
+import { matchHighlightsOf } from './match-highlights'
+import { playerTooltipStyles as styles } from './player-tooltip.styles'
 
 const HORIZONTAL_MARGIN = 170
 const ANCHOR_GAP = 12
 const MINIMUM_SPACE_ABOVE = 260
-
-const HIGHLIGHT_CLASS: Record<HighlightTone, string> = {
-  [HIGHLIGHT_TONE.GOAL]: 'bg-tx',
-  [HIGHLIGHT_TONE.ASSIST]: 'bg-ac',
-  [HIGHLIGHT_TONE.YELLOW]: 'bg-am',
-  [HIGHLIGHT_TONE.RED]: 'bg-vm',
-  [HIGHLIGHT_TONE.IN]: 'bg-ac',
-  [HIGHLIGHT_TONE.OUT]: 'bg-vm',
-}
-
-const SECTION_TITLE = 'text-[8.6px] font-semibold tracking-[-.01em] text-tx4'
 
 type PlayerTooltipProps = { hover: HoverState; matchState: PlayerMatchState }
 
@@ -48,47 +38,40 @@ export function PlayerTooltip({ hover, matchState }: PlayerTooltipProps) {
   const top = showBelow ? hover.anchor.bottom + ANCHOR_GAP : hover.anchor.top - ANCHOR_GAP
 
   return (
-    <div
-      role="tooltip"
-      className={cn(
-        'pointer-events-none fixed z-[80] flex w-max max-w-[320px] -translate-x-1/2 animate-fade-in flex-col gap-[6px] border border-bd2 bg-pan2 px-[15px] py-3 chamfer-small',
-        !showBelow && '-translate-y-full',
-      )}
-      style={{ left, top }}
-    >
-      <div className="flex items-center gap-[11px]">
-        <span className="text-[27px] leading-[.9] font-bold nums" style={{ color: team.color }}>
+    <div role="tooltip" className={cn(styles.tooltip, !showBelow && styles.tooltipAbove)} style={{ left, top }}>
+      <div className={styles.header}>
+        <span className={styles.shirtNumber} style={{ color: team.color }}>
           {player.shirtNumber}
         </span>
-        <span className="text-[15.3px] leading-[1.05] font-bold tracking-[-.01em] text-tx">{player.name}</span>
+        <span className={styles.name}>{player.name}</span>
       </div>
-      <div className="text-[9.5px] font-semibold tracking-[-.01em] text-pretty text-tx2">{subtitle}</div>
-      <div className="flex items-center gap-[15px] border-t border-bd pt-[9px]">
-        <TooltipStat label="Gols" value={numbers.goals} highlightClass="text-ac" />
+      <div className={styles.subtitle}>{subtitle}</div>
+      <div className={styles.stats}>
+        <TooltipStat label="Gols" value={numbers.goals} highlightClass={styles.goalsHighlight} />
         <TooltipStat label="Assist." value={numbers.assists} highlightClass={null} />
-        <TooltipStat label="Amarelos" value={numbers.yellowCards} highlightClass="text-am" />
+        <TooltipStat label="Amarelos" value={numbers.yellowCards} highlightClass={styles.yellowCardsHighlight} />
         <TooltipStat label="Jogos" value={numbers.games} highlightClass={null} />
       </div>
       {highlights.length > 0 ? (
-        <div className="flex flex-col gap-[5px] border-t border-bd pt-[9px]">
-          <div className={SECTION_TITLE}>Nesta partida</div>
-          <div className="flex flex-wrap gap-x-[14px] gap-y-1">
+        <div className={styles.section}>
+          <div className={styles.sectionTitle}>Nesta partida</div>
+          <div className={styles.highlights}>
             {highlights.map((highlight) => (
-              <div key={highlight.text} className="flex items-center gap-[7px]">
-                <span className={cn('size-[9px] flex-none', highlight.isCard ? 'rounded-[2px]' : 'rounded-full', HIGHLIGHT_CLASS[highlight.tone])} />
-                <span className="text-[10.3px] font-bold tracking-[-.01em] whitespace-nowrap text-tx">{highlight.text}</span>
+              <div key={highlight.text} className={styles.highlight}>
+                <span className={cn(styles.highlightMarker, highlight.isCard ? styles.cardMarker : styles.roundMarker, styles.highlightTone[highlight.tone])} />
+                <span className={styles.highlightText}>{highlight.text}</span>
               </div>
             ))}
           </div>
         </div>
       ) : null}
       {player.curiosities.length > 0 ? (
-        <div className="flex flex-col gap-[5px] border-t border-bd pt-[9px]">
-          <div className={SECTION_TITLE}>Curiosidades</div>
+        <div className={styles.section}>
+          <div className={styles.sectionTitle}>Curiosidades</div>
           {player.curiosities.map((curiosity) => (
-            <div key={curiosity} className="flex items-start gap-2">
-              <Icon name="star" size={13} className="mt-[2px] text-ac" />
-              <div className="text-[12.5px] leading-[1.4] text-pretty text-tx">{curiosity}</div>
+            <div key={curiosity} className={styles.curiosity}>
+              <Icon name="star" size={13} className={styles.curiosityIcon} />
+              <div className={styles.curiosityText}>{curiosity}</div>
             </div>
           ))}
         </div>

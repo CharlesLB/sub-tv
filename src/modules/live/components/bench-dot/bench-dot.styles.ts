@@ -1,0 +1,17 @@
+export const benchDotStyles = {
+  button: 'flex w-full flex-none touch-none flex-col items-center gap-[2px] border-0 bg-transparent p-0',
+  buttonSubbedOut: 'cursor-not-allowed opacity-45',
+  buttonAvailable: 'cursor-grab',
+  buttonDragged: 'opacity-50',
+  badge: 'relative flex size-9 items-center justify-center rounded-full border-2 mobile:size-[30px]',
+  badgeSubbedOut: 'border-bd2 bg-transparent',
+  badgeDragged: 'border-tx',
+  badgeIdle: 'border-pan',
+  badgeHighlighted: 'shadow-[0_0_0_2px_var(--az)]',
+  shirtNumber: 'text-[14.4px] leading-none font-bold nums mobile:text-[12.6px]',
+  shirtNumberSubbedOut: 'text-tx4',
+  shirtNumberAvailable: 'text-bg',
+  name: 'max-w-full truncate text-center text-[10.5px] font-semibold tracking-[-.01em] whitespace-nowrap mobile:text-[9px]',
+  nameSubbedOut: 'text-tx4',
+  nameAvailable: 'text-tx2',
+} as const

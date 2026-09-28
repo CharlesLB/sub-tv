@@ -1,10 +1,11 @@
 import { cn } from '@/lib/utils/cn'
+import { scoreValueStyles as styles } from './score-value.styles'
 
 type ScoreValueProps = { value: number; pulseCount: number }
 
 export function ScoreValue({ value, pulseCount }: ScoreValueProps) {
   return (
-    <span key={pulseCount} className={cn('skew-x-12 text-[27px] leading-none font-bold nums mobile:text-[23px]', pulseCount > 0 && 'animate-score-pulse')}>
+    <span key={pulseCount} className={cn(styles.value, pulseCount > 0 && styles.pulsing)}>
       {value}
     </span>
   )

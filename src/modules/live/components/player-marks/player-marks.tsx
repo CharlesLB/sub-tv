@@ -2,21 +2,12 @@ import type { CSSProperties } from 'react'
 import { cn } from '@/lib/utils/cn'
 import { Icon } from '@/components/ui/icon/icon'
 import type { PlayerMatchState } from '../../state/live-state'
-import { MARK_CORNER, MARK_TONE, type MarkCorner, type MarkTone, marksOf, type PlayerMark } from './marks-of'
+import { MARK_CORNER, MARK_TONE, type MarkCorner, marksOf, type PlayerMark } from './marks-of'
+import { playerMarksStyles as styles } from './player-marks.styles'
 
 export const MARKS_VARIANT = { PITCH: 'pitch', BENCH: 'bench' } as const
 
 type MarksVariant = (typeof MARKS_VARIANT)[keyof typeof MARKS_VARIANT]
-
-const TONE_CLASS: Record<MarkTone, string> = {
-  [MARK_TONE.GOAL]: 'bg-tx text-bg',
-  [MARK_TONE.ASSIST]: 'bg-ac text-bg',
-  [MARK_TONE.YELLOW]: 'bg-am text-bg',
-  [MARK_TONE.RED]: 'bg-vm',
-  [MARK_TONE.SECOND_YELLOW]: 'bg-am',
-  [MARK_TONE.SUBBED_OUT]: 'bg-vm text-tx',
-  [MARK_TONE.SUBBED_IN]: 'bg-ac text-bg',
-}
 
 const VARIANT = {
   [MARKS_VARIANT.PITCH]: {
@@ -25,9 +16,9 @@ const VARIANT = {
     cardHeight: '42%',
     badgeOffset: 'calc(-22% + 2px)',
     cardOffset: 'calc(-18% + 2px)',
-    borderClass: 'border-bg',
-    iconClass: 'size-[clamp(6px,1.5cqw,11px)]',
-    countClass: 'text-[clamp(6px,1.4cqw,10px)]',
+    borderClass: styles.pitchBorder,
+    iconClass: styles.pitchIcon,
+    countClass: styles.pitchCount,
   },
   [MARKS_VARIANT.BENCH]: {
     badge: '13px',
@@ -35,9 +26,9 @@ const VARIANT = {
     cardHeight: '13px',
     badgeOffset: '-2px',
     cardOffset: '-1px',
-    borderClass: 'border-pan',
-    iconClass: 'size-[9px]',
-    countClass: 'text-[9px]',
+    borderClass: styles.benchBorder,
+    iconClass: styles.benchIcon,
+    countClass: styles.benchCount,
   },
 } as const
 
@@ -67,19 +58,9 @@ export function PlayerMarks({ state, variant }: PlayerMarksProps) {
   const sizes = VARIANT[variant]
 
   return marksOf(state).map((mark) => (
-    <span
-      key={mark.corner}
-      title={mark.tip}
-      style={markStyle(mark, variant)}
-      className={cn(
-        'pointer-events-none absolute flex flex-none items-center justify-center overflow-hidden border-[1.5px] p-0',
-        mark.isCard ? 'rounded-[2px]' : 'rounded-full',
-        sizes.borderClass,
-        TONE_CLASS[mark.tone],
-      )}
-    >
-      {mark.tone === MARK_TONE.SECOND_YELLOW ? <span className="absolute inset-0 bg-vm [clip-path:polygon(100%_0,100%_100%,0_100%)]" /> : null}
-      {mark.count ? <span className={cn('relative leading-none font-bold', sizes.countClass)}>{mark.count}</span> : mark.icon ? <Icon name={mark.icon} className={sizes.iconClass} /> : null}
+    <span key={mark.corner} title={mark.tip} style={markStyle(mark, variant)} className={cn(styles.mark, mark.isCard ? styles.cardMark : styles.badgeMark, sizes.borderClass, styles.tone[mark.tone])}>
+      {mark.tone === MARK_TONE.SECOND_YELLOW ? <span className={styles.secondYellowHalf} /> : null}
+      {mark.count ? <span className={cn(styles.count, sizes.countClass)}>{mark.count}</span> : mark.icon ? <Icon name={mark.icon} className={sizes.iconClass} /> : null}
     </span>
   ))
 }

@@ -1,0 +1,32 @@
+import { HIGHLIGHT_TONE } from './match-highlights'
+
+export const playerTooltipStyles = {
+  tooltip: 'pointer-events-none fixed z-[80] flex w-max max-w-[320px] -translate-x-1/2 animate-fade-in flex-col gap-[6px] border border-bd2 bg-pan2 px-[15px] py-3 chamfer-small',
+  tooltipAbove: '-translate-y-full',
+  header: 'flex items-center gap-[11px]',
+  shirtNumber: 'text-[27px] leading-[.9] font-bold nums',
+  name: 'text-[15.3px] leading-[1.05] font-bold tracking-[-.01em] text-tx',
+  subtitle: 'text-[9.5px] font-semibold tracking-[-.01em] text-pretty text-tx2',
+  stats: 'flex items-center gap-[15px] border-t border-bd pt-[9px]',
+  goalsHighlight: 'text-ac',
+  yellowCardsHighlight: 'text-am',
+  section: 'flex flex-col gap-[5px] border-t border-bd pt-[9px]',
+  sectionTitle: 'text-[8.6px] font-semibold tracking-[-.01em] text-tx4',
+  highlights: 'flex flex-wrap gap-x-[14px] gap-y-1',
+  highlight: 'flex items-center gap-[7px]',
+  highlightMarker: 'size-[9px] flex-none',
+  cardMarker: 'rounded-[2px]',
+  roundMarker: 'rounded-full',
+  highlightTone: {
+    [HIGHLIGHT_TONE.GOAL]: 'bg-tx',
+    [HIGHLIGHT_TONE.ASSIST]: 'bg-ac',
+    [HIGHLIGHT_TONE.YELLOW]: 'bg-am',
+    [HIGHLIGHT_TONE.RED]: 'bg-vm',
+    [HIGHLIGHT_TONE.IN]: 'bg-ac',
+    [HIGHLIGHT_TONE.OUT]: 'bg-vm',
+  },
+  highlightText: 'text-[10.3px] font-bold tracking-[-.01em] whitespace-nowrap text-tx',
+  curiosity: 'flex items-start gap-2',
+  curiosityIcon: 'mt-[2px] text-ac',
+  curiosityText: 'text-[12.5px] leading-[1.4] text-pretty text-tx',
+} as const

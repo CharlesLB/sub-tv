@@ -1,24 +1,22 @@
 import Link from 'next/link'
 import { routes } from '@/lib/routes'
 import { Icon } from '@/components/ui/icon/icon'
+import { liveEmptyStateStyles as styles } from './live-empty-state.styles'
 
 type LiveEmptyStateProps = { seasonId: string }
 
 export function LiveEmptyState({ seasonId }: LiveEmptyStateProps) {
   return (
-    <div className="flex min-h-0 flex-1 items-center justify-center overflow-y-auto bg-bg p-5">
-      <div className="flex max-w-[440px] animate-fade-up flex-col items-center gap-3 rounded-card border border-bd bg-pan px-7 py-8 text-center">
-        <span aria-hidden className="relative block h-[34px] w-7 bg-bd2 hexagon">
-          <span className="absolute inset-px bg-pan hexagon" />
+    <div className={styles.screen}>
+      <div className={styles.card}>
+        <span aria-hidden className={styles.hexagon}>
+          <span className={styles.hexagonInner} />
         </span>
-        <h2 className="text-[15.3px] font-bold tracking-[-.01em] text-tx">Partida sem escalação</h2>
-        <p className="text-[12.5px] leading-[1.45] text-pretty text-tx3">
+        <h2 className={styles.title}>Partida sem escalação</h2>
+        <p className={styles.description}>
           Esta partida ainda não tem titulares definidos, então a prancheta não abre. Crie a transmissão pelo botão “Nova partida” do campeonato e escolha os 11 de cada time.
         </p>
-        <Link
-          href={routes.newMatch(seasonId)}
-          className="mt-1 flex h-9 items-center gap-2 rounded-card bg-ac px-4 text-[11.7px] font-bold tracking-[-.01em] text-bg transition-transform hover:-translate-y-px"
-        >
+        <Link href={routes.newMatch(seasonId)} className={styles.newMatchLink}>
           <Icon name="add" size={16} />
           Nova partida
         </Link>

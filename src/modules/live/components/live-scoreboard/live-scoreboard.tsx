@@ -11,6 +11,7 @@ import { LiveChrono } from '../live-chrono/live-chrono'
 import { LivePill } from '../live-pill/live-pill'
 import { ScoreValue } from '../score-value/score-value'
 import { ScoreboardTeam } from '../scoreboard-team/scoreboard-team'
+import { liveScoreboardStyles as styles } from './live-scoreboard.styles'
 
 export function LiveScoreboard() {
   const { teams, events, clock, category, pulseCount, streamStatus, pendingSyncCounts } = useLiveState()
@@ -21,12 +22,12 @@ export function LiveScoreboard() {
   const canAddMinute = clock.running && clock.period !== MATCH_PERIOD.FULL_TIME
 
   return (
-    <div data-screen-label="Placar" className="flex flex-none flex-wrap items-center justify-center gap-[14px] border-b border-bd bg-pan px-5 py-3 mobile:gap-2 mobile:px-2 mobile:py-2">
+    <div data-screen-label="Placar" className={styles.bar}>
       {clock.running ? <LivePill /> : null}
-      <CategoryTag category={category} className="px-[9px] py-[3px] text-[9.9px]" />
-      <div role="group" aria-label={`${home.name} ${score[SIDE.HOME]} × ${score[SIDE.AWAY]} ${away.name}`} className="flex -skew-x-12 items-stretch">
+      <CategoryTag category={category} className={styles.categoryTag} />
+      <div role="group" aria-label={`${home.name} ${score[SIDE.HOME]} × ${score[SIDE.AWAY]} ${away.name}`} className={styles.scoreGroup}>
         <ScoreboardTeam team={home} />
-        <div className="flex items-center gap-4 rounded-card border border-bd2 bg-pan2 px-[22px] py-2 mobile:gap-[10px] mobile:px-3">
+        <div className={styles.scorePanel}>
           <ScoreValue value={score[SIDE.HOME]} pulseCount={pulseCount} />
           <LiveChrono clock={clock} onAdvance={advanceClock} />
           {canAddMinute ? <AddedTimeButton onAdd={addMinute} /> : null}

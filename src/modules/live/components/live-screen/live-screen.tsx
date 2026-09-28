@@ -14,6 +14,7 @@ import { LiveOverlays } from '../live-overlays/live-overlays'
 import { LiveScoreboard } from '../live-scoreboard/live-scoreboard'
 import { OfficialsStrip } from '../officials-strip/officials-strip'
 import type { OfficialsStripItem } from '../officials-strip/officials-strip-items'
+import { liveScreenStyles as styles } from './live-screen.styles'
 
 const COMPACT_QUERY = '(max-width: 619px), (max-height: 479px) and (max-width: 999px)'
 const PORTRAIT_PHONE_QUERY = '(max-width: 619px) and (orientation: portrait)'
@@ -38,8 +39,8 @@ export function LiveScreen({ officialsItems }: LiveScreenProps) {
   const showsTimeline = isTimelineExpanded || isPortraitPhone
 
   return (
-    <div data-screen-label="Ao vivo" className="relative flex min-h-0 flex-1 animate-fade-in flex-col overflow-hidden bg-bg">
-      {isSyncFailing ? <div role="status" aria-label="Falha ao salvar lances; reenviando" className="absolute inset-x-0 top-0 z-10 h-[2px] bg-vm" /> : null}
+    <div data-screen-label="Ao vivo" className={styles.screen}>
+      {isSyncFailing ? <div role="status" aria-label="Falha ao salvar lances; reenviando" className={styles.syncFailureBar} /> : null}
       <LiveScoreboard />
       <OfficialsStrip items={officialsItems} />
       <EventsStrip

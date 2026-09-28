@@ -1,0 +1,16 @@
+export const playerDotStyles = {
+  wrapper: 'absolute flex w-[13%] -translate-1/2 flex-col items-center gap-[2px]',
+  wrapperDragged: 'z-[6]',
+  wrapperDropTarget: 'z-[4]',
+  wrapperResting: 'z-[2]',
+  dot: 'relative flex aspect-square w-[46%] touch-none items-center justify-center rounded-full border-[3px] border-gr-anel p-0 transition-[border-color] duration-150 hover:border-tx',
+  dotDragged: 'cursor-grabbing',
+  dotGrabbable: 'cursor-grab',
+  dotSentOff: 'opacity-60',
+  dotDropTarget: 'shadow-[0_0_0_4px_var(--az)]',
+  dotSelected: 'shadow-[0_0_0_3px_var(--tx)]',
+  shirtNumber: 'text-[clamp(9px,2.1cqw,15px)] leading-none font-bold text-bg nums',
+  name: 'bg-gr-chip px-[5px] pt-px pb-[2px] font-bold tracking-[-.01em] whitespace-nowrap text-gr-tx [text-shadow:0_1px_2px_rgba(0,0,0,.35)] [@container(max-height:190px)]:hidden',
+  nameCompact: 'text-[clamp(6px,1.7cqw,10px)]',
+  nameRegular: 'text-[clamp(7px,2.1cqw,14px)]',
+} as const

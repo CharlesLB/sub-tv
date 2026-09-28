@@ -3,6 +3,7 @@ import { cn } from '@/lib/utils/cn'
 import type { LivePlayerVM } from '@/modules/matches/client'
 import type { PlayerMatchState } from '../../state/live-state'
 import { MARKS_VARIANT, PlayerMarks } from '../player-marks/player-marks'
+import { benchDotStyles as styles } from './bench-dot.styles'
 
 const KEYBOARD_CLICK_DETAIL = 0
 
@@ -32,26 +33,16 @@ export function BenchDot({ player, matchState, teamColor, isDragged, isHighlight
       onClick={(event) => {
         if (event.detail === KEYBOARD_CLICK_DETAIL && !hasLeft) handlers.onKeyboardActivate(player.playerId)
       }}
-      className={cn(
-        'flex w-full flex-none touch-none flex-col items-center gap-[2px] border-0 bg-transparent p-0',
-        hasLeft ? 'cursor-not-allowed opacity-45' : 'cursor-grab',
-        isDragged && 'opacity-50',
-      )}
+      className={cn(styles.button, hasLeft ? styles.buttonSubbedOut : styles.buttonAvailable, isDragged && styles.buttonDragged)}
     >
       <span
-        className={cn(
-          'relative flex size-9 items-center justify-center rounded-full border-2 mobile:size-[30px]',
-          hasLeft ? 'border-bd2 bg-transparent' : isDragged ? 'border-tx' : 'border-pan',
-          isHighlighted && !hasLeft && 'shadow-[0_0_0_2px_var(--az)]',
-        )}
+        className={cn(styles.badge, hasLeft ? styles.badgeSubbedOut : isDragged ? styles.badgeDragged : styles.badgeIdle, isHighlighted && !hasLeft && styles.badgeHighlighted)}
         style={hasLeft ? undefined : { background: teamColor }}
       >
-        <span className={cn('text-[14.4px] leading-none font-bold nums mobile:text-[12.6px]', hasLeft ? 'text-tx4' : 'text-bg')}>{player.shirtNumber}</span>
+        <span className={cn(styles.shirtNumber, hasLeft ? styles.shirtNumberSubbedOut : styles.shirtNumberAvailable)}>{player.shirtNumber}</span>
         <PlayerMarks state={matchState} variant={MARKS_VARIANT.BENCH} />
       </span>
-      <span className={cn('max-w-full truncate text-center text-[10.5px] font-semibold tracking-[-.01em] whitespace-nowrap mobile:text-[9px]', hasLeft ? 'text-tx4' : 'text-tx2')}>
-        {player.shortName}
-      </span>
+      <span className={cn(styles.name, hasLeft ? styles.nameSubbedOut : styles.nameAvailable)}>{player.shortName}</span>
     </button>
   )
 }

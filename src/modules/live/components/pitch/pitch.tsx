@@ -6,6 +6,7 @@ import type { BoardInteractions } from '../../interaction/use-board-interactions
 import { useLiveState } from '../../state/live-context'
 import { PitchLines } from '../pitch-lines/pitch-lines'
 import { PlayerDot } from '../player-dot/player-dot'
+import { pitchStyles as styles } from './pitch.styles'
 
 const CENTER_SPOT: PitchPoint = { x: 50, y: 50 }
 
@@ -18,8 +19,8 @@ export function Pitch({ interactions, isCompact }: PitchProps) {
   const dropTargetId = drag?.kind === DRAG_KIND.BENCH ? drag.targetPlayerId : null
 
   return (
-    <div data-screen-label="Prancheta" className="[container-type:size] col-start-2 row-start-1 flex min-h-0 min-w-0 flex-col items-center justify-start overflow-hidden bg-pan p-4 chamfer mobile:p-2">
-      <div ref={fieldRef} className="relative aspect-[105/64] w-[min(100%,164cqh)] flex-[0_0_auto] rounded-card border border-gr-borda turf">
+    <div data-screen-label="Prancheta" className={styles.frame}>
+      <div ref={fieldRef} className={styles.field}>
         <PitchLines />
         {players.flatMap((player) => {
           const matchState = playerStates[player.playerId]
