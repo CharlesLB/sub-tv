@@ -1,0 +1,142 @@
+'use client'
+
+import { useRef, useState, type Dispatch, type PointerEvent } from 'react'
+import { DOT_DRAG_BOUNDS, findNearestStarter, isInsideField, RESERVE_DROP_BOUNDS, toFieldPoint, type FieldRectangle, type PointerPosition } from '../../board-geometry/board-geometry'
+import { STARTERS_PER_TEAM } from '../../default-starters/default-starters'
+import type { PitchPoint } from '../../pitch-layout/pitch-layout'
+import { isPrimaryPointer, trackPointerGesture } from '../../pointer-gesture/pointer-gesture'
+import type { StarterPositions } from '../../starter-positions/starter-positions'
+import type { MatchSide, SetupPlayerVM, SetupTeamVM } from '../../types'
+import type { WizardAction } from '../../wizard-reducer/wizard-reducer'
+import { shortNameOf } from '../../wizard-selectors/wizard-selectors'
+import { BenchColumn } from '../bench-column/bench-column'
+import { DragGhost } from '../drag-ghost/drag-ghost'
+import { PitchDot } from '../pitch-dot/pitch-dot'
+import { PitchMarkings } from '../pitch-markings/pitch-markings'
+
+export type BoardSideVM = { side: MatchSide; team: SetupTeamVM; starterIds: string[]; positions: StarterPositions }
+
+type DragState =
+  | { kind: 'starter'; side: MatchSide; playerId: string; point: PitchPoint }
+  | { kind: 'reserve'; side: MatchSide; player: SetupPlayerVM; color: string; pointer: PointerPosition; overStarterId: string | null; dropPoint: PitchPoint | null }
+
+type LineupBoardProps = { sides: BoardSideVM[]; categoryLabel: string; dispatch: Dispatch<WizardAction> }
+
+const BENCH_PLACEMENT = { home: 'left', away: 'right' } as const
+
+export function LineupBoard({ sides, categoryLabel, dispatch }: LineupBoardProps) {
+  const fieldRef = useRef<HTMLDivElement>(null)
+  const latestDrag = useRef<DragState | null>(null)
+  const [drag, setDrag] = useState<DragState | null>(null)
+
+  const updateDrag = (next: DragState | null) => {
+    latestDrag.current = next
+    setDrag(next)
+  }
+  const readField = (): FieldRectangle | null => {
+    const rectangle = fieldRef.current?.getBoundingClientRect()
+
+    return rectangle ? { left: rectangle.left, top: rectangle.top, width: rectangle.width, height: rectangle.height } : null
+  }
+
+  const startStarterDrag = (side: MatchSide, playerId: string, event: PointerEvent<HTMLButtonElement>) => {
+    if (!isPrimaryPointer(event)) return
+    event.preventDefault()
+    trackPointerGesture(event, {
+      onDrag: (pointer) => {
+        const field = readField()
+        if (field) updateDrag({ kind: 'starter', side, playerId, point: toFieldPoint(pointer, field, DOT_DRAG_BOUNDS) })
+      },
+      onRelease: (hasDragged) => {
+        const current = latestDrag.current
+        if (hasDragged && current?.kind === 'starter') dispatch({ type: 'starter/moved', side, playerId, point: current.point })
+        if (!hasDragged) dispatch({ type: 'starter/benched', side, playerId })
+        updateDrag(null)
+      },
+    })
+  }
+
+  const startReserveDrag = (boardSide: BoardSideVM, player: SetupPlayerVM, event: PointerEvent<HTMLButtonElement>) => {
+    if (!isPrimaryPointer(event)) return
+    event.preventDefault()
+    const { side, team, positions } = boardSide
+    trackPointerGesture(event, {
+      onDrag: (pointer) => {
+        const field = readField()
+        const overStarterId = field ? findNearestStarter(pointer, field, positions) : null
+        const dropPoint = field && !overStarterId && isInsideField(pointer, field) ? toFieldPoint(pointer, field, RESERVE_DROP_BOUNDS) : null
+        updateDrag({ kind: 'reserve', side, player, color: team.color, pointer, overStarterId, dropPoint })
+      },
+      onRelease: (hasDragged) => {
+        const current = latestDrag.current
+        const swappedPoint = current?.kind === 'reserve' && current.overStarterId ? positions[current.overStarterId] : undefined
+        if (!hasDragged) dispatch({ type: 'reserve/placed', side, playerId: player.playerId, point: null })
+        if (hasDragged && current?.kind === 'reserve' && current.overStarterId && swappedPoint) {
+          dispatch({ type: 'reserve/swapped', side, reserveId: player.playerId, starterId: current.overStarterId, point: swappedPoint })
+        }
+        if (hasDragged && current?.kind === 'reserve' && !current.overStarterId && current.dropPoint) {
+          dispatch({ type: 'reserve/placed', side, playerId: player.playerId, point: current.dropPoint })
+        }
+        updateDrag(null)
+      },
+    })
+  }
+
+  return (
+    <>
+      <div className="grid max-h-[min(46vh,520px)] min-h-[180px] max-w-[1400px] flex-1 animate-fade-up grid-cols-[minmax(104px,124px)_minmax(0,1fr)_minmax(104px,124px)] grid-rows-[minmax(0,1fr)] items-stretch gap-px overflow-hidden bg-bd">
+        {sides.map((boardSide) => {
+          const starterSet = new Set(boardSide.starterIds)
+
+          return (
+            <BenchColumn
+              key={boardSide.side}
+              team={boardSide.team}
+              categoryLabel={categoryLabel}
+              starterCount={boardSide.starterIds.length}
+              reserves={boardSide.team.players.filter((player) => !starterSet.has(player.playerId))}
+              draggingPlayerId={drag?.kind === 'reserve' ? drag.player.playerId : null}
+              placement={BENCH_PLACEMENT[boardSide.side]}
+              onPointerDown={(player, event) => startReserveDrag(boardSide, player, event)}
+              onKeyboardAdd={(player) => dispatch({ type: 'reserve/placed', side: boardSide.side, playerId: player.playerId, point: null })}
+            />
+          )
+        })}
+        <div className="col-start-2 row-start-1 flex min-h-0 min-w-0 items-center justify-center overflow-hidden bg-pan p-4 [container-type:size]">
+          <div ref={fieldRef} data-field className="relative aspect-[105/64] w-[min(100%,164cqh)] flex-none rounded-card border border-gr-borda turf">
+            <PitchMarkings />
+            {sides.flatMap((boardSide) =>
+              boardSide.team.players
+                .filter((player) => boardSide.positions[player.playerId])
+                .map((player) => {
+                  const isDragging = drag?.kind === 'starter' && drag.playerId === player.playerId
+                  const savedPoint = boardSide.positions[player.playerId] ?? { x: 50, y: 50 }
+
+                  return (
+                    <PitchDot
+                      key={player.playerId}
+                      shirtNumber={player.shirtNumber}
+                      label={shortNameOf(player)}
+                      description={`Camisa ${player.shirtNumber} — ${player.name}, ${boardSide.team.name}`}
+                      color={boardSide.team.color}
+                      point={isDragging ? drag.point : savedPoint}
+                      isDragging={isDragging}
+                      isSwapTarget={drag?.kind === 'reserve' && drag.overStarterId === player.playerId}
+                      onPointerDown={(event) => startStarterDrag(boardSide.side, player.playerId, event)}
+                      onKeyboardBench={() => dispatch({ type: 'starter/benched', side: boardSide.side, playerId: player.playerId })}
+                    />
+                  )
+                }),
+            )}
+          </div>
+        </div>
+      </div>
+      {drag?.kind === 'reserve' ? (
+        <DragGhost shirtNumber={drag.player.shirtNumber} name={shortNameOf(drag.player)} color={drag.color} left={drag.pointer.clientX} top={drag.pointer.clientY} />
+      ) : null}
+      <span className="sr-only" aria-live="polite">
+        {sides.map((boardSide) => `${boardSide.team.name}: ${boardSide.starterIds.length} de ${STARTERS_PER_TEAM} em campo`).join('. ')}
+      </span>
+    </>
+  )
+}
