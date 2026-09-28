@@ -5,12 +5,15 @@ import { db, tables } from '@/lib/db'
 import { toPersistedClock } from '../live-clock/live-clock'
 import { DATA_SOURCE, GOAL_TYPE, LIVE_EVENT_TYPE, type LiveClock, MATCH_PERIOD, MATCH_STATUS, type MatchStatus, type Side } from '../live-match/live-match'
 import { applyLineupSwap, findEventByKey, findExistingByClientId, findLineupRow, revertLineupSwap, type Transaction } from './live-lineup-rows'
-import { finalizeFinishedMatch, type SeasonTouch } from './match-finalization/match-finalization'
+import { finalizeFinishedMatch, refreshReopenedMatch, type SeasonTouch } from './match-finalization/match-finalization'
 
 const PLAYER_NOT_IN_MATCH = 'Este atleta não está na escalação desta partida.'
 const MATCH_NOT_FOUND = 'Partida não encontrada.'
 const GOAL_NOT_FOUND = 'Gol não encontrado para vincular a assistência.'
 const SCORER_CANNOT_ASSIST = 'Autor do gol não leva a assistência.'
+const INVALID_SUBSTITUTION = 'Substituição inválida: quem sai precisa estar em campo e quem entra, no banco.'
+const SUBSTITUTION_NOT_LATEST = 'Desfaça primeiro a substituição mais recente deste jogador.'
+const CLIENT_ID_IN_OTHER_MATCH = 'Este evento já foi registrado em outra partida.'
 const EDITABLE_STATUSES: readonly MatchStatus[] = [MATCH_STATUS.SCHEDULED, MATCH_STATUS.LIVE, MATCH_STATUS.FINISHED]
 
 type EventPeriod = typeof MATCH_PERIOD.FIRST_HALF | typeof MATCH_PERIOD.HALF_TIME | typeof MATCH_PERIOD.SECOND_HALF | typeof MATCH_PERIOD.FULL_TIME
@@ -26,6 +29,8 @@ type RecordedEvent = {
   fromSecondYellow: boolean
 }
 
+type Recorded = { id: string; created: boolean }
+
 type Substitution = { matchId: string; clientId: string; side: Side; period: EventPeriod; minute: number | null; playerInId: string; playerOutId: string; pitchPoint: { x: number; y: number } | null }
 
 const statusForClock = (clock: LiveClock, current: MatchStatus): MatchStatus => {
@@ -36,7 +41,7 @@ const statusForClock = (clock: LiveClock, current: MatchStatus): MatchStatus => 
   return MATCH_STATUS.LIVE
 }
 
-const insertEvent = async (event: RecordedEvent, operator: string): Promise<ActionResult<{ id: string }>> => {
+const insertEvent = async (event: RecordedEvent, operator: string): Promise<ActionResult<Recorded>> => {
   const lineupRow = await findLineupRow(db, event.matchId, event.playerId)
   if (!lineupRow || lineupRow.side !== event.side) return fail(PLAYER_NOT_IN_MATCH)
 
@@ -58,17 +63,17 @@ const insertEvent = async (event: RecordedEvent, operator: string): Promise<Acti
     .onConflictDoNothing({ target: tables.matchEvents.clientId })
     .returning({ id: tables.matchEvents.id })
 
-  if (inserted) return ok(inserted)
+  if (inserted) return ok({ id: inserted.id, created: true })
 
-  const existing = await findExistingByClientId(db, event.clientId)
+  const existing = await findExistingByClientId(db, event.matchId, event.clientId)
 
-  return existing ? ok(existing) : fail(MATCH_NOT_FOUND)
+  return existing ? ok({ id: existing.id, created: false }) : fail(CLIENT_ID_IN_OTHER_MATCH)
 }
 
-const insertSubstitution = async (substitution: Substitution, operator: string): Promise<ActionResult<{ id: string }>> =>
+const insertSubstitution = async (substitution: Substitution, operator: string): Promise<ActionResult<Recorded>> =>
   db.transaction(async (transaction: Transaction) => {
-    const existing = await findExistingByClientId(transaction, substitution.clientId)
-    if (existing) return ok(existing)
+    const existing = await findExistingByClientId(transaction, substitution.matchId, substitution.clientId)
+    if (existing) return ok({ id: existing.id, created: false })
 
     const [playerIn, playerOut] = await Promise.all([
       findLineupRow(transaction, substitution.matchId, substitution.playerInId),
@@ -76,6 +81,7 @@ const insertSubstitution = async (substitution: Substitution, operator: string):
     ])
 
     if (!playerIn || !playerOut || playerIn.side !== substitution.side || playerOut.side !== substitution.side) return fail(PLAYER_NOT_IN_MATCH)
+    if (!playerOut.isStarter || playerIn.isStarter) return fail(INVALID_SUBSTITUTION)
 
     await applyLineupSwap(transaction, { playerIn, playerOut, pitchPoint: substitution.pitchPoint })
 
@@ -93,9 +99,10 @@ const insertSubstitution = async (substitution: Substitution, operator: string):
         source: DATA_SOURCE.LIVE,
         createdBy: operator,
       })
+      .onConflictDoNothing({ target: tables.matchEvents.clientId })
       .returning({ id: tables.matchEvents.id })
 
-    return inserted ? ok(inserted) : fail(MATCH_NOT_FOUND)
+    return inserted ? ok({ id: inserted.id, created: true }) : fail(CLIENT_ID_IN_OTHER_MATCH)
   })
 
 const markEventDeleted = async (matchId: string, eventKey: string): Promise<ActionResult<{ id: string } | null>> =>
@@ -103,33 +110,37 @@ const markEventDeleted = async (matchId: string, eventKey: string): Promise<Acti
     const event = await findEventByKey(transaction, matchId, eventKey)
     if (!event || event.deletedAt) return ok(null)
 
-    await transaction.update(tables.matchEvents).set({ deletedAt: new Date() }).where(eq(tables.matchEvents.id, event.id))
-
     if (event.type === LIVE_EVENT_TYPE.SUBSTITUTION && event.source === DATA_SOURCE.LIVE && event.playerId && event.playerOutId) {
-      await revertLineupSwap(transaction, matchId, event.playerId, event.playerOutId)
+      const isReverted = await revertLineupSwap(transaction, matchId, event.playerId, event.playerOutId)
+      if (!isReverted) return fail(SUBSTITUTION_NOT_LATEST)
     }
+
+    await transaction.update(tables.matchEvents).set({ deletedAt: new Date() }).where(eq(tables.matchEvents.id, event.id))
 
     return ok({ id: event.id })
   })
 
 type WithSeasonTouch<Data> = { result: ActionResult<Data>; seasonTouch: SeasonTouch | null }
 
-const finalizeAfter = async <Data>(matchId: string, result: ActionResult<Data>): Promise<WithSeasonTouch<Data>> => ({
+const finalizeAfter = async <Data>(matchId: string, result: ActionResult<Data>, hasChanged: (data: Data) => boolean): Promise<WithSeasonTouch<Data>> => ({
   result,
-  seasonTouch: result.ok ? await finalizeFinishedMatch(matchId) : null,
+  seasonTouch: result.ok && hasChanged(result.data) ? await finalizeFinishedMatch(matchId) : null,
 })
 
-const recordEvent = async (event: RecordedEvent, operator: string): Promise<WithSeasonTouch<{ id: string }>> => await finalizeAfter(event.matchId, await insertEvent(event, operator))
+const wasCreated = (recorded: Recorded): boolean => recorded.created
 
-const substitute = async (substitution: Substitution, operator: string): Promise<WithSeasonTouch<{ id: string }>> =>
-  await finalizeAfter(substitution.matchId, await insertSubstitution(substitution, operator))
+const recordEvent = async (event: RecordedEvent, operator: string): Promise<WithSeasonTouch<Recorded>> => await finalizeAfter(event.matchId, await insertEvent(event, operator), wasCreated)
 
-const revertEvent = async (matchId: string, eventKey: string): Promise<WithSeasonTouch<{ id: string } | null>> => await finalizeAfter(matchId, await markEventDeleted(matchId, eventKey))
+const substitute = async (substitution: Substitution, operator: string): Promise<WithSeasonTouch<Recorded>> =>
+  await finalizeAfter(substitution.matchId, await insertSubstitution(substitution, operator), wasCreated)
 
-const attachAssist = async (matchId: string, goalKey: string, assistPlayerId: string | null): Promise<ActionResult<{ id: string }>> => {
+const revertEvent = async (matchId: string, eventKey: string): Promise<WithSeasonTouch<{ id: string } | null>> =>
+  await finalizeAfter(matchId, await markEventDeleted(matchId, eventKey), (reverted) => reverted !== null)
+
+const linkAssist = async (matchId: string, goalKey: string, assistPlayerId: string | null): Promise<ActionResult<{ id: string }>> => {
   const { matchEvents } = tables
   const goal = await findEventByKey(db, matchId, goalKey)
-  if (!goal || goal.type !== LIVE_EVENT_TYPE.GOAL) return fail(GOAL_NOT_FOUND)
+  if (!goal || goal.type !== LIVE_EVENT_TYPE.GOAL || goal.deletedAt) return fail(GOAL_NOT_FOUND)
   if (assistPlayerId && assistPlayerId === goal.playerId) return fail(SCORER_CANNOT_ASSIST)
 
   if (assistPlayerId) {
@@ -142,6 +153,16 @@ const attachAssist = async (matchId: string, goalKey: string, assistPlayerId: st
   return ok({ id: goal.id })
 }
 
+const attachAssist = async (matchId: string, goalKey: string, assistPlayerId: string | null): Promise<WithSeasonTouch<{ id: string }>> =>
+  await finalizeAfter(matchId, await linkAssist(matchId, goalKey, assistPlayerId), () => true)
+
+const refreshAfterStatusChange = async (matchId: string, previous: MatchStatus, current: MatchStatus): Promise<SeasonTouch | null> => {
+  if (current === MATCH_STATUS.FINISHED) return await finalizeFinishedMatch(matchId)
+  if (previous === MATCH_STATUS.FINISHED) return await refreshReopenedMatch(matchId)
+
+  return null
+}
+
 const updateClock = async (matchId: string, clock: LiveClock): Promise<ActionResult<{ seasonId: string; statusChanged: boolean; seasonTouch: SeasonTouch | null }>> => {
   const { matches } = tables
   const [match] = await db.select({ seasonId: matches.seasonId, status: matches.status }).from(matches).where(eq(matches.id, matchId)).limit(1)
@@ -152,7 +173,7 @@ const updateClock = async (matchId: string, clock: LiveClock): Promise<ActionRes
   await db.update(matches).set({ liveClock: persistedClock, status }).where(eq(matches.id, matchId))
 
   const statusChanged = status !== match.status
-  const seasonTouch = statusChanged && status === MATCH_STATUS.FINISHED ? await finalizeFinishedMatch(matchId) : null
+  const seasonTouch = statusChanged ? await refreshAfterStatusChange(matchId, match.status, status) : null
 
   return ok({ seasonId: match.seasonId, statusChanged, seasonTouch })
 }

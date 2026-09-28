@@ -34,13 +34,14 @@ export async function recordLiveEvent(input: RecordLiveEventInput): Promise<Acti
 
   const { result, seasonTouch } = await liveService.recordEvent(parsed.data, user.id)
   invalidateSeason(seasonTouch)
+  if (!result.ok) return result
 
-  if (result.ok) {
+  if (result.data.created) {
     updateTag(tags.match(parsed.data.matchId))
     await auditMatchChange(user.id, AUDIT_ACTION.LIVE_EVENT_RECORDED, parsed.data.matchId, { eventId: result.data.id, ...parsed.data })
   }
 
-  return result
+  return ok({ id: result.data.id })
 }
 
 export async function applySubstitution(input: ApplySubstitutionInput): Promise<ActionResult<{ id: string }>> {
@@ -50,13 +51,14 @@ export async function applySubstitution(input: ApplySubstitutionInput): Promise<
 
   const { result, seasonTouch } = await liveService.substitute(parsed.data, user.id)
   invalidateSeason(seasonTouch)
+  if (!result.ok) return result
 
-  if (result.ok) {
+  if (result.data.created) {
     updateTag(tags.match(parsed.data.matchId))
     await auditMatchChange(user.id, AUDIT_ACTION.SUBSTITUTION_APPLIED, parsed.data.matchId, { ...parsed.data })
   }
 
-  return result
+  return ok({ id: result.data.id })
 }
 
 export async function revertLiveEvent(input: RevertLiveEventInput): Promise<ActionResult<{ id: string } | null>> {
@@ -67,7 +69,7 @@ export async function revertLiveEvent(input: RevertLiveEventInput): Promise<Acti
   const { result, seasonTouch } = await liveService.revertEvent(parsed.data.matchId, parsed.data.eventKey)
   invalidateSeason(seasonTouch)
 
-  if (result.ok) {
+  if (result.ok && result.data) {
     updateTag(tags.match(parsed.data.matchId))
     await auditMatchChange(user.id, AUDIT_ACTION.LIVE_EVENT_REVERTED, parsed.data.matchId, { ...parsed.data })
   }
@@ -80,7 +82,8 @@ export async function attachAssist(input: AttachAssistInput): Promise<ActionResu
   const parsed = AttachAssistInput.safeParse(input)
   if (!parsed.success) return invalid(parsed.error)
 
-  const result = await liveService.attachAssist(parsed.data.matchId, parsed.data.goalKey, parsed.data.assistPlayerId)
+  const { result, seasonTouch } = await liveService.attachAssist(parsed.data.matchId, parsed.data.goalKey, parsed.data.assistPlayerId)
+  invalidateSeason(seasonTouch)
 
   if (result.ok) {
     updateTag(tags.match(parsed.data.matchId))

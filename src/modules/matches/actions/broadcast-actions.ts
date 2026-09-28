@@ -12,8 +12,10 @@ export async function closeBroadcast(matchId: string): Promise<void> {
   if (!isUuid(matchId)) return
 
   const match = await broadcastService.close(matchId)
+  if (!match) return
+
   await recordAudit({ userId: user.id, action: AUDIT_ACTION.BROADCAST_CLOSED, entityType: AUDIT_ENTITY.MATCH, entityId: matchId })
   updateTag(tags.liveMatches())
   updateTag(tags.match(matchId))
-  if (match) updateTag(tags.seasonMatches(match.seasonId))
+  updateTag(tags.seasonMatches(match.seasonId))
 }

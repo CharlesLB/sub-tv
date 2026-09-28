@@ -7,6 +7,18 @@ import { recalculateSeasonStatistics } from '../season-statistics/season-statist
 
 export type SeasonTouch = { seasonId: string; homeSeasonTeamId: string; awaySeasonTeamId: string }
 
+const seasonTouchOf = (match: SeasonTouch): SeasonTouch => ({ seasonId: match.seasonId, homeSeasonTeamId: match.homeSeasonTeamId, awaySeasonTeamId: match.awaySeasonTeamId })
+
+export const refreshReopenedMatch = async (matchId: string): Promise<SeasonTouch | null> => {
+  const { matches } = tables
+  const [match] = await db.select({ seasonId: matches.seasonId, homeSeasonTeamId: matches.homeTeamId, awaySeasonTeamId: matches.awayTeamId }).from(matches).where(eq(matches.id, matchId)).limit(1)
+  if (!match) return null
+
+  await recalculateSeasonStatistics(match.seasonId)
+
+  return seasonTouchOf(match)
+}
+
 export const finalizeFinishedMatch = async (matchId: string): Promise<SeasonTouch | null> => {
   const { matches, matchEvents } = tables
 
@@ -40,5 +52,5 @@ export const finalizeFinishedMatch = async (matchId: string): Promise<SeasonTouc
   if (score) await db.update(matches).set({ homeScore: score.homeScore, awayScore: score.awayScore }).where(eq(matches.id, matchId))
   await recalculateSeasonStatistics(match.seasonId)
 
-  return { seasonId: match.seasonId, homeSeasonTeamId: match.homeSeasonTeamId, awaySeasonTeamId: match.awaySeasonTeamId }
+  return seasonTouchOf(match)
 }

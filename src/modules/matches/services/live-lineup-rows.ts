@@ -20,9 +20,14 @@ export const findLineupRow = async (executor: DatabaseExecutor, matchId: string,
   return row ?? null
 }
 
-export const findExistingByClientId = async (executor: DatabaseExecutor, clientId: string): Promise<{ id: string } | null> => {
+export const findExistingByClientId = async (executor: DatabaseExecutor, matchId: string, clientId: string): Promise<{ id: string } | null> => {
   const { matchEvents } = tables
-  const [row] = await executor.select({ id: matchEvents.id }).from(matchEvents).where(eq(matchEvents.clientId, clientId)).limit(1)
+
+  const [row] = await executor
+    .select({ id: matchEvents.id })
+    .from(matchEvents)
+    .where(and(eq(matchEvents.matchId, matchId), eq(matchEvents.clientId, clientId)))
+    .limit(1)
 
   return row ?? null
 }
@@ -56,10 +61,12 @@ export const applyLineupSwap = async (executor: DatabaseExecutor, swap: { player
   await setLineupRow(executor, playerOut.id, { isStarter: false, pitchX: playerIn.pitchX, pitchY: playerIn.pitchY })
 }
 
-export const revertLineupSwap = async (executor: DatabaseExecutor, matchId: string, playerInId: string, playerOutId: string): Promise<void> => {
+export const revertLineupSwap = async (executor: DatabaseExecutor, matchId: string, playerInId: string, playerOutId: string): Promise<boolean> => {
   const [playerIn, playerOut] = await Promise.all([findLineupRow(executor, matchId, playerInId), findLineupRow(executor, matchId, playerOutId)])
-  if (!playerIn || !playerOut) return
+  if (!playerIn?.isStarter || !playerOut || playerOut.isStarter) return false
 
   await setLineupRow(executor, playerOut.id, { isStarter: true, pitchX: playerIn.pitchX, pitchY: playerIn.pitchY })
   await setLineupRow(executor, playerIn.id, { isStarter: false, pitchX: playerOut.pitchX, pitchY: playerOut.pitchY })
+
+  return true
 }
