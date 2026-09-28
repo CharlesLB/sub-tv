@@ -1,5 +1,5 @@
+import { FORM_RESULT } from '../../form-result/form-result'
 import type { SquadPreviewPlayerVM, StandingRowVM } from '../../types'
-import { FORM_RESULT } from '../form-square/form-square.fixtures'
 import { cerradoBadgeFixture, ribeirinhaBadgeFixture, serranoBadgeFixture, valeVerdeBadgeFixture } from '../match-card/match-card.fixtures'
 
 export const squadPreviewFixture: SquadPreviewPlayerVM[] = [

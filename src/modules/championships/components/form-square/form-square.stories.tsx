@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite'
+import { FORM_RESULT } from '../../form-result/form-result'
 import { FormSquare } from './form-square'
-import { FORM_RESULT } from './form-square.fixtures'
 
 const meta = {
   title: 'Championships/FormSquare',

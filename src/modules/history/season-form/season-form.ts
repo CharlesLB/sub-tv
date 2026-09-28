@@ -1,8 +1,5 @@
 import * as R from 'remeda'
-import type { FormResult } from '@/modules/championships/client'
-
-const FORM_LENGTH = 5
-const FORM_RESULT = { WIN: 'V', DRAW: 'E', LOSS: 'D' } as const satisfies Record<string, FormResult>
+import { FORM_LENGTH, type FormResult, resultFor } from '@/modules/championships/client'
 
 export type FinishedTeamMatch = {
   year: number
@@ -10,13 +7,6 @@ export type FinishedTeamMatch = {
   awayTeamId: string
   homeScore: number
   awayScore: number
-}
-
-const resultFor = (goalsScored: number, goalsConceded: number): FormResult => {
-  if (goalsScored > goalsConceded) return FORM_RESULT.WIN
-  if (goalsScored < goalsConceded) return FORM_RESULT.LOSS
-
-  return FORM_RESULT.DRAW
 }
 
 const resultOfTeam = (match: FinishedTeamMatch, seasonTeamIds: ReadonlySet<string>): FormResult =>

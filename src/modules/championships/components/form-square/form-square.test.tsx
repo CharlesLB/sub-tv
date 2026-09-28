@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
+import { FORM_RESULT } from '../../form-result/form-result'
 import { FormSquare } from './form-square'
-import { FORM_RESULT } from './form-square.fixtures'
 
 describe('FormSquare', () => {
   it('shows a win with its title, win colors and the medium size by default', () => {
