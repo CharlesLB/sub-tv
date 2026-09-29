@@ -3,7 +3,9 @@ import { defineConfig, devices } from '@playwright/test'
 const BASE_URL = process.env.E2E_BASE_URL ?? 'http://localhost:3000'
 
 export default defineConfig({
-  testDir: './tests/e2e',
+  testDir: './e2e',
+  testMatch: '**/*.spec.ts',
+  globalSetup: './e2e/support/global-setup/global-setup.ts',
   outputDir: '.data/test-results',
   timeout: 60_000,
   fullyParallel: false,

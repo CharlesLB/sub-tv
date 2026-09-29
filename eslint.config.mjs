@@ -46,7 +46,7 @@ const eslintConfig = defineConfig([
     },
   },
   {
-    files: ['**/*.test.{ts,tsx}', '**/*.stories.tsx', 'tests/**', 'e2e/**'],
+    files: ['**/*.test.{ts,tsx}', '**/*.stories.tsx', 'e2e/**'],
     rules: { 'no-restricted-syntax': ['error', ...RESTRICTED_SYNTAX.filter((restriction) => !restriction.selector.startsWith('TSAsExpression'))] },
   },
   {
