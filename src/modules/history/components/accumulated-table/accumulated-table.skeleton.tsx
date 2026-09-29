@@ -30,7 +30,7 @@ export function AccumulatedTableSkeleton() {
           return (
             <div key={slot.slotId} className={cn(styles.row, stagger.className, slot.order === 0 ? styles.rowLeader : styles.rowFollower)} style={stagger.style}>
               <SkeletonCell cellClassName={styles.position} barClassName={skeletonStyles.position} delayMs={delayMs} />
-              <Skeleton className={styles.colorSwatch} delayMs={delayMs} />
+              <Skeleton className={styles.crestPlaceholder} delayMs={delayMs} />
               <SkeletonCell cellClassName={styles.teamName} barClassName={skeletonStyles.teamName} delayMs={nameDelayMs} />
               <SkeletonCell cellClassName={styles.category} barClassName={skeletonStyles.category} delayMs={nameDelayMs} />
               <SkeletonCell cellClassName={cn(styles.numberCell, styles.playedColumn)} barClassName={skeletonStyles.number} delayMs={numbersDelayMs} />

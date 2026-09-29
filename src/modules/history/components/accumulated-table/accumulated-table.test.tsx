@@ -6,6 +6,7 @@ import { AccumulatedTable } from './accumulated-table'
 import { accumulatedTeamRowsFixture, cruzeiroRowFixture, tupiRowFixture } from './accumulated-table.fixtures'
 
 const filter = loadedHistoryFilterFixture.filter
+const CREST_IMAGE_SELECTOR = 'img'
 
 describe('AccumulatedTable', () => {
   it('links every team row to its team history keeping the current filter', () => {
@@ -39,5 +40,12 @@ describe('AccumulatedTable', () => {
     expect(screen.getByRole('heading', { level: 2, name: 'Classificação acumulada por time' })).toBeInTheDocument()
     expect(screen.getByText('Nenhuma campanha registrada para os filtros selecionados')).toBeInTheDocument()
     expect(screen.queryByRole('link')).not.toBeInTheDocument()
+  })
+
+  it('shows the crest image of a team that has one and the colored hexagon for the others', () => {
+    render(<AccumulatedTable rows={accumulatedTeamRowsFixture} filter={filter} />)
+
+    expect(screen.getByRole('link', { name: /Cruzeiro/ }).querySelector(CREST_IMAGE_SELECTOR)).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: /Tupi/ }).querySelector(CREST_IMAGE_SELECTOR)).not.toBeInTheDocument()
   })
 })

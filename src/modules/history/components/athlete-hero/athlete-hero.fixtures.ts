@@ -1,5 +1,6 @@
 import { CATEGORY } from '@/modules/championships/client'
 import type { AthleteHistoryVM } from '../../types'
+import { cruzeiroBadgeFixture } from '../accumulated-table/accumulated-table.fixtures'
 
 export const athleteHistoryFixture: AthleteHistoryVM = {
   playerId: '6f0c8a52-0d8e-4c1b-9d52-4a3a0f1e2b10',
@@ -26,3 +27,5 @@ export const athleteWithoutTeamFixture: AthleteHistoryVM = {
   team: null,
   category: null,
 }
+
+export const athleteWithCrestFixture: AthleteHistoryVM = { ...athleteHistoryFixture, team: cruzeiroBadgeFixture }

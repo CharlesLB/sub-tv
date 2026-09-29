@@ -7,6 +7,9 @@ import { periodScorersFixture, topPeriodScorerFixture } from './period-scorers.f
 
 const filter = loadedHistoryFilterFixture.filter
 
+const PERCENT_SIGN = '%'
+const CREST_IMAGE_SELECTOR = 'img'
+
 describe('PeriodScorers', () => {
   it('links every scorer to the athlete history keeping the current filter', () => {
     render(<PeriodScorers scorers={periodScorersFixture} filter={filter} />)
@@ -29,14 +32,14 @@ describe('PeriodScorers', () => {
   it('sizes each goal bar relative to the top scorer', () => {
     const { container } = render(<PeriodScorers scorers={periodScorersFixture} filter={filter} />)
 
-    const bars = [...container.querySelectorAll<HTMLElement>('[style*="width"]')]
+    const bars = [...container.querySelectorAll<HTMLElement>('[style*="width"]')].filter((element) => element.style.width.endsWith(PERCENT_SIGN))
     expect(bars.map((bar) => bar.style.width)).toEqual(['100%', '71%', '29%'])
   })
 
   it('sizes the goal bars against the most goals even when the list is not sorted', () => {
     const { container } = render(<PeriodScorers scorers={periodScorersFixture.toReversed()} filter={filter} />)
 
-    const bars = [...container.querySelectorAll<HTMLElement>('[style*="width"]')]
+    const bars = [...container.querySelectorAll<HTMLElement>('[style*="width"]')].filter((element) => element.style.width.endsWith(PERCENT_SIGN))
     expect(bars.map((bar) => bar.style.width)).toEqual(['29%', '71%', '100%'])
   })
 
@@ -45,5 +48,12 @@ describe('PeriodScorers', () => {
 
     expect(screen.getByRole('region', { name: 'Artilheiros do período' })).toHaveTextContent('Nenhum gol registrado para os filtros selecionados')
     expect(screen.queryByRole('link')).not.toBeInTheDocument()
+  })
+
+  it('shows the crest of each scorer team, falling back to the colored hexagon', () => {
+    render(<PeriodScorers scorers={periodScorersFixture} filter={filter} />)
+
+    expect(screen.getByRole('link', { name: /Lucas Andrade/ }).querySelector(CREST_IMAGE_SELECTOR)).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: /Enzo Figueiredo/ }).querySelector(CREST_IMAGE_SELECTOR)).not.toBeInTheDocument()
   })
 })

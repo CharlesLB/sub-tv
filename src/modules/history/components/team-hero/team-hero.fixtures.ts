@@ -22,3 +22,5 @@ export const teamWithoutSeasonsFixture: TeamHistoryVM = {
   scorers: [],
   presences: [],
 }
+
+export const teamWithoutCrestFixture: TeamHistoryVM = { ...teamHistoryFixture, team: { ...teamHistoryFixture.team, crestPath: null } }

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 import { TeamHero } from './team-hero'
-import { teamHistoryFixture, teamWithoutSeasonsFixture } from './team-hero.fixtures'
+import { teamHistoryFixture, teamWithoutCrestFixture, teamWithoutSeasonsFixture } from './team-hero.fixtures'
 import { TeamHeroSkeleton } from './team-hero.skeleton'
 
 const meta = {
@@ -14,6 +14,8 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const WithSeasons: Story = {}
+
+export const WithoutCrest: Story = { args: { history: teamWithoutCrestFixture } }
 
 export const WithoutSeasons: Story = { args: { history: teamWithoutSeasonsFixture } }
 

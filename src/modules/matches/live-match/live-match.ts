@@ -64,6 +64,7 @@ export type LiveTeamVM = {
   name: string
   abbreviation: string
   color: string
+  crestPath: string | null
 }
 
 export type SeasonNumbersVM = { goals: number; assists: number; yellowCards: number; games: number }

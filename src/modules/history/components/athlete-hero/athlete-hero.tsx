@@ -1,10 +1,12 @@
 import { cn } from '@/lib/utils/cn'
 import { pluralize } from '@/lib/utils/pluralize/pluralize'
+import { Crest } from '@/components/ui/crest/crest'
 import { categoryLabel, categoryTextClass } from '@/modules/championships/client'
 import type { AthleteHistoryVM } from '../../types'
 import { athleteHeroStyles as styles } from './athlete-hero.styles'
 
 const MISSING_VALUE = '–'
+const TEAM_CREST_WIDTH = 14
 
 export function AthleteHero({ history }: { history: AthleteHistoryVM }) {
   const teamColor = history.team?.color
@@ -24,7 +26,12 @@ export function AthleteHero({ history }: { history: AthleteHistoryVM }) {
         {history.position || teamLine ? (
           <div className={styles.line}>
             {history.position ? <span className={cn(styles.position, history.category ? categoryTextClass[history.category] : styles.positionFallback)}>{history.position}</span> : null}
-            {teamLine ? <span className={styles.teamLine}>{teamLine}</span> : null}
+            {history.team && teamLine ? (
+              <span className={styles.team}>
+                <Crest color={history.team.color} imagePath={history.team.crestPath} width={TEAM_CREST_WIDTH} />
+                <span className={styles.teamLine}>{teamLine}</span>
+              </span>
+            ) : null}
           </div>
         ) : null}
         <span className={styles.subtitle}>{subtitle}</span>

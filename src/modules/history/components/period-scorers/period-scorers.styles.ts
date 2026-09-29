@@ -5,7 +5,7 @@ export const periodScorersStyles = {
   position: 'w-6 flex-none text-[11px] nums',
   positionLeader: 'text-ac',
   positionFollower: 'text-tx5',
-  colorSwatch: 'size-[9px] flex-none',
+  crestPlaceholder: 'h-[22px] w-[18px] flex-none',
   identity: 'flex min-w-0 flex-1 flex-col gap-[3px]',
   name: 'truncate text-[12.6px] font-bold tracking-[-.01em] text-tx',
   team: 'truncate text-[9.5px] tracking-[.08em] text-tx4',

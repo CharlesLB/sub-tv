@@ -62,8 +62,8 @@ export const makeSnapshot = (overrides: Partial<LiveMatchSnapshot> = {}): LiveMa
   championship: { name: 'Regional da Base', category: CATEGORY.SUB14, year: 2026 },
   officials: [],
   teams: {
-    [SIDE.HOME]: { side: SIDE.HOME, seasonTeamId: 'team-home', name: 'União FC', abbreviation: 'UNI', color: '#C4411B' },
-    [SIDE.AWAY]: { side: SIDE.AWAY, seasonTeamId: 'team-away', name: 'Serra Azul', abbreviation: 'SER', color: '#1F6A4A' },
+    [SIDE.HOME]: { side: SIDE.HOME, seasonTeamId: 'team-home', name: 'União FC', abbreviation: 'UNI', color: '#C4411B', crestPath: null },
+    [SIDE.AWAY]: { side: SIDE.AWAY, seasonTeamId: 'team-away', name: 'Serra Azul', abbreviation: 'SER', color: '#1F6A4A', crestPath: null },
   },
   players: [
     makePlayer({ playerId: PLAYER.HOME_STRIKER, side: SIDE.HOME, shirtNumber: 9, pitchPoint: { x: 44, y: 50 } }),

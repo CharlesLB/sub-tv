@@ -8,6 +8,7 @@ import { HighlightCards } from './highlight-cards'
 import { emptyHistoryOverviewFixture, historyOverviewFixture } from './highlight-cards.fixtures'
 
 const filter = loadedHistoryFilterFixture.filter
+const CREST_IMAGE_SELECTOR = 'img'
 
 describe('HighlightCards', () => {
   it('shows the best win rate, the top scorer and the team with most games', () => {
@@ -45,5 +46,12 @@ describe('HighlightCards', () => {
     const { container } = render(<HighlightCards overview={emptyHistoryOverviewFixture} filter={filter} />)
 
     expect(container).toBeEmptyDOMElement()
+  })
+
+  it('shows the crest of the highlighted team and the colored hexagon when the club has none', () => {
+    render(<HighlightCards overview={historyOverviewFixture} filter={filter} />)
+
+    expect(screen.getByRole('link', { name: /Melhor aproveitamento/ }).querySelector(CREST_IMAGE_SELECTOR)).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: /Mais jogos/ }).querySelector(CREST_IMAGE_SELECTOR)).not.toBeInTheDocument()
   })
 })

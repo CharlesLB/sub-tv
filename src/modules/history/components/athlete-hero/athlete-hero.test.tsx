@@ -1,7 +1,9 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import { AthleteHero } from './athlete-hero'
-import { athleteHistoryFixture, athleteWithoutTeamFixture } from './athlete-hero.fixtures'
+import { athleteHistoryFixture, athleteWithCrestFixture, athleteWithoutTeamFixture } from './athlete-hero.fixtures'
+
+const CREST_IMAGE_SELECTOR = 'img'
 
 describe('AthleteHero', () => {
   it('shows the athlete name, nickname, team line and season summary', () => {
@@ -25,5 +27,18 @@ describe('AthleteHero', () => {
     expect(screen.getByText('–')).toBeInTheDocument()
     expect(screen.queryByText('Cruzeiro · SUB-14')).not.toBeInTheDocument()
     expect(screen.queryByText('“Luquinhas”')).not.toBeInTheDocument()
+  })
+
+  it('shows the club crest next to the team line when the club has one', () => {
+    const { container } = render(<AthleteHero history={athleteWithCrestFixture} />)
+
+    expect(screen.getByText('Cruzeiro · SUB-14').parentElement?.querySelector(CREST_IMAGE_SELECTOR)).toBeInTheDocument()
+    expect(container.querySelectorAll(CREST_IMAGE_SELECTOR)).toHaveLength(1)
+  })
+
+  it('shows no crest when the athlete has no team', () => {
+    const { container } = render(<AthleteHero history={athleteWithoutTeamFixture} />)
+
+    expect(container.querySelector(CREST_IMAGE_SELECTOR)).not.toBeInTheDocument()
   })
 })

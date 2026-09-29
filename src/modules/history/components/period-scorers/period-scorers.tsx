@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { cn } from '@/lib/utils/cn'
 import { pluralize } from '@/lib/utils/pluralize/pluralize'
+import { Crest } from '@/components/ui/crest/crest'
 import { categoryLabel } from '@/modules/championships/client'
 import type { HistoryFilter } from '../../history-filter/history-filter'
 import { historyHref } from '../../history-href/history-href'
@@ -13,6 +14,7 @@ import { RowChevron } from '../row-chevron/row-chevron'
 import { periodScorersStyles as styles } from './period-scorers.styles'
 
 const ROW_DELAY_STEP_MS = 40
+const ROW_CREST_WIDTH = 18
 
 type PeriodScorersProps = { scorers: PeriodScorerVM[]; filter: HistoryFilter }
 
@@ -37,7 +39,7 @@ export function PeriodScorers({ scorers, filter }: PeriodScorersProps) {
                 style={stagger.style}
               >
                 <span className={cn(styles.position, index === 0 ? styles.positionLeader : styles.positionFollower)}>{formatPosition(index + 1)}</span>
-                <span className={styles.colorSwatch} style={{ background: scorer.team.color }} />
+                <Crest color={scorer.team.color} imagePath={scorer.team.crestPath} width={ROW_CREST_WIDTH} />
                 <span className={styles.identity}>
                   <span className={styles.name}>{scorer.name}</span>
                   <span className={styles.team}>{`${scorer.team.name} · ${categoryLabel[scorer.category]}`}</span>

@@ -8,6 +8,7 @@ export const athleteHeroStyles = {
   nickname: 'text-tx3 text-[11.5px] tracking-[.08em]',
   position: 'text-[10px] tracking-[.05em]',
   positionFallback: 'text-tx3',
+  team: 'inline-flex items-center gap-[6px] self-center',
   teamLine: 'text-tx2 text-[12.6px] font-bold tracking-[-.01em]',
   subtitle: 'text-tx4 text-[10px] tracking-[.1em]',
 } as const

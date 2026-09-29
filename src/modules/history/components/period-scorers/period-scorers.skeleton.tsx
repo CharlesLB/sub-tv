@@ -25,7 +25,7 @@ export function PeriodScorersSkeleton() {
           return (
             <div key={slot.slotId} className={cn(styles.row, stagger.className)} style={stagger.style}>
               <SkeletonCell cellClassName={styles.position} barClassName={skeletonStyles.position} delayMs={delayMs} />
-              <Skeleton className={styles.colorSwatch} delayMs={delayMs} />
+              <Skeleton className={styles.crestPlaceholder} delayMs={delayMs} />
               <span className={styles.identity}>
                 <Skeleton className={cn(styles.name, skeletonStyles.name)} delayMs={identityDelayMs} />
                 <Skeleton className={cn(styles.team, skeletonStyles.team)} delayMs={identityDelayMs} />

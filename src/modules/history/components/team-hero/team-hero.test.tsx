@@ -1,7 +1,9 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import { TeamHero } from './team-hero'
-import { teamHistoryFixture, teamWithoutSeasonsFixture } from './team-hero.fixtures'
+import { teamHistoryFixture, teamWithoutCrestFixture, teamWithoutSeasonsFixture } from './team-hero.fixtures'
+
+const CREST_IMAGE_SELECTOR = 'img'
 
 describe('TeamHero', () => {
   it('shows the team name, category and season summary', () => {
@@ -12,8 +14,8 @@ describe('TeamHero', () => {
     expect(screen.getByText('2 Temporadas No filtro · 24 Jogos · 81% de aproveitamento')).toBeInTheDocument()
   })
 
-  it('paints the abbreviation badge with the team color', () => {
-    render(<TeamHero history={teamHistoryFixture} />)
+  it('paints the abbreviation badge with the team color when the club has no crest', () => {
+    render(<TeamHero history={teamWithoutCrestFixture} />)
 
     expect(screen.getByText('CRU')).toHaveStyle({ background: '#1f4fa3' })
   })
@@ -22,5 +24,12 @@ describe('TeamHero', () => {
     render(<TeamHero history={teamWithoutSeasonsFixture} />)
 
     expect(screen.getByText('0 Temporadas No filtro · 0 Jogos · 0% de aproveitamento')).toBeInTheDocument()
+  })
+
+  it('shows the club crest instead of the abbreviation badge when the club has one', () => {
+    const { container } = render(<TeamHero history={teamHistoryFixture} />)
+
+    expect(container.querySelector(CREST_IMAGE_SELECTOR)).toBeInTheDocument()
+    expect(screen.queryByText('CRU')).not.toBeInTheDocument()
   })
 })

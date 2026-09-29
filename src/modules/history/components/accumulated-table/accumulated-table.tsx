@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { cn } from '@/lib/utils/cn'
+import { Crest } from '@/components/ui/crest/crest'
 import { categoryLabel, categoryTextClass } from '@/modules/championships/client'
 import type { HistoryFilter } from '../../history-filter/history-filter'
 import { historyHref } from '../../history-href/history-href'
@@ -12,6 +13,7 @@ import { RowChevron } from '../row-chevron/row-chevron'
 import { accumulatedTableStyles as styles } from './accumulated-table.styles'
 
 const ROW_DELAY_STEP_MS = 30
+const ROW_CREST_WIDTH = 18
 
 type AccumulatedTableProps = { rows: AccumulatedTeamRowVM[]; filter: HistoryFilter }
 
@@ -24,7 +26,7 @@ export function AccumulatedTable({ rows, filter }: AccumulatedTableProps) {
         <div className={styles.table}>
           <div className={styles.header}>
             <span className={styles.headerPosition}>#</span>
-            <span className={styles.headerColorSwatch} />
+            <span className={styles.headerCrest} />
             <span className={styles.headerTeam}>Time</span>
             <span className={styles.headerCategory}>Cat</span>
             <span className={cn(styles.headerNumber, styles.playedColumn)}>J</span>
@@ -48,7 +50,7 @@ export function AccumulatedTable({ rows, filter }: AccumulatedTableProps) {
                 style={stagger.style}
               >
                 <span className={cn(styles.position, index === 0 ? styles.positionLeader : styles.positionFollower)}>{formatPosition(index + 1)}</span>
-                <span className={styles.colorSwatch} style={{ background: row.team.color }} />
+                <Crest color={row.team.color} imagePath={row.team.crestPath} width={ROW_CREST_WIDTH} />
                 <span className={styles.teamName}>{row.team.name}</span>
                 <span className={cn(styles.category, categoryTextClass[row.category])}>{categoryLabel[row.category]}</span>
                 <span className={cn(styles.numberCell, styles.playedColumn)}>{row.played}</span>

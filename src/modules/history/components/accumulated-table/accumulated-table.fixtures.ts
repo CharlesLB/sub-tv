@@ -1,7 +1,8 @@
+import { CREST_IMAGE_PATH } from '@/components/ui/crest/crest.fixtures'
 import { CATEGORY, type TeamBadgeVM } from '@/modules/championships/client'
 import type { AccumulatedTeamRowVM } from '../../types'
 
-export const cruzeiroBadgeFixture: TeamBadgeVM = { name: 'Cruzeiro', abbreviation: 'CRU', color: '#1f4fa3', crestPath: null }
+export const cruzeiroBadgeFixture: TeamBadgeVM = { name: 'Cruzeiro', abbreviation: 'CRU', color: '#1f4fa3', crestPath: CREST_IMAGE_PATH }
 export const atleticoBadgeFixture: TeamBadgeVM = { name: 'Atlético', abbreviation: 'CAM', color: '#2b2b2b', crestPath: null }
 export const tupiBadgeFixture: TeamBadgeVM = { name: 'Tupi', abbreviation: 'TUP', color: '#c89b00', crestPath: null }
 
