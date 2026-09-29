@@ -16,7 +16,7 @@ export default function LiveMatchError({ retry }: ErrorInfo) {
           <button
             type="button"
             onClick={() => retry()}
-            className="flex h-9 items-center gap-2 rounded-card bg-ac px-4 text-[11.7px] font-bold tracking-[-.01em] text-bg transition-transform hover:-translate-y-px"
+            className="flex h-9 items-center gap-2 rounded-card bg-ac px-4 text-[11.7px] font-bold tracking-[-.01em] text-bg transition-opacity duration-150 hover:opacity-90"
           >
             <Icon name="history" size={16} />
             Tentar de novo

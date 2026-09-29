@@ -2,7 +2,7 @@ export const championshipRibbonStyles = {
   arrow: 'flex size-[26px] flex-none animate-fade-in items-center justify-center rounded-card border border-bd bg-transparent text-tx4 hover:border-tx3 hover:text-tx',
   ribbon: 'no-scrollbar flex min-w-0 flex-[1_1_auto] items-center gap-[6px] overflow-x-auto overflow-y-hidden p-[2px]',
   chipBox: 'flex h-[30px] flex-none items-center gap-2 rounded-card border px-[11px]',
-  chip: 'animate-chip-in text-tx transition-[border-color,background,transform] duration-150 hover:-translate-y-px hover:border-bd3',
+  chip: 'animate-chip-in text-tx transition-colors duration-150 hover:bg-pan2',
   chipActive: 'border-ac bg-pan2',
   chipIdle: 'border-bd bg-transparent',
   categoryDot: 'size-[7px] flex-none',

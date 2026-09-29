@@ -3,5 +3,5 @@ export const liveEmptyStateStyles = {
   card: 'flex max-w-[440px] animate-fade-up flex-col items-center gap-3 rounded-card border border-bd bg-pan px-7 py-8 text-center',
   title: 'text-[15.3px] font-bold tracking-[-.01em] text-tx',
   description: 'text-[12.5px] leading-[1.45] text-pretty text-tx3',
-  newMatchLink: 'mt-1 flex h-9 items-center gap-2 rounded-card bg-ac px-4 text-[11.7px] font-bold tracking-[-.01em] text-bg transition-transform hover:-translate-y-px',
+  newMatchLink: 'mt-1 flex h-9 items-center gap-2 rounded-card bg-ac px-4 text-[11.7px] font-bold tracking-[-.01em] text-bg transition-opacity duration-150 hover:opacity-90',
 } as const
