@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 import { expect, fn, userEvent, within } from 'storybook/test'
 import { MatchInfoStep } from './match-info-step'
+import { MatchInfoStepSkeleton } from './match-info-step.skeleton'
 
 const meta = {
   title: 'Matches/MatchInfoStep',
@@ -24,3 +25,7 @@ export const WithNotice: Story = {
 }
 
 export const Filled: Story = { args: { values: { date: '2026-10-03', time: '09:30', round: '8', venue: 'Arena do Vale · campo 2' }, notice: null } }
+
+export const Loading: Story = { render: () => <MatchInfoStepSkeleton hasNotice /> }
+
+export const LoadingWithoutNotice: Story = { render: () => <MatchInfoStepSkeleton hasNotice={false} /> }

@@ -5,6 +5,7 @@ import { seasonTeamFixture, seasonTeamsFixture } from '@/modules/teams/component
 import { getTeamSquad } from '../../data/get-team-squad'
 import { teamSquadFixture } from '../squad-header/squad-header.fixtures'
 import { SquadsScreen } from './squads-screen'
+import { SquadsSkeleton } from './squads-screen.skeleton'
 
 const meta = {
   title: 'Players/SquadsScreen',
@@ -46,3 +47,5 @@ export const NoTeamInCategory: Story = {
     await expect(await within(canvasElement).findByRole('heading', { name: 'Nenhum time SUB-13 em 2025' })).toBeInTheDocument()
   },
 }
+
+export const Loading: Story = { render: () => <SquadsSkeleton /> }

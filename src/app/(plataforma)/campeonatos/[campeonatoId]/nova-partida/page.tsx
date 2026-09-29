@@ -33,7 +33,7 @@ export default function NewMatchPage({ params, searchParams }: PageProps<'/campe
   const fallback = (
     <>
       <ContextBar crumbs={[{ label: 'Campeonatos', href: routes.championships() }, { label: PAGE_LABEL }]} title={PAGE_LABEL} />
-      <NewMatchWizardSkeleton />
+      <NewMatchWizardSkeleton presentation="page" />
     </>
   )
 

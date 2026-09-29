@@ -3,6 +3,7 @@ import { expect, mocked, userEvent, within } from 'storybook/test'
 import { createBroadcastMatch } from '../../actions/match-setup-actions'
 import { NewMatchWizard } from './new-match-wizard'
 import { matchSetupFixture, prefilledMatchSetupFixture } from './new-match-wizard.fixtures'
+import { NewMatchWizardSkeleton } from './new-match-wizard.skeleton'
 
 const meta = {
   title: 'Matches/NewMatchWizard',
@@ -45,3 +46,7 @@ export const CreationFailure: Story = {
     await expect(await canvas.findByRole('alert')).toHaveTextContent('Não foi possível criar a partida')
   },
 }
+
+export const Loading: Story = { render: () => <NewMatchWizardSkeleton presentation="page" /> }
+
+export const SheetLoading: Story = { render: () => <NewMatchWizardSkeleton presentation="sheet" /> }

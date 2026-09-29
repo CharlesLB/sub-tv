@@ -1,0 +1,16 @@
+export const seasonRailSkeletonStyles = {
+  seasonButton: 'size-[30px] flex-none rounded-card',
+  yearArrow: 'h-[30px] w-[26px] flex-none rounded-card',
+  yearSlotVisibility: ['compact:hidden', 'narrow:hidden', 'mobile:hidden', 'mobile:hidden', ''],
+  connectorVisibility: ['', 'compact:hidden', 'narrow:hidden', '', 'mobile:hidden'],
+  yearDot: 'size-[5px] flex-none rounded-full',
+  yearDotActive: 'size-2 flex-none rounded-full',
+  year: 'h-[13px] w-[36px]',
+  yearActive: 'h-[15px] w-[40px]',
+  chipDot: 'size-[7px] flex-none',
+  chipName: 'h-[11px]',
+  chipNameWidths: ['w-[89px]', 'w-[88px]', 'w-[92px]', 'w-[150px]', 'w-[231px]'],
+  chipCategory: 'h-[9px] w-[39px]',
+  chipLastActivity: 'h-[9px] w-[48px]',
+  ribbonArrow: 'size-[26px] flex-none rounded-card',
+} as const

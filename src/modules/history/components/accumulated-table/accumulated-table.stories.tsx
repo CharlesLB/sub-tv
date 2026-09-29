@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 import { loadedHistoryFilterFixture } from '../athlete-history-screen/athlete-history-screen.fixtures'
 import { AccumulatedTable } from './accumulated-table'
 import { accumulatedTeamRowsFixture } from './accumulated-table.fixtures'
+import { AccumulatedTableSkeleton } from './accumulated-table.skeleton'
 
 const meta = {
   title: 'History/AccumulatedTable',
@@ -16,3 +17,5 @@ type Story = StoryObj<typeof meta>
 export const WithTeams: Story = {}
 
 export const Empty: Story = { args: { rows: [] } }
+
+export const Loading: Story = { render: () => <AccumulatedTableSkeleton /> }

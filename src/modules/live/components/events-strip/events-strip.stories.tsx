@@ -4,6 +4,7 @@ import { SIDE } from '@/modules/matches/client'
 import { timelineFixture } from '../event-chip/event-chip.fixtures'
 import { awayTeamFixture, homeTeamFixture } from '../live-board/live-board.fixtures'
 import { EventsStrip } from './events-strip'
+import { EventsStripSkeleton } from './events-strip.skeleton'
 
 const meta = {
   title: 'Live/EventsStrip',
@@ -55,3 +56,5 @@ export const Overflowing: Story = {
     await expect(canvas.getByRole('button', { name: 'Eventos anteriores' })).toBeDisabled()
   },
 }
+
+export const Loading: Story = { render: () => <EventsStripSkeleton /> }

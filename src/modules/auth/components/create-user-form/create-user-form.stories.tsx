@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 import { expect, mocked, userEvent, within } from 'storybook/test'
 import { createUser } from '../../actions/user-admin-actions'
 import { CreateUserForm } from './create-user-form'
+import { CreateUserFormSkeleton } from './create-user-form.skeleton'
 
 const fillAndSubmit = async (canvasElement: HTMLElement) => {
   const canvas = within(canvasElement)
@@ -43,3 +44,5 @@ export const InvalidFields: Story = {
     await expect(within(canvasElement).getByText('As senhas não conferem.')).toBeInTheDocument()
   },
 }
+
+export const Loading: Story = { render: () => <CreateUserFormSkeleton /> }

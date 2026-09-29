@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 import { ChampionshipCard } from './championship-card'
 import { championshipWithNextMatchFixture, championshipWithoutResultsFixture, finishedChampionshipFixture, liveChampionshipFixture } from './championship-card.fixtures'
+import { ChampionshipCardSkeleton } from './championship-card.skeleton'
 
 const meta = {
   title: 'Championships/ChampionshipCard',
@@ -19,3 +20,5 @@ export const LiveMatch: Story = { args: { championship: liveChampionshipFixture 
 export const Finished: Story = { args: { championship: finishedChampionshipFixture } }
 
 export const WithoutResults: Story = { args: { championship: championshipWithoutResultsFixture } }
+
+export const Loading: Story = { render: () => <ChampionshipCardSkeleton index={0} /> }

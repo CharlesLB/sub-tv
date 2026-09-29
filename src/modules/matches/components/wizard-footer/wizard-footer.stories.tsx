@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 import { expect, fn, userEvent, within } from 'storybook/test'
 import { WizardFooter } from './wizard-footer'
+import { WizardFooterSkeleton } from './wizard-footer.skeleton'
 
 const meta = {
   title: 'Matches/WizardFooter',
@@ -44,3 +45,5 @@ export const FinalStep: Story = {
 }
 
 export const Submitting: Story = { args: { isFirstStep: false, isFinalStep: true, isSubmitting: true } }
+
+export const Loading: Story = { render: () => <WizardFooterSkeleton /> }

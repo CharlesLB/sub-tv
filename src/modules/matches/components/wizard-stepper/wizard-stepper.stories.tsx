@@ -3,6 +3,7 @@ import { expect, fn, userEvent, within } from 'storybook/test'
 import { WIZARD_STEP } from '../../wizard-reducer/wizard-reducer'
 import { WizardStepper } from './wizard-stepper'
 import { stepValuesFixture } from './wizard-stepper.fixtures'
+import { WizardStepperSkeleton } from './wizard-stepper.skeleton'
 
 const meta = {
   title: 'Matches/WizardStepper',
@@ -24,3 +25,5 @@ export const LastStep: Story = {
     await expect(args.onGoBackTo).toHaveBeenCalledWith(WIZARD_STEP.INFORMATION)
   },
 }
+
+export const Loading: Story = { render: () => <WizardStepperSkeleton /> }

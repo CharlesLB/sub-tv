@@ -3,6 +3,7 @@ import { expect, within } from 'storybook/test'
 import { CATEGORY } from '@/modules/championships/client'
 import { loadedHistoryFilterFixture } from '../athlete-history-screen/athlete-history-screen.fixtures'
 import { HistoryFilters } from './history-filters'
+import { HistoryFiltersSkeleton } from './history-filters.skeleton'
 
 const meta = {
   title: 'History/HistoryFilters',
@@ -31,3 +32,5 @@ export const SelectedCategory: Story = {
     await expect(within(canvasElement).getByRole('link', { name: 'SUB-14' })).toHaveAttribute('aria-current', 'true')
   },
 }
+
+export const Loading: Story = { render: () => <HistoryFiltersSkeleton /> }

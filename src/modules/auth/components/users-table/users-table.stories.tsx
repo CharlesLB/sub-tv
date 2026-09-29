@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 import { expect, within } from 'storybook/test'
 import { UsersTable } from './users-table'
 import { currentUserRowFixture, userRowsFixture } from './users-table.fixtures'
+import { UsersTableSkeleton } from './users-table.skeleton'
 
 const meta = {
   title: 'Auth/UsersTable',
@@ -20,3 +21,5 @@ export const WithUsers: Story = {
 }
 
 export const OnlyCurrentUser: Story = { args: { users: [currentUserRowFixture] } }
+
+export const Loading: Story = { render: () => <UsersTableSkeleton /> }

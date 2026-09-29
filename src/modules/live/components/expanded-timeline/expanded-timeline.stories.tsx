@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 import { timelineFixture } from '../event-chip/event-chip.fixtures'
 import { liveSnapshotFixture } from '../live-board/live-board.fixtures'
 import { ExpandedTimeline } from './expanded-timeline'
+import { ExpandedTimelineSkeleton } from './expanded-timeline.skeleton'
 
 const meta = {
   title: 'Live/ExpandedTimeline',
@@ -19,3 +20,7 @@ export const WithEvents: Story = {}
 export const Empty: Story = { args: { items: [] } }
 
 export const PortraitPhone: Story = { args: { showRotateNotice: true } }
+
+export const Loading: Story = { render: () => <ExpandedTimelineSkeleton showRotateNotice={false} /> }
+
+export const LoadingOnPortraitPhone: Story = { render: () => <ExpandedTimelineSkeleton showRotateNotice /> }

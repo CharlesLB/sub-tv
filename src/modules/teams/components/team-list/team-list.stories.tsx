@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 import { CATEGORY } from '@/modules/championships/client'
 import { seasonTeamFixture, seasonTeamsFixture } from '../team-list-item/team-list-item.fixtures'
 import { TeamList } from './team-list'
+import { TeamListSkeleton } from './team-list.skeleton'
 
 const meta = {
   title: 'Teams/TeamList',
@@ -25,3 +26,5 @@ export const WithTeams: Story = {}
 export const WithoutActiveTeam: Story = { args: { activeTeamKey: null } }
 
 export const EmptyCategory: Story = { args: { teams: [], categoryFilter: CATEGORY.SUB13, activeTeamKey: null } }
+
+export const Loading: Story = { render: () => <TeamListSkeleton /> }

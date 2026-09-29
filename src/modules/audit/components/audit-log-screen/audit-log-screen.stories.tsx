@@ -5,6 +5,7 @@ import { getAuditUserOptions } from '../../data/get-audit-user-options'
 import { auditUserOptionsFixture } from '../audit-filters/audit-filters.fixtures'
 import { AuditLogScreen } from './audit-log-screen'
 import { auditPageFixture, emptyAuditPageFixture } from './audit-log-screen.fixtures'
+import { AuditLogSkeleton } from './audit-log-screen.skeleton'
 
 const meta = {
   title: 'Audit/AuditLogScreen',
@@ -37,3 +38,5 @@ export const WithoutChanges: Story = {
     await expect(await within(canvasElement).findByText('Nenhuma alteração encontrada para os filtros selecionados')).toBeInTheDocument()
   },
 }
+
+export const Loading: Story = { render: () => <AuditLogSkeleton /> }

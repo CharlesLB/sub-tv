@@ -9,6 +9,7 @@ import { singlePhaseFixture } from '../standings-panel/standings-panel.fixtures'
 import { topScorersFixture } from '../top-scorers-table/top-scorers-table.fixtures'
 import { ChampionshipTabContent } from './championship-tab-content'
 import { championshipHeaderFixture } from './championship-tab-content.fixtures'
+import { ChampionshipDetailSkeleton } from './championship-tab-content.skeleton'
 
 const meta = {
   title: 'Championships/ChampionshipTabContent',
@@ -48,3 +49,5 @@ export const Matches: Story = {
     await expect(await within(canvasElement).findAllByRole('article')).toHaveLength(seasonMatchesFixture.length)
   },
 }
+
+export const Loading: Story = { render: () => <ChampionshipDetailSkeleton /> }

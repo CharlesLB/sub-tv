@@ -4,6 +4,7 @@ import { PLAYER_PARAMETER } from '@/lib/routes'
 import { secondSquadPlayerFixture } from '../roster-row/roster-row.fixtures'
 import { emptyTeamSquadFixture, teamSquadFixture } from '../squad-header/squad-header.fixtures'
 import { SquadWorkspace } from './squad-workspace'
+import { SquadWorkspaceSkeleton } from './squad-workspace.skeleton'
 
 const meta = {
   title: 'Players/SquadWorkspace',
@@ -46,3 +47,5 @@ export const SearchRoster: Story = {
     await expect(within(canvas.getByRole('region', { name: 'Elenco' })).getAllByRole('link')).toHaveLength(1)
   },
 }
+
+export const Loading: Story = { render: () => <SquadWorkspaceSkeleton /> }

@@ -3,6 +3,7 @@ import { expect, mocked, userEvent, within } from 'storybook/test'
 import { recordLiveEvent, updateLiveClock } from '@/modules/matches/client'
 import { LiveBoard } from './live-board'
 import { liveSnapshotFixture, liveSnapshotWithEventsFixture, officialsItemsFixture, silenceLiveStream } from './live-board.fixtures'
+import { LiveSkeleton } from './live-board.skeleton'
 
 const meta = {
   title: 'Live/LiveBoard',
@@ -48,3 +49,5 @@ export const WithEvents: Story = {
     await expect(await canvas.findByRole('dialog', { name: 'Escolher cartão' })).toBeInTheDocument()
   },
 }
+
+export const Loading: Story = { render: () => <LiveSkeleton /> }

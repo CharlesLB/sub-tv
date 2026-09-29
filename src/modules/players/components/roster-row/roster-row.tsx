@@ -32,7 +32,7 @@ export function RosterRow({ player, index, href, teamColor, isSelected, onSelect
       href={href}
       onClick={selectPlayer}
       aria-current={isSelected ? 'true' : undefined}
-      className={cn(styles.grid, styles.row, isSelected ? styles.rowSelected : styles.rowIdle)}
+      className={cn(styles.grid, styles.row, styles.rowInteractive, isSelected ? styles.rowSelected : styles.rowIdle)}
       style={{ animationDelay: `${Math.min(MAX_ROW_DELAY_MS, index * ROW_DELAY_STEP_MS)}ms`, boxShadow: isSelected ? `inset 3px 0 0 ${teamColor}` : 'none' }}
     >
       <span className={styles.shirtNumber} style={{ color: teamColor }}>

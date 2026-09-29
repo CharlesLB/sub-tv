@@ -5,6 +5,7 @@ import { requireUser } from '../../services/current-user'
 import { signedInUserFixture } from '../user-chip/user-chip.fixtures'
 import { userRowsFixture } from '../users-table/users-table.fixtures'
 import { UsersScreen } from './users-screen'
+import { UsersSkeleton } from './users-screen.skeleton'
 
 const meta = {
   title: 'Auth/UsersScreen',
@@ -27,3 +28,5 @@ export const WithUsers: Story = {
     await expect(canvas.getByRole('form', { name: 'Novo usuário' })).toBeInTheDocument()
   },
 }
+
+export const Loading: Story = { render: () => <UsersSkeleton /> }

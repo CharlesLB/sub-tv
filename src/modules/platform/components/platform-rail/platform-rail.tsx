@@ -52,7 +52,7 @@ export function PlatformRail({ liveMatchId }: PlatformRailProps) {
               title={destination.title}
               aria-label={destination.name}
               aria-current={isActive ? 'page' : undefined}
-              className={cn(styles.destination, styles.destinationMobile, isActive && styles.destinationActive)}
+              className={cn(styles.destinationBox, styles.destination, styles.destinationMobile, isActive && styles.destinationActive)}
             >
               <Icon name={destination.icon} size={22} className={cn(styles.destinationIcon, isActive ? styles.destinationIconActive : styles.destinationIconIdle)} />
               <span className={cn(styles.destinationLabel, isActive ? styles.destinationLabelActive : styles.destinationLabelIdle)}>{destination.label}</span>

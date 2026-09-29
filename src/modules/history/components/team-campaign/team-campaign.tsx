@@ -1,10 +1,10 @@
 import Link from 'next/link'
 import { routes } from '@/lib/routes'
 import { cn } from '@/lib/utils/cn'
+import { FORM_SQUARE_SIZE, FormSquares } from '@/modules/championships/client'
 import { staggeredRowOf } from '../../staggered-row/staggered-row'
 import { formatChampionships } from '../../stat-format/stat-format'
 import type { TeamSeasonVM } from '../../types'
-import { FormSquares } from '../form-squares/form-squares'
 import { HistorySection } from '../history-section/history-section'
 import { RowChevron } from '../row-chevron/row-chevron'
 import { teamCampaignStyles as styles } from './team-campaign.styles'
@@ -24,7 +24,7 @@ export function TeamCampaign({ seasons }: { seasons: TeamSeasonVM[] }) {
             <Link key={season.year} href={routes.championships(season.year)} title={`Abrir a temporada ${season.year}`} className={cn(styles.row, stagger.className)} style={stagger.style}>
               <span className={styles.year}>{season.year}</span>
               <span className={styles.championships}>{formatChampionships(season.championships)}</span>
-              <FormSquares form={season.form} />
+              <FormSquares form={season.form} size={FORM_SQUARE_SIZE.DENSE} />
               <span className={styles.record}>{recordLine(season)}</span>
               <span className={styles.points}>{`${season.points} PTS`}</span>
               <RowChevron />

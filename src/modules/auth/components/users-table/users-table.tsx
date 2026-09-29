@@ -8,7 +8,9 @@ import { usersTableStyles as styles } from './users-table.styles'
 
 const NEVER_SIGNED_IN = 'Nunca entrou'
 
-const COLUMNS: readonly DataTableColumn[] = [
+export const USERS_TABLE_LABEL = 'Usuários'
+
+export const USERS_TABLE_COLUMNS: readonly DataTableColumn[] = [
   { id: 'name', label: 'Nome', className: styles.nameHeader },
   { id: 'status', label: 'Situação', className: styles.statusHeader },
   { id: 'last-sign-in', label: 'Último acesso', className: styles.lastSignInHeader },
@@ -19,7 +21,7 @@ type UsersTableProps = { users: UserRowVM[]; currentUserId: string }
 
 export function UsersTable({ users, currentUserId }: UsersTableProps) {
   return (
-    <DataTable label="Usuários" columns={COLUMNS}>
+    <DataTable label={USERS_TABLE_LABEL} columns={USERS_TABLE_COLUMNS}>
       {users.map((user, index) => {
         const isCurrentUser = user.id === currentUserId
 

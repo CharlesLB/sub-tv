@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 import { expect, within } from 'storybook/test'
 import { activeBroadcastFixture } from '../live-broadcast-chip/live-broadcast-chip.fixtures'
 import { PlatformRail } from './platform-rail'
+import { PlatformRailSkeleton } from './platform-rail.skeleton'
 
 const meta = {
   title: 'Platform/PlatformRail',
@@ -32,3 +33,5 @@ export const OnLiveBroadcast: Story = {
     await expect(within(canvasElement).getByRole('link', { name: 'Ao vivo' })).toHaveAttribute('aria-current', 'page')
   },
 }
+
+export const Loading: Story = { render: () => <PlatformRailSkeleton /> }

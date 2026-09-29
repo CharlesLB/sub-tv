@@ -4,6 +4,7 @@ import { useBoardInteractions } from '../../interaction/use-board-interactions'
 import { LiveMatchProvider } from '../../state/live-context'
 import { liveSnapshotFixture } from '../live-screen/live-screen.fixtures'
 import { Pitch } from './pitch'
+import { PitchSkeleton } from './pitch.skeleton'
 
 function PitchWithInteractions({ isCompact }: { isCompact: boolean }) {
   return <Pitch interactions={useBoardInteractions()} isCompact={isCompact} />
@@ -46,3 +47,5 @@ export const Compact: Story = {
     await expect(within(canvasElement).getByText('Enzo')).toBeInTheDocument()
   },
 }
+
+export const Loading: Story = { render: () => <PitchSkeleton /> }

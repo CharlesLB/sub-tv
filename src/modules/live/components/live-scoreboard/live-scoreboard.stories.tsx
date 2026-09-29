@@ -5,6 +5,7 @@ import { LiveMatchProvider } from '../../state/live-context'
 import { liveSnapshotFixture, liveSnapshotWithEventsFixture, silenceLiveStream } from '../live-board/live-board.fixtures'
 import { endedClockFixture, TWELVE_MINUTES_THIRTY_FOUR_SECONDS_MS } from '../live-chrono/live-chrono.fixtures'
 import { LiveScoreboard } from './live-scoreboard'
+import { LiveScoreboardSkeleton } from './live-scoreboard.skeleton'
 
 const withLiveMatch = (snapshot: LiveMatchSnapshot): Decorator => {
   const LiveMatchDecorator: Decorator = (Story) => (
@@ -60,3 +61,5 @@ export const Ended: Story = {
     await expect(within(canvasElement).getByRole('button', { name: 'Jogo encerrado' })).toBeDisabled()
   },
 }
+
+export const Loading: Story = { render: () => <LiveScoreboardSkeleton /> }

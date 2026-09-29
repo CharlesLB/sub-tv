@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
 import { routes } from '@/lib/routes'
 import { isUuid } from '@/lib/utils/is-uuid/is-uuid'
-import { AthleteHistoryScreen, HistoryDetailSkeleton } from '@/modules/history'
+import { AthleteHistoryScreen, AthleteHistoryScreenSkeleton } from '@/modules/history'
 import { ContextBar } from '@/modules/platform'
 
 export const metadata: Metadata = { title: 'Histórico do atleta' }
@@ -18,7 +18,7 @@ export default function AthleteHistoryPage({ params, searchParams }: PageProps<'
   const fallback = (
     <>
       <ContextBar crumbs={[{ label: 'Histórico', href: routes.history() }, { label: 'Atleta' }]} title="Ficha do atleta" />
-      <HistoryDetailSkeleton />
+      <AthleteHistoryScreenSkeleton />
     </>
   )
 

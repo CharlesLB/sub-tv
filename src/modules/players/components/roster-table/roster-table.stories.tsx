@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 import { expect, fn, userEvent, within } from 'storybook/test'
 import { secondSquadPlayerFixture, squadPlayerFixture, squadPlayerWithoutDetailsFixture } from '../roster-row/roster-row.fixtures'
 import { RosterTable } from './roster-table'
+import { RosterTableSkeleton } from './roster-table.skeleton'
 
 const meta = {
   title: 'Players/RosterTable',
@@ -39,3 +40,5 @@ export const SelectPlayer: Story = {
     await expect(args.onSelect).toHaveBeenCalledWith(secondSquadPlayerFixture.id)
   },
 }
+
+export const Loading: Story = { render: () => <RosterTableSkeleton /> }

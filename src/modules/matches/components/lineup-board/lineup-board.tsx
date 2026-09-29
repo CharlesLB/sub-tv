@@ -142,7 +142,9 @@ export function LineupBoard({ sides, categoryLabel, dispatch }: LineupBoardProps
           </div>
         </div>
       </div>
-      {drag?.kind === 'reserve' ? <DragGhost shirtNumber={drag.player.shirtNumber} name={shortNameOf(drag.player)} color={drag.color} left={drag.pointer.clientX} top={drag.pointer.clientY} /> : null}
+      {drag?.kind === 'reserve' ? (
+        <DragGhost shirtNumber={drag.player.shirtNumber} name={shortNameOf(drag.player)} color={drag.color} left={drag.pointer.clientX} top={drag.pointer.clientY} isOverTarget={false} />
+      ) : null}
       <span className={styles.announcement} aria-live="polite">
         {sides.map((boardSide) => `${boardSide.team.name}: ${boardSide.starterIds.length} de ${STARTERS_PER_TEAM} em campo`).join('. ')}
       </span>

@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 import { AuditFilters } from './audit-filters'
 import { auditUserOptionsFixture, emptyAuditFilterFixture, selectedAuditFilterFixture } from './audit-filters.fixtures'
+import { AuditFiltersSkeleton } from './audit-filters.skeleton'
 
 const meta = {
   title: 'Audit/AuditFilters',
@@ -15,3 +16,5 @@ type Story = StoryObj<typeof meta>
 export const Empty: Story = {}
 
 export const WithSelection: Story = { args: { filter: selectedAuditFilterFixture } }
+
+export const Loading: Story = { render: () => <AuditFiltersSkeleton /> }

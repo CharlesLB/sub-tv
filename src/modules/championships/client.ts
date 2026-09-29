@@ -1,6 +1,8 @@
 export { CATEGORIES, CATEGORY, type Category, categoryBackgroundClass, categoryBorderClass, categoryLabel, categoryTextClass, isCategory, otherCategory } from './categories'
 export { CategoryTag } from './components/category-tag/category-tag'
 export { FlashToastHost } from './components/flash-toast-host/flash-toast-host'
+export { FORM_SQUARE_SIZE, type FormSquareSize } from './components/form-square/form-square.styles'
+export { FormSquares } from './components/form-squares/form-squares'
 export { FORM_LENGTH, FORM_RESULT, resultFor } from './form-result/form-result'
 export { toFormSlots } from './form-slots/form-slots'
 export { toPhaseLabel, toTitleCase } from './mappers'

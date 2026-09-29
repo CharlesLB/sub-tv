@@ -65,7 +65,7 @@ export function ChampionshipRibbon({ championships, activeChampionshipId }: Cham
               key={championship.id}
               href={routes.championship(championship.id)}
               aria-current={isActive ? 'page' : undefined}
-              className={cn(styles.chip, isActive ? styles.chipActive : styles.chipIdle)}
+              className={cn(styles.chipBox, styles.chip, isActive ? styles.chipActive : styles.chipIdle)}
               style={{ animationDelay: `${index * CHIP_DELAY_STEP_MS}ms` }}
             >
               <span className={cn(styles.categoryDot, categoryBackgroundClass[championship.category])} />

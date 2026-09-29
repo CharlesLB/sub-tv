@@ -3,6 +3,7 @@ import type { Category } from '../../categories'
 import { toPhaseLabel } from '../../mappers'
 import type { StandingPhaseVM } from '../../types'
 import { FormSquare } from '../form-square/form-square'
+import { FORM_SQUARE_SIZE } from '../form-square/form-square.styles'
 import { StandingsTable } from '../standings-table/standings-table'
 import { standingsPanelStyles as styles } from './standings-panel.styles'
 
@@ -41,7 +42,7 @@ export function StandingsPanel({ phases, category, roundsPlayed }: StandingsPane
         <span className={styles.legendResults}>
           {LEGEND.map((entry) => (
             <span key={entry.result} className={styles.legendEntry}>
-              <FormSquare result={entry.result} size="small" />
+              <FormSquare result={entry.result} size={FORM_SQUARE_SIZE.SMALL} />
               {entry.label}
             </span>
           ))}

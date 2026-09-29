@@ -60,7 +60,7 @@ export const TooltipOnHover: Story = {
 export const DraggingReserve: Story = {
   args: { interactions: makeBoardInteractions({ drag: benchDragFixture }) },
   play: async ({ canvasElement }) => {
-    await expect(within(canvasElement).getByText('Caio Brandão')).toBeInTheDocument()
+    await expect(within(canvasElement.ownerDocument.body).getByText('Caio Brandão')).toBeInTheDocument()
   },
 }
 

@@ -2,7 +2,8 @@ import { ROSTER_GRID_CLASS } from '../roster-grid/roster-grid'
 
 export const rosterRowStyles = {
   grid: ROSTER_GRID_CLASS,
-  row: 'h-11 animate-rise-in items-center border-b border-bd text-tx transition-[background] duration-[140ms] hover:bg-pan',
+  row: 'h-11 items-center border-b border-bd',
+  rowInteractive: 'animate-rise-in text-tx transition-[background] duration-[140ms] hover:bg-pan',
   rowSelected: 'bg-pan',
   rowIdle: 'bg-transparent',
   shirtNumber: 'text-[13.5px] font-bold nums',

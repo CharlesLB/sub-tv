@@ -5,15 +5,16 @@ import { DragGhost } from './drag-ghost'
 const meta = {
   title: 'Matches/DragGhost',
   component: DragGhost,
-  args: { shirtNumber: 12, name: 'Otávio', color: '#1f4fa3', left: 160, top: 160 },
+  args: { shirtNumber: 12, name: 'Otávio', color: '#1f4fa3', left: 160, top: 160, isOverTarget: false },
+  play: async ({ canvasElement }) => {
+    await expect(within(canvasElement.ownerDocument.body).getByText('Otávio')).toBeInTheDocument()
+  },
 } satisfies Meta<typeof DragGhost>
 
 export default meta
 
 type Story = StoryObj<typeof meta>
 
-export const FollowingPointer: Story = {
-  play: async ({ canvasElement }) => {
-    await expect(within(canvasElement.ownerDocument.body).getByText('Otávio')).toBeInTheDocument()
-  },
-}
+export const FollowingPointer: Story = {}
+
+export const OverTarget: Story = { args: { isOverTarget: true } }

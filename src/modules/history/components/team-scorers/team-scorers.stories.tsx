@@ -3,6 +3,7 @@ import { cruzeiroBadgeFixture } from '../accumulated-table/accumulated-table.fix
 import { loadedHistoryFilterFixture } from '../athlete-history-screen/athlete-history-screen.fixtures'
 import { TeamScorers } from './team-scorers'
 import { teamScorersFixture } from './team-scorers.fixtures'
+import { TeamScorersSkeleton } from './team-scorers.skeleton'
 
 const meta = {
   title: 'History/TeamScorers',
@@ -17,3 +18,5 @@ type Story = StoryObj<typeof meta>
 export const WithScorers: Story = {}
 
 export const Empty: Story = { args: { scorers: [] } }
+
+export const Loading: Story = { render: () => <TeamScorersSkeleton /> }

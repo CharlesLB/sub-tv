@@ -1,6 +1,6 @@
 export { addCuriosity, createManualPlayer, removeCuriosity, updatePlayerProfile } from './actions/player-actions'
 export { SquadsScreen } from './components/squads-screen/squads-screen'
-export { SquadsSkeleton } from './components/squads-skeleton/squads-skeleton'
+export { SquadsSkeleton } from './components/squads-screen/squads-screen.skeleton'
 export { getTeamSquad } from './data/get-team-squad'
 export { footLabel, positionAbbreviation, positionLabel } from './labels'
 export { PLAYER_POSITIONS, PREFERRED_FEET } from './schemas'

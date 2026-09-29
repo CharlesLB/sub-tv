@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 import { expect, within } from 'storybook/test'
 import { AuditTable } from './audit-table'
 import { auditRowsFixture } from './audit-table.fixtures'
+import { AuditTableSkeleton } from './audit-table.skeleton'
 
 const meta = {
   title: 'Audit/AuditTable',
@@ -20,3 +21,5 @@ export const WithChanges: Story = {
 }
 
 export const Empty: Story = { args: { rows: [] } }
+
+export const Loading: Story = { render: () => <AuditTableSkeleton /> }

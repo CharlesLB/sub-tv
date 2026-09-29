@@ -9,6 +9,7 @@ import { subbedOutMatchStateFixture } from '../bench-dot/bench-dot.fixtures'
 import { liveSnapshotFixture, silenceLiveStream } from '../live-board/live-board.fixtures'
 import { BenchColumn } from './bench-column'
 import { makeBoardInteractions } from './bench-column.fixtures'
+import { BenchColumnSkeleton } from './bench-column.skeleton'
 
 const PendingSubstitution = () => {
   const { startSubstitution } = useLiveCommands()
@@ -64,3 +65,7 @@ export const AwaitingEntry: Story = {
     ),
   ],
 }
+
+export const Loading: Story = { render: () => <BenchColumnSkeleton side={SIDE.HOME} /> }
+
+export const LoadingAway: Story = { render: () => <BenchColumnSkeleton side={SIDE.AWAY} /> }

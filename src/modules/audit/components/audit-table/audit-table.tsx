@@ -8,7 +8,9 @@ const ROW_DELAY_STEP_MS = 12
 const MAX_ROW_DELAY_MS = 300
 const MISSING_ENTITY_DESCRIPTION = '—'
 
-const COLUMNS: readonly DataTableColumn[] = [
+export const AUDIT_TABLE_LABEL = 'Registro de alterações'
+
+export const AUDIT_TABLE_COLUMNS: readonly DataTableColumn[] = [
   { id: 'time', label: 'Quando', className: styles.timeHeader },
   { id: 'user', label: 'Quem', className: styles.userHeader },
   { id: 'action', label: 'O quê', className: styles.actionHeader },
@@ -22,7 +24,7 @@ export function AuditTable({ rows }: { rows: AuditRowVM[] }) {
   }
 
   return (
-    <DataTable label="Registro de alterações" columns={COLUMNS}>
+    <DataTable label={AUDIT_TABLE_LABEL} columns={AUDIT_TABLE_COLUMNS}>
       {rows.map((row, index) => (
         <tr key={row.id} className={cn(styles.row, index % 2 === 1 ? styles.rowOdd : styles.rowEven)} style={{ animationDelay: `${Math.min(MAX_ROW_DELAY_MS, index * ROW_DELAY_STEP_MS)}ms` }}>
           <td className={styles.timeCell}>{formatAuditTime(row.createdAt)}</td>

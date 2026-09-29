@@ -4,6 +4,7 @@ import { liveChampionshipFixture } from '../championship-card/championship-card.
 import { categoryClubsFixture } from '../club-picker/club-picker.fixtures'
 import { ChampionshipList } from './championship-list'
 import { championshipsOfYearFixture, SEASON_YEAR_FIXTURE } from './championship-list.fixtures'
+import { ChampionshipListSkeleton } from './championship-list.skeleton'
 
 const meta = {
   title: 'Championships/ChampionshipList',
@@ -29,3 +30,5 @@ export const Editor: Story = {
     await expect(await canvas.findByRole('heading', { name: 'Novo campeonato' })).toBeInTheDocument()
   },
 }
+
+export const Loading: Story = { render: () => <ChampionshipListSkeleton /> }

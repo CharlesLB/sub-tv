@@ -4,7 +4,7 @@ import type { StandingGroupVM } from '../../types'
 import { StandingsRow } from '../standings-row/standings-row'
 import { standingsTableStyles as styles } from './standings-table.styles'
 
-const HEADERS = [
+export const STANDINGS_HEADERS = [
   { label: '#', className: styles.headerAlignStart },
   { label: 'Clube', className: styles.headerAlignStart },
   { label: 'PTS', className: styles.headerAlignCenter },
@@ -23,7 +23,7 @@ export function StandingsTable({ group, category }: StandingsTableProps) {
     <div className={styles.table}>
       {group.groupName ? <div className={styles.groupName}>Grupo {group.groupName}</div> : null}
       <div className={cn(styles.grid, styles.headerRow)}>
-        {HEADERS.map((header) => (
+        {STANDINGS_HEADERS.map((header) => (
           <span key={header.label} className={cn(styles.headerCell, header.className)}>
             {header.label}
           </span>

@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
 import { routes } from '@/lib/routes'
-import { HistoryDetailSkeleton, TeamHistoryScreen } from '@/modules/history'
+import { TeamHistoryScreen, TeamHistoryScreenSkeleton } from '@/modules/history'
 import { ContextBar } from '@/modules/platform'
 import { parseTeamKey } from '@/modules/teams'
 
@@ -18,7 +18,7 @@ export default function TeamHistoryPage({ params, searchParams }: PageProps<'/hi
   const fallback = (
     <>
       <ContextBar crumbs={[{ label: 'Histórico', href: routes.history() }, { label: 'Time' }]} title="Histórico do time" />
-      <HistoryDetailSkeleton />
+      <TeamHistoryScreenSkeleton />
     </>
   )
 

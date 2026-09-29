@@ -1,7 +1,7 @@
 export { LoginForm } from './components/login-form/login-form'
 export { UserChip } from './components/user-chip/user-chip'
 export { UsersScreen } from './components/users-screen/users-screen'
-export { UsersSkeleton } from './components/users-skeleton/users-skeleton'
+export { UsersSkeleton } from './components/users-screen/users-screen.skeleton'
 export { normalizeUsername } from './normalize-username/normalize-username'
 export { getCurrentUser, requireUser } from './services/current-user'
 export type { AppUser } from './services/user-service'

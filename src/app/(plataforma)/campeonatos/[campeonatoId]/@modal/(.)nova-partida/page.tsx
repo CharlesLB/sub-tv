@@ -18,7 +18,7 @@ export default function NewMatchModalPage({ params, searchParams }: PageProps<'/
         </Suspense>
       }
     >
-      <Suspense fallback={<NewMatchWizardSkeleton />}>
+      <Suspense fallback={<NewMatchWizardSkeleton presentation="sheet" />}>
         {Promise.all([params, searchParams]).then(([{ campeonatoId }, { partida }]) => (
           <NewMatchSetup seasonId={validSeasonId(campeonatoId)} prefillMatchId={toPrefillMatchId(partida)} presentation="sheet" />
         ))}

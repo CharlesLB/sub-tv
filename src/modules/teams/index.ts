@@ -1,5 +1,5 @@
 export { TeamList } from './components/team-list/team-list'
-export { TeamListSkeleton } from './components/team-list-skeleton/team-list-skeleton'
+export { TeamListSkeleton } from './components/team-list/team-list.skeleton'
 export { getSeasonTeams } from './data/get-season-teams'
 export { parseTeamKey, type TeamKey, toTeamKey } from './team-key/team-key'
 export type { SeasonTeamVM } from './types'

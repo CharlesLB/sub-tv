@@ -1,10 +1,9 @@
 'use client'
 
-import type { PitchPoint } from '@/modules/matches/client'
+import { PitchMarkings, type PitchPoint } from '@/modules/matches/client'
 import { anchorOf, DRAG_KIND } from '../../interaction/interaction-state'
 import type { BoardInteractions } from '../../interaction/use-board-interactions'
 import { useLiveState } from '../../state/live-context'
-import { PitchLines } from '../pitch-lines/pitch-lines'
 import { PlayerDot } from '../player-dot/player-dot'
 import { pitchStyles as styles } from './pitch.styles'
 
@@ -21,7 +20,7 @@ export function Pitch({ interactions, isCompact }: PitchProps) {
   return (
     <div data-screen-label="Prancheta" className={styles.frame}>
       <div ref={fieldRef} className={styles.field}>
-        <PitchLines />
+        <PitchMarkings />
         {players.flatMap((player) => {
           const matchState = playerStates[player.playerId]
           if (!matchState?.onPitch) return []

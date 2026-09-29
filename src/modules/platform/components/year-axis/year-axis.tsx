@@ -63,7 +63,7 @@ export function YearAxis({ years, activeYear, hrefForYear, onSelectYear }: YearA
                 onClick={() => onSelectYear(seasonYear.year)}
                 title={`${seasonYear.championshipCount} campeonatos · elenco ${seasonYear.year}`}
                 aria-current={isActive ? 'true' : undefined}
-                className={cn(styles.yearLink, isActive ? styles.yearLinkActive : styles.yearLinkIdle)}
+                className={cn(styles.yearBox, styles.yearLink, isActive ? styles.yearLinkActive : styles.yearLinkIdle)}
                 style={{ animationDelay: `${index * YEAR_DELAY_STEP_MS}ms` }}
               >
                 <span className={cn(styles.yearDot, isActive ? styles.yearDotActive : styles.yearDotIdle)} />

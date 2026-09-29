@@ -48,7 +48,8 @@ describe('BenchColumn', () => {
 
     const column = screen.getByText('Banco').parentElement?.parentElement
 
-    expect(column).toHaveStyle({ gridColumn: '1', borderTopColor: liveSnapshotFixture.teams[SIDE.HOME].color })
+    expect(column).toHaveClass('col-start-1')
+    expect(column).toHaveStyle({ borderTopColor: liveSnapshotFixture.teams[SIDE.HOME].color })
   })
 
   it('lists the away reserves in the third grid column', () => {
@@ -56,7 +57,7 @@ describe('BenchColumn', () => {
 
     expect(screen.getByText('Serra Azul · SUB-14')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Reserva camisa 12 — Bento Arruda' })).toBeInTheDocument()
-    expect(screen.getByText('Banco').parentElement?.parentElement).toHaveStyle({ gridColumn: '3' })
+    expect(screen.getByText('Banco').parentElement?.parentElement).toHaveClass('col-start-3')
   })
 
   it('shows a substituted starter on the bench as unavailable', () => {

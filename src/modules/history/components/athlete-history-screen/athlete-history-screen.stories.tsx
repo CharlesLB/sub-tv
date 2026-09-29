@@ -1,10 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 import { expect, mocked, within } from 'storybook/test'
+import { routes } from '@/lib/routes'
+import { ContextBar } from '@/modules/platform'
 import { getAthleteHistory } from '../../data/get-athlete-history'
 import { loadHistoryFilter } from '../../data/load-history-filter'
 import { athleteHistoryFixture } from '../athlete-hero/athlete-hero.fixtures'
 import { AthleteHistoryScreen } from './athlete-history-screen'
 import { loadedHistoryFilterFixture } from './athlete-history-screen.fixtures'
+import { AthleteHistoryScreenSkeleton } from './athlete-history-screen.skeleton'
 
 const meta = {
   title: 'History/AthleteHistoryScreen',
@@ -37,4 +40,13 @@ export const WithoutGamesInFilter: Story = {
   play: async ({ canvasElement }) => {
     await expect(await within(canvasElement).findByText('Este atleta não tem jogos registrados nas temporadas selecionadas')).toBeInTheDocument()
   },
+}
+
+export const Loading: Story = {
+  render: () => (
+    <>
+      <ContextBar crumbs={[{ label: 'Histórico', href: routes.history() }, { label: 'Atleta' }]} title="Ficha do atleta" />
+      <AthleteHistoryScreenSkeleton />
+    </>
+  ),
 }

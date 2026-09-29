@@ -1,5 +1,6 @@
 'use client'
 
+import { cn } from '@/lib/utils/cn'
 import { categoryLabel } from '@/modules/championships/client'
 import { SIDE, type Side } from '@/modules/matches/client'
 import { DRAG_KIND } from '../../interaction/interaction-state'
@@ -25,7 +26,7 @@ export function BenchColumn({ side, interactions }: BenchColumnProps) {
   const isAwaitingEntry = pendingSubstitution && selectedSide === side
 
   return (
-    <div data-screen-label="Banco" className={styles.column} style={{ gridColumn: side === SIDE.HOME ? 1 : 3, borderTopColor: team.color }}>
+    <div data-screen-label="Banco" className={cn(styles.column, side === SIDE.HOME ? styles.columnHome : styles.columnAway)} style={{ borderTopColor: team.color }}>
       <div className={styles.header}>
         <div className={styles.title}>Banco</div>
         <div className={styles.team} style={{ color: team.color }}>

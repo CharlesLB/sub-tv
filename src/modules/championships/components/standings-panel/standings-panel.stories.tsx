@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 import { CATEGORY } from '../../categories'
 import { StandingsPanel } from './standings-panel'
 import { multiplePhasesFixture, singlePhaseFixture } from './standings-panel.fixtures'
+import { StandingsPanelSkeleton } from './standings-panel.skeleton'
 
 const meta = {
   title: 'Championships/StandingsPanel',
@@ -20,3 +21,5 @@ export const SeveralPhases: Story = { args: { phases: multiplePhasesFixture, cat
 export const AfterFirstRound: Story = { args: { roundsPlayed: 1 } }
 
 export const WithoutResults: Story = { args: { phases: [], roundsPlayed: null } }
+
+export const Loading: Story = { render: () => <StandingsPanelSkeleton /> }

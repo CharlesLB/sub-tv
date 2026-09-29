@@ -3,6 +3,7 @@ import { expect, within } from 'storybook/test'
 import { activeChampionshipIdFixture, championshipRibbonFixture } from '../championship-ribbon/championship-ribbon.fixtures'
 import { ACTIVE_YEAR_FIXTURE, seasonYearsFixture } from '../season-panel/season-panel.fixtures'
 import { SeasonRail } from './season-rail'
+import { SeasonRailSkeleton } from './season-rail.skeleton'
 
 const meta = {
   title: 'Platform/SeasonRail',
@@ -33,3 +34,5 @@ export const Squads: Story = {
     await expect(within(canvasElement).getByRole('link', { name: '2025' })).toHaveAttribute('href', '/elencos?cat=sub13&temporada=2025')
   },
 }
+
+export const Loading: Story = { render: () => <SeasonRailSkeleton /> }

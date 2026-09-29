@@ -3,6 +3,7 @@ import { loadedHistoryFilterFixture } from '../athlete-history-screen/athlete-hi
 import { topPeriodScorerFixture } from '../period-scorers/period-scorers.fixtures'
 import { HighlightCards } from './highlight-cards'
 import { emptyHistoryOverviewFixture, historyOverviewFixture } from './highlight-cards.fixtures'
+import { HighlightCardsSkeleton } from './highlight-cards.skeleton'
 
 const meta = {
   title: 'History/HighlightCards',
@@ -19,3 +20,5 @@ export const AllHighlights: Story = {}
 export const OnlyTopScorer: Story = { args: { overview: { ...emptyHistoryOverviewFixture, scorers: [topPeriodScorerFixture] } } }
 
 export const WithoutHighlights: Story = { args: { overview: emptyHistoryOverviewFixture } }
+
+export const Loading: Story = { render: () => <HighlightCardsSkeleton /> }

@@ -1,10 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 import { expect, mocked, within } from 'storybook/test'
+import { routes } from '@/lib/routes'
+import { ContextBar } from '@/modules/platform'
 import { getTeamHistory } from '../../data/get-team-history'
 import { loadHistoryFilter } from '../../data/load-history-filter'
 import { loadedHistoryFilterFixture } from '../athlete-history-screen/athlete-history-screen.fixtures'
 import { teamHistoryFixture, teamWithoutSeasonsFixture } from '../team-hero/team-hero.fixtures'
 import { TeamHistoryScreen } from './team-history-screen'
+import { TeamHistoryScreenSkeleton } from './team-history-screen.skeleton'
 
 const meta = {
   title: 'History/TeamHistoryScreen',
@@ -37,4 +40,13 @@ export const WithoutSeasonsInFilter: Story = {
   play: async ({ canvasElement }) => {
     await expect(await within(canvasElement).findByText('Este time não disputou campeonatos nas temporadas selecionadas')).toBeInTheDocument()
   },
+}
+
+export const Loading: Story = {
+  render: () => (
+    <>
+      <ContextBar crumbs={[{ label: 'Histórico', href: routes.history() }, { label: 'Time' }]} title="Histórico do time" />
+      <TeamHistoryScreenSkeleton />
+    </>
+  ),
 }

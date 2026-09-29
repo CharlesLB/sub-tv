@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 import { expect, fn, userEvent, within } from 'storybook/test'
 import { SquadHeader } from './squad-header'
 import { teamSquadFixture } from './squad-header.fixtures'
+import { SquadHeaderSkeleton } from './squad-header.skeleton'
 
 const meta = {
   title: 'Players/SquadHeader',
@@ -23,3 +24,5 @@ export const Search: Story = {
     await expect(args.onSearchChange).toHaveBeenCalledWith('7')
   },
 }
+
+export const Loading: Story = { render: () => <SquadHeaderSkeleton /> }
