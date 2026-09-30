@@ -1,0 +1,10 @@
+.env*
+!.env.example
+.data
+.claude
+CLAUDE.md
+.next
+node_modules
+test-results
+storybook-static
+tsconfig.tsbuildinfo
