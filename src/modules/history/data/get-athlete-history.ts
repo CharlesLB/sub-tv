@@ -6,7 +6,7 @@ import { tags } from '@/lib/cache/tags'
 import { db, tables } from '@/lib/db'
 import { teamBadgeColumns, toTeamBadge } from '@/modules/championships'
 import { positionLabel } from '@/modules/players'
-import type { HistoryFilter } from '../history-filter/history-filter'
+import type { HistoryFilter } from '../lib/history-filter/history-filter'
 import type { AthleteHistoryVM, AthleteSeasonVM } from '../types'
 import { distinctTextList, seasonFilterConditions, sumAsNumber } from './season-filter-conditions'
 

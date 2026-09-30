@@ -1,5 +1,5 @@
 import { CATEGORY } from '@/modules/championships/client'
-import { toTeamKey } from '../../team-key/team-key'
+import { toTeamKey } from '../../lib/team-key/team-key'
 import type { SeasonTeamVM } from '../../types'
 
 const FIRST_CLUB_ID = '2d6f8a1c-4b7e-4c93-9f0a-6e1b3d5c7a82'

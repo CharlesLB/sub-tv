@@ -1,8 +1,8 @@
 import Form from 'next/form'
 import Link from 'next/link'
 import { ACTION_PARAMETER, ENTITY_PARAMETER, PERIOD_PARAMETER, routes, USER_PARAMETER } from '@/lib/routes'
-import { AUDIT_PERIOD_LABEL, AUDIT_PERIODS, type AuditFilter } from '../../audit-filter/audit-filter'
-import { AUDIT_ACTION_LABEL, AUDIT_ACTIONS, AUDIT_ENTITIES, AUDIT_ENTITY_LABEL } from '../../audit-labels/audit-labels'
+import { AUDIT_PERIOD_LABEL, AUDIT_PERIODS, type AuditFilter } from '../../lib/audit-filter/audit-filter'
+import { AUDIT_ACTION_LABEL, AUDIT_ACTIONS, AUDIT_ENTITIES, AUDIT_ENTITY_LABEL } from '../../lib/audit-labels/audit-labels'
 import type { AuditUserOptionVM } from '../../types'
 import { auditFiltersStyles as styles } from './audit-filters.styles'
 

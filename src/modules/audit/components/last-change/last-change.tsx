@@ -1,7 +1,7 @@
 import { Icon } from '@/components/ui/icon/icon'
-import type { AuditEntity } from '../../audit-action'
 import { getLastChange } from '../../data/get-last-change'
-import { formatAuditTime } from '../../format-audit-time/format-audit-time'
+import type { AuditEntity } from '../../lib/audit-action/audit-action'
+import { formatAuditTime } from '../../lib/format-audit-time/format-audit-time'
 import { lastChangeStyles as styles } from './last-change.styles'
 
 type LastChangeProps = { entityType: AuditEntity; entityId: string }

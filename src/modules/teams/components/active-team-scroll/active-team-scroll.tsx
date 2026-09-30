@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
-import { ACTIVE_TEAM_ATTRIBUTE } from '../../constants/active-team'
+import { ACTIVE_TEAM_ATTRIBUTE } from '../../lib/active-team/active-team'
 
 export function ActiveTeamScroll({ activeTeamKey }: { activeTeamKey: string | null }) {
   useEffect(() => {

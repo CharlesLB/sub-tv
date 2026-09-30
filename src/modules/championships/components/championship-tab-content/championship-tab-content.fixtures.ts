@@ -1,4 +1,4 @@
-import { CATEGORY } from '../../categories'
+import { CATEGORY } from '../../lib/categories/categories'
 import type { ChampionshipHeaderVM } from '../../types'
 import { SEASON_ID_FIXTURE } from '../match-card/match-card.fixtures'
 

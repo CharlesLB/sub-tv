@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
-import { CATEGORY } from '../../categories'
+import { CATEGORY } from '../../lib/categories/categories'
 import { standingRowsFixture } from '../standings-row/standings-row.fixtures'
 import { StandingsTable } from './standings-table'
 import { namedGroupFixture, singleGroupFixture } from './standings-table.fixtures'

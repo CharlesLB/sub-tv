@@ -1,5 +1,5 @@
 import { pluralize } from '@/lib/utils/pluralize/pluralize'
-import type { CompetitionPresence } from '../../competition-presences/competition-presences'
+import type { CompetitionPresence } from '../../lib/competition-presences/competition-presences'
 import { HistoryEmptyState } from '../history-empty-state/history-empty-state'
 import { HistorySection } from '../history-section/history-section'
 import { competitionPresenceListStyles as styles } from './competition-presence-list.styles'

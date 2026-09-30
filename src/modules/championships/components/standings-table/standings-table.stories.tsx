@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite'
-import { CATEGORY } from '../../categories'
+import { CATEGORY } from '../../lib/categories/categories'
 import { StandingsTable } from './standings-table'
 import { namedGroupFixture, singleGroupFixture } from './standings-table.fixtures'
 import { StandingsTableSkeleton } from './standings-table.skeleton'

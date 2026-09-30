@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils/cn'
 import { skeletonSlots } from '@/lib/utils/skeleton-slots/skeleton-slots'
 import { Skeleton } from '@/components/ui/skeleton/skeleton'
-import { CATEGORIES, categoryBorderClass } from '../../categories'
+import { CATEGORIES, categoryBorderClass } from '../../lib/categories/categories'
 import { ChampionshipCardSkeleton } from '../championship-card/championship-card.skeleton'
 import { newChampionshipProviderStyles } from '../new-championship-provider/new-championship-provider.styles'
 import { championshipListSkeletonStyles as skeletonStyles } from './championship-list.skeleton.styles'

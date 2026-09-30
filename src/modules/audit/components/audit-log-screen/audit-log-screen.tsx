@@ -1,7 +1,7 @@
 import { ACTION_PARAMETER, ENTITY_PARAMETER, PAGE_PARAMETER, PERIOD_PARAMETER, USER_PARAMETER } from '@/lib/routes'
-import { parseAuditFilter } from '../../audit-filter/audit-filter'
 import { getAuditEntries } from '../../data/get-audit-entries'
 import { getAuditUserOptions } from '../../data/get-audit-user-options'
+import { parseAuditFilter } from '../../lib/audit-filter/audit-filter'
 import { AuditFilters } from '../audit-filters/audit-filters'
 import { AuditPagination } from '../audit-pagination/audit-pagination'
 import { AuditTable } from '../audit-table/audit-table'

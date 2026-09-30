@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { routes } from '@/lib/routes'
-import { CHAMPIONSHIP_TAB } from '../../championship-tab'
+import { CHAMPIONSHIP_TAB } from '../../lib/championship-tab/championship-tab'
 import type { MatchCardVM } from '../../types'
 import { RoundMatchCard } from '../round-match-card/round-match-card'
 import { roundPanelStyles as styles } from './round-panel.styles'

@@ -1,8 +1,8 @@
 import Link from 'next/link'
 import { cn } from '@/lib/utils/cn'
 import { CATEGORIES, categoryLabel } from '@/modules/championships/client'
-import { type HistoryFilter, toggleSeasonYear } from '../../history-filter/history-filter'
-import { type HistoryTarget, historyHref } from '../../history-href/history-href'
+import { type HistoryFilter, toggleSeasonYear } from '../../lib/history-filter/history-filter'
+import { type HistoryTarget, historyHref } from '../../lib/history-href/history-href'
 import { historyFiltersStyles as styles } from './history-filters.styles'
 
 const ALL_LABEL = 'Todas'

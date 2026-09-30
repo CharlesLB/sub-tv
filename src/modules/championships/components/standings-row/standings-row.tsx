@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils/cn'
 import { Crest } from '@/components/ui/crest/crest'
-import type { Category } from '../../categories'
+import type { Category } from '../../lib/categories/categories'
 import type { StandingRowVM } from '../../types'
 import { CategoryTag } from '../category-tag/category-tag'
 import { FormSquares } from '../form-squares/form-squares'

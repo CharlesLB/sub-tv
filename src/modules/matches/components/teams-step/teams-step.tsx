@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils/cn'
 import { Crest } from '@/components/ui/crest/crest'
 import { type Category, CategoryTag } from '@/modules/championships/client'
-import { opponentSide, SIDE, SIDES, type Side } from '../../live-match/live-match'
+import { opponentSide, SIDE, SIDES, type Side } from '../../lib/live-match/live-match'
 import type { SetupTeamVM } from '../../types'
 import { WizardNotice } from '../wizard-notice/wizard-notice'
 import { teamsStepStyles as styles } from './teams-step.styles'

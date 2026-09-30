@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
-import { ROSTER_COLUMNS } from '../../roster-columns/roster-columns'
+import { ROSTER_COLUMNS } from '../../lib/roster-columns/roster-columns'
 import { RosterTableSkeleton } from './roster-table.skeleton'
 
 describe('RosterTableSkeleton', () => {

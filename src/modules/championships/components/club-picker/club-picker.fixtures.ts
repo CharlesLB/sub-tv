@@ -1,4 +1,4 @@
-import { CATEGORY } from '../../categories'
+import { CATEGORY } from '../../lib/categories/categories'
 import type { CategoryClubsVM, ClubOptionVM } from '../../types'
 import { cerradoBadgeFixture, ribeirinhaBadgeFixture, serranoBadgeFixture, valeVerdeBadgeFixture } from '../match-card/match-card.fixtures'
 

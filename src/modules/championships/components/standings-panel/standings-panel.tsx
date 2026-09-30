@@ -1,6 +1,6 @@
 import { pluralize } from '@/lib/utils/pluralize/pluralize'
-import type { Category } from '../../categories'
-import { toPhaseLabel } from '../../mappers'
+import type { Category } from '../../lib/categories/categories'
+import { toPhaseLabel } from '../../lib/mappers/mappers'
 import type { StandingPhaseVM } from '../../types'
 import { FormSquare } from '../form-square/form-square'
 import { FORM_SQUARE_SIZE } from '../form-square/form-square.styles'

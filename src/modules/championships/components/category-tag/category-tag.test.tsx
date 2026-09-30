@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
-import { CATEGORY } from '../../categories'
+import { CATEGORY } from '../../lib/categories/categories'
 import { CategoryTag } from './category-tag'
 
 describe('CategoryTag', () => {

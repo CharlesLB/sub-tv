@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
-import { CATEGORIES, categoryBorderClass } from '../../categories'
+import { CATEGORIES, categoryBorderClass } from '../../lib/categories/categories'
 import { ChampionshipListSkeleton } from './championship-list.skeleton'
 
 const CARD_SKELETON_SELECTOR = '.rounded-card.bg-pan'

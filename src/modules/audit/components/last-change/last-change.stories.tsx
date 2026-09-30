@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 import { expect, mocked, within } from 'storybook/test'
-import { AUDIT_ENTITY } from '../../audit-action'
 import { getLastChange } from '../../data/get-last-change'
+import { AUDIT_ENTITY } from '../../lib/audit-action/audit-action'
 import { LastChange } from './last-change'
 import { lastChangeFixture } from './last-change.fixtures'
 

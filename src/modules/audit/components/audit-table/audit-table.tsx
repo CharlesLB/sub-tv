@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils/cn'
 import { DataTable, type DataTableColumn } from '@/components/ui/data-table/data-table'
-import { formatAuditTime } from '../../format-audit-time/format-audit-time'
+import { formatAuditTime } from '../../lib/format-audit-time/format-audit-time'
 import type { AuditRowVM } from '../../types'
 import { auditTableStyles as styles } from './audit-table.styles'
 

@@ -4,7 +4,7 @@ import { cacheLife, cacheTag } from 'next/cache'
 import * as R from 'remeda'
 import { tags } from '@/lib/cache/tags'
 import { db, tables } from '@/lib/db'
-import { toTeamBadge } from '../mappers'
+import { toTeamBadge } from '../lib/mappers/mappers'
 import type { TopScorerVM } from '../types'
 import { teamBadgeColumns } from './team-badge-columns'
 

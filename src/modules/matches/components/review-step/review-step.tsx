@@ -1,6 +1,6 @@
 import { Crest } from '@/components/ui/crest/crest'
 import { type Category, CategoryTag, categoryLabel } from '@/modules/championships/client'
-import { MATCH_DURATION_LABEL } from '../../wizard-selectors/wizard-selectors'
+import { MATCH_DURATION_LABEL } from '../../lib/wizard-selectors/wizard-selectors'
 import type { LineupSideVM } from '../lineups-step/lineups-step'
 import { reviewStepStyles as styles } from './review-step.styles'
 

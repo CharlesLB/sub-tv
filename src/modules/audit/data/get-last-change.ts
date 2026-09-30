@@ -2,8 +2,8 @@ import 'server-only'
 import { and, desc, eq } from 'drizzle-orm'
 import { connection } from 'next/server'
 import { db, tables } from '@/lib/db'
-import type { AuditEntity } from '../audit-action'
-import { actionLabelOf } from '../audit-labels/audit-labels'
+import type { AuditEntity } from '../lib/audit-action/audit-action'
+import { actionLabelOf } from '../lib/audit-labels/audit-labels'
 import type { LastChangeVM } from '../types'
 
 export const getLastChange = async (entityType: AuditEntity, entityId: string): Promise<LastChangeVM | null> => {

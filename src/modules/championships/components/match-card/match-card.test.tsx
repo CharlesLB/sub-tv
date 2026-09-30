@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import { routes } from '@/lib/routes'
-import { CATEGORY } from '../../categories'
+import { CATEGORY } from '../../lib/categories/categories'
 import { MatchCard } from './match-card'
 import { finishedMatchFixture, liveMatchFixture, penaltiesMatchFixture, SEASON_ID_FIXTURE, scheduledMatchFixture, undatedMatchFixture } from './match-card.fixtures'
 

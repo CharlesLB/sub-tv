@@ -1,6 +1,6 @@
 import 'server-only'
 import { db, tables } from '@/lib/db'
-import type { AuditAction, AuditEntity } from '../audit-action'
+import type { AuditAction, AuditEntity } from '../lib/audit-action/audit-action'
 
 export type AuditEntry = {
   userId: string

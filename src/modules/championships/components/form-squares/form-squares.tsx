@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils/cn'
-import { toFormSlots } from '../../form-slots/form-slots'
+import { toFormSlots } from '../../lib/form-slots/form-slots'
 import type { FormResult } from '../../types'
 import { FormSquare } from '../form-square/form-square'
 import { FORM_SQUARE_SIZE, type FormSquareSize } from '../form-square/form-square.styles'

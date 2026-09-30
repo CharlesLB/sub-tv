@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
-import { CATEGORY } from '../../categories'
+import { CATEGORY } from '../../lib/categories/categories'
 import { SEASON_ID_FIXTURE, undatedMatchFixture } from '../match-card/match-card.fixtures'
 import { seasonMatchesFixture } from '../round-panel/round-panel.fixtures'
 import { MatchGrid } from './match-grid'

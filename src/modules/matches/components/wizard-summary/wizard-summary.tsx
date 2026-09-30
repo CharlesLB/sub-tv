@@ -1,6 +1,6 @@
 import { Crest } from '@/components/ui/crest/crest'
 import { type Category, CategoryTag } from '@/modules/championships/client'
-import type { SummaryLineVM } from '../../wizard-selectors/wizard-selectors'
+import type { SummaryLineVM } from '../../lib/wizard-selectors/wizard-selectors'
 import { wizardSummaryStyles as styles } from './wizard-summary.styles'
 
 export type SummarySideVM = { key: string; name: string; color: string; crestPath: string | null; lineupCount: string }

@@ -1,5 +1,5 @@
-import { AUDIT_ACTION } from '../../audit-action'
-import { AUDIT_ACTION_LABEL } from '../../audit-labels/audit-labels'
+import { AUDIT_ACTION } from '../../lib/audit-action/audit-action'
+import { AUDIT_ACTION_LABEL } from '../../lib/audit-labels/audit-labels'
 import type { LastChangeVM } from '../../types'
 
 export const lastChangeFixture: LastChangeVM = {

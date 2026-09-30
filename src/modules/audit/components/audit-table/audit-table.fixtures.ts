@@ -1,5 +1,5 @@
-import { AUDIT_ACTION, AUDIT_ENTITY } from '../../audit-action'
-import { AUDIT_ACTION_LABEL, AUDIT_ENTITY_LABEL } from '../../audit-labels/audit-labels'
+import { AUDIT_ACTION, AUDIT_ENTITY } from '../../lib/audit-action/audit-action'
+import { AUDIT_ACTION_LABEL, AUDIT_ENTITY_LABEL } from '../../lib/audit-labels/audit-labels'
 import type { AuditRowVM } from '../../types'
 
 export const playerProfileChangeRowFixture: AuditRowVM = {

@@ -1,7 +1,7 @@
 import { useId } from 'react'
 import { cn } from '@/lib/utils/cn'
+import type { InformationField } from '../../lib/wizard-reducer/wizard-reducer'
 import { MAXIMUM_ROUND, MAXIMUM_VENUE_LENGTH } from '../../schemas'
-import type { InformationField } from '../../wizard-reducer/wizard-reducer'
 import { WizardNotice } from '../wizard-notice/wizard-notice'
 import { matchInfoStepStyles as styles } from './match-info-step.styles'
 

@@ -1,4 +1,4 @@
-import { SUMMARY_LINE, type SummaryLineVM } from '../../wizard-selectors/wizard-selectors'
+import { SUMMARY_LINE, type SummaryLineVM } from '../../lib/wizard-selectors/wizard-selectors'
 import { awayTeamFixture, homeTeamFixture } from '../lineup-card/lineup-card.fixtures'
 import type { SummarySideVM } from './wizard-summary'
 

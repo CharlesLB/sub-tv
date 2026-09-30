@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 import { expect, waitFor } from 'storybook/test'
-import { ACTIVE_TEAM_ATTRIBUTE } from '../../constants/active-team'
+import { ACTIVE_TEAM_ATTRIBUTE } from '../../lib/active-team/active-team'
 import { ActiveTeamScroll } from './active-team-scroll'
 
 const TEAM_NAMES = ['Estrela do Vale', 'Serra Azul FC', 'Atlético Ribeirinho', 'Grêmio Cachoeira', 'União Planalto', 'Esporte Clube Aurora']

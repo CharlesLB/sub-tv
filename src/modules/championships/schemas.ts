@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { CATEGORY } from './categories'
+import { CATEGORY } from './lib/categories/categories'
 
 export const CHAMPIONSHIP_NAME_MIN_LENGTH = 3
 export const CHAMPIONSHIP_NAME_MAX_LENGTH = 80

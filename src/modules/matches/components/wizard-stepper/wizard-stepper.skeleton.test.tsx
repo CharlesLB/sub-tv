@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
-import { WIZARD_STEPS } from '../../wizard-reducer/wizard-reducer'
+import { WIZARD_STEPS } from '../../lib/wizard-reducer/wizard-reducer'
 import { WizardStepperSkeleton } from './wizard-stepper.skeleton'
 
 const PLACEHOLDERS_PER_STEP = 3

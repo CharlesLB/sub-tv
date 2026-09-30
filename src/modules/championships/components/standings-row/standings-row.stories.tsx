@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 import { expect, userEvent, within } from 'storybook/test'
-import { CATEGORY } from '../../categories'
+import { CATEGORY } from '../../lib/categories/categories'
 import { StandingsRow } from './standings-row'
 import { bottomRowFixture, leaderRowFixture, middleRowFixture } from './standings-row.fixtures'
 

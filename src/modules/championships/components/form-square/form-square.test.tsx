@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
-import { FORM_RESULT } from '../../form-result/form-result'
+import { FORM_RESULT } from '../../lib/form-result/form-result'
 import { FormSquare } from './form-square'
 import { FORM_SQUARE_SIZE } from './form-square.styles'
 

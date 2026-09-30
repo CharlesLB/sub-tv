@@ -1,5 +1,5 @@
-import { AUDIT_ACTION, AUDIT_ENTITY } from '../../audit-action'
-import { AUDIT_PERIOD, type AuditFilter } from '../../audit-filter/audit-filter'
+import { AUDIT_ACTION, AUDIT_ENTITY } from '../../lib/audit-action/audit-action'
+import { AUDIT_PERIOD, type AuditFilter } from '../../lib/audit-filter/audit-filter'
 import type { AuditUserOptionVM } from '../../types'
 
 export const auditUserOptionsFixture: AuditUserOptionVM[] = [

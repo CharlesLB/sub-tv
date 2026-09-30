@@ -3,7 +3,7 @@ import { routes } from '@/lib/routes'
 import { cn } from '@/lib/utils/cn'
 import { Crest } from '@/components/ui/crest/crest'
 import { type Category, CategoryTag, categoryBorderClass } from '@/modules/championships/client'
-import { ACTIVE_TEAM_ATTRIBUTE } from '../../constants/active-team'
+import { ACTIVE_TEAM_ATTRIBUTE } from '../../lib/active-team/active-team'
 import type { SeasonTeamVM } from '../../types'
 import { teamListItemStyles as styles } from './team-list-item.styles'
 

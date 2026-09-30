@@ -1,6 +1,6 @@
 import type { KeyboardEvent, PointerEvent } from 'react'
 import { cn } from '@/lib/utils/cn'
-import type { PitchPoint } from '../../pitch-layout/pitch-layout'
+import type { PitchPoint } from '../../lib/pitch-layout/pitch-layout'
 import { pitchDotStyles as styles } from './pitch-dot.styles'
 
 type PitchDotProps = {

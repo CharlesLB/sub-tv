@@ -2,7 +2,7 @@ import { cn } from '@/lib/utils/cn'
 import { pluralize } from '@/lib/utils/pluralize/pluralize'
 import { Crest } from '@/components/ui/crest/crest'
 import { categoryLabel, categoryTextClass } from '@/modules/championships/client'
-import { formatPercent } from '../../stat-format/stat-format'
+import { formatPercent } from '../../lib/stat-format/stat-format'
 import type { TeamHistoryVM } from '../../types'
 import { teamHeroStyles as styles } from './team-hero.styles'
 

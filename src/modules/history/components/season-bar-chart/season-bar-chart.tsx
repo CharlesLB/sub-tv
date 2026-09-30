@@ -1,5 +1,5 @@
 import * as R from 'remeda'
-import { barHeightPercent, shortYear } from '../../stat-format/stat-format'
+import { barHeightPercent, shortYear } from '../../lib/stat-format/stat-format'
 import { seasonBarChartStyles as styles } from './season-bar-chart.styles'
 
 const MINIMUM_BAR_PERCENT = 6

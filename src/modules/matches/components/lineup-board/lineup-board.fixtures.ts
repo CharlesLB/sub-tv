@@ -1,4 +1,4 @@
-import { seedStarterPositions } from '../../starter-positions/starter-positions'
+import { seedStarterPositions } from '../../lib/starter-positions/starter-positions'
 import { lineupSidesFixture } from '../lineups-step/lineups-step.fixtures'
 import type { BoardSideVM } from './lineup-board'
 

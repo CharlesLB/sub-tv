@@ -1,5 +1,5 @@
 import { pluralize } from '@/lib/utils/pluralize/pluralize'
-import { CATEGORIES, categoryBorderClass, categoryLabel } from '../../categories'
+import { CATEGORIES, categoryBorderClass, categoryLabel } from '../../lib/categories/categories'
 import type { CategoryClubsVM, ChampionshipCardVM } from '../../types'
 import { CategoryTag } from '../category-tag/category-tag'
 import { ChampionshipCard } from '../championship-card/championship-card'

@@ -1,4 +1,4 @@
-import { MATCH_STATUS } from '../../match-status/match-status'
+import { MATCH_STATUS } from '../../lib/match-status/match-status'
 import type { MatchCardVM, TeamBadgeVM } from '../../types'
 
 export const SEASON_ID_FIXTURE = '3b1f2c4d-5e6f-4a7b-8c9d-0e1f2a3b4c5d'

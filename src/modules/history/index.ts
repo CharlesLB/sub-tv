@@ -7,5 +7,5 @@ export { TeamHistoryScreenSkeleton } from './components/team-history-screen/team
 export { getAthleteHistory } from './data/get-athlete-history'
 export { getHistoryOverview } from './data/get-history-overview'
 export { getTeamHistory } from './data/get-team-history'
-export type { HistoryFilter } from './history-filter/history-filter'
+export type { HistoryFilter } from './lib/history-filter/history-filter'
 export type { AccumulatedTeamRowVM, AthleteHistoryVM, HistoryOverviewVM, PeriodScorerVM, TeamHistoryVM } from './types'

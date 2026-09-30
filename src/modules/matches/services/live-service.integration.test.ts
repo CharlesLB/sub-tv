@@ -3,7 +3,7 @@ import { and, eq } from 'drizzle-orm'
 import { describe, expect, it } from 'vitest'
 import { db } from '@/lib/db'
 import { matchEvents, matches, matchLineups, teamSeasonStats } from '@/lib/db/schema'
-import type { LiveClock } from '../live-match/live-match'
+import type { LiveClock } from '../lib/live-match/live-match'
 import { liveService } from './live-service'
 import { seedEvent, seedMatch, seedSeason } from '@/test/database-seeds/database-seeds'
 

@@ -4,7 +4,7 @@ import { alias } from 'drizzle-orm/pg-core'
 import * as R from 'remeda'
 import { db, tables } from '@/lib/db'
 import { isUuid } from '@/lib/utils/is-uuid/is-uuid'
-import { AUDIT_ENTITY, type AuditEntity } from '../audit-action'
+import { AUDIT_ENTITY, type AuditEntity } from '../lib/audit-action/audit-action'
 
 export type EntityReference = { entityType: string; entityId: string | null }
 

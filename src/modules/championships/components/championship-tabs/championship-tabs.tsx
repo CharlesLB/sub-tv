@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { routes } from '@/lib/routes'
 import { cn } from '@/lib/utils/cn'
-import { CHAMPIONSHIP_TABS, type ChampionshipTab } from '../../championship-tab'
+import { CHAMPIONSHIP_TABS, type ChampionshipTab } from '../../lib/championship-tab/championship-tab'
 import { championshipTabsStyles as styles } from './championship-tabs.styles'
 
 type ChampionshipTabsProps = { seasonId: string; activeTab: ChampionshipTab }

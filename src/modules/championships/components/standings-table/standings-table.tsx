@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils/cn'
-import type { Category } from '../../categories'
+import type { Category } from '../../lib/categories/categories'
 import type { StandingGroupVM } from '../../types'
 import { StandingsRow } from '../standings-row/standings-row'
 import { standingsTableStyles as styles } from './standings-table.styles'

@@ -1,5 +1,5 @@
-import type { Category } from './categories'
-import type { MatchStatus } from './match-status/match-status'
+import type { Category } from './lib/categories/categories'
+import type { MatchStatus } from './lib/match-status/match-status'
 
 export type SeasonYearVM = { year: number; championshipCount: number }
 

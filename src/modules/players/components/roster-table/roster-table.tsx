@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils/cn'
 import { EMPTY_SQUAD_MESSAGE } from '../../labels'
-import { ROSTER_COLUMNS } from '../../roster-columns/roster-columns'
+import { ROSTER_COLUMNS } from '../../lib/roster-columns/roster-columns'
 import type { SquadPlayerVM } from '../../types'
 import { RosterRow } from '../roster-row/roster-row'
 import { rosterTableStyles as styles } from './roster-table.styles'

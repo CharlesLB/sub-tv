@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import { routes } from '@/lib/routes'
 import { CATEGORY } from '@/modules/championships/client'
-import { ACTIVE_TEAM_ATTRIBUTE } from '../../constants/active-team'
+import { ACTIVE_TEAM_ATTRIBUTE } from '../../lib/active-team/active-team'
 import { TeamListItem } from './team-list-item'
 import { seasonTeamFixture } from './team-list-item.fixtures'
 

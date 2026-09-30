@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils/cn'
 import { skeletonSlots } from '@/lib/utils/skeleton-slots/skeleton-slots'
 import { Skeleton } from '@/components/ui/skeleton/skeleton'
-import { staggeredRowOf } from '../../staggered-row/staggered-row'
+import { staggeredRowOf } from '../../lib/staggered-row/staggered-row'
 import { HistorySectionSkeleton } from '../history-section/history-section.skeleton'
 import { RowChevron } from '../row-chevron/row-chevron'
 import { SkeletonCell } from '../skeleton-cell/skeleton-cell'

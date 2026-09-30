@@ -1,4 +1,4 @@
-import { CATEGORY } from '../../categories'
+import { CATEGORY } from '../../lib/categories/categories'
 import type { ChampionshipCardVM } from '../../types'
 import { cerradoBadgeFixture, liveMatchFixture, ribeirinhaBadgeFixture, serranoBadgeFixture, valeVerdeBadgeFixture } from '../match-card/match-card.fixtures'
 

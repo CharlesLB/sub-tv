@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
-import { ACTIVE_TEAM_ATTRIBUTE } from '../../constants/active-team'
+import { ACTIVE_TEAM_ATTRIBUTE } from '../../lib/active-team/active-team'
 import { ActiveTeamScroll } from './active-team-scroll'
 
 const renderActiveTeam = () => {

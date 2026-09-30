@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 import { expect, fn, userEvent, within } from 'storybook/test'
-import { WIZARD_STEP } from '../../wizard-reducer/wizard-reducer'
+import { WIZARD_STEP } from '../../lib/wizard-reducer/wizard-reducer'
 import { WizardStepper } from './wizard-stepper'
 import { stepValuesFixture } from './wizard-stepper.fixtures'
 import { WizardStepperSkeleton } from './wizard-stepper.skeleton'

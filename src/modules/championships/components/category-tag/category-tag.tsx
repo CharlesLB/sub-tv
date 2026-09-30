@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils/cn'
-import { type Category, categoryBorderClass, categoryLabel, categoryTextClass } from '../../categories'
+import { type Category, categoryBorderClass, categoryLabel, categoryTextClass } from '../../lib/categories/categories'
 import { categoryTagStyles as styles } from './category-tag.styles'
 
 type CategoryTagProps = {

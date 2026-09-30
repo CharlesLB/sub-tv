@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { routes } from '@/lib/routes'
 import { cn } from '@/lib/utils/cn'
 import { Icon } from '@/components/ui/icon/icon'
-import { type AuditFilter, toAuditRouteQuery } from '../../audit-filter/audit-filter'
+import { type AuditFilter, toAuditRouteQuery } from '../../lib/audit-filter/audit-filter'
 import { auditPaginationStyles as styles } from './audit-pagination.styles'
 
 type AuditPaginationProps = { filter: AuditFilter; hasNextPage: boolean }

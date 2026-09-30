@@ -1,12 +1,12 @@
 export { applySubstitution, attachAssist, recordLiveEvent, revertLiveEvent, updateLineupPosition, updateLiveClock } from './actions/live-actions'
 export { createBroadcastMatch } from './actions/match-setup-actions'
-export { findNearestStarter, type PointerPosition, RESERVE_DROP_BOUNDS, toFieldPoint } from './board-geometry/board-geometry'
 export { DragGhost } from './components/drag-ghost/drag-ghost'
 export { NewMatchSheet } from './components/new-match-sheet/new-match-sheet'
 export { NewMatchWizard, type WizardPresentation } from './components/new-match-wizard/new-match-wizard'
 export { PitchMarkings } from './components/pitch-markings/pitch-markings'
-export { STARTERS_PER_TEAM } from './default-starters/default-starters'
-export { elapsedSecondsAt, INITIAL_LIVE_CLOCK, minuteAt } from './live-clock/live-clock'
+export { findNearestStarter, type PointerPosition, RESERVE_DROP_BOUNDS, toFieldPoint } from './lib/board-geometry/board-geometry'
+export { STARTERS_PER_TEAM } from './lib/default-starters/default-starters'
+export { elapsedSecondsAt, INITIAL_LIVE_CLOCK, minuteAt } from './lib/live-clock/live-clock'
 export {
   type ClockPeriod,
   DATA_SOURCE,
@@ -31,8 +31,8 @@ export {
   SIDE,
   SIDES,
   type Side,
-} from './live-match/live-match'
-export { type RemoteEvent, RemoteEventSchema, type RemotePosition, type RemoteSnapshot, RemoteSnapshotSchema, STREAM_MESSAGE } from './live-stream/live-stream-messages'
-export { layoutStarters, type PitchPlayer, type PitchPoint, PLAYER_POSITION, type PlayerPosition } from './pitch-layout/pitch-layout'
-export { startPrimaryPointerGesture } from './pointer-gesture/pointer-gesture'
+} from './lib/live-match/live-match'
+export { type RemoteEvent, RemoteEventSchema, type RemotePosition, type RemoteSnapshot, RemoteSnapshotSchema, STREAM_MESSAGE } from './lib/live-stream-messages/live-stream-messages'
+export { layoutStarters, type PitchPlayer, type PitchPoint, PLAYER_POSITION, type PlayerPosition } from './lib/pitch-layout/pitch-layout'
+export { startPrimaryPointerGesture } from './lib/pointer-gesture/pointer-gesture'
 export type { MatchSetupVM, PrefillMatchVM, SetupChampionshipVM, SetupPlayerVM, SetupTeamVM } from './types'

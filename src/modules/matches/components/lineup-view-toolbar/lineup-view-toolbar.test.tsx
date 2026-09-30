@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
-import { LINEUP_VIEW } from '../../wizard-reducer/wizard-reducer'
+import { LINEUP_VIEW } from '../../lib/wizard-reducer/wizard-reducer'
 import { LineupViewToolbar } from './lineup-view-toolbar'
 
 describe('LineupViewToolbar', () => {

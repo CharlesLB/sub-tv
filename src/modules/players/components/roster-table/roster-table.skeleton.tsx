@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils/cn'
 import { skeletonSlots } from '@/lib/utils/skeleton-slots/skeleton-slots'
 import { Skeleton } from '@/components/ui/skeleton/skeleton'
-import { ROSTER_COLUMNS } from '../../roster-columns/roster-columns'
+import { ROSTER_COLUMNS } from '../../lib/roster-columns/roster-columns'
 import { rosterRowStyles } from '../roster-row/roster-row.styles'
 import { rosterTableSkeletonStyles as skeletonStyles } from './roster-table.skeleton.styles'
 import { rosterTableStyles as styles } from './roster-table.styles'

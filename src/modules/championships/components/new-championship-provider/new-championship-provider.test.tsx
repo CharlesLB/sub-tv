@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { CATEGORY } from '../../categories'
+import { CATEGORY } from '../../lib/categories/categories'
 import { categoryClubsFixture } from '../club-picker/club-picker.fixtures'
 import { NewChampionshipButton } from '../new-championship-button/new-championship-button'
 import { NewChampionshipProvider, useNewChampionshipLauncher } from './new-championship-provider'

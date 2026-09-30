@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite'
-import { CHAMPIONSHIP_TAB } from '../../championship-tab'
+import { CHAMPIONSHIP_TAB } from '../../lib/championship-tab/championship-tab'
 import { SEASON_ID_FIXTURE } from '../match-card/match-card.fixtures'
 import { ChampionshipTabs } from './championship-tabs'
 import { ChampionshipTabsSkeleton } from './championship-tabs.skeleton'

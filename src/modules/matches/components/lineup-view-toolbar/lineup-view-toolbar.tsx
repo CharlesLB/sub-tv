@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils/cn'
 import { Icon } from '@/components/ui/icon/icon'
 import type { IconName } from '@/components/ui/icon/icon-paths'
-import { LINEUP_VIEW, type LineupView } from '../../wizard-reducer/wizard-reducer'
+import { LINEUP_VIEW, type LineupView } from '../../lib/wizard-reducer/wizard-reducer'
 import { lineupViewToolbarStyles as styles } from './lineup-view-toolbar.styles'
 
 const VIEW_OPTIONS: { view: LineupView; label: string; icon: IconName }[] = [

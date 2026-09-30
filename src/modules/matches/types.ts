@@ -1,5 +1,5 @@
 import type { Category } from '@/modules/championships/client'
-import type { PlayerPosition } from './pitch-layout/pitch-layout'
+import type { PlayerPosition } from './lib/pitch-layout/pitch-layout'
 
 export type ActiveBroadcastVM = {
   matchId: string

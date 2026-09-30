@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils/cn'
 import { Icon } from '@/components/ui/icon/icon'
-import { WIZARD_STEP, WIZARD_STEPS, type WizardStep } from '../../wizard-reducer/wizard-reducer'
+import { WIZARD_STEP, WIZARD_STEPS, type WizardStep } from '../../lib/wizard-reducer/wizard-reducer'
 import { wizardStepperStyles as styles } from './wizard-stepper.styles'
 
 const revealActiveStep = (element: HTMLButtonElement | null) => element?.scrollIntoView({ block: 'nearest', inline: 'nearest' })

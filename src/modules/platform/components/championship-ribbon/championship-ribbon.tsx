@@ -6,7 +6,7 @@ import { routes } from '@/lib/routes'
 import { cn } from '@/lib/utils/cn'
 import { Icon } from '@/components/ui/icon/icon'
 import { type ChampionshipRibbonItemVM, categoryBackgroundClass, categoryLabel, categoryTextClass } from '@/modules/championships/client'
-import { describeWhen } from '../../describe-when/describe-when'
+import { describeWhen } from '../../lib/describe-when/describe-when'
 import { championshipRibbonStyles as styles } from './championship-ribbon.styles'
 
 const CHIP_DELAY_STEP_MS = 45

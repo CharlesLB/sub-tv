@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import { CATEGORY } from '@/modules/championships/client'
-import { SUMMARY_LINE } from '../../wizard-selectors/wizard-selectors'
+import { SUMMARY_LINE } from '../../lib/wizard-selectors/wizard-selectors'
 import { WizardSummary } from './wizard-summary'
 import { summaryLinesFixture, summarySidesFixture } from './wizard-summary.fixtures'
 

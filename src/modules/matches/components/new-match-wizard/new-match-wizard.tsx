@@ -5,11 +5,10 @@ import { useReducer, useState, useSyncExternalStore, useTransition } from 'react
 import { routes } from '@/lib/routes'
 import { type Category, categoryLabel, otherCategory } from '@/modules/championships/client'
 import { createBroadcastMatch } from '../../actions/match-setup-actions'
-import { STARTERS_PER_TEAM } from '../../default-starters/default-starters'
-import { toDateInputInSaoPaulo } from '../../kickoff-time/kickoff-time'
-import { SIDE, type Side } from '../../live-match/live-match'
-import type { MatchSetupVM } from '../../types'
-import { createInitialWizardState, LINEUP_VIEW, WIZARD_STEP, wizardReducer } from '../../wizard-reducer/wizard-reducer'
+import { STARTERS_PER_TEAM } from '../../lib/default-starters/default-starters'
+import { toDateInputInSaoPaulo } from '../../lib/kickoff-time/kickoff-time'
+import { SIDE, type Side } from '../../lib/live-match/live-match'
+import { createInitialWizardState, LINEUP_VIEW, WIZARD_STEP, wizardReducer } from '../../lib/wizard-reducer/wizard-reducer'
 import {
   canAdvance,
   effectiveDate,
@@ -23,7 +22,8 @@ import {
   teamsNotice,
   toCreateInput,
   type WizardContext,
-} from '../../wizard-selectors/wizard-selectors'
+} from '../../lib/wizard-selectors/wizard-selectors'
+import type { MatchSetupVM } from '../../types'
 import type { BoardSideVM } from '../lineup-board/lineup-board'
 import { LineupEditor } from '../lineup-editor/lineup-editor'
 import { MatchInfoStep } from '../match-info-step/match-info-step'

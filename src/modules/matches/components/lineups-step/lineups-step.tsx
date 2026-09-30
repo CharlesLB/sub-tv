@@ -1,5 +1,5 @@
 import { type Category, categoryLabel } from '@/modules/championships/client'
-import type { Side } from '../../live-match/live-match'
+import type { Side } from '../../lib/live-match/live-match'
 import type { SetupTeamVM } from '../../types'
 import { LineupCard } from '../lineup-card/lineup-card'
 import { lineupsStepStyles as styles } from './lineups-step.styles'

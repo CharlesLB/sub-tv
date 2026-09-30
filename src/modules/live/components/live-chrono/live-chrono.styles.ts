@@ -1,4 +1,4 @@
-import { CHRONO_TONE, type ChronoTone } from '../../chrono-display/chrono-display'
+import { CHRONO_TONE, type ChronoTone } from '../../lib/chrono-display/chrono-display'
 
 export const liveChronoStyles = {
   button:

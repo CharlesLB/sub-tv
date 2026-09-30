@@ -1,7 +1,7 @@
 import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { WIZARD_STEP } from '../../wizard-reducer/wizard-reducer'
+import { WIZARD_STEP } from '../../lib/wizard-reducer/wizard-reducer'
 import { WizardStepper } from './wizard-stepper'
 import { stepValuesFixture } from './wizard-stepper.fixtures'
 

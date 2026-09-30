@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 import { expect, userEvent, within } from 'storybook/test'
-import { CATEGORY } from '../../categories'
+import { CATEGORY } from '../../lib/categories/categories'
 import { categoryClubsFixture } from '../club-picker/club-picker.fixtures'
 import { NewChampionshipButton } from '../new-championship-button/new-championship-button'
 import { NewChampionshipProvider } from './new-championship-provider'

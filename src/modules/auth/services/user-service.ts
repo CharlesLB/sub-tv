@@ -2,7 +2,7 @@ import 'server-only'
 import bcrypt from 'bcryptjs'
 import { eq } from 'drizzle-orm'
 import { db, tables } from '@/lib/db'
-import { normalizeUsername } from '../normalize-username/normalize-username'
+import { normalizeUsername } from '../lib/normalize-username/normalize-username'
 
 const TIMING_GUARD_HASH = '$2b$12$7DU6UflHC6tx3vnkGIKGGuG/yIZ.rZH.nGq0mKSxRAFG46Mmlaa8C'
 

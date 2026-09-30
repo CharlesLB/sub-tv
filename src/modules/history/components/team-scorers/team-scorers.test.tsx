@@ -1,6 +1,6 @@
 import { render, screen, within } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
-import { historyHref } from '../../history-href/history-href'
+import { historyHref } from '../../lib/history-href/history-href'
 import { loadedHistoryFilterFixture } from '../athlete-history-screen/athlete-history-screen.fixtures'
 import { TeamScorers } from './team-scorers'
 import { teamScorersFixture } from './team-scorers.fixtures'

@@ -1,4 +1,4 @@
-import { PLAYER_POSITION, type PlayerPosition } from '../../pitch-layout/pitch-layout'
+import { PLAYER_POSITION, type PlayerPosition } from '../../lib/pitch-layout/pitch-layout'
 import type { SetupPlayerVM, SetupTeamVM } from '../../types'
 
 type PlayerSeed = { shirtNumber: number; name: string; nickname?: string; position?: PlayerPosition }

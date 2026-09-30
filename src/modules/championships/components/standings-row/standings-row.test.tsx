@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it } from 'vitest'
-import { CATEGORY } from '../../categories'
+import { CATEGORY } from '../../lib/categories/categories'
 import { StandingsRow } from './standings-row'
 import { bottomRowFixture, leaderRowFixture, middleRowFixture } from './standings-row.fixtures'
 

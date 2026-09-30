@@ -6,9 +6,9 @@ import { makeEvent, makeSnapshot, PLAYER } from './live-state.fixtures'
 import { buildTimeline, describeEvent, TIMELINE_MARKER } from './timeline'
 
 vi.mock('@/modules/matches/client', async () => ({
-  ...(await vi.importActual('@/modules/matches/live-match/live-match')),
-  ...(await vi.importActual('@/modules/matches/live-clock/live-clock')),
-  ...(await vi.importActual('@/modules/matches/pitch-layout/pitch-layout')),
+  ...(await vi.importActual('@/modules/matches/lib/live-match/live-match')),
+  ...(await vi.importActual('@/modules/matches/lib/live-clock/live-clock')),
+  ...(await vi.importActual('@/modules/matches/lib/pitch-layout/pitch-layout')),
 }))
 
 const snapshot = makeSnapshot()

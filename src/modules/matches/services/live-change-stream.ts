@@ -1,6 +1,6 @@
 import 'server-only'
 import { type LiveChanges, readLiveChanges } from '../data/read-live-changes'
-import { STREAM_MESSAGE } from '../live-stream/live-stream-messages'
+import { STREAM_MESSAGE } from '../lib/live-stream-messages/live-stream-messages'
 
 const POLL_INTERVAL_MS = 1_500
 const HEARTBEAT_INTERVAL_MS = 15_000

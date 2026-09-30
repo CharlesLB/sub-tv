@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs'
 import { createDatabase, createPool } from '../../src/lib/db/connection'
 import { appUsers } from '../../src/lib/db/schema'
-import { normalizeUsername } from '../../src/modules/auth/normalize-username/normalize-username'
+import { normalizeUsername } from '../../src/modules/auth/lib/normalize-username/normalize-username'
 
 const BCRYPT_COST = 12
 const USAGE = 'uso: pnpm users:create "<nome do usuário>" "<senha>"'

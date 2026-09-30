@@ -1,4 +1,4 @@
-import { FORM_RESULT } from '../../form-result/form-result'
+import { FORM_RESULT } from '../../lib/form-result/form-result'
 import type { SquadPreviewPlayerVM, StandingRowVM } from '../../types'
 import { cerradoBadgeFixture, ribeirinhaBadgeFixture, serranoBadgeFixture, valeVerdeBadgeFixture } from '../match-card/match-card.fixtures'
 

@@ -2,7 +2,7 @@ import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { CATEGORY } from '@/modules/championships/client'
-import { LINEUP_VIEW } from '../../wizard-reducer/wizard-reducer'
+import { LINEUP_VIEW } from '../../lib/wizard-reducer/wizard-reducer'
 import { boardSidesFixture } from '../lineup-board/lineup-board.fixtures'
 import { LineupEditor } from './lineup-editor'
 

@@ -1,7 +1,7 @@
 import 'server-only'
 import { cacheLife, cacheTag } from 'next/cache'
 import { tags } from '@/lib/cache/tags'
-import { describeSeasonStatus, summarizeSeasonMatches } from '../season-summary/season-summary'
+import { describeSeasonStatus, summarizeSeasonMatches } from '../lib/season-summary/season-summary'
 import type { ChampionshipHeaderVM } from '../types'
 import { getSeasonMatches } from './get-season-matches'
 import { getSeasonRows } from './get-season-rows'

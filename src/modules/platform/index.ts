@@ -9,4 +9,4 @@ export { RailWithBroadcast } from './components/rail-with-broadcast/rail-with-br
 export { RouteError } from './components/route-error/route-error'
 export { SeasonRail } from './components/season-rail/season-rail'
 export { SeasonRailSkeleton } from './components/season-rail/season-rail.skeleton'
-export { THEME, THEME_ATTRIBUTE, THEME_STORAGE_KEY, type Theme } from './theme/theme'
+export { THEME, THEME_ATTRIBUTE, THEME_STORAGE_KEY, type Theme } from './lib/theme/theme'

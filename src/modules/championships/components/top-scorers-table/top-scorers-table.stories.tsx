@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite'
-import { CATEGORY } from '../../categories'
+import { CATEGORY } from '../../lib/categories/categories'
 import { TopScorersTable } from './top-scorers-table'
 import { topScorersFixture } from './top-scorers-table.fixtures'
 

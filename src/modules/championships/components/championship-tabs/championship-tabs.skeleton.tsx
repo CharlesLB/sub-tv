@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils/cn'
 import { Skeleton } from '@/components/ui/skeleton/skeleton'
-import { CHAMPIONSHIP_TABS } from '../../championship-tab'
+import { CHAMPIONSHIP_TABS } from '../../lib/championship-tab/championship-tab'
 import { championshipTabsSkeletonStyles as skeletonStyles } from './championship-tabs.skeleton.styles'
 import { championshipTabsStyles as styles } from './championship-tabs.styles'
 

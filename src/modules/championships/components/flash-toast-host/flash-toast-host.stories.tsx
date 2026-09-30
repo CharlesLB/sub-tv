@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 import { expect, within } from 'storybook/test'
-import { clearFlashMessage, showFlashMessage } from '../../flash-message/flash-message'
+import { clearFlashMessage, showFlashMessage } from '../../lib/flash-message/flash-message'
 import { FlashToastHost } from './flash-toast-host'
 
 const meta = {

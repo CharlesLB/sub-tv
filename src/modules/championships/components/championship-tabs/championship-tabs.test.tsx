@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import { routes } from '@/lib/routes'
-import { CHAMPIONSHIP_TAB } from '../../championship-tab'
+import { CHAMPIONSHIP_TAB } from '../../lib/championship-tab/championship-tab'
 import { SEASON_ID_FIXTURE } from '../match-card/match-card.fixtures'
 import { ChampionshipTabs } from './championship-tabs'
 

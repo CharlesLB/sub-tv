@@ -1,9 +1,9 @@
 import 'server-only'
 import { type AnyColumn, and, eq, gt, inArray, isNotNull, sql } from 'drizzle-orm'
 import { db, tables } from '@/lib/db'
-import { parsePersistedClock } from '../live-clock/live-clock'
-import { LIVE_EVENT_TYPE, type LiveClock } from '../live-match/live-match'
-import type { RemoteEvent, RemotePosition } from '../live-stream/live-stream-messages'
+import { parsePersistedClock } from '../lib/live-clock/live-clock'
+import { LIVE_EVENT_TYPE, type LiveClock } from '../lib/live-match/live-match'
+import type { RemoteEvent, RemotePosition } from '../lib/live-stream-messages/live-stream-messages'
 
 const OVERLAP_SECONDS = 5
 const LIVE_EVENT_TYPES = [LIVE_EVENT_TYPE.GOAL, LIVE_EVENT_TYPE.YELLOW_CARD, LIVE_EVENT_TYPE.RED_CARD, LIVE_EVENT_TYPE.SUBSTITUTION]

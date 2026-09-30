@@ -3,7 +3,7 @@
 import { type KeyboardEvent, useEffect, useRef } from 'react'
 import * as R from 'remeda'
 import type { MenuState } from '../../interaction/interaction-state'
-import { positionLabel } from '../../player-labels/player-labels'
+import { positionLabel } from '../../lib/player-labels/player-labels'
 import { CARD_COLOR } from '../../state/live-actions'
 import { useLiveState } from '../../state/live-context'
 import type { PlayerMatchState } from '../../state/live-state'

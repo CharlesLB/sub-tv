@@ -3,8 +3,8 @@ import { and, asc, desc, eq, inArray, isNull, or } from 'drizzle-orm'
 import * as R from 'remeda'
 import { db, tables } from '@/lib/db'
 import { toTitleCase } from '@/modules/championships'
-import { DATA_SOURCE, type LivePlayerVM, type SeasonNumbersVM, SIDE, type Side } from '../live-match/live-match'
-import { layoutStarters, type PitchPoint } from '../pitch-layout/pitch-layout'
+import { DATA_SOURCE, type LivePlayerVM, type SeasonNumbersVM, SIDE, type Side } from '../lib/live-match/live-match'
+import { layoutStarters, type PitchPoint } from '../lib/pitch-layout/pitch-layout'
 
 const CURIOSITIES_PER_PLAYER = 2
 const EMPTY_SEASON_NUMBERS: SeasonNumbersVM = { goals: 0, assists: 0, yellowCards: 0, games: 0 }

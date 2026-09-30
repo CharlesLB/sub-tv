@@ -9,9 +9,9 @@ import { derivePlayerStates, selectScore } from './selectors'
 import { LIVE_MESSAGE, MAXIMUM_TOASTS } from './toasts'
 
 vi.mock('@/modules/matches/client', async () => ({
-  ...(await vi.importActual('@/modules/matches/live-match/live-match')),
-  ...(await vi.importActual('@/modules/matches/live-clock/live-clock')),
-  ...(await vi.importActual('@/modules/matches/pitch-layout/pitch-layout')),
+  ...(await vi.importActual('@/modules/matches/lib/live-match/live-match')),
+  ...(await vi.importActual('@/modules/matches/lib/live-clock/live-clock')),
+  ...(await vi.importActual('@/modules/matches/lib/pitch-layout/pitch-layout')),
 }))
 
 const NOW_MS = Date.parse('2026-09-19T13:00:00.000Z')

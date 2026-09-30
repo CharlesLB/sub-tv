@@ -1,7 +1,7 @@
 'use client'
 
 import { createContext, type ReactNode, use, useState } from 'react'
-import type { Category } from '../../categories'
+import type { Category } from '../../lib/categories/categories'
 import type { CategoryClubsVM } from '../../types'
 import { NewChampionshipPanel } from '../new-championship-panel/new-championship-panel'
 import { newChampionshipProviderStyles as styles } from './new-championship-provider.styles'

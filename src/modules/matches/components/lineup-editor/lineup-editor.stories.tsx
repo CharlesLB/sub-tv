@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 import { expect, fn, within } from 'storybook/test'
 import { CATEGORY } from '@/modules/championships/client'
-import { LINEUP_VIEW } from '../../wizard-reducer/wizard-reducer'
+import { LINEUP_VIEW } from '../../lib/wizard-reducer/wizard-reducer'
 import { boardSidesFixture } from '../lineup-board/lineup-board.fixtures'
 import { LineupEditor } from './lineup-editor'
 

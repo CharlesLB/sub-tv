@@ -1,7 +1,7 @@
 import { z } from 'zod'
-import { STARTERS_PER_TEAM } from './default-starters/default-starters'
-import { isDateInput, isTimeInput } from './kickoff-time/kickoff-time'
-import { PitchPointSchema } from './pitch-coordinate/pitch-coordinate'
+import { STARTERS_PER_TEAM } from './lib/default-starters/default-starters'
+import { isDateInput, isTimeInput } from './lib/kickoff-time/kickoff-time'
+import { PitchPointSchema } from './lib/pitch-coordinate/pitch-coordinate'
 
 export const MAXIMUM_ROUND = 99
 export const MAXIMUM_VENUE_LENGTH = 120

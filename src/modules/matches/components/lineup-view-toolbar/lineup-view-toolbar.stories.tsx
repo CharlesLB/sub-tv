@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 import { expect, fn, userEvent, within } from 'storybook/test'
-import { LINEUP_VIEW } from '../../wizard-reducer/wizard-reducer'
+import { LINEUP_VIEW } from '../../lib/wizard-reducer/wizard-reducer'
 import { LineupViewToolbar } from './lineup-view-toolbar'
 
 const meta = {

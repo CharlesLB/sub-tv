@@ -6,7 +6,7 @@ import { type ActionResult, fail, ok } from '@/lib/actions/result'
 import { tags } from '@/lib/cache/tags'
 import { AUDIT_ACTION, AUDIT_ENTITY, type AuditAction, recordAudit } from '@/modules/audit'
 import { requireUser } from '@/modules/auth'
-import { ApplySubstitutionInput, AttachAssistInput, RecordLiveEventInput, RevertLiveEventInput, UpdateLineupPositionInput, UpdateLiveClockInput } from '../live-schemas/live-schemas'
+import { ApplySubstitutionInput, AttachAssistInput, RecordLiveEventInput, RevertLiveEventInput, UpdateLineupPositionInput, UpdateLiveClockInput } from '../lib/live-schemas/live-schemas'
 import { liveService } from '../services/live-service'
 import type { SeasonTouch } from '../services/match-finalization/match-finalization'
 

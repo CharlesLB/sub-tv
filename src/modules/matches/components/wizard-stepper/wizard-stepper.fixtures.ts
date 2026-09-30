@@ -1,5 +1,5 @@
-import type { WizardStep } from '../../wizard-reducer/wizard-reducer'
-import { WIZARD_STEP } from '../../wizard-reducer/wizard-reducer'
+import type { WizardStep } from '../../lib/wizard-reducer/wizard-reducer'
+import { WIZARD_STEP } from '../../lib/wizard-reducer/wizard-reducer'
 
 export const stepValuesFixture: Record<WizardStep, string> = {
   [WIZARD_STEP.INFORMATION]: '03/10/2026 · 10:00',

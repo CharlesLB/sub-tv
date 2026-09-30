@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils/cn'
 import { skeletonSlots } from '@/lib/utils/skeleton-slots/skeleton-slots'
 import { Skeleton } from '@/components/ui/skeleton/skeleton'
-import { WIZARD_STEPS } from '../../wizard-reducer/wizard-reducer'
+import { WIZARD_STEPS } from '../../lib/wizard-reducer/wizard-reducer'
 import { wizardStepperSkeletonStyles as skeletonStyles } from './wizard-stepper.skeleton.styles'
 import { wizardStepperStyles as styles } from './wizard-stepper.styles'
 

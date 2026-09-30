@@ -5,7 +5,7 @@ import { tags } from '@/lib/cache/tags'
 import { db, tables } from '@/lib/db'
 import { type Category, otherCategory, teamBadgeColumns, toTeamBadge } from '@/modules/championships'
 import { toTeamKey } from '@/modules/teams'
-import { buildSquadPlayers } from '../squad-roster/squad-roster'
+import { buildSquadPlayers } from '../lib/squad-roster/squad-roster'
 import type { TeamSquadVM } from '../types'
 
 type TeamIdentity = { year: number; category: Category; clubId: string }

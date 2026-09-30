@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
-import { CHAMPIONSHIP_TABS } from '../../championship-tab'
+import { CHAMPIONSHIP_TABS } from '../../lib/championship-tab/championship-tab'
 import { ChampionshipTabsSkeleton } from './championship-tabs.skeleton'
 
 describe('ChampionshipTabsSkeleton', () => {

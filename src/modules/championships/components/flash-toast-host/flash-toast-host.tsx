@@ -1,7 +1,7 @@
 'use client'
 
 import { useSyncExternalStore } from 'react'
-import { clearFlashMessage, readFlashMessage, subscribeToFlashMessage } from '../../flash-message/flash-message'
+import { clearFlashMessage, readFlashMessage, subscribeToFlashMessage } from '../../lib/flash-message/flash-message'
 import { FlashToast } from '../flash-toast/flash-toast'
 
 const readNothingOnServer = () => null

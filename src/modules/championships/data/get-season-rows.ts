@@ -4,7 +4,7 @@ import { cacheLife, cacheTag } from 'next/cache'
 import * as R from 'remeda'
 import { tags } from '@/lib/cache/tags'
 import { db, tables } from '@/lib/db'
-import type { Category } from '../categories'
+import type { Category } from '../lib/categories/categories'
 
 export type SeasonRow = {
   id: string

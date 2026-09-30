@@ -1,7 +1,7 @@
 import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, describe, expect, it } from 'vitest'
-import { clearFlashMessage, readFlashMessage, showFlashMessage } from '../../flash-message/flash-message'
+import { clearFlashMessage, readFlashMessage, showFlashMessage } from '../../lib/flash-message/flash-message'
 import { FlashToastHost } from './flash-toast-host'
 
 describe('FlashToastHost', () => {

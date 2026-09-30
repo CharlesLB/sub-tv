@@ -5,7 +5,7 @@ import * as R from 'remeda'
 import { tags } from '@/lib/cache/tags'
 import { db, tables } from '@/lib/db'
 import { teamBadgeColumns, toTeamBadge } from '@/modules/championships'
-import { toTeamKey } from '../team-key/team-key'
+import { toTeamKey } from '../lib/team-key/team-key'
 import type { SeasonTeamVM } from '../types'
 
 const SORT_LOCALE = 'pt-BR'

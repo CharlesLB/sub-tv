@@ -1,4 +1,4 @@
-import { CHAMPIONSHIP_TAB, type ChampionshipTab } from '../../championship-tab'
+import { CHAMPIONSHIP_TAB, type ChampionshipTab } from '../../lib/championship-tab/championship-tab'
 
 export const championshipTabsSkeletonStyles = {
   label: 'h-lh',

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite'
-import { FORM_RESULT } from '../../form-result/form-result'
+import { FORM_RESULT } from '../../lib/form-result/form-result'
 import { FormSquare } from './form-square'
 import { FORM_SQUARE_SIZE } from './form-square.styles'
 

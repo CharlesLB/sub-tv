@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs'
 import { and, count, eq, ne } from 'drizzle-orm'
 import { type ActionResult, fail, ok } from '@/lib/actions/result'
 import { db, tables } from '@/lib/db'
-import { normalizeUsername } from '../normalize-username/normalize-username'
+import { normalizeUsername } from '../lib/normalize-username/normalize-username'
 
 const BCRYPT_COST = 12
 

@@ -1,7 +1,7 @@
 import type { MouseEvent } from 'react'
 import { cn } from '@/lib/utils/cn'
 import { positionAbbreviation, positionLabel } from '../../labels'
-import { toRosterName } from '../../squad-roster/squad-roster'
+import { toRosterName } from '../../lib/squad-roster/squad-roster'
 import type { SquadPlayerVM } from '../../types'
 import { rosterRowStyles as styles } from './roster-row.styles'
 

@@ -4,7 +4,7 @@ import { alias } from 'drizzle-orm/pg-core'
 import { cacheLife, cacheTag } from 'next/cache'
 import { tags } from '@/lib/cache/tags'
 import { db, tables } from '@/lib/db'
-import { toTeamBadge } from '../mappers'
+import { toTeamBadge } from '../lib/mappers/mappers'
 import type { MatchCardVM } from '../types'
 import { teamBadgeColumns } from './team-badge-columns'
 

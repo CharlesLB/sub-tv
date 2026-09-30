@@ -1,6 +1,6 @@
 import { pluralize } from '@/lib/utils/pluralize/pluralize'
 import { Icon } from '@/components/ui/icon/icon'
-import { formatChampionships } from '../../stat-format/stat-format'
+import { formatChampionships } from '../../lib/stat-format/stat-format'
 import type { AthleteSeasonVM } from '../../types'
 import { bestSeasonBannerStyles as styles } from './best-season-banner.styles'
 

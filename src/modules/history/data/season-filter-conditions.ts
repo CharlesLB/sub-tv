@@ -1,7 +1,7 @@
 import 'server-only'
 import { type AnyColumn, eq, inArray, type SQL, sql } from 'drizzle-orm'
 import { tables } from '@/lib/db'
-import type { HistoryFilter } from '../history-filter/history-filter'
+import type { HistoryFilter } from '../lib/history-filter/history-filter'
 
 export const FINISHED_MATCH_STATUS = 'encerrado'
 

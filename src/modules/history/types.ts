@@ -1,5 +1,5 @@
 import type { Category, FormResult, TeamBadgeVM } from '@/modules/championships/client'
-import type { CompetitionPresence } from './competition-presences/competition-presences'
+import type { CompetitionPresence } from './lib/competition-presences/competition-presences'
 
 export type TeamRecordVM = {
   played: number

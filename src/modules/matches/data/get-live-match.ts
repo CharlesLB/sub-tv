@@ -5,8 +5,8 @@ import { cacheLife, cacheTag } from 'next/cache'
 import { tags } from '@/lib/cache/tags'
 import { db, tables } from '@/lib/db'
 import { MATCH_STATUS, teamBadgeColumns, toTeamBadge, toTitleCase } from '@/modules/championships'
-import { INITIAL_LIVE_CLOCK, parsePersistedClock } from '../live-clock/live-clock'
-import { DATA_SOURCE, HALF_LENGTH_MINUTES, LIVE_EVENT_TYPE, type LiveClock, type LiveEventVM, type LiveMatchSnapshot, type LiveOfficialVM, MATCH_PERIOD, SIDE } from '../live-match/live-match'
+import { INITIAL_LIVE_CLOCK, parsePersistedClock } from '../lib/live-clock/live-clock'
+import { DATA_SOURCE, HALF_LENGTH_MINUTES, LIVE_EVENT_TYPE, type LiveClock, type LiveEventVM, type LiveMatchSnapshot, type LiveOfficialVM, MATCH_PERIOD, SIDE } from '../lib/live-match/live-match'
 import { readLivePlayers } from './read-live-players'
 
 const homeTeam = alias(tables.seasonTeams, 'live_home_team')

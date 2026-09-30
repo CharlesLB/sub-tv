@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils/cn'
 import { Crest } from '@/components/ui/crest/crest'
 import { type Category, CategoryTag } from '@/modules/championships/client'
-import { STARTERS_PER_TEAM } from '../../default-starters/default-starters'
+import { STARTERS_PER_TEAM } from '../../lib/default-starters/default-starters'
 import type { SetupTeamVM } from '../../types'
 import { lineupCardStyles as styles } from './lineup-card.styles'
 

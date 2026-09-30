@@ -2,7 +2,7 @@ import type { Decorator, Preview } from '@storybook/nextjs-vite'
 import { type ReactNode, useEffect } from 'react'
 import { barlowCondensed, geist } from '../src/app/fonts'
 import '../src/app/globals.css'
-import { THEME, THEME_ATTRIBUTE, type Theme } from '../src/modules/platform/theme/theme'
+import { THEME, THEME_ATTRIBUTE, type Theme } from '../src/modules/platform/lib/theme/theme'
 
 const COLOR_CONTRAST_RULE = 'color-contrast'
 

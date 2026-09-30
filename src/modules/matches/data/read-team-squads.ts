@@ -2,8 +2,8 @@ import 'server-only'
 import { and, eq, inArray } from 'drizzle-orm'
 import * as R from 'remeda'
 import { db, tables } from '@/lib/db'
-import type { PlayerPosition } from '../pitch-layout/pitch-layout'
-import { assignShirtNumbers } from '../squad-shirts/squad-shirts'
+import type { PlayerPosition } from '../lib/pitch-layout/pitch-layout'
+import { assignShirtNumbers } from '../lib/squad-shirts/squad-shirts'
 
 export type SquadMember = {
   playerId: string

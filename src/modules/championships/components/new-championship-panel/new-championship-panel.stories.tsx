@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 import { expect, fn, mocked, userEvent, waitFor, within } from 'storybook/test'
 import { createChampionship } from '../../actions/championship-actions'
-import { CATEGORY } from '../../categories'
-import { clearFlashMessage } from '../../flash-message/flash-message'
+import { CATEGORY } from '../../lib/categories/categories'
+import { clearFlashMessage } from '../../lib/flash-message/flash-message'
 import { categoryClubsFixture, categoryClubsWithoutSub14Fixture } from '../club-picker/club-picker.fixtures'
 import { NewChampionshipPanel } from './new-championship-panel'
 

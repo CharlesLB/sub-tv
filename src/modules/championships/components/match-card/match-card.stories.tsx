@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite'
-import { CATEGORY } from '../../categories'
+import { CATEGORY } from '../../lib/categories/categories'
 import { MatchCard } from './match-card'
 import { cancelledMatchFixture, finishedMatchFixture, liveMatchFixture, penaltiesMatchFixture, SEASON_ID_FIXTURE, scheduledMatchFixture, undatedMatchFixture } from './match-card.fixtures'
 

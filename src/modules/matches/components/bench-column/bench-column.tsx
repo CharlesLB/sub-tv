@@ -1,8 +1,8 @@
 import type { KeyboardEvent, PointerEvent } from 'react'
 import { cn } from '@/lib/utils/cn'
-import { STARTERS_PER_TEAM } from '../../default-starters/default-starters'
+import { STARTERS_PER_TEAM } from '../../lib/default-starters/default-starters'
+import { shortNameOf } from '../../lib/wizard-selectors/wizard-selectors'
 import type { SetupPlayerVM, SetupTeamVM } from '../../types'
-import { shortNameOf } from '../../wizard-selectors/wizard-selectors'
 import { benchColumnStyles as styles } from './bench-column.styles'
 
 type BenchColumnProps = {
