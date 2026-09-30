@@ -20,6 +20,7 @@ export const AUDIT_ACTION_LABEL: Record<AuditAction, string> = {
   [AUDIT_ACTION.USER_ACTIVATED]: 'Ativou usuário',
   [AUDIT_ACTION.USER_DEACTIVATED]: 'Desativou usuário',
   [AUDIT_ACTION.CHAMPIONSHIP_CREATED]: 'Criou campeonato',
+  [AUDIT_ACTION.FMF_DATA_SYNCED]: 'Atualizou os dados da FMF',
 }
 
 export const AUDIT_ENTITY_LABEL: Record<AuditEntity, string> = {
@@ -27,6 +28,7 @@ export const AUDIT_ENTITY_LABEL: Record<AuditEntity, string> = {
   [AUDIT_ENTITY.PLAYER]: 'Jogador',
   [AUDIT_ENTITY.MATCH]: 'Partida',
   [AUDIT_ENTITY.CHAMPIONSHIP]: 'Campeonato',
+  [AUDIT_ENTITY.FMF_DATA]: 'Dados da FMF',
 }
 
 export const AUDIT_ACTIONS: readonly AuditAction[] = Object.values(AUDIT_ACTION)

@@ -18,6 +18,7 @@ export const AUDIT_ACTION = {
   USER_ACTIVATED: 'usuario_ativado',
   USER_DEACTIVATED: 'usuario_desativado',
   CHAMPIONSHIP_CREATED: 'campeonato_criado',
+  FMF_DATA_SYNCED: 'dados_fmf_atualizados',
 } as const
 
 export type AuditAction = (typeof AUDIT_ACTION)[keyof typeof AUDIT_ACTION]
@@ -27,6 +28,7 @@ export const AUDIT_ENTITY = {
   PLAYER: 'jogador',
   MATCH: 'partida',
   CHAMPIONSHIP: 'campeonato',
+  FMF_DATA: 'dados_fmf',
 } as const
 
 export type AuditEntity = (typeof AUDIT_ENTITY)[keyof typeof AUDIT_ENTITY]

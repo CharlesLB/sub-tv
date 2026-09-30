@@ -1,4 +1,5 @@
 export { CategoryTag } from './components/category-tag/category-tag'
+export { FlashToast } from './components/flash-toast/flash-toast'
 export { FlashToastHost } from './components/flash-toast-host/flash-toast-host'
 export { FORM_SQUARE_SIZE, type FormSquareSize } from './components/form-square/form-square.styles'
 export { FormSquares } from './components/form-squares/form-squares'

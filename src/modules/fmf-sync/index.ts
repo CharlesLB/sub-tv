@@ -1,2 +1,3 @@
 export { isAuthorizedCronRequest } from './lib/cron-authorization/cron-authorization'
-export { runNightlyFmfSync, type SyncSummary } from './services/fmf-sync-service/fmf-sync-service'
+export { syncedTagsOf } from './lib/synced-tags/synced-tags'
+export { runNightlyFmfSync, type SyncSummary } from './services/fmf-sync-service'

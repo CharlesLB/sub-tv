@@ -2,6 +2,7 @@ import { type ReactNode, Suspense } from 'react'
 import { UserChip } from '@/modules/auth'
 import { type Category, CategoryTag } from '@/modules/championships/client'
 import { Breadcrumbs, type Crumb } from '../breadcrumbs/breadcrumbs'
+import { FmfSyncButton } from '../fmf-sync-button/fmf-sync-button'
 import { LiveBroadcastChip } from '../live-broadcast-chip/live-broadcast-chip'
 import { ThemeToggle } from '../theme-toggle/theme-toggle'
 import { contextBarStyles as styles } from './context-bar.styles'
@@ -29,6 +30,9 @@ export function ContextBar({ crumbs, title, category, detail, actions }: Context
         </Suspense>
         <Suspense fallback={null}>
           <UserChip />
+        </Suspense>
+        <Suspense fallback={null}>
+          <FmfSyncButton />
         </Suspense>
         <ThemeToggle />
         {actions}
