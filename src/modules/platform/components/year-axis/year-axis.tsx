@@ -1,12 +1,12 @@
 'use client'
 
-import type { Route } from 'next'
-import Link from 'next/link'
 import { useState } from 'react'
 import { useMediaQuery } from '@/lib/hooks/use-media-query/use-media-query'
 import { cn } from '@/lib/utils/cn'
 import { Icon } from '@/components/ui/icon/icon'
+import { IntentLink } from '@/components/ui/intent-link/intent-link'
 import type { SeasonYearVM } from '@/modules/championships/client'
+import type { SeasonHref } from '../../lib/season-href/season-href'
 import { yearAxisStyles as styles } from './year-axis.styles'
 
 const YEAR_DELAY_STEP_MS = 26
@@ -30,7 +30,7 @@ const clamp = (value: number, minimum: number, maximum: number): number => Math.
 type YearAxisProps = {
   years: SeasonYearVM[]
   activeYear: number
-  hrefForYear: (year: number) => Route
+  hrefForYear: (year: number) => SeasonHref
   onSelectYear: (year: number) => void
 }
 
@@ -58,7 +58,7 @@ export function YearAxis({ years, activeYear, hrefForYear, onSelectYear }: YearA
           return (
             <span key={seasonYear.year} className={styles.yearSlot}>
               {index > 0 ? <span className={styles.connector} /> : null}
-              <Link
+              <IntentLink
                 href={hrefForYear(seasonYear.year)}
                 onClick={() => onSelectYear(seasonYear.year)}
                 title={`${seasonYear.championshipCount} campeonatos · elenco ${seasonYear.year}`}
@@ -68,7 +68,7 @@ export function YearAxis({ years, activeYear, hrefForYear, onSelectYear }: YearA
               >
                 <span className={cn(styles.yearDot, isActive ? styles.yearDotActive : styles.yearDotIdle)} />
                 <span className={cn(styles.year, isActive ? styles.yearActive : styles.yearIdle)}>{seasonYear.year}</span>
-              </Link>
+              </IntentLink>
             </span>
           )
         })}

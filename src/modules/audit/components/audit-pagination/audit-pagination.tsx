@@ -1,7 +1,7 @@
-import Link from 'next/link'
 import { routes } from '@/lib/routes'
 import { cn } from '@/lib/utils/cn'
 import { Icon } from '@/components/ui/icon/icon'
+import { IntentLink } from '@/components/ui/intent-link/intent-link'
 import { type AuditFilter, toAuditRouteQuery } from '../../lib/audit-filter/audit-filter'
 import { auditPaginationStyles as styles } from './audit-pagination.styles'
 
@@ -13,7 +13,7 @@ export function AuditPagination({ filter, hasNextPage }: AuditPaginationProps) {
 
   return (
     <nav aria-label="Paginação" className={styles.navigation}>
-      <Link
+      <IntentLink
         href={routes.auditLog(toAuditRouteQuery({ ...filter, page: filter.page - 1 }))}
         aria-disabled={!hasPreviousPage}
         tabIndex={hasPreviousPage ? undefined : -1}
@@ -21,9 +21,9 @@ export function AuditPagination({ filter, hasNextPage }: AuditPaginationProps) {
       >
         <Icon name="chevronLeft" size={16} />
         Anteriores
-      </Link>
+      </IntentLink>
       <span className={styles.currentPage}>{`Página ${filter.page}`}</span>
-      <Link
+      <IntentLink
         href={routes.auditLog(toAuditRouteQuery({ ...filter, page: filter.page + 1 }))}
         aria-disabled={!hasNextPage}
         tabIndex={hasNextPage ? undefined : -1}
@@ -31,7 +31,7 @@ export function AuditPagination({ filter, hasNextPage }: AuditPaginationProps) {
       >
         Mais antigas
         <Icon name="chevronRight" size={16} />
-      </Link>
+      </IntentLink>
     </nav>
   )
 }

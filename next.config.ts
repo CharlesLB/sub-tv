@@ -2,6 +2,8 @@ import type { NextConfig } from 'next'
 
 const isDevelopment = process.env.NODE_ENV === 'development'
 
+const VISITED_PAGE_REUSE_SECONDS = 300
+
 const contentSecurityPolicy = [
   "default-src 'self'",
   `script-src 'self' 'unsafe-inline'${isDevelopment ? " 'unsafe-eval'" : ''}`,
@@ -31,6 +33,7 @@ const nextConfig: NextConfig = {
   reactCompiler: true,
   poweredByHeader: false,
   serverExternalPackages: ['pg'],
+  experimental: { staleTimes: { dynamic: VISITED_PAGE_REUSE_SECONDS } },
   async headers() {
     return [{ source: '/:path*', headers: securityHeaders }]
   },

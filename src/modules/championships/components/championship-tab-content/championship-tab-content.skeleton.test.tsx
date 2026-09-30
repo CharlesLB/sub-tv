@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
-import { ChampionshipDetailSkeleton } from './championship-tab-content.skeleton'
+import { ChampionshipDetailSkeleton, ChampionshipTabContentSkeleton } from './championship-tab-content.skeleton'
 
 describe('ChampionshipDetailSkeleton', () => {
   it('draws the tabs and the default tab body as hidden siblings, like the real page', () => {
@@ -16,5 +16,13 @@ describe('ChampionshipDetailSkeleton', () => {
 
     expect(container.querySelector('section')).toBeInTheDocument()
     expect(container.querySelector('aside')).toBeInTheDocument()
+  })
+
+  it('draws only the hidden tab body when the tabs are already on screen', () => {
+    const { container } = render(<ChampionshipTabContentSkeleton />)
+
+    expect(container.children).toHaveLength(1)
+    expect(container.firstElementChild).toHaveAttribute('aria-hidden', 'true')
+    expect(container.querySelector('nav')).not.toBeInTheDocument()
   })
 })

@@ -55,7 +55,7 @@ describe('SeasonPanel', () => {
     expect(screen.getByRole('link', { name: '2024 5 Camp.' })).not.toHaveAttribute('aria-current')
   })
 
-  it('reports the chosen season and closes when a season is clicked', async () => {
+  it('reports the chosen season and stays open while that season loads', async () => {
     const onSelectYear = vi.fn()
     renderPanel(onSelectYear)
     await userEvent.click(screen.getByRole('button', { name: 'Todas as temporadas' }))
@@ -63,6 +63,15 @@ describe('SeasonPanel', () => {
     await userEvent.click(screen.getByRole('link', { name: '2022 4 Camp.' }))
 
     expect(onSelectYear).toHaveBeenCalledWith(2022)
+    expect(screen.getByText('Elenco próprio por ano')).toBeInTheDocument()
+  })
+
+  it('closes when the season already shown is clicked', async () => {
+    renderPanel()
+    await userEvent.click(screen.getByRole('button', { name: 'Todas as temporadas' }))
+
+    await userEvent.click(screen.getByRole('link', { name: '2025 4 Camp.' }))
+
     expect(screen.queryByText('Elenco próprio por ano')).not.toBeInTheDocument()
   })
 })

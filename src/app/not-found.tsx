@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { LinkPendingIndicator } from '@/components/ui/link-pending-indicator/link-pending-indicator'
 
 export default function RootNotFound() {
   return (
@@ -6,6 +7,7 @@ export default function RootNotFound() {
       <span className="text-[19px] font-bold tracking-[-.01em]">Página não encontrada</span>
       <Link href="/campeonatos" className="text-[12.5px] text-ac underline underline-offset-[3px]">
         Ver campeonatos
+        <LinkPendingIndicator />
       </Link>
     </main>
   )

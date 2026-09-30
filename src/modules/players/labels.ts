@@ -25,3 +25,7 @@ export const footLabel: Record<PreferredFoot, string> = {
 }
 
 export const EMPTY_SQUAD_MESSAGE = 'Nenhum atleta vinculado a este time ainda.'
+
+export const SQUADS_TITLE = 'Elencos'
+
+export const SQUADS_BASE_CRUMB_LABEL = 'Gestão da base'

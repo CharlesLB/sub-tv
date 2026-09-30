@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { cn } from '@/lib/utils/cn'
 import { Crest } from '@/components/ui/crest/crest'
+import { LinkPendingIndicator } from '@/components/ui/link-pending-indicator/link-pending-indicator'
 import { categoryLabel, categoryTextClass } from '@/modules/championships/client'
 import type { HistoryFilter } from '../../lib/history-filter/history-filter'
 import { historyHref } from '../../lib/history-href/history-href'
@@ -61,6 +62,7 @@ export function AccumulatedTable({ rows, filter }: AccumulatedTableProps) {
                 <span className={cn(styles.numberCell, styles.pointsCell)}>{row.points}</span>
                 <span className={cn(styles.numberCell, styles.winRateCell)}>{formatPercent(row.winRate)}</span>
                 <RowChevron />
+                <LinkPendingIndicator />
               </Link>
             )
           })}

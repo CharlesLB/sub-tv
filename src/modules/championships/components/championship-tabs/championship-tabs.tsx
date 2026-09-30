@@ -1,19 +1,22 @@
-import Link from 'next/link'
-import { routes } from '@/lib/routes'
+'use client'
+
+import { useSearchParams } from 'next/navigation'
+import { routes, TAB_PARAMETER } from '@/lib/routes'
 import { cn } from '@/lib/utils/cn'
-import { CHAMPIONSHIP_TABS, type ChampionshipTab } from '../../lib/championship-tab/championship-tab'
+import { IntentLink } from '@/components/ui/intent-link/intent-link'
+import { CHAMPIONSHIP_TABS, parseChampionshipTab } from '../../lib/championship-tab/championship-tab'
 import { championshipTabsStyles as styles } from './championship-tabs.styles'
 
-type ChampionshipTabsProps = { seasonId: string; activeTab: ChampionshipTab }
+export function ChampionshipTabs({ seasonId }: { seasonId: string }) {
+  const activeTab = parseChampionshipTab(useSearchParams().get(TAB_PARAMETER))
 
-export function ChampionshipTabs({ seasonId, activeTab }: ChampionshipTabsProps) {
   return (
     <nav aria-label="Seções do campeonato" className={styles.navigation}>
       {CHAMPIONSHIP_TABS.map((entry) => {
         const isActive = entry.tab === activeTab
 
         return (
-          <Link
+          <IntentLink
             key={entry.tab}
             href={routes.championship(seasonId, entry.tab)}
             scroll={false}
@@ -21,7 +24,7 @@ export function ChampionshipTabs({ seasonId, activeTab }: ChampionshipTabsProps)
             className={cn(styles.tab, isActive ? styles.tabActive : styles.tabIdle)}
           >
             {entry.label}
-          </Link>
+          </IntentLink>
         )
       })}
     </nav>

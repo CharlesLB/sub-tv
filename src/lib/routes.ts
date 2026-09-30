@@ -20,16 +20,18 @@ export const ENTITY_PARAMETER = 'entidade'
 export const PERIOD_PARAMETER = 'periodo'
 export const PAGE_PARAMETER = 'pagina'
 
+export const CHAMPIONSHIPS_PATH = '/campeonatos'
+export const SQUADS_PATH = '/elencos'
+
 export const routes = {
   home: () => '/' as const,
   login: () => '/entrar' as const,
-  championships: (year?: number) => withQuery('/campeonatos', { [SEASON_PARAMETER]: year }),
+  championships: (year?: number) => withQuery(CHAMPIONSHIPS_PATH, { [SEASON_PARAMETER]: year }),
   championship: (seasonId: string, tab?: string) => withQuery(`/campeonatos/${seasonId}` as const, { [TAB_PARAMETER]: tab }),
   newMatch: (seasonId: string, matchId?: string) => withQuery(`/campeonatos/${seasonId}/nova-partida` as const, { [MATCH_PARAMETER]: matchId }),
   live: (matchId: string) => `/ao-vivo/${matchId}` as const,
   squads: (query: { year?: number | undefined; category?: string | undefined; teamKey?: string | undefined; playerId?: string | undefined } = {}) =>
-    withQuery('/elencos', {
-      [SEASON_PARAMETER]: query.year,
+    withQuery(query.year === undefined ? SQUADS_PATH : (`${SQUADS_PATH}/${String(query.year)}` as const), {
       [CATEGORY_PARAMETER]: query.category,
       [TEAM_PARAMETER]: query.teamKey,
       [PLAYER_PARAMETER]: query.playerId,

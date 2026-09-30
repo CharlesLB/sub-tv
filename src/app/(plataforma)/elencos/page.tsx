@@ -1,62 +1,46 @@
 import type { Metadata } from 'next'
+import { redirect } from 'next/navigation'
 import { Suspense } from 'react'
-import { getCurrentUser } from '@/modules/auth'
-import { getChampionshipsOfYear, getSeasonYears, isCategory, resolveYear, toRibbonItems } from '@/modules/championships'
-import { ContextBar, type Crumb, SeasonRail, SeasonRailSkeleton } from '@/modules/platform'
-import { SquadsScreen, SquadsSkeleton } from '@/modules/players'
-import { getSeasonTeams } from '@/modules/teams'
+import { CATEGORY_PARAMETER, PLAYER_PARAMETER, routes, SEASON_PARAMETER, TEAM_PARAMETER } from '@/lib/routes'
+import { getSeasonYears, resolveYear } from '@/modules/championships'
+import { ContextBar, SeasonRailSkeleton } from '@/modules/platform'
+import { SQUADS_BASE_CRUMB_LABEL, SQUADS_TITLE, SquadsSeasonRedirect, SquadsSkeleton } from '@/modules/players'
 
-export const metadata: Metadata = { title: 'Elencos' }
+export const metadata: Metadata = { title: SQUADS_TITLE }
 
-const TITLE = 'Elencos'
-const BASE_CRUMB: Crumb = { label: 'Gestão da base' }
-
-type SquadsQuery = {
-  year: string | undefined
-  category: string | undefined
-  teamKey: string | undefined
-  playerId: string | undefined
-}
+type SquadsQuery = Record<string, string | string[] | undefined>
 
 const readParameter = (value: string | string[] | undefined): string | undefined => (typeof value === 'string' ? value : undefined)
 
-async function SquadsOverview({ query }: { query: SquadsQuery }) {
+const squadsFallback = (
+  <>
+    <ContextBar crumbs={[{ label: SQUADS_BASE_CRUMB_LABEL }]} title={SQUADS_TITLE} />
+    <SeasonRailSkeleton />
+    <SquadsSkeleton />
+  </>
+)
+
+async function SquadsEntry({ query }: { query: SquadsQuery }) {
   const years = await getSeasonYears()
-  const year = resolveYear(query.year, years)
-  const [championships, teams, user] = await Promise.all([getChampionshipsOfYear(year), getSeasonTeams(year), getCurrentUser()])
-  const categoryFilter = isCategory(query.category) ? query.category : undefined
-  const visibleTeams = categoryFilter ? teams.filter((team) => team.category === categoryFilter) : teams
-  const selectedTeam = teams.find((team) => team.key === query.teamKey) ?? visibleTeams[0] ?? null
+  const requestedYear = readParameter(query[SEASON_PARAMETER])
+  const selection = { category: readParameter(query[CATEGORY_PARAMETER]), teamKey: readParameter(query[TEAM_PARAMETER]), playerId: readParameter(query[PLAYER_PARAMETER]) }
+  const knownYears = years.map((seasonYear) => seasonYear.year)
+
+  if (knownYears.some((year) => String(year) === requestedYear)) redirect(routes.squads({ year: Number(requestedYear), ...selection }))
 
   return (
     <>
-      <ContextBar crumbs={[BASE_CRUMB, { label: String(year), separator: '·' }]} title={TITLE} category={selectedTeam?.category} detail={`Vínculos por clube e categoria · elenco ${year}`} />
-      <SeasonRail years={years} activeYear={year} championships={toRibbonItems(championships)} basePath="/elencos" />
-      <SquadsScreen year={year} teams={visibleTeams} categoryFilter={categoryFilter} selectedTeam={selectedTeam} canEdit={user !== null} requestedPlayerId={query.playerId} />
+      {squadsFallback}
+      <SquadsSeasonRedirect knownYears={knownYears} fallbackYear={resolveYear(undefined, years)} query={selection} />
     </>
   )
 }
 
-export default function SquadsPage({ searchParams }: PageProps<'/elencos'>) {
-  const fallback = (
-    <>
-      <ContextBar crumbs={[BASE_CRUMB]} title={TITLE} />
-      <SeasonRailSkeleton />
-      <SquadsSkeleton />
-    </>
-  )
-
+export default function SquadsEntryPage({ searchParams }: PageProps<'/elencos'>) {
   return (
-    <Suspense fallback={fallback}>
-      {searchParams.then((parameters) => (
-        <SquadsOverview
-          query={{
-            year: readParameter(parameters.temporada),
-            category: readParameter(parameters.cat),
-            teamKey: readParameter(parameters.time),
-            playerId: readParameter(parameters.atleta),
-          }}
-        />
+    <Suspense fallback={squadsFallback}>
+      {searchParams.then((query) => (
+        <SquadsEntry query={query} />
       ))}
     </Suspense>
   )

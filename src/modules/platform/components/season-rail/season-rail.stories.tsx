@@ -29,9 +29,9 @@ export const InsideChampionship: Story = {
 
 export const Squads: Story = {
   args: { basePath: '/elencos' },
-  parameters: { nextjs: { navigation: { pathname: '/elencos', query: { temporada: String(ACTIVE_YEAR_FIXTURE), cat: 'sub13' } } } },
+  parameters: { nextjs: { navigation: { pathname: `/elencos/${ACTIVE_YEAR_FIXTURE}`, query: { cat: 'sub13' } } } },
   play: async ({ canvasElement }) => {
-    await expect(within(canvasElement).getByRole('link', { name: '2025' })).toHaveAttribute('href', '/elencos?cat=sub13&temporada=2025')
+    await expect(within(canvasElement).getByRole('link', { name: '2025' })).toHaveAttribute('href', '/elencos/2025?cat=sub13')
   },
 }
 

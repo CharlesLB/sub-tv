@@ -1,16 +1,18 @@
 'use client'
 
-import type { Route } from 'next'
 import Link from 'next/link'
 import { usePathname, useSearchParams } from 'next/navigation'
-import { routes, SEASON_PARAMETER } from '@/lib/routes'
+import { routes, SEASON_PARAMETER, SQUADS_PATH } from '@/lib/routes'
 import { cn } from '@/lib/utils/cn'
 import { Icon } from '@/components/ui/icon/icon'
 import type { IconName } from '@/components/ui/icon/icon-paths'
+import { LinkPendingIndicator } from '@/components/ui/link-pending-indicator/link-pending-indicator'
 import { BrandLogo } from '../brand-logo/brand-logo'
 import { platformRailStyles as styles } from './platform-rail.styles'
 
 const LIVE_PATH_PREFIX = '/ao-vivo'
+
+type DestinationHref = ReturnType<typeof routes.championships> | ReturnType<typeof routes.squads> | ReturnType<typeof routes.history>
 
 type Destination = {
   name: string
@@ -18,7 +20,7 @@ type Destination = {
   title: string
   icon: IconName
   pathPrefix: string
-  href: (year: number | undefined) => Route
+  href: (year: number | undefined) => DestinationHref
 }
 
 const DESTINATIONS: readonly Destination[] = [
@@ -27,13 +29,22 @@ const DESTINATIONS: readonly Destination[] = [
   { name: 'Histórico', label: 'Histórico', title: 'Estatísticas de todas as temporadas', icon: 'queryStats', pathPrefix: '/historico', href: () => routes.history() },
 ]
 
+const SQUADS_SEASON_PREFIX = `${SQUADS_PATH}/`
+
+const toSeasonYear = (value: string | null | undefined): number | undefined => {
+  const year = Number(value)
+
+  return Number.isInteger(year) && year > 0 ? year : undefined
+}
+
+const seasonOfPath = (pathname: string): string | undefined => (pathname.startsWith(SQUADS_SEASON_PREFIX) ? pathname.slice(SQUADS_SEASON_PREFIX.length).split('/')[0] : undefined)
+
 type PlatformRailProps = { liveMatchId: string | null }
 
 export function PlatformRail({ liveMatchId }: PlatformRailProps) {
   const pathname = usePathname()
   const searchParams = useSearchParams()
-  const requestedYear = Number(searchParams.get(SEASON_PARAMETER))
-  const year = Number.isInteger(requestedYear) && requestedYear > 0 ? requestedYear : undefined
+  const year = toSeasonYear(searchParams.get(SEASON_PARAMETER) ?? seasonOfPath(pathname))
   const isOnLive = pathname.startsWith(LIVE_PATH_PREFIX)
 
   return (
@@ -56,6 +67,7 @@ export function PlatformRail({ liveMatchId }: PlatformRailProps) {
             >
               <Icon name={destination.icon} size={22} className={cn(styles.destinationIcon, isActive ? styles.destinationIconActive : styles.destinationIconIdle)} />
               <span className={cn(styles.destinationLabel, isActive ? styles.destinationLabelActive : styles.destinationLabelIdle)}>{destination.label}</span>
+              <LinkPendingIndicator />
             </Link>
           )
         })}
@@ -69,6 +81,7 @@ export function PlatformRail({ liveMatchId }: PlatformRailProps) {
         >
           <span className={styles.liveDot} />
           <span className={styles.liveLabel}>Ao vivo</span>
+          <LinkPendingIndicator />
         </Link>
       ) : null}
     </nav>

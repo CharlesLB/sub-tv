@@ -1,6 +1,6 @@
-import Link from 'next/link'
 import { routes } from '@/lib/routes'
 import { cn } from '@/lib/utils/cn'
+import { IntentLink } from '@/components/ui/intent-link/intent-link'
 import { CATEGORIES, type Category, categoryBackgroundClass, categoryLabel } from '@/modules/championships/client'
 import { categoryFilterStyles as styles } from './category-filter.styles'
 
@@ -26,7 +26,7 @@ export function CategoryFilter({ year, activeCategory, activeTeamKey }: Category
         const isActive = option.category === activeCategory
 
         return (
-          <Link
+          <IntentLink
             key={option.key}
             href={routes.squads({ year, category: option.category, teamKey: activeTeamKey ?? undefined })}
             scroll={false}
@@ -34,7 +34,7 @@ export function CategoryFilter({ year, activeCategory, activeTeamKey }: Category
             className={cn(styles.option, isActive ? cn(styles.optionActive, option.activeClass) : styles.optionIdle)}
           >
             {option.label}
-          </Link>
+          </IntentLink>
         )
       })}
     </nav>

@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { cn } from '@/lib/utils/cn'
 import { pluralize } from '@/lib/utils/pluralize/pluralize'
 import { Crest } from '@/components/ui/crest/crest'
+import { LinkPendingIndicator } from '@/components/ui/link-pending-indicator/link-pending-indicator'
 import { categoryLabel } from '@/modules/championships/client'
 import type { HistoryFilter } from '../../lib/history-filter/history-filter'
 import { historyHref } from '../../lib/history-href/history-href'
@@ -50,6 +51,7 @@ export function PeriodScorers({ scorers, filter }: PeriodScorersProps) {
                 <span className={styles.goals}>{scorer.goals}</span>
                 <span className={styles.seasonCount}>{pluralize(scorer.seasonCount, 'Temp.', 'Temps.')}</span>
                 <RowChevron />
+                <LinkPendingIndicator />
               </Link>
             )
           })}
