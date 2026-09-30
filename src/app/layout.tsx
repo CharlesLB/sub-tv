@@ -6,7 +6,6 @@ import './globals.css'
 export const metadata: Metadata = {
   title: { default: 'sub.tv', template: '%s · sub.tv' },
   description: 'Gestão e transmissão do futebol de base mineiro — Sub-13 e Sub-14.',
-  icons: { icon: '/icon.svg' },
   robots: { index: false, follow: false },
 }
 
