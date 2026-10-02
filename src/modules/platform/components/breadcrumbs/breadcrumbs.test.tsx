@@ -1,5 +1,5 @@
 import { render, screen, within } from '@testing-library/react'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { Breadcrumbs } from './breadcrumbs'
 import { championshipCrumbsFixture, dotSeparatedCrumbsFixture } from './breadcrumbs.fixtures'
 
@@ -30,5 +30,16 @@ describe('Breadcrumbs', () => {
     render(<Breadcrumbs crumbs={championshipCrumbsFixture} />)
 
     expect(screen.getByRole('link', { name: '2025' }).parentElement).toHaveStyle({ animationDelay: '50ms' })
+  })
+
+  it('renders two crumbs that share a destination without a duplicate key warning', () => {
+    const consoleError = vi.spyOn(console, 'error').mockImplementation(() => undefined)
+
+    render(
+      <Breadcrumbs crumbs={[{ label: 'Campeonatos', href: '/campeonatos?temporada=2026' }, { label: 'Mineiro Sub-14' }, { label: '2026', separator: '·', href: '/campeonatos?temporada=2026' }]} />,
+    )
+
+    expect(screen.getAllByRole('link', { name: /Campeonatos|2026/ })).toHaveLength(2)
+    expect(consoleError).not.toHaveBeenCalled()
   })
 })

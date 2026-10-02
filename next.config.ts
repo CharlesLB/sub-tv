@@ -31,6 +31,7 @@ const nextConfig: NextConfig = {
   cacheComponents: true,
   typedRoutes: true,
   reactCompiler: true,
+  partialPrefetching: true,
   poweredByHeader: false,
   serverExternalPackages: ['pg'],
   experimental: { staleTimes: { dynamic: VISITED_PAGE_REUSE_SECONDS } },

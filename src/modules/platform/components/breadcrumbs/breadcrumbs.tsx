@@ -13,7 +13,7 @@ export function Breadcrumbs({ crumbs }: BreadcrumbsProps) {
   return (
     <nav aria-label="Trilha de navegação" className={styles.trail}>
       {crumbs.map((crumb, index) => (
-        <span key={crumb.href ?? crumb.label} className={styles.crumb} style={{ animationDelay: `${index * CRUMB_DELAY_STEP_MS}ms` }}>
+        <span key={`${crumb.label} ${crumb.href ?? ''}`} className={styles.crumb} style={{ animationDelay: `${index * CRUMB_DELAY_STEP_MS}ms` }}>
           {index > 0 ? <span className={styles.separator}>{crumb.separator ?? '/'}</span> : null}
           {crumb.href ? (
             <Link href={crumb.href} className={styles.link}>

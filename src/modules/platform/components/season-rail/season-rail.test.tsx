@@ -47,6 +47,15 @@ describe('SeasonRail', () => {
     expect(screen.getByRole('link', { name: /Mineiro Sub-14/ })).toHaveAttribute('aria-current', 'page')
   })
 
+  it('renders the season panel and the year axis without a duplicate key warning', () => {
+    arrangeLocation('/campeonatos', 'temporada=2025')
+    const consoleError = vi.spyOn(console, 'error').mockImplementation(() => undefined)
+
+    render(<SeasonRail years={seasonYearsFixture} activeYear={ACTIVE_YEAR_FIXTURE} championships={championshipRibbonFixture} basePath="/campeonatos" />)
+
+    expect(consoleError).not.toHaveBeenCalled()
+  })
+
   it('links each year to the championships page without other parameters', () => {
     arrangeLocation('/campeonatos', 'temporada=2025&cat=sub13')
 

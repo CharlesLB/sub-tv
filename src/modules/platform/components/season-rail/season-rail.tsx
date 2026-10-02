@@ -12,6 +12,9 @@ import { SeasonPanel } from '../season-panel/season-panel'
 import { YearAxis } from '../year-axis/year-axis'
 import { seasonRailStyles as styles } from './season-rail.styles'
 
+const SEASON_PANEL_KEY_PREFIX = 'season-panel'
+const YEAR_AXIS_KEY_PREFIX = 'year-axis'
+
 const listIdentityOf = (championships: readonly ChampionshipRibbonItemVM[]): string => championships.map((championship) => championship.id).join()
 
 type SeasonRailProps = {
@@ -43,8 +46,8 @@ export function SeasonRail({ years, activeYear, championships, activeChampionshi
   return (
     <div className={styles.rail}>
       <div className={styles.seasonControls}>
-        <SeasonPanel key={activeYear} years={years} activeYear={activeYear} hrefForYear={hrefForYear} onSelectYear={rememberYear} />
-        <YearAxis key={activeYear} years={years} activeYear={activeYear} hrefForYear={hrefForYear} onSelectYear={rememberYear} />
+        <SeasonPanel key={`${SEASON_PANEL_KEY_PREFIX}-${activeYear}`} years={years} activeYear={activeYear} hrefForYear={hrefForYear} onSelectYear={rememberYear} />
+        <YearAxis key={`${YEAR_AXIS_KEY_PREFIX}-${activeYear}`} years={years} activeYear={activeYear} hrefForYear={hrefForYear} onSelectYear={rememberYear} />
       </div>
       <span className={styles.divider} />
       <ChampionshipRibbon key={listIdentityOf(championships)} championships={championships} activeChampionshipId={activeChampionshipId} />
