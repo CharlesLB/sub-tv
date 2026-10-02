@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { routes } from '@/lib/routes'
 import { cn } from '@/lib/utils/cn'
+import { LinkPendingIndicator } from '@/components/ui/link-pending-indicator/link-pending-indicator'
 import { staggeredRowOf } from '../../lib/staggered-row/staggered-row'
 import { formatChampionships, formatRatio } from '../../lib/stat-format/stat-format'
 import type { AthleteSeasonVM } from '../../types'
@@ -26,6 +27,7 @@ export function AthleteSeasonsTable({ seasons }: { seasons: AthleteSeasonVM[] })
               <span className={styles.average}>{formatRatio(season.goals, season.games, AVERAGE_DIGITS)}</span>
               <span className={styles.goals}>{season.goals}</span>
               <RowChevron />
+              <LinkPendingIndicator />
             </Link>
           )
         })}

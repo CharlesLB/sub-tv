@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { cn } from '@/lib/utils/cn'
 import { formatShortDateTime } from '@/lib/utils/format-date/format-date'
 import { Crest } from '@/components/ui/crest/crest'
+import { LinkPendingIndicator } from '@/components/ui/link-pending-indicator/link-pending-indicator'
 import { MATCH_CARD_ACTION, MATCH_SIDE, type MatchCardActionKind, matchCardActionOf, winnerOf } from '../../lib/match-card-action/match-card-action'
 import { MATCH_STATUS } from '../../lib/match-status/match-status'
 import type { MatchCardVM, TeamBadgeVM } from '../../types'
@@ -52,6 +53,7 @@ export function RoundMatchCard({ match, seasonId }: RoundMatchCardProps) {
       <TeamLine team={match.away} score={match.awayScore} isDimmed={winner === MATCH_SIDE.HOME} />
       <Link href={action.href} className={cn(styles.action, action.isPrimary ? styles.actionPrimary : styles.actionSecondary)}>
         {ACTION_LABEL[action.kind]}
+        <LinkPendingIndicator />
       </Link>
     </div>
   )

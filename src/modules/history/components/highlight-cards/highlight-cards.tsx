@@ -1,6 +1,6 @@
-import Link from 'next/link'
 import * as R from 'remeda'
 import { Crest } from '@/components/ui/crest/crest'
+import { IntentLink } from '@/components/ui/intent-link/intent-link'
 import { categoryLabel, type TeamBadgeVM } from '@/modules/championships/client'
 import type { HistoryFilter } from '../../lib/history-filter/history-filter'
 import { type HistoryTarget, historyHref } from '../../lib/history-href/history-href'
@@ -64,14 +64,14 @@ export function HighlightCards({ overview, filter }: HighlightCardsProps) {
   return (
     <div className={styles.grid}>
       {highlights.map((highlight, index) => (
-        <Link key={highlight.label} href={historyHref(highlight.target, filter)} className={styles.card} style={{ animationDelay: `${index * HIGHLIGHT_DELAY_STEP_MS}ms` }}>
+        <IntentLink key={highlight.label} href={historyHref(highlight.target, filter)} className={styles.card} style={{ animationDelay: `${index * HIGHLIGHT_DELAY_STEP_MS}ms` }}>
           <span className={styles.label}>{highlight.label}</span>
           <span className={styles.value}>{highlight.value}</span>
           <span className={styles.identity}>
             <Crest color={highlight.team.color} imagePath={highlight.team.crestPath} width={HIGHLIGHT_CREST_WIDTH} />
             <span className={styles.name}>{highlight.name}</span>
           </span>
-        </Link>
+        </IntentLink>
       ))}
     </div>
   )

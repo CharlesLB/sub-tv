@@ -3,6 +3,7 @@ import type { ReactNode } from 'react'
 import { routes } from '@/lib/routes'
 import { cn } from '@/lib/utils/cn'
 import { Crest } from '@/components/ui/crest/crest'
+import { LinkPendingIndicator } from '@/components/ui/link-pending-indicator/link-pending-indicator'
 import { type Category, CategoryTag, categoryBorderClass, categoryLabel, categoryTextClass, otherCategory } from '@/modules/championships/client'
 import type { SquadPlayerVM, TeamSquadVM } from '../../types'
 import { CuriosityList } from '../curiosity-list/curiosity-list'
@@ -61,6 +62,7 @@ export function PlayerSheet({ player, squad, categoryFilter, canEdit, lastChange
       {player.isInOtherCategory ? (
         <Link href={siblingHref} scroll={false} className={cn(styles.siblingLink, categoryBorderClass[siblingCategory], categoryTextClass[siblingCategory])}>
           Ver este atleta no {categoryLabel[siblingCategory]}
+          <LinkPendingIndicator />
         </Link>
       ) : null}
       {lastChange}

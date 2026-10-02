@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation'
 import { useReducer, useState, useSyncExternalStore, useTransition } from 'react'
 import { routes } from '@/lib/routes'
+import { NavigationProgress } from '@/components/ui/navigation-progress/navigation-progress'
 import { type Category, categoryLabel, otherCategory } from '@/modules/championships/client'
 import { createBroadcastMatch } from '../../actions/match-setup-actions'
 import { STARTERS_PER_TEAM } from '../../lib/default-starters/default-starters'
@@ -57,6 +58,7 @@ export function NewMatchWizard({ setup, presentation }: NewMatchWizardProps) {
   const [state, dispatch] = useReducer(wizardReducer, { setup, defaultLineupView: DEFAULT_LINEUP_VIEW[presentation] }, createInitialWizardState)
   const [failureMessage, setFailureMessage] = useState<string | null>(null)
   const [isSubmitting, startSubmitting] = useTransition()
+  const [isLeaving, startLeaving] = useTransition()
 
   const { championship } = setup
   const context: WizardContext = { setup, today, categoryLabel: categoryLabel[championship.category] }
@@ -68,7 +70,7 @@ export function NewMatchWizard({ setup, presentation }: NewMatchWizardProps) {
     { side: SIDE.AWAY, team: findTeam(setup, state.awayTeamId), starterIds: state.awayStarterIds },
   ].flatMap((entry) => (entry.team ? [{ side: entry.side, team: entry.team, starterIds: entry.starterIds, positions: starterPositionsOf(state, setup, entry.side) }] : []))
 
-  const leave = () => (presentation === 'sheet' ? router.back() : router.push(routes.championship(championship.id)))
+  const leave = () => (presentation === 'sheet' ? router.back() : startLeaving(() => router.push(routes.championship(championship.id))))
   const goBack = () => (state.step === WIZARD_STEP.INFORMATION ? leave() : dispatch({ type: 'step/returned' }))
   const goNext = () => (isReady ? dispatch({ type: 'step/advanced' }) : undefined)
 
@@ -130,6 +132,7 @@ export function NewMatchWizard({ setup, presentation }: NewMatchWizardProps) {
         onSubmit={submit}
       />
       {failureMessage ? <WizardToast key={failureMessage} message={failureMessage} onClose={() => setFailureMessage(null)} /> : null}
+      <NavigationProgress isActive={isLeaving} />
     </div>
   )
 }

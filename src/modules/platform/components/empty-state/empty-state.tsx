@@ -1,5 +1,6 @@
 import type { Route } from 'next'
 import Link from 'next/link'
+import { LinkPendingIndicator } from '@/components/ui/link-pending-indicator/link-pending-indicator'
 import { emptyStateStyles as styles } from './empty-state.styles'
 
 type EmptyStateProps = {
@@ -18,6 +19,7 @@ export function EmptyState({ title, description, action }: EmptyStateProps) {
         {action ? (
           <Link href={action.href} className={styles.action}>
             {action.label}
+            <LinkPendingIndicator />
           </Link>
         ) : null}
       </div>

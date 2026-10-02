@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { routes } from '@/lib/routes'
 import { cn } from '@/lib/utils/cn'
+import { LinkPendingIndicator } from '@/components/ui/link-pending-indicator/link-pending-indicator'
 import { FORM_SQUARE_SIZE, FormSquares } from '@/modules/championships/client'
 import { staggeredRowOf } from '../../lib/staggered-row/staggered-row'
 import { formatChampionships } from '../../lib/stat-format/stat-format'
@@ -28,6 +29,7 @@ export function TeamCampaign({ seasons }: { seasons: TeamSeasonVM[] }) {
               <span className={styles.record}>{recordLine(season)}</span>
               <span className={styles.points}>{`${season.points} PTS`}</span>
               <RowChevron />
+              <LinkPendingIndicator />
             </Link>
           )
         })}

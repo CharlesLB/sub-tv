@@ -1,5 +1,5 @@
-import Link from 'next/link'
 import { cn } from '@/lib/utils/cn'
+import { IntentLink } from '@/components/ui/intent-link/intent-link'
 import { CATEGORIES, categoryLabel } from '@/modules/championships/client'
 import { type HistoryFilter, toggleSeasonYear } from '../../lib/history-filter/history-filter'
 import { type HistoryTarget, historyHref } from '../../lib/history-href/history-href'
@@ -32,14 +32,14 @@ export function HistoryFilters({ filter, availableYears, target }: HistoryFilter
         <span className={styles.filterLabel}>Categoria</span>
         <div className={styles.categoryChips}>
           {categoryChips.map((chip) => (
-            <Link
+            <IntentLink
               key={chip.key}
               href={historyHref(OVERVIEW_TARGET, { category: chip.category, years: filter.years })}
               aria-current={chip.category === filter.category ? 'true' : undefined}
               className={cn(styles.categoryChip, chip.className)}
             >
               {chip.label}
-            </Link>
+            </IntentLink>
           ))}
         </div>
       </div>
@@ -47,14 +47,14 @@ export function HistoryFilters({ filter, availableYears, target }: HistoryFilter
         <span className={cn(styles.filterLabel, styles.seasonLabel)}>Temporadas</span>
         <div className={styles.seasonChips}>
           {seasonChips.map((chip) => (
-            <Link
+            <IntentLink
               key={chip.key}
               href={historyHref(target, { category: filter.category, years: chip.years })}
               aria-current={chip.isActive ? 'true' : undefined}
               className={cn(styles.seasonChip, chip.isActive ? styles.seasonChipActive : styles.seasonChipIdle)}
             >
               {chip.label}
-            </Link>
+            </IntentLink>
           ))}
         </div>
       </div>

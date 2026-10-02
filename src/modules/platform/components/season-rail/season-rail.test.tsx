@@ -56,11 +56,11 @@ describe('SeasonRail', () => {
   })
 
   it('keeps the category of the address in the year links of the squads page', () => {
-    arrangeLocation('/elencos', 'temporada=2025&cat=sub13&time=cru')
+    arrangeLocation('/elencos/2025', 'cat=sub13&time=cru')
 
     render(<SeasonRail years={seasonYearsFixture} activeYear={ACTIVE_YEAR_FIXTURE} championships={championshipRibbonFixture} basePath="/elencos" />)
 
-    expect(screen.getByRole('link', { name: '2024' })).toHaveAttribute('href', '/elencos?cat=sub13&temporada=2024')
+    expect(screen.getByRole('link', { name: '2024' })).toHaveAttribute('href', '/elencos/2024?cat=sub13')
   })
 
   it('opens the remembered season when the address has no season', () => {

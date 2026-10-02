@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { routes } from '@/lib/routes'
 import { Icon } from '@/components/ui/icon/icon'
+import { LinkPendingIndicator } from '@/components/ui/link-pending-indicator/link-pending-indicator'
 import { HEXAGON_MARK_SIZE, HexagonMark } from '../hexagon-mark/hexagon-mark'
 import { liveEmptyStateStyles as styles } from './live-empty-state.styles'
 
@@ -18,6 +19,7 @@ export function LiveEmptyState({ seasonId }: LiveEmptyStateProps) {
         <Link href={routes.newMatch(seasonId)} className={styles.newMatchLink}>
           <Icon name="add" size={16} />
           Nova partida
+          <LinkPendingIndicator />
         </Link>
       </div>
     </div>

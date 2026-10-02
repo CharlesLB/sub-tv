@@ -28,8 +28,17 @@ describe('PlatformRail', () => {
     render(<PlatformRail liveMatchId={null} />)
 
     expect(screen.getByRole('link', { name: 'Campeonatos' })).toHaveAttribute('href', '/campeonatos?temporada=2025')
-    expect(screen.getByRole('link', { name: 'Elencos' })).toHaveAttribute('href', '/elencos?temporada=2025')
+    expect(screen.getByRole('link', { name: 'Elencos' })).toHaveAttribute('href', '/elencos/2025')
     expect(screen.getByRole('link', { name: 'Histórico' })).toHaveAttribute('href', '/historico')
+  })
+
+  it('carries the season in the squads path to championships', () => {
+    arrangeLocation('/elencos/2024', 'time=sub14-abc')
+
+    render(<PlatformRail liveMatchId={null} />)
+
+    expect(screen.getByRole('link', { name: 'Campeonatos' })).toHaveAttribute('href', '/campeonatos?temporada=2024')
+    expect(screen.getByRole('link', { name: 'Elencos' })).toHaveAttribute('href', '/elencos/2024')
   })
 
   it('ignores a season in the address that is not a positive whole number', () => {

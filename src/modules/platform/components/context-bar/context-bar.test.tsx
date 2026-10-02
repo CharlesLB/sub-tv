@@ -40,4 +40,14 @@ describe('ContextBar', () => {
     expect(screen.getByText('Fase de grupos')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Nova partida' })).toBeInTheDocument()
   })
+
+  it('shows a category tag chosen on the client in place of a fixed category', () => {
+    render(
+      <Suspense>
+        <ContextBar crumbs={championshipCrumbsFixture} title="Elencos" categoryTag={<span>SUB-13</span>} />
+      </Suspense>,
+    )
+
+    expect(screen.getByText('SUB-13')).toBeInTheDocument()
+  })
 })

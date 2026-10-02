@@ -1,16 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite'
-import { expect, mocked, within } from 'storybook/test'
-import { CATEGORY } from '@/modules/championships/client'
-import { seasonTeamFixture, seasonTeamsFixture } from '@/modules/teams/components/team-list-item/team-list-item.fixtures'
-import { getTeamSquad } from '../../data/get-team-squad'
-import { teamSquadFixture } from '../squad-header/squad-header.fixtures'
+import { expect, within } from 'storybook/test'
+import { seasonTeamsFixture } from '@/modules/teams/components/team-list-item/team-list-item.fixtures'
+import { SquadWorkspaceSkeleton } from '../squad-workspace/squad-workspace.skeleton'
 import { SquadsScreen } from './squads-screen'
 import { SquadsSkeleton } from './squads-screen.skeleton'
 
 const meta = {
   title: 'Players/SquadsScreen',
   component: SquadsScreen,
-  args: { year: 2025, teams: seasonTeamsFixture, categoryFilter: undefined, selectedTeam: seasonTeamFixture, canEdit: false, requestedPlayerId: undefined },
+  args: { year: 2025, teams: seasonTeamsFixture, children: <SquadWorkspaceSkeleton /> },
   parameters: { layout: 'fullscreen' },
   decorators: [
     (Story) => (
@@ -19,32 +17,15 @@ const meta = {
       </div>
     ),
   ],
-  beforeEach: () => {
-    mocked(getTeamSquad).mockResolvedValue(teamSquadFixture)
-  },
 } satisfies Meta<typeof SquadsScreen>
 
 export default meta
 
 type Story = StoryObj<typeof meta>
 
-export const SelectedTeam: Story = {
+export const LoadingSquad: Story = {
   play: async ({ canvasElement }) => {
-    await expect(await within(canvasElement).findByRole('region', { name: 'Elenco' })).toBeInTheDocument()
-  },
-}
-
-export const WithoutSelectedTeam: Story = {
-  args: { selectedTeam: null },
-  play: async ({ canvasElement }) => {
-    await expect(await within(canvasElement).findByRole('heading', { name: 'Nenhum elenco em 2025 ainda' })).toBeInTheDocument()
-  },
-}
-
-export const NoTeamInCategory: Story = {
-  args: { teams: [], categoryFilter: CATEGORY.SUB13, selectedTeam: null },
-  play: async ({ canvasElement }) => {
-    await expect(await within(canvasElement).findByRole('heading', { name: 'Nenhum time SUB-13 em 2025' })).toBeInTheDocument()
+    await expect(within(canvasElement).getByRole('complementary', { name: 'Times' })).toBeInTheDocument()
   },
 }
 

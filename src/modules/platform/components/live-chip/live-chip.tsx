@@ -4,7 +4,9 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { routes } from '@/lib/routes'
 import { cn } from '@/lib/utils/cn'
+import { FormPendingIndicator } from '@/components/ui/form-pending-indicator/form-pending-indicator'
 import { Icon } from '@/components/ui/icon/icon'
+import { LinkPendingIndicator } from '@/components/ui/link-pending-indicator/link-pending-indicator'
 import { liveChipStyles as styles } from './live-chip.styles'
 
 type LiveChipProps = {
@@ -22,11 +24,13 @@ export function LiveChip({ matchId, matchup, closeBroadcast }: LiveChipProps) {
       <Link href={routes.live(matchId)} title="Voltar à transmissão" className={cn(styles.link, isOnLive ? styles.linkOnLive : styles.linkElsewhere)}>
         <span className={styles.liveDot} />
         <span className={styles.matchup}>{matchup}</span>
+        <LinkPendingIndicator />
       </Link>
       <form action={closeBroadcast} className={styles.closeForm}>
         <button type="submit" title="Fechar transmissão" aria-label="Fechar transmissão" className={styles.closeButton}>
           <Icon name="close" size={17} />
         </button>
+        <FormPendingIndicator />
       </form>
     </>
   )
