@@ -1,13 +1,16 @@
 import { fireEvent, render, screen } from '@testing-library/react'
-import Link, { type LinkProps } from 'next/link'
+import Link from 'next/link'
+import type { AnchorHTMLAttributes } from 'react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { IntentLink } from './intent-link'
 
-vi.mock(import('next/link'), async (importOriginal) => ({
+type LinkDoubleProps = AnchorHTMLAttributes<HTMLAnchorElement> & { href: string; prefetch?: boolean | null }
+
+vi.mock('next/link', async (importOriginal) => ({
   ...(await importOriginal()),
-  default: vi.fn(function LinkDouble({ href, prefetch, children, ...anchorProps }: LinkProps<string>) {
+  default: vi.fn(function LinkDouble({ href, prefetch, children, ...anchorProps }: LinkDoubleProps) {
     return (
-      <a href={String(href)} data-prefetch={String(prefetch)} {...anchorProps}>
+      <a href={href} data-prefetch={String(prefetch)} {...anchorProps}>
         {children}
       </a>
     )
