@@ -1,67 +1,83 @@
 # sub.tv
 
-Ferramenta interna de gestão e transmissão do futebol de base mineiro (Sub-13 e Sub-14): campeonatos por temporada, elencos por clube e categoria, histórico estatístico desde 2017, criação de partida e tela de narração ao vivo. Os dados vêm da Federação Mineira de Futebol (tabelas, classificações, artilharia e súmulas em PDF).
+**O futebol de base mineiro, do primeiro apito ao histórico inteiro.**
 
-Stack: Next.js 16.3 (App Router, Cache Components, Turbopack), React 19, TypeScript estrito, Tailwind CSS v4, Drizzle ORM + Postgres (Neon em produção, PGlite no desenvolvimento), Zod, Vitest e Playwright.
+Toda a Sub-13 e a Sub-14 de Minas Gerais num só lugar: tabela, elencos, artilharia, súmulas e quase dez temporadas de números, prontos para quem narra, comenta ou só acompanha. E quando a bola rola, a tela ao vivo coloca o campo, o placar e os 22 jogadores na sua frente.
 
-## Rodando localmente
+![Tela ao vivo do sub.tv: placar, faixa de eventos e campo tático com os 22 titulares e os bancos](docs/screenshots/live.png)
 
-Pré-requisitos: Node 24+ e pnpm 10.
+---
 
-```bash
-pnpm install
-cp .env.example .env.local            # ajuste SESSION_SECRET (openssl rand -hex 32)
-pnpm db:local                          # Postgres local (PGlite) em localhost:5432, dados em .data/pglite
-pnpm db:migrate                        # em outro terminal
-pnpm fmf:import                        # carga histórica completa da FMF (≈1 h na primeira vez)
-pnpm users:create "Rafaela Torres" "senha"  # cria (ou redefine a senha de) um usuário
-pnpm dev                               # http://localhost:3000
-```
+## Por que sub.tv
 
-A carga grava tudo o que baixa em `.data/raw/fmf/` (HTML das competições e PDFs das súmulas) antes de processar. Rodadas seguintes reaproveitam os arquivos: `pnpm fmf:import --only-load` reprocessa sem acessar a FMF; `--edition=<id>` limita a uma edição; `--refresh` baixa de novo.
+O futebol de base tem história, mas ela está espalhada em tabelas, PDFs de súmula e anotações de quem estava no jogo. Na hora da transmissão, ninguém tem tempo de procurar. O sub.tv junta tudo isso e deixa a informação a um clique, para que a narração fale dos atletas pelo nome, pelo número e pelo que eles já fizeram.
 
-## Deploy na Vercel
+## O que você encontra
 
-1. Crie o banco: na Vercel, **Storage → Marketplace → Neon (Postgres)** e conecte ao projeto. Isso cria `DATABASE_URL` nos ambientes.
-2. Em **Settings → Environment Variables**, adicione `SESSION_SECRET` e `CRON_SECRET` (64 caracteres hex cada; `openssl rand -hex 32`). A Vercel envia o `CRON_SECRET` automaticamente na chamada diária de `/api/cron/fmf-sync` (configurada em `vercel.json`, 06:00 de Brasília), que busca jogos e súmulas novos das edições em andamento.
-3. Aplique o schema e carregue os dados no Neon a partir da sua máquina, usando a URL de conexão do Neon:
+### Campeonatos da temporada
 
-   ```bash
-   DATABASE_URL="postgres://…neon.tech/…?sslmode=require" pnpm db:migrate
-   DATABASE_URL="postgres://…neon.tech/…?sslmode=require" pnpm fmf:import --only-load
-   DATABASE_URL="postgres://…neon.tech/…?sslmode=require" pnpm users:create "Rafaela Torres" "<senha>"
-   ```
+Cada campeonato com classificação atualizada, artilharia e todas as partidas, com placar, rodada, data e local. Troque de temporada num clique e veja como estava a tabela em qualquer ano.
 
-   (`--only-load` usa os arquivos já baixados em `.data/raw/fmf/`; sem eles, rode sem a flag.)
+![Lista de campeonatos de 2026, agrupados por categoria, com o top 3 de cada tabela](docs/screenshots/championships.png)
 
-4. Faça o deploy (`vercel --prod` ou push no repositório conectado). O build não precisa de acesso à FMF.
+| Classificação                                                     | Estatísticas                                                    |
+| ----------------------------------------------------------------- | --------------------------------------------------------------- |
+| ![Classificação de um campeonato](docs/screenshots/standings.png) | ![Artilharia de um campeonato](docs/screenshots/statistics.png) |
 
-## Scripts
+![Partidas de um campeonato com placar, rodada, data e local](docs/screenshots/matches.png)
 
-| Comando                                                                   | O que faz                                                                   |
-| ------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
-| `pnpm dev`                                                                | Servidor de desenvolvimento                                                 |
-| `pnpm build` / `pnpm start`                                               | Build e servidor de produção                                                |
-| `pnpm check`                                                              | `typecheck` + `lint` + `test`                                               |
-| `pnpm test`                                                               | Testes unitários (Vitest)                                                   |
-| `pnpm e2e`                                                                | Testes de ponta a ponta (Playwright)                                        |
-| `pnpm db:generate`                                                        | Gera migração a partir de `src/lib/db/schema.ts`                            |
-| `pnpm db:migrate`                                                         | Aplica as migrações em `DATABASE_URL`                                       |
-| `pnpm fmf:import`                                                         | Carga/recarga dos dados da FMF (idempotente)                                |
-| `pnpm fmf:sync`                                                           | Sincronização incremental das edições em andamento (a mesma do cron diário) |
-| `pnpm users:create "<usuário>" "<senha>"`                                 | Cria um usuário ou redefine a senha (nome sem diferenciar maiúsculas)       |
-| `pnpm screenshot <rota> <arquivo.png> <claro\|escuro> <largura> <altura>` | Captura de tela autenticada (`SCREENSHOT_USERNAME`/`SCREENSHOT_PASSWORD`)   |
+### Elencos de todos os clubes
 
-## Organização
+Clube por clube, categoria por categoria: número, nome, posição, jogos, gols e cartões de cada atleta. Busque por nome ou número e chegue no jogador em segundos.
 
-- `src/app/` — rotas finas (`/campeonatos`, `/campeonatos/[id]`, `/campeonatos/[id]/nova-partida` com modal interceptado, `/ao-vivo/[partidaId]`, `/elencos`, `/historico`, `/historico/times/[timeId]`, `/historico/atletas/[atletaId]`, `/entrar`).
-- `src/modules/` — domínio: `championships`, `teams`, `players`, `matches`, `live`, `history`, `platform` (shell), `auth`.
-- `src/lib/` — infraestrutura: banco, sessão, tags de cache, rotas tipadas, utilitários.
-- `scripts/fmf-import/` — importador da FMF.
-- `spec/` — handoff de design e especificações.
+![Elencos: lista de times, tabela de atletas e ficha do jogador](docs/screenshots/squads.png)
 
-Regras de código: `.claude/rules/` (ver `AGENTS.md`).
+### Histórico desde 2017
 
-## Dados e privacidade
+Gols por jogo, maiores artilheiros, quem mais jogou, aproveitamento de cada clube e campanha temporada a temporada. Cada time e cada atleta tem sua própria página, com gráficos e a trajetória completa.
 
-Os atletas são menores de idade. A consulta (campeonatos, elencos, histórico) é aberta; criar partida, narrar ao vivo, editar elencos, criar campeonato, ver o registro de alterações e gerenciar usuários exigem usuário e senha (senhas guardadas com bcrypt; usuários em `/usuarios`). Toda alteração — ficha de jogador, curiosidades, criação de partida, eventos e relógio ao vivo, entradas e saídas — é gravada na tabela `audit_log` com o usuário que a fez; o importador não guarda data de nascimento nem publica o ID CBF. Campos editoriais (apelido de narração, posição, pé, curiosidades, sigla e cor do clube) são da equipe e nunca são sobrescritos pela carga.
+![Estatísticas gerais: campeonatos, partidas, gols, destaques e classificação acumulada](docs/screenshots/history.png)
+
+| Página do time                                                           | Página do atleta                                                              |
+| ------------------------------------------------------------------------ | ----------------------------------------------------------------------------- |
+| ![Histórico de um time por temporada](docs/screenshots/history-team.png) | ![Histórico de um atleta por temporada](docs/screenshots/history-athlete.png) |
+
+### Tela ao vivo
+
+Monte a partida em quatro passos (informações, times, escalações e revisão) e vá direto para a transmissão. O campo tático mostra os 22 titulares e os bancos; o placar, o relógio e a faixa de eventos (gols, cartões, substituições) ficam sempre à vista. Clique num jogador e o que você precisa saber sobre ele está ali.
+
+![Criação de partida na etapa de escalações, com os titulares marcados de cada time](docs/screenshots/new-match.png)
+
+### Curiosidades da equipe
+
+Apelido de narração, posição, pé preferido e aquelas histórias que só quem acompanha a base sabe. Tudo o que a equipe cadastra fica guardado e nunca é apagado pela atualização automática.
+
+## Sempre em dia
+
+Os dados vêm da Federação Mineira de Futebol e são atualizados sozinhos todos os dias, às 6 h da manhã: jogos novos, resultados e súmulas das competições em andamento entram sem ninguém precisar digitar nada.
+
+## Feito para usar de verdade
+
+- **Aberto para consulta.** Campeonatos, elencos e histórico podem ser vistos por qualquer pessoa, sem cadastro.
+- **Protegido para editar.** Criar partida, narrar ao vivo e alterar elencos exige login, e cada mudança fica registrada com o nome de quem a fez.
+- **Claro ou escuro.** Tema claro para o dia a dia e escuro para a cabine de transmissão.
+- **Do monitor ao celular.** A mesma ferramenta funciona na mesa de transmissão e no bolso, na beira do campo.
+- **Rápido.** As páginas abrem quase instantaneamente e a tela ao vivo responde no mesmo instante do clique.
+
+| Tema claro                                                     | Tema escuro                                               |
+| -------------------------------------------------------------- | --------------------------------------------------------- |
+| ![Tela ao vivo no tema claro](docs/screenshots/live-light.png) | ![Tela ao vivo no tema escuro](docs/screenshots/live.png) |
+
+<p align="center">
+  <img src="docs/screenshots/mobile-championships.png" alt="Campeonatos no celular" width="260">
+  &nbsp;&nbsp;
+  <img src="docs/screenshots/mobile-history.png" alt="Histórico no celular, tema escuro" width="260">
+</p>
+
+## Cuidado com quem está em campo
+
+Os atletas são menores de idade, e o sub.tv foi pensado com isso em mente: não guarda data de nascimento, não publica documentos e mostra só o que interessa ao jogo.
+
+---
+
+Quer rodar o projeto, contribuir ou fazer o deploy? Veja [DEVELOPMENT.md](DEVELOPMENT.md).
