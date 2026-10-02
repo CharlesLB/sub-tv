@@ -5,6 +5,7 @@ import { type FormEvent, useActionState, useState } from 'react'
 import { routes } from '@/lib/routes'
 import { cn } from '@/lib/utils/cn'
 import { pluralize } from '@/lib/utils/pluralize/pluralize'
+import { NavigationProgress } from '@/components/ui/navigation-progress/navigation-progress'
 import { type CreateChampionshipResult, createChampionship } from '../../actions/championship-actions'
 import { CATEGORIES, type Category, categoryBackgroundClass, categoryBorderClass, categoryLabel } from '../../lib/categories/categories'
 import { showFlashMessage } from '../../lib/flash-message/flash-message'
@@ -40,10 +41,13 @@ export function NewChampionshipPanel({ initialCategory, defaultYear, clubs, onCl
     showFlashMessage(`Campeonato criado · ${categoryLabel[category]}`)
     router.push(routes.championship(result.data.seasonId))
 
-    return null
+    return result
   }
 
   const [state, formAction, isPending] = useActionState(submitChampionship, null)
+  const isOpeningChampionship = state?.ok === true
+  const isBusy = isPending || isOpeningChampionship
+  const submitLabel = isOpeningChampionship ? 'Abrindo…' : isPending ? 'Criando…' : 'Criar campeonato'
   const failure = state?.ok === false ? (Object.values(state.fieldErrors ?? {})[0]?.[0] ?? state.error) : null
 
   const blockIncomplete = (event: FormEvent<HTMLFormElement>) => {
@@ -117,12 +121,8 @@ export function NewChampionshipPanel({ initialCategory, defaultYear, clubs, onCl
         </p>
       ) : null}
       <div className={styles.actions}>
-        <button
-          type="submit"
-          disabled={isPending}
-          className={cn(styles.submitButton, isComplete ? styles.submitButtonReady : styles.submitButtonIncomplete, isPending ? styles.submitButtonPending : null)}
-        >
-          {isPending ? 'Criando…' : 'Criar campeonato'}
+        <button type="submit" disabled={isBusy} className={cn(styles.submitButton, isComplete ? styles.submitButtonReady : styles.submitButtonIncomplete, isBusy ? styles.submitButtonPending : null)}>
+          {submitLabel}
         </button>
         <button type="button" onClick={onClose} className={styles.cancelButton}>
           Cancelar
@@ -130,6 +130,7 @@ export function NewChampionshipPanel({ initialCategory, defaultYear, clubs, onCl
         <span className={styles.categoryNotice}>A categoria define os times, elencos, partidas e a tabela do campeonato — e não muda depois de criado.</span>
       </div>
       {warning ? <FlashToast key={warning} message={warning} tone="warning" onClose={hideWarning} /> : null}
+      <NavigationProgress isActive={isBusy} />
     </form>
   )
 }

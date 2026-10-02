@@ -2,7 +2,7 @@ import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { routes } from '@/lib/routes'
-import { createChampionship } from '../../actions/championship-actions'
+import { type CreateChampionshipResult, createChampionship } from '../../actions/championship-actions'
 import { CATEGORY } from '../../lib/categories/categories'
 import { clearFlashMessage, readFlashMessage } from '../../lib/flash-message/flash-message'
 import { categoryClubsFixture, categoryClubsWithoutSub14Fixture } from '../club-picker/club-picker.fixtures'
@@ -138,13 +138,27 @@ describe('NewChampionshipPanel', () => {
   })
 
   it('disables the submit button while the championship is being created', async () => {
-    vi.mocked(createChampionship).mockReturnValue(new Promise(() => undefined))
+    const pendingCreation = Promise.withResolvers<CreateChampionshipResult>()
+    vi.mocked(createChampionship).mockReturnValue(pendingCreation.promise)
     renderPanel()
 
     await userEvent.type(screen.getByLabelText('Nome'), 'Copa do Vale')
     await userEvent.click(screen.getByRole('button', { name: 'Criar campeonato' }))
 
     expect(await screen.findByRole('button', { name: 'Criando…' })).toBeDisabled()
+    await act(async () => pendingCreation.resolve({ ok: false, error: 'Já existe um campeonato com esse nome.' }))
+  })
+
+  it('keeps the button busy and shows the loading bar while the new championship opens', async () => {
+    vi.mocked(createChampionship).mockResolvedValue({ ok: true, data: { seasonId: CREATED_SEASON_ID } })
+    renderPanel()
+
+    await userEvent.type(screen.getByLabelText('Nome'), 'Copa do Vale')
+    await userEvent.click(screen.getByRole('button', { name: 'Criar campeonato' }))
+
+    await waitFor(() => expect(navigation.push).toHaveBeenCalled())
+    expect(await screen.findByRole('button', { name: 'Abrindo…' })).toBeDisabled()
+    expect(screen.getByRole('progressbar', { name: 'Carregando página' })).toBeInTheDocument()
   })
 
   it('closes when cancel is clicked', async () => {

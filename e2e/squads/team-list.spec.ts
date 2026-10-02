@@ -71,3 +71,17 @@ test('an old squads address with the season in the query opens the same season',
   await expect(page).toHaveURL(/\/elencos\/2019\?cat=sub14/, SLOW_PAGE)
   await expect(page.getByText('Vínculos por clube e categoria · elenco 2019')).toBeVisible(SLOW_PAGE)
 })
+
+test('choosing a player shows the loading bar while the page refreshes', async ({ page, context }) => {
+  await page.goto('/elencos')
+  await expect(rosterRows(page).nth(1)).toBeVisible(SLOW_PAGE)
+  await page.waitForLoadState('networkidle')
+  const network = await context.newCDPSession(page)
+  await network.send('Network.enable')
+  await network.send('Network.emulateNetworkConditions', { offline: false, latency: 800, downloadThroughput: -1, uploadThroughput: -1 })
+
+  await rosterRows(page).nth(1).click()
+
+  await expect(page.getByRole('progressbar', { name: 'Carregando página' })).toBeVisible()
+  await expect(page.getByRole('progressbar', { name: 'Carregando página' })).toBeHidden(SLOW_PAGE)
+})

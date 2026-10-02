@@ -4,6 +4,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { type ReactNode, useState } from 'react'
 import { PLAYER_PARAMETER, routes } from '@/lib/routes'
 import { cn } from '@/lib/utils/cn'
+import { NavigationProgress } from '@/components/ui/navigation-progress/navigation-progress'
 import type { Category } from '@/modules/championships/client'
 import { EMPTY_SQUAD_MESSAGE } from '../../labels'
 import { matchesSquadSearch } from '../../lib/squad-roster/squad-roster'
@@ -27,6 +28,7 @@ export function SquadWorkspace({ squad, categoryFilter, canEdit, lastChange }: S
   const requestedPlayerId = searchParams.get(PLAYER_PARAMETER)
   const explicitPlayer = squad.players.find((player) => player.id === requestedPlayerId) ?? null
   const selectedPlayer = explicitPlayer ?? squad.players[0] ?? null
+  const isLoadingSelectedPlayer = selectedPlayer !== null && lastChange.playerId !== selectedPlayer.id
   const visiblePlayers = squad.players.filter((player) => matchesSquadSearch(player, searchText))
   const hrefFor = (playerId?: string) => routes.squads({ year: squad.year, category: categoryFilter, teamKey: squad.key, playerId })
 
@@ -59,6 +61,7 @@ export function SquadWorkspace({ squad, categoryFilter, canEdit, lastChange }: S
           </div>
         )}
       </aside>
+      <NavigationProgress isActive={isLoadingSelectedPlayer} />
     </>
   )
 }

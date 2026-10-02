@@ -55,6 +55,22 @@ describe('SquadWorkspace', () => {
     expect(screen.getByText('Última alteração: Marta')).toBeInTheDocument()
   })
 
+  it('shows the loading bar while the server data of the selected player has not arrived', () => {
+    withRequestedPlayer(secondSquadPlayerFixture.id)
+
+    render(<SquadWorkspace squad={teamSquadFixture} categoryFilter={undefined} canEdit={false} lastChange={{ playerId: squadPlayerFixture.id, content: null }} />)
+
+    expect(screen.getByRole('progressbar', { name: 'Carregando página' })).toBeInTheDocument()
+  })
+
+  it('hides the loading bar once the server data belongs to the selected player', () => {
+    withRequestedPlayer(secondSquadPlayerFixture.id)
+
+    render(<SquadWorkspace squad={teamSquadFixture} categoryFilter={undefined} canEdit={false} lastChange={{ playerId: secondSquadPlayerFixture.id, content: null }} />)
+
+    expect(screen.queryByRole('progressbar')).not.toBeInTheDocument()
+  })
+
   it('filters the roster by the typed search', async () => {
     withRequestedPlayer(null)
     render(<SquadWorkspace squad={teamSquadFixture} categoryFilter={undefined} canEdit={false} lastChange={NO_LAST_CHANGE} />)
