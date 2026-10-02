@@ -26,10 +26,10 @@ test('main navigation rail keeps the selected season when switching from champio
   await page.goto('/campeonatos?temporada=2019')
   const rail = page.getByRole('navigation', { name: 'Principal' })
 
-  await expect(rail.getByRole('link', { name: 'Elencos' })).toHaveAttribute('href', /temporada=2019/)
+  await expect(rail.getByRole('link', { name: 'Elencos' })).toHaveAttribute('href', '/elencos/2019')
   await rail.getByRole('link', { name: 'Elencos' }).click()
 
-  await expect(page).toHaveURL(/\/elencos\?temporada=2019/, SLOW_PAGE)
+  await expect(page).toHaveURL(/\/elencos\/2019/, SLOW_PAGE)
   await expect(page.getByRole('navigation', { name: 'Trilha de navegação' })).toContainText('2019')
 })
 

@@ -1,6 +1,8 @@
 import Form from 'next/form'
 import Link from 'next/link'
 import { ACTION_PARAMETER, ENTITY_PARAMETER, PERIOD_PARAMETER, routes, USER_PARAMETER } from '@/lib/routes'
+import { FormPendingIndicator } from '@/components/ui/form-pending-indicator/form-pending-indicator'
+import { LinkPendingIndicator } from '@/components/ui/link-pending-indicator/link-pending-indicator'
 import { AUDIT_PERIOD_LABEL, AUDIT_PERIODS, type AuditFilter } from '../../lib/audit-filter/audit-filter'
 import { AUDIT_ACTION_LABEL, AUDIT_ACTIONS, AUDIT_ENTITIES, AUDIT_ENTITY_LABEL } from '../../lib/audit-labels/audit-labels'
 import type { AuditUserOptionVM } from '../../types'
@@ -62,8 +64,10 @@ export function AuditFilters({ filter, users }: AuditFiltersProps) {
         </button>
         <Link href={routes.auditLog()} className={styles.clearLink}>
           Limpar
+          <LinkPendingIndicator />
         </Link>
       </div>
+      <FormPendingIndicator />
     </Form>
   )
 }

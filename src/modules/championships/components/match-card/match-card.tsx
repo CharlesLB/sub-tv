@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { cn } from '@/lib/utils/cn'
 import { formatTime, formatTitleDate } from '@/lib/utils/format-date/format-date'
 import { Crest } from '@/components/ui/crest/crest'
+import { LinkPendingIndicator } from '@/components/ui/link-pending-indicator/link-pending-indicator'
 import type { Category } from '../../lib/categories/categories'
 import { MATCH_CARD_ACTION, MATCH_SIDE, type MatchCardActionKind, type MatchSide, matchCardActionOf, winnerOf } from '../../lib/match-card-action/match-card-action'
 import { MATCH_STATUS, type MatchStatus } from '../../lib/match-status/match-status'
@@ -85,6 +86,7 @@ export function MatchCard({ match, seasonId, category }: MatchCardProps) {
         <span className={styles.venue}>{[match.venue, match.city].filter(Boolean).join(' · ') || 'Local a definir'}</span>
         <Link href={action.href} className={cn(styles.action, action.isPrimary ? styles.actionPrimary : styles.actionSecondary)}>
           {ACTION_LABEL[action.kind]}
+          <LinkPendingIndicator />
         </Link>
       </div>
     </article>

@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { routes } from '@/lib/routes'
+import { LinkPendingIndicator } from '@/components/ui/link-pending-indicator/link-pending-indicator'
 import { CHAMPIONSHIP_TAB } from '../../lib/championship-tab/championship-tab'
 import type { MatchCardVM } from '../../types'
 import { RoundMatchCard } from '../round-match-card/round-match-card'
@@ -35,11 +36,13 @@ export function RoundPanel({ seasonId, matches, currentRound, currentPhase }: Ro
           <span className={styles.emptyDescription}>A tabela só muda quando existem partidas com resultado nesta rodada.</span>
           <Link href={routes.newMatch(seasonId)} className={styles.createMatchLink}>
             Criar partida
+            <LinkPendingIndicator />
           </Link>
         </div>
       ) : null}
       <Link href={routes.championship(seasonId, CHAMPIONSHIP_TAB.MATCHES)} className={styles.allRoundsLink}>
         Ver todas as rodadas
+        <LinkPendingIndicator />
       </Link>
     </aside>
   )

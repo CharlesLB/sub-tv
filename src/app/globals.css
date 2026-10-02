@@ -181,6 +181,8 @@
   --animate-event-in: event-in 0.4s ease-out both;
   --animate-score-pulse: score-pulse 0.5s ease-out;
   --animate-crumb-in: crumb-in 0.26s var(--ease-out-soft) both;
+  --animate-navigation-progress: navigation-progress 8s cubic-bezier(0.1, 0.7, 0.2, 1) both;
+  --animate-navigation-progress-reveal: fade-in 0.2s ease 0.12s both;
 
   @keyframes fade-in {
     from {
@@ -292,6 +294,14 @@
     }
     100% {
       color: var(--tx);
+    }
+  }
+  @keyframes navigation-progress {
+    from {
+      transform: scaleX(0.06);
+    }
+    to {
+      transform: scaleX(0.92);
     }
   }
   @keyframes crumb-in {

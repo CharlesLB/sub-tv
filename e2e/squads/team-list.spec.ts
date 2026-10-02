@@ -48,6 +48,26 @@ test('squads of a past season are opened from the season rail', async ({ page })
   await page.getByRole('button', { name: 'Todas as temporadas' }).click()
   await page.getByRole('link', { name: /^2019/ }).click()
 
-  await expect(page).toHaveURL(/temporada=2019/, SLOW_PAGE)
+  await expect(page).toHaveURL(/\/elencos\/2019/, SLOW_PAGE)
+  await expect(page.getByText('Vínculos por clube e categoria · elenco 2019')).toBeVisible(SLOW_PAGE)
+})
+
+test('switching teams keeps the team list on screen and only reloads the squad', async ({ page }) => {
+  await page.goto('/elencos')
+  const teamList = page.getByRole('complementary', { name: 'Times' })
+  await expect(teamItems(page).nth(1)).toBeVisible(SLOW_PAGE)
+  await teamList.evaluate((element) => element.setAttribute('data-kept', 'true'))
+
+  await teamItems(page).nth(1).click()
+
+  await expect(page).toHaveURL(/time=/, SLOW_PAGE)
+  await expect(page.getByRole('region', { name: 'Elenco' })).toBeVisible(SLOW_PAGE)
+  await expect(page.getByRole('complementary', { name: 'Times' })).toHaveAttribute('data-kept', 'true')
+})
+
+test('an old squads address with the season in the query opens the same season', async ({ page }) => {
+  await page.goto('/elencos?temporada=2019&cat=sub14')
+
+  await expect(page).toHaveURL(/\/elencos\/2019\?cat=sub14/, SLOW_PAGE)
   await expect(page.getByText('Vínculos por clube e categoria · elenco 2019')).toBeVisible(SLOW_PAGE)
 })

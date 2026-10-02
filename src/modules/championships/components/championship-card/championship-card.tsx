@@ -1,9 +1,9 @@
-import Link from 'next/link'
 import { routes } from '@/lib/routes'
 import { cn } from '@/lib/utils/cn'
 import { formatShortDateTime } from '@/lib/utils/format-date/format-date'
 import { Crest } from '@/components/ui/crest/crest'
 import { Icon } from '@/components/ui/icon/icon'
+import { IntentLink } from '@/components/ui/intent-link/intent-link'
 import type { ChampionshipCardVM } from '../../types'
 import { CategoryTag } from '../category-tag/category-tag'
 import { championshipCardStyles as styles } from './championship-card.styles'
@@ -31,7 +31,7 @@ export function ChampionshipCard({ championship, index }: ChampionshipCardProps)
   const href = championship.liveMatch ? routes.live(championship.liveMatch.matchId) : routes.championship(championship.id)
 
   return (
-    <Link href={href} className={cn(styles.card, isLive ? styles.cardLive : styles.cardIdle)} style={{ animationDelay: `${index * CARD_DELAY_STEP_MS}ms` }}>
+    <IntentLink href={href} className={cn(styles.card, isLive ? styles.cardLive : styles.cardIdle)} style={{ animationDelay: `${index * CARD_DELAY_STEP_MS}ms` }}>
       <div className={styles.header}>
         <div className={styles.titleBlock}>
           <span className={styles.name}>{championship.name}</span>
@@ -63,6 +63,6 @@ export function ChampionshipCard({ championship, index }: ChampionshipCardProps)
         <span className={cn(styles.statusMeta, isLive ? styles.statusMetaLive : styles.statusMetaIdle)}>{status.meta}</span>
       </div>
       <span className={cn(styles.openLabel, isLive ? styles.openLabelLive : styles.openLabelIdle)}>{isLive ? 'Abrir transmissão' : 'Abrir campeonato'}</span>
-    </Link>
+    </IntentLink>
   )
 }

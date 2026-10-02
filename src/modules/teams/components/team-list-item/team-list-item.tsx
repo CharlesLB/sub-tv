@@ -1,7 +1,7 @@
-import Link from 'next/link'
 import { routes } from '@/lib/routes'
 import { cn } from '@/lib/utils/cn'
 import { Crest } from '@/components/ui/crest/crest'
+import { IntentLink } from '@/components/ui/intent-link/intent-link'
 import { type Category, CategoryTag, categoryBorderClass } from '@/modules/championships/client'
 import { ACTIVE_TEAM_ATTRIBUTE } from '../../lib/active-team/active-team'
 import type { SeasonTeamVM } from '../../types'
@@ -16,7 +16,7 @@ type TeamListItemProps = {
 
 export function TeamListItem({ team, year, categoryFilter, isActive }: TeamListItemProps) {
   return (
-    <Link
+    <IntentLink
       href={routes.squads({ year, category: categoryFilter, teamKey: team.key })}
       scroll={false}
       aria-current={isActive ? 'true' : undefined}
@@ -29,6 +29,6 @@ export function TeamListItem({ team, year, categoryFilter, isActive }: TeamListI
         <CategoryTag category={team.category} className={styles.categoryTag} />
       </span>
       <span className={styles.athleteCount}>{team.athleteCount}</span>
-    </Link>
+    </IntentLink>
   )
 }

@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { cn } from '@/lib/utils/cn'
+import { LinkPendingIndicator } from '@/components/ui/link-pending-indicator/link-pending-indicator'
 import type { HistoryFilter } from '../../lib/history-filter/history-filter'
 import { historyHref } from '../../lib/history-href/history-href'
 import { staggeredRowOf } from '../../lib/staggered-row/staggered-row'
@@ -40,6 +41,7 @@ export function TeamScorers({ scorers, color, filter }: TeamScorersProps) {
                   <span className={styles.bar} style={{ width: `${barWidthPercent(scorer.goals, topGoals)}%`, background: color }} />
                 </span>
                 <span className={styles.goals}>{scorer.goals}</span>
+                <LinkPendingIndicator />
               </Link>
             )
           })}

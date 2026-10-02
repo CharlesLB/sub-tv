@@ -1,5 +1,8 @@
+export { SeasonTeamList } from './components/season-team-list/season-team-list'
+export { SelectedTeamCategory } from './components/selected-team-category/selected-team-category'
 export { TeamList } from './components/team-list/team-list'
 export { TeamListSkeleton } from './components/team-list/team-list.skeleton'
 export { getSeasonTeams } from './data/get-season-teams'
+export { type SquadSelection, selectSquadTeam } from './lib/squad-selection/squad-selection'
 export { parseTeamKey, type TeamKey, toTeamKey } from './lib/team-key/team-key'
 export type { SeasonTeamVM } from './types'

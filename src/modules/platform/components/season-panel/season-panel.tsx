@@ -1,12 +1,12 @@
 'use client'
 
 import * as Popover from '@radix-ui/react-popover'
-import type { Route } from 'next'
-import Link from 'next/link'
 import { useId, useState } from 'react'
 import { cn } from '@/lib/utils/cn'
 import { Icon } from '@/components/ui/icon/icon'
+import { IntentLink } from '@/components/ui/intent-link/intent-link'
 import type { SeasonYearVM } from '@/modules/championships/client'
+import type { SeasonHref } from '../../lib/season-href/season-href'
 import { seasonPanelStyles as styles } from './season-panel.styles'
 
 const GRID_ITEM_DELAY_MS = 14
@@ -14,7 +14,7 @@ const GRID_ITEM_DELAY_MS = 14
 type SeasonPanelProps = {
   years: SeasonYearVM[]
   activeYear: number
-  hrefForYear: (year: number) => Route
+  hrefForYear: (year: number) => SeasonHref
   onSelectYear: (year: number) => void
 }
 
@@ -41,12 +41,12 @@ export function SeasonPanel({ years, activeYear, hrefForYear, onSelectYear }: Se
               const isActive = seasonYear.year === activeYear
 
               return (
-                <Link
+                <IntentLink
                   key={seasonYear.year}
                   href={hrefForYear(seasonYear.year)}
                   onClick={() => {
                     onSelectYear(seasonYear.year)
-                    setIsOpen(false)
+                    if (isActive) setIsOpen(false)
                   }}
                   aria-current={isActive ? 'true' : undefined}
                   className={cn(styles.yearLink, isActive ? styles.yearLinkActive : styles.yearLinkIdle)}
@@ -54,7 +54,7 @@ export function SeasonPanel({ years, activeYear, hrefForYear, onSelectYear }: Se
                 >
                   <span className={cn(styles.year, isActive ? styles.yearActive : styles.yearIdle)}>{seasonYear.year}</span>{' '}
                   <span className={styles.championshipCount}>{seasonYear.championshipCount} Camp.</span>
-                </Link>
+                </IntentLink>
               )
             })}
           </div>

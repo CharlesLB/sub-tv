@@ -1,10 +1,10 @@
 'use client'
 
-import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 import { routes } from '@/lib/routes'
 import { cn } from '@/lib/utils/cn'
 import { Icon } from '@/components/ui/icon/icon'
+import { IntentLink } from '@/components/ui/intent-link/intent-link'
 import { type ChampionshipRibbonItemVM, categoryBackgroundClass, categoryLabel, categoryTextClass } from '@/modules/championships/client'
 import { describeWhen } from '../../lib/describe-when/describe-when'
 import { championshipRibbonStyles as styles } from './championship-ribbon.styles'
@@ -61,7 +61,7 @@ export function ChampionshipRibbon({ championships, activeChampionshipId }: Cham
           const isActive = championship.id === activeChampionshipId
 
           return (
-            <Link
+            <IntentLink
               key={championship.id}
               href={routes.championship(championship.id)}
               aria-current={isActive ? 'page' : undefined}
@@ -72,7 +72,7 @@ export function ChampionshipRibbon({ championships, activeChampionshipId }: Cham
               <span className={cn(styles.name, isActive ? styles.nameActive : styles.nameIdle)}>{championship.name}</span>
               <span className={cn(styles.category, categoryTextClass[championship.category])}>{categoryLabel[championship.category]}</span>
               <span className={styles.lastActivity}>{describeWhen(championship.lastActivityAt, now)}</span>
-            </Link>
+            </IntentLink>
           )
         })}
       </div>

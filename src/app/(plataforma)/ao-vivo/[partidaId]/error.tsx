@@ -4,6 +4,7 @@ import type { ErrorInfo } from 'next/error'
 import Link from 'next/link'
 import { routes } from '@/lib/routes'
 import { Icon } from '@/components/ui/icon/icon'
+import { LinkPendingIndicator } from '@/components/ui/link-pending-indicator/link-pending-indicator'
 
 export default function LiveMatchError({ retry }: ErrorInfo) {
   return (
@@ -23,6 +24,7 @@ export default function LiveMatchError({ retry }: ErrorInfo) {
           </button>
           <Link href={routes.championships()} className="flex h-9 items-center rounded-card border border-bd2 px-4 text-[11.7px] font-bold tracking-[-.01em] text-tx2 hover:border-tx hover:text-tx">
             Campeonatos
+            <LinkPendingIndicator />
           </Link>
         </div>
       </div>
