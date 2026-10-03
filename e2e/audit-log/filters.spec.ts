@@ -53,7 +53,6 @@ test('filters that match nothing show the empty message and the clear link lists
 })
 
 test('the clear link also resets the filter fields to their defaults', async ({ page }) => {
-  test.fail(true, 'Bug conhecido: os selects usam defaultValue e não são remontados quando Limpar navega para /registro.')
   await page.getByRole('combobox', { name: 'Ação', exact: true }).selectOption({ label: 'Entrou no sistema' })
   await page.getByRole('button', { name: 'Filtrar' }).click()
   await expect(page).toHaveURL(/acao=entrou/)

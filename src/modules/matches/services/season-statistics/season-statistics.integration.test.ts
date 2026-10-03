@@ -1,9 +1,14 @@
 import { eq } from 'drizzle-orm'
 import { describe, expect, it } from 'vitest'
 import { db } from '@/lib/db'
-import { matchEvents, playerSeasonStats } from '@/lib/db/schema'
+import { matchEvents, matches, playerSeasonStats } from '@/lib/db/schema'
 import { recomputeSeasonStatistics } from './season-statistics'
 import { seedEvent, seedMatch, seedSeason } from '@/test/database-seeds/database-seeds'
+
+const FMF_MATCH_ID = 98_765
+const OFFICIAL_SCORE = { homeScore: 2, awayScore: 1 }
+
+const scoreOf = async (matchId: string) => (await db.select({ homeScore: matches.homeScore, awayScore: matches.awayScore }).from(matches).where(eq(matches.id, matchId)))[0]
 
 const statisticsOf = async (playerId: string) => (await db.select().from(playerSeasonStats).where(eq(playerSeasonStats.playerId, playerId)))[0]
 
@@ -48,5 +53,29 @@ describe('recomputeSeasonStatistics', () => {
 
     expect(await statisticsOf(season.homeBenchPlayerId)).toMatchObject({ games: 1, starts: 0, subIn: 1, subOut: 0, goals: 1, penaltyGoals: 1, ownGoals: 1, assists: 0, yellowCards: 1, redCards: 0 })
     expect(await statisticsOf(season.homePlayerId)).toMatchObject({ games: 1, starts: 1, subIn: 0, subOut: 1, goals: 0, assists: 1, yellowCards: 0, redCards: 1 })
+  })
+
+  it('scores zero to zero a finished match created in the tool that has no event', async () => {
+    const season = await seedSeason()
+    const matchId = await seedMatch(season, 'encerrado', 1)
+    await db.update(matches).set({ homeScore: null, awayScore: null }).where(eq(matches.id, matchId))
+
+    await recomputeSeasonStatistics(db, season.seasonId)
+
+    expect(await scoreOf(matchId)).toEqual({ homeScore: 0, awayScore: 0 })
+  })
+
+  it('keeps the official score of a finished FMF match that has no narrated event', async () => {
+    const season = await seedSeason()
+    const matchId = await seedMatch(season, 'encerrado', 1)
+
+    await db
+      .update(matches)
+      .set({ fmfMatchId: FMF_MATCH_ID, ...OFFICIAL_SCORE })
+      .where(eq(matches.id, matchId))
+
+    await recomputeSeasonStatistics(db, season.seasonId)
+
+    expect(await scoreOf(matchId)).toEqual(OFFICIAL_SCORE)
   })
 })

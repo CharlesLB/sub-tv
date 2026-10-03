@@ -26,20 +26,32 @@ describe('countGoalsBySide', () => {
   })
 })
 
+const FMF_MATCH_ID = 4321
+const TOOL_MATCH = { sumulaProcessedAt: null, fmfMatchId: null }
+const FMF_MATCH = { sumulaProcessedAt: null, fmfMatchId: FMF_MATCH_ID }
+
 describe('resolveNarratedScore', () => {
   it('derives the score from events when the match was narrated and has no súmula', () => {
-    expect(resolveNarratedScore({ sumulaProcessedAt: null }, [event({ side: 'away' }), event({ side: 'away' })])).toEqual({ homeScore: 0, awayScore: 2 })
+    expect(resolveNarratedScore(FMF_MATCH, [event({ side: 'away' }), event({ side: 'away' })])).toEqual({ homeScore: 0, awayScore: 2 })
   })
 
   it('keeps the official FMF score of a match that already has a processed súmula', () => {
-    expect(resolveNarratedScore({ sumulaProcessedAt: new Date() }, [event({ side: 'home' })])).toBeNull()
+    expect(resolveNarratedScore({ sumulaProcessedAt: new Date(), fmfMatchId: FMF_MATCH_ID }, [event({ side: 'home' })])).toBeNull()
   })
 
-  it('leaves a match untouched when only FMF events exist', () => {
-    expect(resolveNarratedScore({ sumulaProcessedAt: null }, [event({ source: 'fmf' })])).toBeNull()
+  it('leaves an FMF match untouched when only FMF events exist', () => {
+    expect(resolveNarratedScore(FMF_MATCH, [event({ source: 'fmf' })])).toBeNull()
   })
 
   it('returns zero to zero when a narrated match only has cards', () => {
-    expect(resolveNarratedScore({ sumulaProcessedAt: null }, [event({ type: 'amarelo' })])).toEqual({ homeScore: 0, awayScore: 0 })
+    expect(resolveNarratedScore(FMF_MATCH, [event({ type: 'amarelo' })])).toEqual({ homeScore: 0, awayScore: 0 })
+  })
+
+  it('returns zero to zero for a match created in the tool that ended without any event', () => {
+    expect(resolveNarratedScore(TOOL_MATCH, [])).toEqual({ homeScore: 0, awayScore: 0 })
+  })
+
+  it('leaves an FMF match without any event to the official result', () => {
+    expect(resolveNarratedScore(FMF_MATCH, [])).toBeNull()
   })
 })

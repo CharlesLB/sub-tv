@@ -27,9 +27,10 @@ export const countGoalsBySide = (events: ScoredEvent[]): FinalScore => {
   return { homeScore: goals.filter((goal) => goal.side === 'home').length, awayScore: goals.filter((goal) => goal.side === 'away').length }
 }
 
-export const resolveNarratedScore = (match: { sumulaProcessedAt: Date | null }, events: ScoredEvent[]): FinalScore | null => {
+export const resolveNarratedScore = (match: { sumulaProcessedAt: Date | null; fmfMatchId: number | null }, events: ScoredEvent[]): FinalScore | null => {
   if (match.sumulaProcessedAt !== null) return null
-  if (!events.some((event) => isActiveEvent(event) && event.source !== FMF_SOURCE)) return null
+  const isCreatedInTheTool = match.fmfMatchId === null
+  if (!isCreatedInTheTool && !events.some((event) => isActiveEvent(event) && event.source !== FMF_SOURCE)) return null
 
   return countGoalsBySide(events)
 }
@@ -44,7 +45,10 @@ const deriveNarratedScores = async (executor: SqlExecutor, seasonId: string): Pr
     where match.season_id = ${seasonId}
       and match.sumula_processed_at is null
       and match.status in ('ao_vivo', 'encerrado')
-      and exists (select 1 from match_events event where event.match_id = match.id and event.source <> 'fmf' and event.deleted_at is null and event.superseded_at is null)
+      and (
+        match.fmf_match_id is null
+        or exists (select 1 from match_events event where event.match_id = match.id and event.source <> 'fmf' and event.deleted_at is null and event.superseded_at is null)
+      )
   `)
 }
 

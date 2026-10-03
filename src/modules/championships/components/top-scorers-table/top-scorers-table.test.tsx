@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import { CATEGORY } from '../../lib/categories/categories'
 import { TopScorersTable } from './top-scorers-table'
@@ -20,6 +20,21 @@ describe('TopScorersTable', () => {
     expect(screen.getByText('Atacante')).toBeInTheDocument()
     expect(screen.getByText('Vale Verde EC')).toBeInTheDocument()
     expect(screen.getByText('8')).toBeInTheDocument()
+  })
+
+  it('exposes the scorers as a table whose rows pair each athlete with goals and games under their column headers', () => {
+    render(<TopScorersTable scorers={topScorersFixture} category={CATEGORY.SUB14} />)
+
+    const table = screen.getByRole('table', { name: 'Artilharia' })
+
+    expect(
+      within(table)
+        .getAllByRole('columnheader')
+        .map((header) => header.textContent),
+    ).toEqual(['#', 'Atleta', 'Time', 'G', 'J'])
+
+    const leaderCells = within(within(table).getAllByRole('row')[1] ?? table).getAllByRole('cell')
+    expect(leaderCells.map((cell) => cell.textContent)).toEqual(['01', expect.stringContaining('Miguel Bastos'), 'Vale Verde EC', '8', expect.any(String)])
   })
 
   it('falls back to a dash without nickname or position when the scorer data is missing', () => {

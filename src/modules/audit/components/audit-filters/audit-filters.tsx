@@ -12,9 +12,11 @@ const ANY_VALUE = ''
 
 type AuditFiltersProps = { filter: AuditFilter; users: AuditUserOptionVM[] }
 
+const fieldValuesOf = (filter: AuditFilter): string => JSON.stringify([filter.userId, filter.action, filter.period, filter.entityType])
+
 export function AuditFilters({ filter, users }: AuditFiltersProps) {
   return (
-    <Form action={routes.auditLog()} className={styles.form}>
+    <Form key={fieldValuesOf(filter)} action={routes.auditLog()} className={styles.form}>
       <label className={styles.label}>
         Usuário
         <select name={USER_PARAMETER} defaultValue={filter.userId ?? ANY_VALUE} className={styles.field}>

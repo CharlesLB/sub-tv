@@ -29,6 +29,7 @@ export const finalizeFinishedMatch = async (matchId: string): Promise<SeasonTouc
       homeSeasonTeamId: matches.homeTeamId,
       awaySeasonTeamId: matches.awayTeamId,
       sumulaProcessedAt: matches.sumulaProcessedAt,
+      fmfMatchId: matches.fmfMatchId,
     })
     .from(matches)
     .where(eq(matches.id, matchId))

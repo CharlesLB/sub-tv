@@ -21,7 +21,7 @@ test('signed-out visitor follows the sign-in link on the sheet and comes back to
   await page.goto('/elencos')
   const playerId = await openFirstPlayer(page)
   const signInLink = playerSheet(page).getByRole('link', { name: 'Entre para editar esta ficha' })
-  await expect(signInLink).toHaveAttribute('href', /^\/entrar\?para=%2Felencos%3F.*atleta%3D/)
+  await expect(signInLink).toHaveAttribute('href', /^\/entrar\?para=%2Felencos%2F\d{4}%3F.*atleta%3D/)
 
   await signInLink.click()
 

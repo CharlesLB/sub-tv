@@ -22,6 +22,17 @@ describe('AuditFilters', () => {
     expect(screen.getByRole('option', { name: 'Jogador' })).toHaveProperty('selected', true)
   })
 
+  it('resets every field to its default when the filter is cleared on the same page', () => {
+    const { rerender } = render(<AuditFilters filter={selectedAuditFilterFixture} users={auditUserOptionsFixture} />)
+
+    rerender(<AuditFilters filter={emptyAuditFilterFixture} users={auditUserOptionsFixture} />)
+
+    expect(screen.getByLabelText(/^Usuário/)).toHaveValue('')
+    expect(screen.getByLabelText(/^Ação/)).toHaveValue('')
+    expect(screen.getByLabelText(/^Período/)).toHaveValue('tudo')
+    expect(screen.getByLabelText(/^Entidade/)).toHaveValue('')
+  })
+
   it('lists every user as an option after the all users option', () => {
     render(<AuditFilters filter={emptyAuditFilterFixture} users={auditUserOptionsFixture} />)
 

@@ -39,6 +39,7 @@ test('removing a curiosity takes it off the player sheet', async ({ page }) => {
   await addedCuriosity.getByRole('button', { name: 'Remover curiosidade' }).click()
 
   await expect(sheet.getByText(curiosityText)).toHaveCount(0)
+  await expect(sheet.getByTitle('Removeu curiosidade')).toBeVisible({ timeout: 15_000 })
   await page.reload()
   await expect(playerSheet(page).getByRole('heading', { name: 'Ficha do jogador' })).toBeVisible({ timeout: 20_000 })
   await expect(playerSheet(page).getByText(curiosityText)).toHaveCount(0)
