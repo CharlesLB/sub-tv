@@ -2,7 +2,7 @@ import type { NextConfig } from 'next'
 
 const isDevelopment = process.env.NODE_ENV === 'development'
 
-const VISITED_PAGE_REUSE_SECONDS = 300
+const VISITED_PAGE_REUSE_SECONDS = 1800
 
 const contentSecurityPolicy = [
   "default-src 'self'",
@@ -34,7 +34,7 @@ const nextConfig: NextConfig = {
   partialPrefetching: true,
   poweredByHeader: false,
   serverExternalPackages: ['pg'],
-  experimental: { staleTimes: { dynamic: VISITED_PAGE_REUSE_SECONDS } },
+  experimental: { staleTimes: { dynamic: VISITED_PAGE_REUSE_SECONDS, static: VISITED_PAGE_REUSE_SECONDS } },
   async headers() {
     return [{ source: '/:path*', headers: securityHeaders }]
   },

@@ -30,7 +30,8 @@ test('main navigation rail keeps the selected season when switching from champio
   await rail.getByRole('link', { name: 'Elencos' }).click()
 
   await expect(page).toHaveURL(/\/elencos\/2019/, SLOW_PAGE)
-  await expect(page.getByRole('navigation', { name: 'Trilha de navegação' })).toContainText('2019')
+  await expect(page.getByRole('heading', { name: 'Elencos', level: 1 })).toBeVisible(SLOW_PAGE)
+  await expect(page.getByRole('navigation', { name: 'Trilha de navegação' }).filter({ hasText: 'Gestão da base' })).toContainText('2019')
 })
 
 test('breadcrumb trail on a championship links back to the championship list of its season', async ({ page }) => {

@@ -1,4 +1,6 @@
+import { Suspense } from 'react'
 import { pluralize } from '@/lib/utils/pluralize/pluralize'
+import { EditorOnly } from '@/modules/auth'
 import { CATEGORIES, categoryBorderClass, categoryLabel } from '../../lib/categories/categories'
 import type { CategoryClubsVM, ChampionshipCardVM } from '../../types'
 import { CategoryTag } from '../category-tag/category-tag'
@@ -11,10 +13,9 @@ type ChampionshipListProps = {
   championships: ChampionshipCardVM[]
   year: number
   clubs: CategoryClubsVM
-  canEdit: boolean
 }
 
-export function ChampionshipList({ championships, year, clubs, canEdit }: ChampionshipListProps) {
+export function ChampionshipList({ championships, year, clubs }: ChampionshipListProps) {
   const columns = CATEGORIES.map((category) => ({
     category,
     championships: championships.filter((championship) => championship.category === category),
@@ -40,7 +41,11 @@ export function ChampionshipList({ championships, year, clubs, canEdit }: Champi
                   <ChampionshipCard key={championship.id} championship={championship} index={index} />
                 ))}
                 {column.championships.length === 0 ? <div className={styles.emptyColumn}>Nenhum campeonato nesta temporada</div> : null}
-                {canEdit ? <NewChampionshipButton category={column.category} /> : null}
+                <Suspense fallback={null}>
+                  <EditorOnly>
+                    <NewChampionshipButton category={column.category} />
+                  </EditorOnly>
+                </Suspense>
               </section>
             )
           })}

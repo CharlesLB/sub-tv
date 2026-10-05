@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation'
 import { type ReactNode, Suspense } from 'react'
 import { CHAMPIONSHIPS_PATH, routes } from '@/lib/routes'
 import { isUuid } from '@/lib/utils/is-uuid/is-uuid'
-import { getCurrentUser } from '@/modules/auth'
+import { EditorOnly } from '@/modules/auth'
 import { ChampionshipDetailSkeleton, ChampionshipTabs, getChampionshipHeader, getChampionshipsOfYear, getSeasonYears, NewMatchButton, toRibbonItems } from '@/modules/championships'
 import { ContextBar, SeasonRail, SeasonRailSkeleton } from '@/modules/platform'
 
@@ -10,7 +10,7 @@ async function ChampionshipFrame({ seasonId, children }: { seasonId: string; chi
   const header = isUuid(seasonId) ? await getChampionshipHeader(seasonId) : null
   if (!header) notFound()
 
-  const [years, championships, user] = await Promise.all([getSeasonYears(), getChampionshipsOfYear(header.year), getCurrentUser()])
+  const [years, championships] = await Promise.all([getSeasonYears(), getChampionshipsOfYear(header.year)])
 
   const crumbs = [
     { label: 'Campeonatos', href: routes.championships(header.year) },
@@ -25,7 +25,13 @@ async function ChampionshipFrame({ seasonId, children }: { seasonId: string; chi
         title={header.name}
         category={header.category}
         detail={`${header.statusLine} · ${header.teamCount} Times`}
-        actions={user ? <NewMatchButton seasonId={header.id} /> : null}
+        actions={
+          <Suspense fallback={null}>
+            <EditorOnly>
+              <NewMatchButton seasonId={header.id} />
+            </EditorOnly>
+          </Suspense>
+        }
       />
       <SeasonRail years={years} activeYear={header.year} championships={toRibbonItems(championships)} activeChampionshipId={header.id} basePath={CHAMPIONSHIPS_PATH} />
       <ChampionshipTabs seasonId={header.id} />

@@ -1,5 +1,20 @@
 import { type ReactNode, Suspense } from 'react'
-import { PlatformRailSkeleton, RailWithBroadcast } from '@/modules/platform'
+import { EditorAccessProvider, isSignedIn, UserChip } from '@/modules/auth'
+import { ContextBarStatusProvider, FmfSyncButton, LiveBroadcastChip, PlatformRailSkeleton, RailWithBroadcast } from '@/modules/platform'
+
+const contextBarStatus = (
+  <>
+    <Suspense fallback={null}>
+      <LiveBroadcastChip />
+    </Suspense>
+    <Suspense fallback={null}>
+      <UserChip />
+    </Suspense>
+    <Suspense fallback={null}>
+      <FmfSyncButton />
+    </Suspense>
+  </>
+)
 
 export default function PlatformLayout({ children }: { children: ReactNode }) {
   return (
@@ -8,7 +23,11 @@ export default function PlatformLayout({ children }: { children: ReactNode }) {
       <Suspense fallback={<PlatformRailSkeleton />}>
         <RailWithBroadcast />
       </Suspense>
-      <main className="flex min-h-0 min-w-0 flex-1 flex-col">{children}</main>
+      <EditorAccessProvider canEdit={isSignedIn()}>
+        <ContextBarStatusProvider status={contextBarStatus}>
+          <main className="flex min-h-0 min-w-0 flex-1 flex-col">{children}</main>
+        </ContextBarStatusProvider>
+      </EditorAccessProvider>
     </div>
   )
 }

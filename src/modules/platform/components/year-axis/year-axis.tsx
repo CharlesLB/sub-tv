@@ -59,6 +59,7 @@ export function YearAxis({ years, activeYear, hrefForYear, onSelectYear }: YearA
             <span key={seasonYear.year} className={styles.yearSlot}>
               {index > 0 ? <span className={styles.connector} /> : null}
               <IntentLink
+                shouldPrefetchOnView
                 href={hrefForYear(seasonYear.year)}
                 onClick={() => onSelectYear(seasonYear.year)}
                 title={`${seasonYear.championshipCount} campeonatos · elenco ${seasonYear.year}`}

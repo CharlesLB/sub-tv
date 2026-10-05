@@ -35,6 +35,7 @@ export function CategoryFilter({ year, activeCategory, activeTeamKey }: Category
 
         return (
           <IntentLink
+            shouldPrefetchOnView
             key={option.key}
             href={routes.squads({ year, category: option.category, teamKey: teamKeyInCategory(activeTeamKey, option.category) })}
             scroll={false}

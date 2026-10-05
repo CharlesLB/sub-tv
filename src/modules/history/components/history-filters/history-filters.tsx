@@ -33,6 +33,7 @@ export function HistoryFilters({ filter, availableYears, target }: HistoryFilter
         <div className={styles.categoryChips}>
           {categoryChips.map((chip) => (
             <IntentLink
+              shouldPrefetchOnView
               key={chip.key}
               href={historyHref(OVERVIEW_TARGET, { category: chip.category, years: filter.years })}
               aria-current={chip.category === filter.category ? 'true' : undefined}
@@ -48,6 +49,7 @@ export function HistoryFilters({ filter, availableYears, target }: HistoryFilter
         <div className={styles.seasonChips}>
           {seasonChips.map((chip) => (
             <IntentLink
+              shouldPrefetchOnView
               key={chip.key}
               href={historyHref(target, { category: filter.category, years: chip.years })}
               aria-current={chip.isActive ? 'true' : undefined}

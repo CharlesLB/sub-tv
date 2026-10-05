@@ -1,9 +1,7 @@
-import { type ReactNode, Suspense } from 'react'
-import { UserChip } from '@/modules/auth'
+import type { ReactNode } from 'react'
 import { type Category, CategoryTag } from '@/modules/championships/client'
 import { Breadcrumbs, type Crumb } from '../breadcrumbs/breadcrumbs'
-import { FmfSyncButton } from '../fmf-sync-button/fmf-sync-button'
-import { LiveBroadcastChip } from '../live-broadcast-chip/live-broadcast-chip'
+import { ContextBarStatus } from '../context-bar-status/context-bar-status'
 import { ThemeToggle } from '../theme-toggle/theme-toggle'
 import { contextBarStyles as styles } from './context-bar.styles'
 
@@ -27,15 +25,7 @@ export function ContextBar({ crumbs, title, category, categoryTag, detail, actio
       {categoryTag ? <span className={styles.categoryTag}>{categoryTag}</span> : null}
       {detail ? <span className={styles.detail}>{detail}</span> : null}
       <div className={styles.actions}>
-        <Suspense fallback={null}>
-          <LiveBroadcastChip />
-        </Suspense>
-        <Suspense fallback={null}>
-          <UserChip />
-        </Suspense>
-        <Suspense fallback={null}>
-          <FmfSyncButton />
-        </Suspense>
+        <ContextBarStatus />
         <ThemeToggle />
         {actions}
       </div>

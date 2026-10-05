@@ -21,7 +21,7 @@ vi.mock('next/navigation', () => ({
 const renderSection = async (requestedPlayerId: string | undefined) => {
   navigation.searchParams = new URLSearchParams(requestedPlayerId ? { [PLAYER_PARAMETER]: requestedPlayerId } : {})
 
-  return render(<Suspense>{await SquadSection({ year: 2025, team: seasonTeamFixture, categoryFilter: undefined, canEdit: false, requestedPlayerId })}</Suspense>)
+  return render(<Suspense>{await SquadSection({ year: 2025, team: seasonTeamFixture, categoryFilter: undefined, requestedPlayerId })}</Suspense>)
 }
 
 describe('SquadSection', () => {

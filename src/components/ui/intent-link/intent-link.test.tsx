@@ -58,4 +58,15 @@ describe('IntentLink', () => {
 
     expect(lastPrefetch()).toBe(true)
   })
+
+  it('prefetches the full destination from the start when it should prefetch as soon as it is on screen', () => {
+    render(
+      <IntentLink href="/campeonatos" shouldPrefetchOnView>
+        Campeonatos
+      </IntentLink>,
+    )
+
+    expect(lastPrefetch()).toBe(true)
+    expect(screen.getByRole('link', { name: 'Campeonatos' })).not.toHaveAttribute('shouldPrefetchOnView')
+  })
 })

@@ -4,7 +4,9 @@ import Link, { type LinkProps } from 'next/link'
 import { type FocusEvent, type MouseEvent, type TouchEvent, useState } from 'react'
 import { LinkPendingIndicator } from '../link-pending-indicator/link-pending-indicator'
 
-export function IntentLink<RouteType>({ children, onMouseEnter, onFocus, onTouchStart, ...linkProps }: LinkProps<RouteType>) {
+type IntentLinkProps<RouteType> = LinkProps<RouteType> & { shouldPrefetchOnView?: boolean }
+
+export function IntentLink<RouteType>({ children, onMouseEnter, onFocus, onTouchStart, shouldPrefetchOnView = false, ...linkProps }: IntentLinkProps<RouteType>) {
   const [hasIntent, setHasIntent] = useState(false)
 
   const prefetchOnHover = (event: MouseEvent<HTMLAnchorElement>) => {
@@ -23,7 +25,7 @@ export function IntentLink<RouteType>({ children, onMouseEnter, onFocus, onTouch
   }
 
   return (
-    <Link {...linkProps} prefetch={hasIntent ? true : null} onMouseEnter={prefetchOnHover} onFocus={prefetchOnFocus} onTouchStart={prefetchOnTouch}>
+    <Link {...linkProps} prefetch={shouldPrefetchOnView || hasIntent ? true : null} onMouseEnter={prefetchOnHover} onFocus={prefetchOnFocus} onTouchStart={prefetchOnTouch}>
       {children}
       <LinkPendingIndicator />
     </Link>

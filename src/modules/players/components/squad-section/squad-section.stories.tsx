@@ -11,7 +11,7 @@ import { SquadSection } from './squad-section'
 const meta = {
   title: 'Players/SquadSection',
   component: SquadSection,
-  args: { year: 2025, team: seasonTeamFixture, categoryFilter: undefined, canEdit: false, requestedPlayerId: squadPlayerFixture.id },
+  args: { year: 2025, team: seasonTeamFixture, categoryFilter: undefined, requestedPlayerId: squadPlayerFixture.id },
   parameters: { layout: 'fullscreen', nextjs: { navigation: { query: { [PLAYER_PARAMETER]: squadPlayerFixture.id } } } },
   decorators: [
     (Story) => (

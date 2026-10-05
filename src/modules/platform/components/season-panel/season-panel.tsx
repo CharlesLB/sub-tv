@@ -42,6 +42,7 @@ export function SeasonPanel({ years, activeYear, hrefForYear, onSelectYear }: Se
 
               return (
                 <IntentLink
+                  shouldPrefetchOnView
                   key={seasonYear.year}
                   href={hrefForYear(seasonYear.year)}
                   onClick={() => {

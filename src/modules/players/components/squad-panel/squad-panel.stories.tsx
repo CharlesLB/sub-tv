@@ -9,7 +9,7 @@ import { SquadPanel } from './squad-panel'
 const meta = {
   title: 'Players/SquadPanel',
   component: SquadPanel,
-  args: { year: 2025, teams: seasonTeamsFixture, query: { category: undefined, teamKey: undefined }, canEdit: false, requestedPlayerId: undefined },
+  args: { year: 2025, teams: seasonTeamsFixture, query: { category: undefined, teamKey: undefined }, requestedPlayerId: undefined },
   parameters: { layout: 'fullscreen' },
   decorators: [
     (Story) => (

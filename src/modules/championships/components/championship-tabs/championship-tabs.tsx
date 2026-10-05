@@ -17,6 +17,7 @@ export function ChampionshipTabs({ seasonId }: { seasonId: string }) {
 
         return (
           <IntentLink
+            shouldPrefetchOnView
             key={entry.tab}
             href={routes.championship(seasonId, entry.tab)}
             scroll={false}

@@ -10,11 +10,10 @@ type SquadSectionProps = {
   year: number
   team: SeasonTeamVM
   categoryFilter: Category | undefined
-  canEdit: boolean
   requestedPlayerId: string | undefined
 }
 
-export async function SquadSection({ year, team, categoryFilter, canEdit, requestedPlayerId }: SquadSectionProps) {
+export async function SquadSection({ year, team, categoryFilter, requestedPlayerId }: SquadSectionProps) {
   const squad = await getTeamSquad(year, team.category, team.clubId)
 
   if (!squad) {
@@ -29,5 +28,5 @@ export async function SquadSection({ year, team, categoryFilter, canEdit, reques
     </Suspense>
   ) : null
 
-  return <SquadWorkspace key={squad.key} squad={squad} categoryFilter={categoryFilter} canEdit={canEdit} lastChange={{ playerId: lastChangePlayerId, content: lastChange }} />
+  return <SquadWorkspace key={squad.key} squad={squad} categoryFilter={categoryFilter} lastChange={{ playerId: lastChangePlayerId, content: lastChange }} />
 }

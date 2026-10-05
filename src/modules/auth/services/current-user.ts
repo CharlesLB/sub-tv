@@ -18,6 +18,8 @@ export const getCurrentUser = cache(async (): Promise<AppUser | null> => {
   return session ? userService.findActiveById(session.userId) : null
 })
 
+export const isSignedIn = async (): Promise<boolean> => (await getCurrentUser()) !== null
+
 export const requireUser = async (): Promise<AppUser> => {
   const user = await getCurrentUser()
   if (!user) redirect(routes.login())

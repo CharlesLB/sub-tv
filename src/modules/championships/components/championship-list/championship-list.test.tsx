@@ -1,6 +1,7 @@
 import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { EditorAccessProvider } from '@/modules/auth'
 import { liveChampionshipFixture } from '../championship-card/championship-card.fixtures'
 import { categoryClubsFixture } from '../club-picker/club-picker.fixtures'
 import { ChampionshipList } from './championship-list'
@@ -14,7 +15,7 @@ describe('ChampionshipList', () => {
   })
 
   it('splits the championships in one column per category with their totals', () => {
-    render(<ChampionshipList championships={championshipsOfYearFixture} year={SEASON_YEAR_FIXTURE} clubs={categoryClubsFixture} canEdit={false} />)
+    render(<ChampionshipList championships={championshipsOfYearFixture} year={SEASON_YEAR_FIXTURE} clubs={categoryClubsFixture} />)
 
     const sub13Column = within(screen.getByRole('region', { name: 'Campeonatos SUB-13' }))
     const sub14Column = within(screen.getByRole('region', { name: 'Campeonatos SUB-14' }))
@@ -25,7 +26,7 @@ describe('ChampionshipList', () => {
   })
 
   it('shows the empty message in a category without championships', () => {
-    render(<ChampionshipList championships={[liveChampionshipFixture]} year={SEASON_YEAR_FIXTURE} clubs={categoryClubsFixture} canEdit={false} />)
+    render(<ChampionshipList championships={[liveChampionshipFixture]} year={SEASON_YEAR_FIXTURE} clubs={categoryClubsFixture} />)
 
     const sub13Column = within(screen.getByRole('region', { name: 'Campeonatos SUB-13' }))
     expect(sub13Column.getByText('0 campeonatos · 0 times · 0 atletas')).toBeInTheDocument()
@@ -33,13 +34,21 @@ describe('ChampionshipList', () => {
   })
 
   it('hides the new championship buttons from visitors who cannot edit', () => {
-    render(<ChampionshipList championships={championshipsOfYearFixture} year={SEASON_YEAR_FIXTURE} clubs={categoryClubsFixture} canEdit={false} />)
+    render(
+      <EditorAccessProvider canEdit={false}>
+        <ChampionshipList championships={championshipsOfYearFixture} year={SEASON_YEAR_FIXTURE} clubs={categoryClubsFixture} />
+      </EditorAccessProvider>,
+    )
 
     expect(screen.queryByRole('button', { name: /Novo campeonato/ })).not.toBeInTheDocument()
   })
 
   it('opens the new championship form from a category column when the visitor can edit', async () => {
-    render(<ChampionshipList championships={championshipsOfYearFixture} year={SEASON_YEAR_FIXTURE} clubs={categoryClubsFixture} canEdit />)
+    render(
+      <EditorAccessProvider canEdit>
+        <ChampionshipList championships={championshipsOfYearFixture} year={SEASON_YEAR_FIXTURE} clubs={categoryClubsFixture} />
+      </EditorAccessProvider>,
+    )
 
     await userEvent.click(screen.getByRole('button', { name: 'Novo campeonato SUB-13' }))
 

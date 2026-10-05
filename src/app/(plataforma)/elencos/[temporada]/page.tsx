@@ -1,6 +1,5 @@
 import { Suspense } from 'react'
 import { CATEGORY_PARAMETER, PLAYER_PARAMETER, TEAM_PARAMETER } from '@/lib/routes'
-import { getCurrentUser } from '@/modules/auth'
 import { getSeasonYears, resolveYear } from '@/modules/championships'
 import { SquadPanel, SquadWorkspaceSkeleton } from '@/modules/players'
 import { getSeasonTeams } from '@/modules/teams'
@@ -11,9 +10,9 @@ const readParameter = (value: string | string[] | undefined): string | undefined
 
 async function SquadOfSelectedTeam({ query }: { query: SquadQuery }) {
   const year = resolveYear(query.requestedYear, await getSeasonYears())
-  const [teams, user] = await Promise.all([getSeasonTeams(year), getCurrentUser()])
+  const teams = await getSeasonTeams(year)
 
-  return <SquadPanel year={year} teams={teams} query={{ category: query.category, teamKey: query.teamKey }} canEdit={user !== null} requestedPlayerId={query.playerId} />
+  return <SquadPanel year={year} teams={teams} query={{ category: query.category, teamKey: query.teamKey }} requestedPlayerId={query.playerId} />
 }
 
 export default function SquadsSeasonPage({ params, searchParams }: PageProps<'/elencos/[temporada]'>) {

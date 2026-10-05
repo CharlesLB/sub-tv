@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 import { expect, userEvent, within } from 'storybook/test'
 import { PLAYER_PARAMETER } from '@/lib/routes'
+import { EditorAccessProvider } from '@/modules/auth/client'
 import { secondSquadPlayerFixture, squadPlayerFixture } from '../roster-row/roster-row.fixtures'
 import { emptyTeamSquadFixture, teamSquadFixture } from '../squad-header/squad-header.fixtures'
 import { SquadWorkspace } from './squad-workspace'
@@ -9,7 +10,7 @@ import { SquadWorkspaceSkeleton } from './squad-workspace.skeleton'
 const meta = {
   title: 'Players/SquadWorkspace',
   component: SquadWorkspace,
-  args: { squad: teamSquadFixture, categoryFilter: undefined, canEdit: false, lastChange: { playerId: squadPlayerFixture.id, content: null } },
+  args: { squad: teamSquadFixture, categoryFilter: undefined, lastChange: { playerId: squadPlayerFixture.id, content: null } },
   parameters: { layout: 'fullscreen' },
   decorators: [
     (Story) => (
@@ -36,7 +37,15 @@ export const RequestedPlayer: Story = {
   },
 }
 
-export const Editable: Story = { args: { canEdit: true } }
+export const Editable: Story = {
+  decorators: [
+    (Story) => (
+      <EditorAccessProvider canEdit>
+        <Story />
+      </EditorAccessProvider>
+    ),
+  ],
+}
 
 export const EmptySquad: Story = { args: { squad: emptyTeamSquadFixture } }
 

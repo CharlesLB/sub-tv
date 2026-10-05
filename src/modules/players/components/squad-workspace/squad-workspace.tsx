@@ -5,6 +5,7 @@ import { type ReactNode, useState } from 'react'
 import { PLAYER_PARAMETER, routes } from '@/lib/routes'
 import { cn } from '@/lib/utils/cn'
 import { NavigationProgress } from '@/components/ui/navigation-progress/navigation-progress'
+import { useCanEdit } from '@/modules/auth/client'
 import type { Category } from '@/modules/championships/client'
 import { EMPTY_SQUAD_MESSAGE } from '../../labels'
 import { matchesSquadSearch } from '../../lib/squad-roster/squad-roster'
@@ -17,11 +18,11 @@ import { squadWorkspaceStyles as styles } from './squad-workspace.styles'
 type SquadWorkspaceProps = {
   squad: TeamSquadVM
   categoryFilter: Category | undefined
-  canEdit: boolean
   lastChange: { playerId: string | null; content: ReactNode }
 }
 
-export function SquadWorkspace({ squad, categoryFilter, canEdit, lastChange }: SquadWorkspaceProps) {
+export function SquadWorkspace({ squad, categoryFilter, lastChange }: SquadWorkspaceProps) {
+  const canEdit = useCanEdit()
   const searchParams = useSearchParams()
   const router = useRouter()
   const [searchText, setSearchText] = useState('')

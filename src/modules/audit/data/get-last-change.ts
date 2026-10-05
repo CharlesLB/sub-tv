@@ -1,13 +1,17 @@
 import 'server-only'
 import { and, desc, eq } from 'drizzle-orm'
-import { connection } from 'next/server'
+import { cacheLife, cacheTag } from 'next/cache'
+import { tags } from '@/lib/cache/tags'
 import { db, tables } from '@/lib/db'
 import type { AuditEntity } from '../lib/audit-action/audit-action'
 import { actionLabelOf } from '../lib/audit-labels/audit-labels'
 import type { LastChangeVM } from '../types'
 
 export const getLastChange = async (entityType: AuditEntity, entityId: string): Promise<LastChangeVM | null> => {
-  await connection()
+  'use cache'
+  cacheLife('minutes')
+  cacheTag(tags.player(entityId))
+
   const { auditLog, appUsers } = tables
 
   const [row] = await db

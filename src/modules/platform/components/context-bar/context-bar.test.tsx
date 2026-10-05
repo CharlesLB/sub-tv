@@ -3,6 +3,7 @@ import { Suspense } from 'react'
 import { describe, expect, it } from 'vitest'
 import { CATEGORY } from '@/modules/championships/client'
 import { championshipCrumbsFixture } from '../breadcrumbs/breadcrumbs.fixtures'
+import { ContextBarStatusProvider } from '../context-bar-status-provider/context-bar-status-provider'
 import { ContextBar } from './context-bar'
 
 describe('ContextBar', () => {
@@ -49,5 +50,15 @@ describe('ContextBar', () => {
     )
 
     expect(screen.getByText('SUB-13')).toBeInTheDocument()
+  })
+
+  it('shows the status chips that the platform layout provides', () => {
+    render(
+      <ContextBarStatusProvider status={<a href="/registro">Operador</a>}>
+        <ContextBar crumbs={championshipCrumbsFixture} title="Campeonatos" />
+      </ContextBarStatusProvider>,
+    )
+
+    expect(screen.getByRole('link', { name: 'Operador' })).toHaveAttribute('href', '/registro')
   })
 })
