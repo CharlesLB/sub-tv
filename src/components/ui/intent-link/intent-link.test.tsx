@@ -1,11 +1,12 @@
 import { fireEvent, render, screen } from '@testing-library/react'
+import type * as NextLinkModule from 'next/link'
 import Link, { type LinkProps } from 'next/link'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { IntentLink } from './intent-link'
 
-vi.mock(import('next/link'), async (importOriginal) => ({
-  ...(await importOriginal()),
-  default: vi.fn(function LinkDouble<RouteType>({ href, prefetch, children, ...anchorProps }: LinkProps<RouteType>) {
+vi.mock('next/link', async (importOriginal) => ({
+  ...(await importOriginal<typeof NextLinkModule>()),
+  default: vi.fn(function LinkDouble({ href, prefetch, children, ...anchorProps }: LinkProps<string>) {
     return (
       <a href={String(href)} data-prefetch={String(prefetch)} {...anchorProps}>
         {children}
