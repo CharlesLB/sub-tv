@@ -5,7 +5,7 @@ import { IntentLink } from './intent-link'
 
 vi.mock(import('next/link'), async (importOriginal) => ({
   ...(await importOriginal()),
-  default: vi.fn(function LinkDouble({ href, prefetch, children, ...anchorProps }: LinkProps<string>) {
+  default: vi.fn(function LinkDouble<RouteType>({ href, prefetch, children, ...anchorProps }: LinkProps<RouteType>) {
     return (
       <a href={String(href)} data-prefetch={String(prefetch)} {...anchorProps}>
         {children}
