@@ -80,4 +80,4 @@ Os atletas são menores de idade, e o sub.tv foi pensado com isso em mente: não
 
 ---
 
-Quer rodar o projeto, contribuir ou fazer o deploy? Veja [DEVELOPMENT.md](DEVELOPMENT.md).
+Quer rodar o projeto, contribuir ou fazer o deploy? Veja [docs/development.md](docs/development.md).

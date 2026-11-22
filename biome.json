@@ -6,7 +6,7 @@
     "useIgnoreFile": true
   },
   "files": {
-    "includes": ["**/*.ts", "**/*.tsx", "**/*.mjs", "**/*.json", "!**/node_modules", "!**/.next", "!**/drizzle", "!**/spec", "!**/storybook-static", "!**/.data", "!**/public"]
+    "includes": ["**/*.ts", "**/*.tsx", "**/*.mjs", "**/*.json", "!**/node_modules", "!**/.next", "!src/lib/db/migrations", "!**/spec", "!**/storybook-static", "!**/.data", "!**/public"]
   },
   "formatter": {
     "enabled": false
@@ -80,7 +80,7 @@
   },
   "overrides": [
     {
-      "includes": ["scripts/**"],
+      "includes": ["src/scripts/**", "src/modules/fmf-sync/services/**"],
       "linter": {
         "rules": {
           "suspicious": {

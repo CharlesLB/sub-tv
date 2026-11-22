@@ -1,7 +1,7 @@
 spec
 .data
 .next
-drizzle
+src/lib/db/migrations
 public
 test-results
 playwright-report

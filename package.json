@@ -12,22 +12,22 @@
     "format": "prettier --write .",
     "test": "vitest run",
     "test:watch": "vitest",
-    "e2e": "playwright test --project=desktop",
+    "e2e": "playwright test --config e2e/playwright.config.ts --project=desktop",
     "check": "pnpm typecheck && pnpm format:check && pnpm lint && pnpm test",
     "db:local": "pglite-server --db=.data/pglite --port=5432 --max-connections=16",
-    "db:generate": "drizzle-kit generate",
-    "db:migrate": "tsx --env-file-if-exists=.env.local scripts/db-migrate.ts",
-    "fmf:import": "tsx --env-file-if-exists=.env.local scripts/fmf-import/main.ts",
-    "fmf:sync": "tsx --env-file-if-exists=.env.local scripts/fmf-import/sync-main.ts",
-    "screenshot": "tsx --env-file-if-exists=.env.local scripts/dev-screenshot/dev-screenshot.ts",
-    "crests:download": "tsx --env-file-if-exists=.env.local scripts/crest-download/crest-download.ts",
-    "users:create": "tsx --env-file-if-exists=.env.local scripts/create-user/create-user.ts",
+    "db:generate": "drizzle-kit generate --config src/lib/db/drizzle.config.ts",
+    "db:migrate": "tsx --env-file-if-exists=.env.local src/scripts/db-migrate/db-migrate.ts",
+    "fmf:import": "tsx --env-file-if-exists=.env.local src/scripts/fmf-import/fmf-import.ts",
+    "fmf:sync": "tsx --env-file-if-exists=.env.local src/scripts/fmf-sync/fmf-sync.ts",
+    "screenshot": "tsx --env-file-if-exists=.env.local src/scripts/dev-screenshot/dev-screenshot.ts",
+    "crests:download": "tsx --env-file-if-exists=.env.local src/scripts/crest-download/crest-download.ts",
+    "users:create": "tsx --env-file-if-exists=.env.local src/scripts/create-user/create-user.ts",
     "lint:fix": "biome check --formatter-enabled=false --write . && eslint . --fix",
     "format:check": "prettier --check .",
     "fix": "pnpm format && pnpm lint:fix",
-    "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build",
-    "test:unit": "vitest run --project app --project scripts",
+    "storybook": "storybook dev -c src/test/storybook -p 6006",
+    "build-storybook": "storybook build -c src/test/storybook",
+    "test:unit": "vitest run --project app",
     "test:stories": "vitest run --project storybook"
   },
   "dependencies": {
@@ -95,6 +95,22 @@
     "onlyBuiltDependencies": [
       "sharp",
       "unrs-resolver"
+    ]
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": true,
+    "printWidth": 200,
+    "trailingComma": "all",
+    "arrowParens": "always",
+    "plugins": [
+      "prettier-plugin-tailwindcss"
+    ],
+    "tailwindStylesheet": "./src/app/globals.css",
+    "tailwindFunctions": [
+      "cn",
+      "clsx",
+      "cva"
     ]
   }
 }

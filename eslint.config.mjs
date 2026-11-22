@@ -25,6 +25,7 @@ const eslintConfig = defineConfig([
   ...nextTs,
   { plugins: security.configs.recommended.plugins, rules: Object.fromEntries(Object.keys(security.configs.recommended.rules).map((ruleName) => [ruleName, 'error'])) },
   ...storybook.configs['flat/recommended'],
+  { files: ['src/test/storybook/main.ts'], rules: { 'storybook/no-uninstalled-addons': 'error' } },
   {
     plugins: { '@stylistic': stylistic },
     rules: {
@@ -56,7 +57,7 @@ const eslintConfig = defineConfig([
       'no-restricted-imports': ['error', { paths: [{ name: '@/lib/db', message: DATABASE_ACCESS_MESSAGE }] }],
     },
   },
-  globalIgnores(['.next/**', 'out/**', 'build/**', 'next-env.d.ts', 'spec/**', '.claude/**', 'public/**', 'drizzle/**', '.data/**', 'storybook-static/**', '!.storybook']),
+  globalIgnores(['.next/**', 'out/**', 'build/**', 'next-env.d.ts', 'spec/**', '.claude/**', 'public/**', 'src/lib/db/migrations/**', '.data/**', 'storybook-static/**']),
 ])
 
 export default eslintConfig
