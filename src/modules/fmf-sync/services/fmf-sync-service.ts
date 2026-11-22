@@ -1,7 +1,7 @@
 import 'server-only'
 import { db } from '@/lib/db'
-import { selectRawStorage, TEMPORARY_RAW_STORAGE } from '../../../../scripts/fmf-import/raw-storage/raw-storage'
-import { runFmfSync, type SyncSummary } from '../../../../scripts/fmf-import/sync/fmf-sync'
+import { runFmfSync, type SyncSummary } from './fmf-sync/fmf-sync'
+import { selectRawStorage, TEMPORARY_RAW_STORAGE } from './raw-storage/raw-storage'
 
 export type { SyncSummary }
 

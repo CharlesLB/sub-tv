@@ -27,6 +27,7 @@ jobs:
       - run: pnpm audit --prod --audit-level high
       - run: pnpm typecheck
       - run: pnpm lint
+      - run: pnpm exec playwright install --with-deps --only-shell chromium
       - run: pnpm test
       - uses: actions/cache@v4
         with:

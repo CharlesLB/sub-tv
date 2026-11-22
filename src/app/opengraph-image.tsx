@@ -7,7 +7,7 @@ export const alt = 'sub.tv — gestão e transmissão do futebol de base mineiro
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
-const DISPLAY_FONT_PATH = join(process.cwd(), 'assets/fonts/BarlowCondensed-ExtraBold.ttf')
+const DISPLAY_FONT_PATH = join(process.cwd(), 'src/assets/fonts/BarlowCondensed-ExtraBold.ttf')
 const DISPLAY_FONT_WEIGHT = 800
 
 export default async function OpenGraphImage() {
